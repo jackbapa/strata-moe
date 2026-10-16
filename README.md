@@ -15,7 +15,7 @@
 | **128K** | **18.4 GiB**（18,819 MiB） | **110.33 token/s** |
 | **256K** | **20.0 GiB**（20,474 MiB） | **102.20 token/s** |
 
-建议比实测峰值多留 **1～2 GiB** 显存。默认 auto 按需分配，短输入时占用更低；本表是完整预留的占用，256K 档使用 Q8 KV，其余使用 F16 KV。[三轮数据、等待时间与复现方法](bench/results/2026-10-16-fixed-reserved-context/README.md)。低显存与 CPU 的速度见下表。
+建议比实测峰值多留 **1～2 GiB** 显存。本表用于测试固定预留，256K 档使用 Q8 KV，其余使用 F16 KV；默认 auto 仍按需分配。[三轮数据、等待时间与复现方法](bench/results/2026-10-16-fixed-reserved-context/README.md)。同为 50K 输入的本轮对照中，默认按需输出峰值为 **100.56 token/s**，固定预留为 **84.70 token/s**，详见[50K 对照记录](bench/results/2026-10-16-50k-kv-allocation-ab/README.md)。
 
 <a id="measurements"></a>
 ## 🧪 历史实测速度：预留上下文 256K，按需分配
@@ -36,7 +36,7 @@
 | 纯 CPU，16 线程 | 256K | 8K | 106.789 s | 77 token/s | 10.36 token/s | 进程 RAM 14,523 MiB |
 | 纯 CPU，16 线程 | 256K | 32K | 605.979 s | 54 token/s | 8.22 token/s | 进程 RAM 14,526 MiB |
 
-22 GiB、6 GiB 预算及 CPU 行使用同一段短 token 序列重复填充；16 GiB 行使用另一份文本重复填充，**不能把两组速度直接相减当作配置收益**。6 GiB 行是显式选择的独立低显存测试配置，不代表 4～8 GiB 的 auto 配置。16 GiB 行启用了 MTP，6 GiB 与 CPU 行没有启用。整卡采样包含驱动与其他显存占用；进程 RAM 与整卡显存不能相加。原始条件与 JSON：[22 GiB／6 GiB／CPU 矩阵](bench/results/2026-10-16-256k-context-matrix/README.md)、[16 GiB 混合 + MTP 记录](bench/results/2026-10-16-16g-hybrid-mtp-prose/README.md)。另一次 [50K 输入、256 输出、三轮 API 测试](bench/results/2026-10-16-a3b-iq3s-combined-exact-r3/README.md)采用不同内容，不与上表合并计算。
+旧表的 50K／121.62 token/s 尚未在本轮复测中复现；原因未完全确定，不与本轮数据合并。22 GiB、6 GiB 预算及 CPU 行使用同一段短 token 序列重复填充；16 GiB 行使用另一份文本重复填充，**不能把两组速度直接相减当作配置收益**。6 GiB 行是显式选择的独立低显存测试配置，不代表 4～8 GiB 的 auto 配置。16 GiB 行启用了 MTP，6 GiB 与 CPU 行没有启用。整卡采样包含驱动与其他显存占用；进程 RAM 与整卡显存不能相加。原始条件与 JSON：[22 GiB／6 GiB／CPU 矩阵](bench/results/2026-10-16-256k-context-matrix/README.md)、[16 GiB 混合 + MTP 记录](bench/results/2026-10-16-16g-hybrid-mtp-prose/README.md)。另一次 [50K 输入、256 输出、三轮 API 测试](bench/results/2026-10-16-a3b-iq3s-combined-exact-r3/README.md)采用不同内容，不与上表合并计算。
 
 ## 安装与启动
 

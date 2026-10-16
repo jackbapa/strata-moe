@@ -1,0 +1,30 @@
+[
+  {
+    "allocation": "tiered",
+    "configured_context_tokens": 262144,
+    "input_tokens": 50000,
+    "output_tokens": 128,
+    "trials": 2,
+    "output_peak_tps": 100.56,
+    "output_median_tps": 100.2,
+    "ttft_min_s": 32.512,
+    "ttft_median_s": 32.6495,
+    "prefill_median_tps": 1531.9,
+    "gpu_peak_mib": 17063,
+    "sampled_sm_max_mhz": 1350.0
+  },
+  {
+    "allocation": "fixed",
+    "configured_context_tokens": 262144,
+    "input_tokens": 50000,
+    "output_tokens": 128,
+    "trials": 2,
+    "output_peak_tps": 84.7,
+    "output_median_tps": 84.46,
+    "ttft_min_s": 32.929,
+    "ttft_median_s": 33.074,
+    "prefill_median_tps": 1512.42,
+    "gpu_peak_mib": 20443,
+    "sampled_sm_max_mhz": 1350.0
+  }
+]
