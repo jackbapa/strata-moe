@@ -1,6 +1,6 @@
 """Install and start the independent Strata-Moe A3B engine.
 
-Only the selected IQ3_S target and, in full-GPU mode, its matching MTP file
+Only the selected IQ3_S target and, in full-GPU or hybrid mode, its matching MTP file
 are fetched. Model weights and build products stay in ignored local folders.
 """
 from __future__ import annotations
@@ -21,6 +21,19 @@ import a3b  # pinned model identities and SHA-256 checks live in one place
 MODEL = ROOT / "models/a3b/Qwen3.6-35B-A3B-UD-IQ3_S.gguf"
 MTP = ROOT / "models/a3b/mtp-Qwen3.6-35B-A3B-Q8_0.gguf"
 CONFIG = ROOT / "strata-moe.json"
+HYBRID_MTP_MIN_VRAM_MIB = 8192
+
+
+def auto_mode(vram_mib: int) -> str:
+    if vram_mib >= 20480:
+        return "full"
+    if vram_mib >= HYBRID_MTP_MIN_VRAM_MIB:
+        return "hybrid"
+    return "hybrid-no-mtp" if vram_mib >= 4096 else "cpu"
+
+
+def needs_mtp(mode: str) -> bool:
+    return mode in {"full", "hybrid"}
 
 
 def gpu_info(device: int) -> tuple[int, str]:
@@ -106,6 +119,15 @@ def config_for(mode: str, device: int, port: int, tokenizer: Path) -> dict:
                 "STRATA_A3B_DOWN_MODE": "1", "STRATA_A3B_Q6_REUSE_EXACT": "1", "STRATA_A3B_MTP_KV_ONLY": "1",
             }
     elif mode == "hybrid":
+        args += ["--ctx", "262144", "--batch", "2048", "--device", str(device),
+                 "--vram-mib", "0", "--cache-reserve-mib", "640",
+                 "--threads", str(min(16, max(1, (os.cpu_count() or 2) // 2))),
+                 "--kv-tiered", "--kv-tiered-f16-short", "--hybrid-experts", "--cpu-expert-pool",
+                 "--pcie-frac", "0.25", "--expert-staging-slots", "8", "--gpu-embedding",
+                 "--gpu-sampling", "--fused-moe", "--mtp-model", str(MTP), "--mtp-draft", "2",
+                 "--mtp-ubatch", "512", "--exact-verify", "--defer-mtp-catchup",
+                 "--native-attention-exact"]
+    elif mode == "hybrid-no-mtp":
         args += ["--ctx", "32768", "--batch", "512", "--device", str(device),
                  "--vram-mib", "0", "--cache-reserve-mib", "640"]
     elif mode == "6g":
@@ -130,7 +152,7 @@ def config_for(mode: str, device: int, port: int, tokenizer: Path) -> dict:
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--mode", choices=["auto", "full", "hybrid", "6g", "cpu"], default="auto")
+    p.add_argument("--mode", choices=["auto", "full", "hybrid", "hybrid-no-mtp", "6g", "cpu"], default="auto")
     p.add_argument("--device", type=int, default=None, help="NVIDIA GPU index; default 0")
     p.add_argument("--port", type=int, default=None)
     p.add_argument("--workers", type=int, default=8, help="model download workers")
@@ -147,6 +169,9 @@ def main() -> int:
             "6g" if "6144" in saved_args and "--vram-mib" in saved_args else
             "2g" if "2048" in saved_args and "--vram-mib" in saved_args else "hybrid"
         )
+        if saved_mode == "hybrid" and "--mtp-model" not in saved_args:
+            saved_mode = "hybrid-no-mtp"
+            print("Existing legacy hybrid config has no MTP; use --reconfigure to enable it.", flush=True)
         if a.mode != "auto" and a.mode != saved_mode:
             p.error(f"existing config uses {saved_mode}; add --reconfigure to switch modes")
         a.mode = saved_mode
@@ -166,19 +191,21 @@ def main() -> int:
     mode = a.mode
     if mode == "auto":
         # Keep the bounded 6 GiB profile explicit until measured on a physical
-        # card of that size. Auto keeps the existing 4–20 GiB hybrid choice.
-        mode = "full" if vram >= 20480 else "hybrid" if vram >= 4096 else "cpu"
+        # card of that size. Below the hybrid+MTP floor, retain the old path.
+        mode = auto_mode(vram)
     if mode != "cpu" and not vram:
         p.error("NVIDIA GPU not found; use --mode cpu or install a working NVIDIA driver")
     if mode == "full" and vram < 20480:
         p.error("full mode needs at least 20 GiB of detected VRAM; use --mode hybrid")
+    if mode == "hybrid" and vram < HYBRID_MTP_MIN_VRAM_MIB:
+        p.error("hybrid+MTP needs at least 8 GiB of detected VRAM; use --mode hybrid-no-mtp")
     if mode == "6g" and vram < 6144:
         p.error("6g mode needs at least 6 GiB of detected VRAM; use --mode cpu")
     print(f"Strata-Moe mode={mode}, GPU={a.device}, detected VRAM={vram} MiB, CUDA arch={arch or 'none'}", flush=True)
     if mode == "full" and a.device != 0:
         print("Strata grouped IQ expert kernel currently supports GPU 0 only; this device uses the GGML expert path.", flush=True)
     print("Target model: Unsloth Qwen3.6-35B-A3B UD-IQ3_S (13.68 GB)", flush=True)
-    if mode == "full":
+    if needs_mtp(mode):
         print("MTP model: ggml-org matching Q8_0 (1.99 GB)", flush=True)
     if a.dry_run:
         print("Dry run: no dependencies, weights, build, config or server changed")
@@ -220,7 +247,7 @@ def main() -> int:
                           repo=a3b.MODEL_REPO, revision=a3b.MODEL_REVISION,
                           size=a3b.QUANTS["IQ3_S"][1], sha256=a3b.QUANTS["IQ3_S"][2]):
         run(sys.executable, str(ROOT / "tools/a3b.py"), "download", "--quant", "IQ3_S", "--workers", str(a.workers), env=env)
-    if mode == "full" and not verified_model(MTP, MTP.parent / "mtp-provenance.json",
+    if needs_mtp(mode) and not verified_model(MTP, MTP.parent / "mtp-provenance.json",
                                               repo=a3b.MTP_REPO, revision=a3b.MTP_REVISION,
                                               size=a3b.MTP_QUANTS["Q8_0"][1], sha256=a3b.MTP_QUANTS["Q8_0"][2]):
         run(sys.executable, str(ROOT / "tools/a3b.py"), "download", "--mtp", "--workers", str(a.workers), env=env)

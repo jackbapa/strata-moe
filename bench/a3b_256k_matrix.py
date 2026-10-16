@@ -8,6 +8,7 @@ every completed trial.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -23,6 +24,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 from strata_tokenizer import Tokenizer
 
 MODEL = ROOT / "models/a3b/Qwen3.6-35B-A3B-UD-IQ3_S.gguf"
+MTP = ROOT / "models/a3b/mtp-Qwen3.6-35B-A3B-Q8_0.gguf"
 PROMPT = "Explain mixture of experts briefly."
 SNAPSHOT = ROOT / "bench/results/2026-10-16-a3b-iq3s-k2-k3-ab/selected.snapshot.json"
 
@@ -44,6 +46,16 @@ def command(mode: str) -> tuple[list[str], dict[str, str], int | None]:
         return [str(ROOT / "build-a3b/bin/strata-moe.exe"), "--serve", *cfg["args"]], {
             **os.environ, **cfg["env"], "STRATA_A3B_MTP_PROPOSAL_TRACE": "0",
         }, 0
+    if mode in {"16g-hybrid-mtp", "16g-hybrid-no-mtp"}:
+        args = [str(ROOT / "build-a3b/bin/strata-moe.exe"), "--serve", "--model", str(MODEL),
+                "--ctx", "262144", "--batch", "2048", "--device", "0", "--vram-mib", "16384",
+                "--cache-reserve-mib", "640", "--threads", "16", "--kv-tiered", "--kv-tiered-f16-short",
+                "--hybrid-experts", "--cpu-expert-pool", "--pcie-frac", "0.25",
+                "--expert-staging-slots", "8", "--gpu-embedding", "--gpu-sampling", "--fused-moe"]
+        if mode == "16g-hybrid-mtp":
+            args += ["--mtp-model", str(MTP), "--mtp-draft", "2", "--mtp-ubatch", "512",
+                     "--exact-verify", "--defer-mtp-catchup", "--native-attention-exact"]
+        return args, os.environ.copy(), 0
     if mode == "2g":
         return [str(ROOT / "build-a3b/bin/strata-moe.exe"), "--serve", "--model", str(MODEL),
                 "--ctx", "262144", "--batch", "32", "--device", "1", "--vram-mib", "2048",
@@ -88,6 +100,7 @@ def trial(mode: str, ids: list[int], output_tokens: int, number: int, folder: Pa
     sampler.start()
     ready = sent = first = None
     count = 0
+    output_ids: list[int] = []
     done = ""
     try:
         assert proc.stdin and proc.stdout
@@ -99,6 +112,7 @@ def trial(mode: str, ids: list[int], output_tokens: int, number: int, folder: Pa
                 sent = time.perf_counter()
             elif line.startswith("T "):
                 count += 1
+                output_ids.append(int(line.split()[1]))
                 if first is None:
                     first = time.perf_counter()
             elif line.startswith("DONE "):
@@ -118,11 +132,14 @@ def trial(mode: str, ids: list[int], output_tokens: int, number: int, folder: Pa
         if proc.returncode != 0 or not done or first is None or sent is None or ready is None:
             raise RuntimeError(f"incomplete: rc={proc.returncode} done={done!r}; {''.join(stderr)[-1000:]}")
         fields = done.split()
+        if count != int(fields[1]):
+            raise RuntimeError(f"token line count {count} differs from DONE {fields[1]}")
         prompt_ms, decode_ms = float(fields[3]), float(fields[4])
         result = {
             "mode": mode, "trial": number, "configured_context_tokens": 262144,
             "input_tokens": len(ids), "requested_output_tokens": output_tokens,
             "actual_output_tokens": int(fields[1]), "observed_token_lines": count,
+            "output_ids_sha256": hashlib.sha256(",".join(map(str, output_ids)).encode("ascii")).hexdigest(),
             "startup_to_ready_s": round(ready - started, 3),
             "request_to_first_model_token_s": round(first - sent, 3),
             "engine_prefill_tokens_per_s": round(len(ids) / (prompt_ms / 1000), 2),
@@ -144,24 +161,37 @@ def trial(mode: str, ids: list[int], output_tokens: int, number: int, folder: Pa
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=["cpu", "2g", "6g", "full"], required=True)
+    parser.add_argument("--mode", choices=["cpu", "2g", "6g", "full", "16g-hybrid-mtp", "16g-hybrid-no-mtp"], required=True)
     parser.add_argument("--lengths", nargs="+", type=int, default=[7, 1024, 8192, 32768])
     parser.add_argument("--output", type=int, default=128)
     parser.add_argument("--trials", type=int, default=1)
     parser.add_argument("--folder", type=Path, default=ROOT / "bench/results/2026-10-16-256k-context-matrix")
+    parser.add_argument("--input-text", type=Path,
+                        help="use tokens from a UTF-8 text file instead of the repeated short prompt")
     options = parser.parse_args()
     options.folder.mkdir(parents=True, exist_ok=True)
-    base = Tokenizer.from_gguf(MODEL).encode(PROMPT, parse_special=False)
+    source = options.input_text.read_text(encoding="utf-8") if options.input_text else PROMPT
+    base = Tokenizer.from_gguf(MODEL).encode(source, parse_special=False)
+    if not base:
+        parser.error("input text contains no tokens")
     results_path = options.folder / f"{options.mode}.json"
     results = json.loads(results_path.read_text(encoding="utf-8")) if results_path.exists() else []
     for length in options.lengths:
         if length < 1 or length + options.output > 262144:
             parser.error("input and requested output must fit configured 256K context")
         ids = (base * ((length + len(base) - 1) // len(base)))[:length]
+        input_hash = hashlib.sha256(",".join(map(str, ids)).encode("ascii")).hexdigest()
         for number in range(1, options.trials + 1):
-            if any(row["input_tokens"] == length and row["trial"] == number for row in results):
+            prior = next((row for row in results if row["input_tokens"] == length and row["trial"] == number), None)
+            if prior and (prior["requested_output_tokens"] != options.output or
+                          prior.get("input_ids_sha256") not in (None, input_hash) or
+                          (options.input_text and not prior.get("input_ids_sha256"))):
+                parser.error(f"{results_path} has a different input/output for {length} tokens, trial {number}; use --folder")
+            if prior:
                 continue
             result = trial(options.mode, ids, options.output, number, options.folder)
+            result["input_source"] = str(options.input_text) if options.input_text else "repeated short prompt"
+            result["input_ids_sha256"] = input_hash
             results.append(result)
             results_path.write_text(json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             print(json.dumps(result, ensure_ascii=False), flush=True)

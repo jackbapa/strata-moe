@@ -7,10 +7,10 @@ echo.
 echo  strata-moe setup
 echo  First run: Python environment, A3B engine build, verified IQ3_S model download.
 echo  Missing C++ build tools or CUDA toolkit are offered through winget.
-echo  Full-GPU mode also downloads the matching MTP model.
+echo  Full-GPU and hybrid modes also download the matching MTP model.
 echo  Later: double-click START-HERE.bat to reuse everything and open the local web app.
-echo  Options: --no-start installs only; --mode cpu, 6g, hybrid, or full selects a profile.
-echo  Default mode is auto: 20 GiB+ full; 4 to under 20 GiB hybrid; otherwise CPU.
+echo  Options: --no-start installs only; --mode cpu, 6g, hybrid-no-mtp, hybrid, or full.
+echo  Default auto: 20 GiB+ full; 8-20 GiB hybrid+MTP; 4-8 GiB hybrid-no-mtp; otherwise CPU.
 echo  To switch an existing profile, stop the server and add --reconfigure.
 echo  Default web: http://127.0.0.1:8096/  API: http://127.0.0.1:8096/v1
 echo  Close this window or press Ctrl+C to stop the server. See README.md for details.

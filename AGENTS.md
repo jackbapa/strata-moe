@@ -4,7 +4,7 @@ Strata-Moe is a local Qwen3.5/3.6-35B-A3B MoE inference project derived from
 [Strata](https://github.com/Niko1221/Strata). Its A3B engine is in `a3b/`, with
 the pinned llama.cpp/ggml source and A3B patches fetched at build time. The
 Python API and web app are in `serve/`. The release path uses the Unsloth
-Qwen3.6-35B-A3B UD-IQ3_S GGUF and, in the full-GPU profile, the matching
+Qwen3.6-35B-A3B UD-IQ3_S GGUF and, in the full-GPU and hybrid profiles, the matching
 ggml-org Q8_0 MTP file. Other old Strata models are not part of the default install.
 
 ## Installing for a user
@@ -13,7 +13,7 @@ Read [README.md](README.md). On Windows run `SETUP.bat`; it creates `.venv`,
 installs pinned Python/CMake/Ninja dependencies, compiles the CUDA or CPU A3B
 engine, downloads only the selected model files with SHA-256 checks, exports the
 tokenizer, and starts the local server. `START-HERE.bat` is the later-run entry.
-Use `--mode cpu`, `--mode 6g`, `--mode hybrid`, or `--mode full` when explicitly
+Use `--mode cpu`, `--mode 6g`, `--mode hybrid-no-mtp`, `--mode hybrid`, or `--mode full` when explicitly
 selecting a profile. Use `--reconfigure` to replace a previously generated
 `strata-moe.json`. Never expose the server beyond `127.0.0.1` without an API key.
 
