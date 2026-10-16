@@ -1,0 +1,27 @@
+{
+  "original_config_sha256": "81467e45d11d366d9ff32af7a6b1043c877fa283e5b429eb93db12470929785e",
+  "binary_sha256": "a0a3deaec132200616e7db2c0a18e3cfd719575e660ce6a7d29af58f6c4d9c04",
+  "order": [
+    "selected",
+    "k2-sync",
+    "k2-async",
+    "k2-async",
+    "k2-sync",
+    "selected"
+  ],
+  "inherited_experiment_keys_removed": [],
+  "configs": {
+    "selected": {
+      "path": "G:\\Strata-Moe\\bench\\results\\2026-10-15-a3b-mtp-async-input\\50k-256\\configs\\selected.json",
+      "sha256": "b2785036f11e49ce0cab3fb00c6c45570a0008cbe59ace408deebf512d2db1a0"
+    },
+    "k2-sync": {
+      "path": "G:\\Strata-Moe\\bench\\results\\2026-10-15-a3b-mtp-async-input\\50k-256\\configs\\k2-sync.json",
+      "sha256": "4022574d7507ad3c6b35f9a784fd601ab2bf9a4342033f7d23c76b07c060787f"
+    },
+    "k2-async": {
+      "path": "G:\\Strata-Moe\\bench\\results\\2026-10-15-a3b-mtp-async-input\\50k-256\\configs\\k2-async.json",
+      "sha256": "a146460f606ebadd75e9910a31ba381f7a4852e039f0f3cae85c8ed890dd7dae"
+    }
+  }
+}

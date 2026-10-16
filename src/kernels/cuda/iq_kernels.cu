@@ -612,7 +612,7 @@ template<> struct Fmt<8> { static constexpr int qk = 32, ipb = QI8_0 / VDR_Q8_0,
 #else
 #define STRATA_GU_FMTS(X) X(16) X(17) X(18) X(21) X(22) X(23) X(29) X(42) X(12) X(13) X(6) X(2) X(3) X(8)
 #endif
-#define STRATA_D_FMTS(X) X(20) X(23) X(42) X(7) X(6) X(2) X(3) X(8)
+#define STRATA_D_FMTS(X) X(20) X(21) X(23) X(42) X(7) X(6) X(2) X(3) X(8)
 #define STRATA_MMVQ_FMTS(X) X(16) X(17) X(18) X(20) X(21) X(22) X(23) X(29) X(42) X(12) X(13) X(7) X(6) X(2) X(3) X(8)
 
 __device__ __forceinline__ float warp_sum(float v) {
@@ -986,6 +986,30 @@ __device__ __forceinline__ void row_dot_multi(const uint8_t* row, const block_q8
         if (EXACT_N || c < n) s[c] = warp_sum(s[c]);
 }
 
+// A3B IQ3_S down has 512 inputs: precisely 16 IQ3_S dot parts per row.  Use both halves of a warp for
+// independent rows.  In row_dot_multi lanes 16..31 start at zero; omitting that first shuffle-by-16 leaves
+// the same addition tree for lanes 0..15, including the per-token sum order.
+template<int NC>
+__device__ __forceinline__ void row_dot_iq3s_16_sub16(const uint8_t* row, const block_q8_1* x,
+                                                      const int (&off)[NC], int n, int t, float (&s)[NC]) {
+    using F = Fmt<21>;
+    using S = Split<21>;
+    const int kbx = t / F::ipb, iqs = F::step * (t % F::ipb);
+    const typename S::W w = S::load(row, kbx, iqs);
+#pragma unroll
+    for (int c = 0; c < NC; ++c) {
+        s[c] = 0.0f;
+        if (c < n) s[c] += S::apply(w, x + off[c] + kbx * (F::qk / 32), iqs);
+    }
+#pragma unroll
+    for (int c = 0; c < NC; ++c) {
+        if (c < n) {
+#pragma unroll
+            for (int o = 8; o > 0; o >>= 1) s[c] += __shfl_xor_sync(0xffffffffu, s[c], o);
+        }
+    }
+}
+
 // 8-lane sub-warp row dot for K = nb * ipb == 40 (TD == 20, IQ4_NL with n_ff == 640):
 // 4 rows per warp (32 rows per 256-thread block), 100% active lanes, bitwise identical addition tree to row_dot_multi.
 template<int TY, int NC, bool EXACT_N = false>
@@ -1202,6 +1226,12 @@ __global__ void __launch_bounds__(128) mmvq_multi_kernel(const uint8_t* __restri
 // ---------------------------------------------------------------- grouped native experts
 constexpr int GU_ROWS = 8;     // rows per block (one warp each)
 
+__device__ __forceinline__ const uint8_t* native_group_role(
+        const unsigned long long* grp_ptr, int g, int role, const NativeExpertLayout& L) {
+    if (L.split_storage) return (const uint8_t*) grp_ptr[3 * g + role];
+    return (const uint8_t*) grp_ptr[g] + (role == 1 ? L.up_off : role == 2 ? L.down_off : 0);
+}
+
 // Group g is computed by block row g % gridDim.y: rows y, y + gridDim.y, ... < *n_groups.  The callers size the
 // launch for the most groups a call can have (cap: every entry its own expert), but the count is only known on the
 // device, and a verify window's PCIe call usually has no group at all: with one block row per possible group every
@@ -1220,11 +1250,11 @@ __global__ void __launch_bounds__(256) native_gu_kernel(const unsigned long long
     if (row >= 2 * L.n_ff) return;
     const bool is_up = row >= L.n_ff;
     const int r = is_up ? row - (int) L.n_ff : row;
-    const size_t off = (is_up ? L.up_off : 0) + (size_t) r * L.gu_row;
+    const size_t off = (size_t) r * L.gu_row;
     const int nb = (int) (L.n_embd / Fmt<TG>::qk), xb = (int) (L.n_embd / 32);
     const int ng = *n_groups;
     for (int g = blockIdx.y; g < ng; g += gridDim.y) {
-        const uint8_t* wr = (const uint8_t*) grp_ptr[g] + off;
+        const uint8_t* wr = native_group_role(grp_ptr, g, is_up ? 1 : 0, L) + off;
         const int e0 = grp_start[g], e1 = grp_start[g + 1];
         for (int e = e0; e < e1; ++e) {
             const float s = row_dot<TG>(wr, xq + (size_t) ent_tok[e] * xb, nb, lane);
@@ -1257,10 +1287,10 @@ __global__ void __launch_bounds__(256) native_gu_multi_kernel(const unsigned lon
             if (row >= 2 * L.n_ff) return;
             const bool is_up = row >= L.n_ff;
             const int r = is_up ? row - (int) L.n_ff : row;
-            const size_t w_off = (is_up ? L.up_off : 0) + (size_t) r * L.gu_row;
+            const size_t w_off = (size_t) r * L.gu_row;
             float* dst = is_up ? up : gate;
             for (int g = blockIdx.y; g < ng; g += gridDim.y) {
-                const uint8_t* wr = (const uint8_t*) grp_ptr[g] + w_off;
+                const uint8_t* wr = native_group_role(grp_ptr, g, is_up ? 1 : 0, L) + w_off;
                 const int e0 = grp_start[g], e1 = grp_start[g + 1];
                 for (int e = e0; e < e1; e += GRP_NC) {
                     const int n = min(GRP_NC, e1 - e);
@@ -1295,10 +1325,10 @@ __global__ void __launch_bounds__(256) native_gu_multi_kernel(const unsigned lon
     if (row >= 2 * L.n_ff) return;
     const bool is_up = row >= L.n_ff;
     const int r = is_up ? row - (int) L.n_ff : row;
-    const size_t w_off = (is_up ? L.up_off : 0) + (size_t) r * L.gu_row;
+    const size_t w_off = (size_t) r * L.gu_row;
     float* dst = is_up ? up : gate;
     for (int g = blockIdx.y; g < ng; g += gridDim.y) {   // the group stride, as native_gu_kernel
-        const uint8_t* wr = (const uint8_t*) grp_ptr[g] + w_off;
+        const uint8_t* wr = native_group_role(grp_ptr, g, is_up ? 1 : 0, L) + w_off;
         const int e0 = grp_start[g], e1 = grp_start[g + 1];
         for (int e = e0; e < e1; e += GRP_NC) {
             const int n = min(GRP_NC, e1 - e);
@@ -1345,11 +1375,11 @@ __global__ void __launch_bounds__(256) native_down_kernel(const unsigned long lo
     const int warp = threadIdx.x >> 5, lane = threadIdx.x & 31;
     const int r = blockIdx.x * 8 + warp;
     if (r >= L.n_embd) return;
-    const size_t off = L.down_off + (size_t) r * L.d_row;
+    const size_t off = (size_t) r * L.d_row;
     const int nb = (int) (L.n_ff / Fmt<TD>::qk), hb = (int) (L.n_ff / 32);
     const int ng = *n_groups;
     for (int g = blockIdx.y; g < ng; g += gridDim.y) {   // as native_gu_kernel
-        const uint8_t* wr = (const uint8_t*) grp_ptr[g] + off;
+        const uint8_t* wr = native_group_role(grp_ptr, g, 2, L) + off;
         const int e0 = grp_start[g], e1 = grp_start[g + 1];
         for (int e = e0; e < e1; ++e) {
             const float s = row_dot<TD>(wr, hq + (size_t) e * hb, nb, lane);
@@ -1375,10 +1405,10 @@ __global__ void __launch_bounds__(256) native_down_multi_kernel(const unsigned l
             const int r = blockIdx.x * 32 + (threadIdx.x >> 3);
             const int t = threadIdx.x & 7;
             const bool valid_r = (r < L.n_embd);
-            const size_t w_off = L.down_off + (size_t) (valid_r ? r : 0) * L.d_row;
+            const size_t w_off = (size_t) (valid_r ? r : 0) * L.d_row;
             const block_q8_1* s_hq = reinterpret_cast<const block_q8_1*>(s_hq_buf);
             for (int g = blockIdx.y; g < ng; g += gridDim.y) {
-                const uint8_t* wr = (const uint8_t*) grp_ptr[g] + w_off;
+                const uint8_t* wr = native_group_role(grp_ptr, g, 2, L) + w_off;
                 const int e0 = grp_start[g], e1 = grp_start[g + 1];
                 for (int e = e0; e < e1; e += GRP_NC) {
                     const int n = min(GRP_NC, e1 - e);
@@ -1419,10 +1449,10 @@ __global__ void __launch_bounds__(256) native_down_multi_kernel(const unsigned l
             const int r = blockIdx.x * 16 + (threadIdx.x >> 4);
             const int t = threadIdx.x & 15;
             const bool valid_r = (r < L.n_embd);
-            const size_t w_off = L.down_off + (size_t) (valid_r ? r : 0) * L.d_row;
+            const size_t w_off = (size_t) (valid_r ? r : 0) * L.d_row;
             const block_q8_1* s_hq = reinterpret_cast<const block_q8_1*>(s_hq_buf);
             for (int g = blockIdx.y; g < ng; g += gridDim.y) {
-                const uint8_t* wr = (const uint8_t*) grp_ptr[g] + w_off;
+                const uint8_t* wr = native_group_role(grp_ptr, g, 2, L) + w_off;
                 const int e0 = grp_start[g], e1 = grp_start[g + 1];
                 for (int e = e0; e < e1; e += GRP_NC) {
                     const int n = min(GRP_NC, e1 - e);
@@ -1462,9 +1492,9 @@ __global__ void __launch_bounds__(256) native_down_multi_kernel(const unsigned l
     const int warp = threadIdx.x >> 5, lane = threadIdx.x & 31;
     const int r = blockIdx.x * 8 + warp;
     const bool valid_r = (r < L.n_embd);
-    const size_t w_off = L.down_off + (size_t) (valid_r ? r : 0) * L.d_row;
+    const size_t w_off = (size_t) (valid_r ? r : 0) * L.d_row;
     for (int g = blockIdx.y; g < ng; g += gridDim.y) {   // the group stride, as native_gu_kernel
-        const uint8_t* wr = (const uint8_t*) grp_ptr[g] + w_off;
+        const uint8_t* wr = native_group_role(grp_ptr, g, 2, L) + w_off;
         const int e0 = grp_start[g], e1 = grp_start[g + 1];
         if (hb == 20) {
             const block_q8_1* s_hq = reinterpret_cast<const block_q8_1*>(s_hq_buf);
@@ -1510,6 +1540,35 @@ __global__ void __launch_bounds__(256) native_down_multi_kernel(const unsigned l
                 for (int c = 0; c < GRP_NC; ++c)
                     if (c < n && lane == c) out[(size_t) ent_dst[e + c] * L.n_embd + r] = s[c];
             }
+        }
+    }
+}
+
+// IQ3_S down for A3B's 2048/512 experts.  Reuse the grouped device-side routing, but place two
+// independent output rows in each warp because each row has only 16 dot parts.  This is the same
+// sub-warp idea as the original Strata Q2_0 down path; the caller opts in only for split A3B tensors.
+__global__ void __launch_bounds__(256) native_down_a3b_iq3s_sub16_kernel(
+        const unsigned long long* __restrict__ grp_ptr, const int32_t* __restrict__ grp_start,
+        const int32_t* __restrict__ n_groups, const int32_t* __restrict__ ent_dst,
+        const block_q8_1* __restrict__ hq, NativeExpertLayout L, float* __restrict__ out) {
+    const int ng = *n_groups;
+    if (blockIdx.y >= ng) return;
+    const int r = blockIdx.x * 16 + (threadIdx.x >> 4);
+    const int t = threadIdx.x & 15;
+    if (r >= L.n_embd) return;
+    for (int g = blockIdx.y; g < ng; g += gridDim.y) {
+        const uint8_t* wr = native_group_role(grp_ptr, g, 2, L) + (size_t) r * L.d_row;
+        const int e0 = grp_start[g], e1 = grp_start[g + 1];
+        for (int e = e0; e < e1; e += GRP_NC) {
+            const int n = min(GRP_NC, e1 - e);
+            int off[GRP_NC];
+#pragma unroll
+            for (int c = 0; c < GRP_NC; ++c) off[c] = (e + min(c, n - 1)) * 16;
+            float s[GRP_NC];
+            row_dot_iq3s_16_sub16(wr, hq, off, n, t, s);
+#pragma unroll
+            for (int c = 0; c < GRP_NC; ++c)
+                if (c < n && t == c) out[(size_t) ent_dst[e + c] * L.n_embd + r] = s[c];
         }
     }
 }
@@ -3248,7 +3307,7 @@ __global__ void __launch_bounds__(256) native_gu_lds_kernel(const unsigned long 
 
 // ---- 7 (down): the group's q8_1 h rows in LDS, the tokens inside the k loop, the R2 row pairs of mode 2 -
 // the same per-(row, entry) sums in the same order: bitwise the mode-2 output.
-template<int TD>
+template<int TD, bool A3B_SPLIT = false>
 __global__ void __launch_bounds__(256) native_down_lds_kernel(const unsigned long long* __restrict__ grp_ptr,
                                                               const int32_t* __restrict__ grp_start,
                                                               const int32_t* __restrict__ n_groups,
@@ -3261,6 +3320,7 @@ __global__ void __launch_bounds__(256) native_down_lds_kernel(const unsigned lon
     if (g >= *n_groups) return;
     const int tid = threadIdx.x, lane = tid & 31, warp = tid >> 5;
     const uint8_t* blob = (const uint8_t*) grp_ptr[g];
+    const uint8_t* down = A3B_SPLIT ? (const uint8_t*) grp_ptr[3 * g + 2] : blob + L.down_off;
     const int nb = (int) (L.n_ff / F::qk), hb = (int) (L.n_ff / 32);
     const int e0 = grp_start[g], e1 = grp_start[g + 1];
     const int nrow = (int) L.n_embd;
@@ -3277,8 +3337,8 @@ __global__ void __launch_bounds__(256) native_down_lds_kernel(const unsigned lon
             const int r0 = blockIdx.x * LDS_RB + p * 16 + warp, r1 = r0 + 8;
             if (r0 >= nrow) break;
             const bool two = r1 < nrow;
-            const uint8_t* w0 = blob + L.down_off + (size_t) r0 * L.d_row;
-            const uint8_t* w1 = blob + L.down_off + (size_t) (two ? r1 : r0) * L.d_row;
+            const uint8_t* w0 = down + (size_t) r0 * L.d_row;
+            const uint8_t* w1 = down + (size_t) (two ? r1 : r0) * L.d_row;
             auto pass = [&](auto ntc) {
                 constexpr int NTC = decltype(ntc)::value;
                 float s0[NTC], s1[NTC];
@@ -3341,7 +3401,9 @@ __global__ void __launch_bounds__(256) native_gu_fused_kernel(const unsigned lon
     const int r0 = blockIdx.x * 32;
     const block_q8_1* sx = (const block_q8_1*) sx_raw;
     auto wrow = [&](int i) -> const uint8_t* {   // i < 32: gate row r0 + i, else up row r0 + i - 32
-        return blob + (i < 32 ? (size_t) 0 : L.up_off) + (size_t) (r0 + (i & 31)) * L.gu_row;
+        const uint8_t* role = L.split_storage ? (const uint8_t*) grp_ptr[3 * g + (i >= 32)] :
+                                                 blob + (i < 32 ? (size_t) 0 : L.up_off);
+        return role + (size_t) (r0 + (i & 31)) * L.gu_row;
     };
     for (int c0 = e0; c0 < e1; c0 += LDS_NT) {
         const int cn = min(LDS_NT, e1 - c0);
@@ -3462,7 +3524,7 @@ void native_expert_grouped(const NativeExpertLayout& L, const unsigned long long
     block_q8_1* hq = (block_q8_1*) ((uint8_t*) scratch + 3 * fa);
     const auto* X = (const block_q8_1*) x_q8_1;
     static const bool v2 = [] { const char* v = std::getenv("STRATA_EXPERT_V2"); return v && v[0] == '1'; }();
-    if (v2 && L.gu_type == 21 && L.d_type == 20 && L.n_embd == 2560 && L.n_ff == 640) {   // S26: see s26_gu_l_kernel
+    if (!L.split_storage && v2 && L.gu_type == 21 && L.d_type == 20 && L.n_embd == 2560 && L.n_ff == 640) {   // S26: see s26_gu_l_kernel
         // S26 STRATA_TSUM=1: the sums as one transposed butterfly per warp (s26_tsum.cuh; bitwise the same values)
         static const bool ts = [] { const char* v = std::getenv("STRATA_TSUM"); return v && v[0] == '1'; }();
         // (+ down rows' items spread evenly over the lanes, one load group: bitwise, harness 1.09-1.12x vs 1.03-1.06x;
@@ -3476,7 +3538,7 @@ void native_expert_grouped(const NativeExpertLayout& L, const unsigned long long
     }
     // stream B: UD-Q4_K_XL's Q4_K / Q5_K gate/up and Q5_1 / Q8_0 down (see S27 above)
     static const bool v2k = [] { const char* v = std::getenv("STRATA_EXPERT_V2K"); return v && v[0] == '1'; }();
-    if (v2k && (L.gu_type == 12 || L.gu_type == 13) && (L.d_type == 7 || L.d_type == 8) && L.n_embd == 2560 &&
+    if (!L.split_storage && v2k && (L.gu_type == 12 || L.gu_type == 13) && (L.d_type == 7 || L.d_type == 8) && L.n_embd == 2560 &&
         L.n_ff == 640) {
         static const bool ts = [] { const char* v = std::getenv("STRATA_TSUM"); return v && v[0] == '1'; }();
         const long long nh = (long long) cap_entries * L.n_ff;
@@ -3499,7 +3561,14 @@ void native_expert_grouped(const NativeExpertLayout& L, const unsigned long long
 #else
     // CUDA: the AMD layouts launch a block row per possible group, so a call that strides (a verify window's PCIe
     // call, grid_groups 1..cap) keeps the CUDA layout: V100, 0 groups 11.3 vs 6.5 us, 1 group of 2 29.6 vs 21.3
-    const int em0 = (grid_groups > 0 && grid_groups < cap_groups) ? 0 : exp_mode();
+    // A3B stores gate/up/down as three GGUF tensors.  The original fused
+    // gate/up + SwiGLU + q8_1 path can read those pointers directly.  Keep it
+    // opt-in until it passes both split-layout parity and an end-to-end run.
+    static const bool a3b_fused_gu = env_on("STRATA_A3B_FUSED_GU");
+    const bool a3b_fused = a3b_fused_gu && L.split_storage && L.gu_type == 22 &&
+                           L.n_embd == 2048 && L.n_ff == 512;
+    const int em0 = a3b_fused ? 8 :
+                    (L.split_storage || (grid_groups > 0 && grid_groups < cap_groups)) ? 0 : exp_mode();
 #endif
 #endif
 #if STRATA_EXP_LAYOUTS
@@ -3580,6 +3649,33 @@ void native_expert_grouped(const NativeExpertLayout& L, const unsigned long long
     check("native_expert_grouped/swiglu");
     }
     if (g_exp_phase == 1) return;
+#if STRATA_EXP_LAYOUTS
+    // Two A3B-only alternatives to the generic grouped IQ3_S down pass.  Mode 1 fills both half-warps;
+    // mode 2 reuses Strata's shared-activation down kernel with A3B's separate down tensor pointer.
+    // Neither changes the default path or the original packed Strata model.
+    static const int a3b_down_mode = [] {
+        const char* v = std::getenv("STRATA_A3B_DOWN_MODE");
+        return v ? std::atoi(v) : 0;
+    }();
+    if (a3b_down_mode && L.split_storage && L.gu_type == 22 && L.d_type == 21 &&
+        L.n_embd == 2048 && L.n_ff == 512) {
+        if (a3b_down_mode == 1) {
+            const dim3 gl((unsigned) (L.n_embd / 16), (unsigned) gy);
+            native_down_a3b_iq3s_sub16_kernel<<<gl, 256, 0, s>>>(
+                    grp_ptr, grp_start, n_groups, ent_dst, hq, L, out);
+            check("native_expert_grouped/A3B IQ3_S down sub16");
+            return;
+        }
+        if (a3b_down_mode == 2) {
+            const dim3 gl((unsigned) (L.n_embd / LDS_RB), (unsigned) cap_groups);
+            const size_t sh = (size_t) LDS_NT * (size_t) (L.n_ff / 32) * sizeof(block_q8_1);
+            native_down_lds_kernel<21, true><<<gl, 256, sh, s>>>(
+                    grp_ptr, grp_start, n_groups, ent_dst, hq, L, out);
+            check("native_expert_grouped/A3B IQ3_S down LDS");
+            return;
+        }
+    }
+#endif
     const int d_rows = (!g_old_kernels && !g_no_sub16_gu && L.n_ff == 640) ? (L.d_type == 20 ? 32 : (L.d_type == 42 ? 16 : 8)) : 8;
     const dim3 gd((unsigned) ((L.n_embd + d_rows - 1) / d_rows), (unsigned) gy);
 #if STRATA_EXP_LAYOUTS

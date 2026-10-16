@@ -1,0 +1,26 @@
+[
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\speculative.hpp",
+    "Hash": "F446BED81304755A54740CEA461051A0847B6B47BA99B0302862457D95CED870"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\speculative.cpp",
+    "Hash": "005F1739B6B1859A54316A4549377BBF3AC715D20ED5249573FE00FEBF88E1F0"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\speculative_test.cpp",
+    "Hash": "8BAF4490D38C41C5ACB2894E6D2C970116E6CF62F8776A724DE7E1FC0569CB88"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\backend.hpp",
+    "Hash": "92E392C2A020387BD278F2778962050B5F33D386B99356E30AC9112B4DF16343"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\backend.cpp",
+    "Hash": "0C9812D13294FB4F5C8AB72466E64508F2D18ABA8C009C72A4DBADF32D167651"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe-speculative-test.exe",
+    "Hash": "D5B76A0B02ABD1CBC706A23C406EF31FD261CE30247E423E5F7F9F63BE43D877"
+  }
+]

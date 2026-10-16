@@ -1,0 +1,90 @@
+[
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\speculative.cpp",
+    "Hash": "24A8843E9C313547634EFEB23A950527DF5B7874D7E66C08CC23C92E3F49FCA6"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\speculative.hpp",
+    "Hash": "CCF2B98C30FBF6FE6EC3BB0464C7D52E524608D6C861CB0D462AEC440543E6C5"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\shared_weights.cpp",
+    "Hash": "D11963379168AF6A1A420100E711663346F1C478C4EA1C70A1A05AF93A4A9064"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\shared_weights.hpp",
+    "Hash": "32CD0C47C08AF4F11257A207ED87221DC689F4C722D714F2E01D195B852B11E6"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\speculative_test.cpp",
+    "Hash": "92670733573112BDDEB20DDA174CD173181A8C858240EC73950B613B628E28F6"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\device_sampler_test.cpp",
+    "Hash": "135FA2924FE504B21B6745366E2D7AFFFFCB40B56A50916F2E74E5DDDAC4A7D0"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\backend.cpp",
+    "Hash": "0A887FD8F873302FC0604B24A2B496B845BF95B24878DF52609B073985F97C55"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\backend.hpp",
+    "Hash": "9E5B581BE387559D56C4E32FB0EC6089FC89A545AE94EEA8AD53C4BA3861C306"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\a3b\\patches\\llama-argmax-multi.patch",
+    "Hash": "7A5BD0CA8500D52BF4663D37706368F125195C157BDA9B88ACC3CE4C727DB7CB"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\third_party\\llama.cpp\\ggml\\src\\ggml-cuda\\argmax.cu",
+    "Hash": "101AB769A1711D2F10657868BB43C85ADD1EF9BB80F6AB4F3047F09A1621B84A"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\third_party\\llama.cpp\\ggml\\src\\ggml-cuda\\ggml-cuda.cu",
+    "Hash": "133F236EB8C8120386DC0FC48B0BBD797146B92898C39C5C32C9BFEC72D916ED"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\third_party\\llama.cpp\\src\\llama-graph.cpp",
+    "Hash": "2895CCDB4417CC2636F1ED2E99F3EEFF835B956E2470514E46B5197954138D40"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe-speculative-test.exe",
+    "Hash": "B77A8CF28F16011772C7F68702131556F806AC3E244AF5D27376DA2C4451533D"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe-device-sampler-test.exe",
+    "Hash": "E42E93CED5A9A9457CC7D7AECB58A31D835DB1A8C807A6F10E09B9522E7A04EC"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\bench\\results\\2026-10-14-a3b-native-mtp-validation\\native-attention-k1-mtp-class.log",
+    "Hash": "39DFBEA44FE07C69BF46A85E88F57BEC62024ED028EA43F491F563960FA238D2"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\bench\\results\\2026-10-14-a3b-native-mtp-validation\\native-attention-k2-mtp-class.log",
+    "Hash": "895C4B58633F81E026DC7EB9E5BDBA0D94CF71CA6AE111D9AA211B3CD9E8F0C0"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\bench\\results\\2026-10-14-a3b-native-mtp-validation\\native-attention-k3-mtp-class.log",
+    "Hash": "F8695CDD0F840158FC3B584396BD36290CDE399DF741193EB26233DDC4829E84"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\bench\\results\\2026-10-14-a3b-native-mtp-validation\\native-attention-dense-k4-mtp-class.log",
+    "Hash": "44F8BBC607B828F7282102D373E3F933B119B4CDA03C86C6A0B1A90EE7CB2DCA"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\bench\\results\\2026-10-14-a3b-native-mtp-validation\\native-attention-dense-k6-mtp-class.log",
+    "Hash": "A984E35C0A4BA5D46BBD9C0581C5F622E7B948BB71AF2BF0E098B1CB30932FDA"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\bench\\results\\2026-10-14-a3b-native-mtp-validation\\argmax-legacy-cuda.log",
+    "Hash": "312BAFEDD13CD5490BD85D0DF29B052DC6379381FF07C190E58AF497CC40CAEB"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\bench\\results\\2026-10-14-a3b-native-mtp-validation\\argmax-multi-cuda.log",
+    "Hash": "A7D0FDFA77FA3604E4F5341552C601D4BB56AE239E9853F64A61B1326C365EF7"
+  },
+  {
+    "Path": "G:\\Strata-Moe\\bench\\results\\2026-10-14-a3b-native-mtp-validation\\argmax-multi-direct-cuda.log",
+    "Hash": "A715C93A8C2B96D03614C9BAA8998A22496E7B67022600512E5C984BE4601E35"
+  }
+]

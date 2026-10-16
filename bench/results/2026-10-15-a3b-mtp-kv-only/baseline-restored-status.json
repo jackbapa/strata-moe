@@ -1,0 +1,61 @@
+{
+  "service": "strata",
+  "model": "qwen3.6-35b-a3b-ud-iq3_s",
+  "loaded": true,
+  "auto_load": true,
+  "structured_output": {
+    "formats": [
+      "json_object",
+      "json_schema"
+    ],
+    "method": "prompt_and_validate",
+    "constrained_decoding": false,
+    "stream_buffered": true
+  },
+  "engine": "strata-moe-a3b",
+  "started": 1792076136,
+  "uptime_s": 6,
+  "cache_max_tokens": 262144,
+  "context": {
+    "native": 262144,
+    "max_positions": 262144
+  },
+  "concurrency": {
+    "serving": 1,
+    "requested": 1
+  },
+  "dialects": [
+    "/v1/chat/completions",
+    "/v1/messages",
+    "/v1/responses"
+  ],
+  "vision": {
+    "enabled": false,
+    "available": false,
+    "error": null
+  },
+  "activity": {
+    "requests": 0,
+    "in_flight": 0,
+    "last_request_at": null
+  },
+  "last_timings": null,
+  "vram": {
+    "elastic": false
+  },
+  "machine": {
+    "at": 1792076143,
+    "gpu": {
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "used_mib": 17309.0,
+      "total_mib": 22528.0,
+      "util_pct": 6,
+      "temp_c": 53,
+      "power_w": 16.825
+    },
+    "ram": {
+      "used_gib": 24.3,
+      "total_gib": 127.9
+    }
+  }
+}

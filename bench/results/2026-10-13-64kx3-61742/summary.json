@@ -1,0 +1,81 @@
+{
+  "status": "passed",
+  "triple_wall_s": 116.91286119999995,
+  "triple_input_tokens": 196200,
+  "triple_output_tokens": 384,
+  "triple_output_wall_tok_s": 3.284497497183827,
+  "requests": [
+    {
+      "tag": "triple64k-A",
+      "input_tokens": 65400,
+      "cached_tokens": 0,
+      "output_tokens": 128,
+      "ttft_s": 36.1251186999998,
+      "total_s": 116.85049449999997,
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 65400,
+        "prompt_ms": 35711.2,
+        "prompt_per_token_ms": 0.546,
+        "prompt_per_second": 1831.4,
+        "predicted_n": 128,
+        "predicted_ms": 80297.7,
+        "predicted_per_token_ms": 627.326,
+        "predicted_per_second": 1.6,
+        "draft_n": 0,
+        "draft_n_accepted": 0
+      },
+      "error": null
+    },
+    {
+      "tag": "triple64k-B",
+      "input_tokens": 65400,
+      "cached_tokens": 0,
+      "output_tokens": 128,
+      "ttft_s": 113.38518969999996,
+      "total_s": 116.90613930000018,
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 65400,
+        "prompt_ms": 38836.2,
+        "prompt_per_token_ms": 0.594,
+        "prompt_per_second": 1684.0,
+        "predicted_n": 128,
+        "predicted_ms": 3141.6,
+        "predicted_per_token_ms": 24.544,
+        "predicted_per_second": 40.7,
+        "draft_n": 0,
+        "draft_n_accepted": 0
+      },
+      "error": null
+    },
+    {
+      "tag": "triple64k-C",
+      "input_tokens": 65400,
+      "cached_tokens": 0,
+      "output_tokens": 128,
+      "ttft_s": 74.08128459999989,
+      "total_s": 116.88126620000003,
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 65400,
+        "prompt_ms": 37406.5,
+        "prompt_per_token_ms": 0.572,
+        "prompt_per_second": 1748.4,
+        "predicted_n": 128,
+        "predicted_ms": 42438.5,
+        "predicted_per_token_ms": 331.551,
+        "predicted_per_second": 3.0,
+        "draft_n": 0,
+        "draft_n_accepted": 0
+      },
+      "error": null
+    }
+  ],
+  "min_available_ram_gib": 57.77311706542969,
+  "min_sampled_gpu_free_mib": 2004,
+  "max_sampled_temperature_c": 88,
+  "max_observed_running": 3,
+  "event_query_errors": 0,
+  "new_nvidia_events": 0
+}

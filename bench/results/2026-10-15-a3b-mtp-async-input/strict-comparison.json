@@ -1,0 +1,45 @@
+{
+  "arms": [
+    "off",
+    "forced",
+    "async"
+  ],
+  "binary_sha256": "02d535824cc05233f459179d97dafc7a96d57d3f154a380986ba965cb8cdb046",
+  "same_binary": true,
+  "states_per_arm": {
+    "off": 16,
+    "forced": 16,
+    "async": 16
+  },
+  "state_bytes_identical": true,
+  "proposal_lines_per_arm": {
+    "off": 29,
+    "forced": 29,
+    "async": 29
+  },
+  "proposals_identical": true,
+  "class_lines_per_arm": {
+    "off": 8,
+    "forced": 8,
+    "async": 8
+  },
+  "class_fields_identical": true,
+  "state_sha256": {
+    "limit-1.draft-seq0.bin": "7e20bc259edc160cd179c0c61e8f4966d4940a65a1d4e476485c924f5fd5ebdb",
+    "limit-1.target-seq0.bin": "503ab26b26f5f66b1e7070d4a0d2f84e68d91b26f46f15622042bf2c00f35c82",
+    "limit-16.draft-seq0.bin": "b4ca930808fa86bf5e06e80ff13e385f5ca911831c1ec5d6a1e8a8fc7dc84509",
+    "limit-16.target-seq0.bin": "1bde1b5b824c58c78f6d7ac2a0d4f647d383af68b56f9596300474c4385a7b94",
+    "limit-2.draft-seq0.bin": "aa5f67edf29a509f6df41d7fcd432f199902fa75cf4e2082eae1a3d9374c4db4",
+    "limit-2.target-seq0.bin": "e281d669ba78c9cf627d6105f042047157b4b571fb27d66299601173909e78be",
+    "limit-3.draft-seq0.bin": "fc36cc200f992750a88613d75ef47bf69180e62533660b859e1837271be13629",
+    "limit-3.target-seq0.bin": "51d0c15cb03c33eca944f8daaa19b6a604121581bac28106da96199ff095f96d",
+    "limit-32.draft-seq0.bin": "fdcf15d3afd8e1c75fad4166117940c39356cd365948a9cb4082c744502f4786",
+    "limit-32.target-seq0.bin": "3abde3259d7483c91a4192851be157dea6c45df14863b6895a059bd0f8ce3ae8",
+    "limit-4.draft-seq0.bin": "7422ce1156646a7f5af7a39c8b7267295a09815b43dcee97e8e0159415903253",
+    "limit-4.target-seq0.bin": "0aa28ffcb206668f72c44aae958828e90c53de167db21a97c8189668c001771f",
+    "limit-5.draft-seq0.bin": "6b839f4cf812c5218598ac6304c41740ed22c4b2be22a7d0616cc6cf966b6207",
+    "limit-5.target-seq0.bin": "3389bc04860375e99dc00349fabf5d75e02cb8111a4c0da9212a7371520895e5",
+    "limit-8.draft-seq0.bin": "04318c09c52eeebf6c86d62e725b964b36b80ea41add6ca2f4509845b4583300",
+    "limit-8.target-seq0.bin": "7c40a9ab0f43f483c05a9c93984e9db785a67c3c93b25c8afb331c57de5ee352"
+  }
+}

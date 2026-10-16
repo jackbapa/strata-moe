@@ -1,0 +1,26 @@
+{
+  "status": "passed-no-reproduction",
+  "requests": 25,
+  "request_errors": [],
+  "short_decode_median": 40.1,
+  "short_burst_wall_median": 100.38454982533982,
+  "short_burst_wall_range": [
+    90.01843769132867,
+    102.65869699845753
+  ],
+  "long4k_3clients_groups": 4,
+  "long4k_decode_median": 17.799999999999997,
+  "long4k_burst_wall_median": 24.242206844907017,
+  "long4k_prompt_tokens_range": [
+    4046,
+    4047
+  ],
+  "min_available_ram_gib": 58.07258605957031,
+  "min_sampled_gpu_free_mib": 1989,
+  "max_sampled_temperature_c": 82,
+  "max_observed_running": 3,
+  "elapsed_s": 160.402696,
+  "fresh_nvidia_event_records": 0,
+  "event_query_errors": 0,
+  "server_pid": 16296
+}

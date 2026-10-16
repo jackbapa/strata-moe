@@ -1,0 +1,59 @@
+{
+  "gpu-cache-16g-budget": {
+    "runs": 3,
+    "decode_tok_s": [
+      26.59,
+      26.57,
+      26.65
+    ],
+    "decode_tok_s_median": 26.59,
+    "decode_tok_s_min": 26.57,
+    "decode_tok_s_max": 26.65,
+    "decode_s_median": 9.627,
+    "prefill_s_median": 2.152,
+    "host_rss_peak_GiB": 23.20212173461914,
+    "host_private_commit_peak_GiB": 39.280792236328125,
+    "gpu_peak_mib": 16034,
+    "gpu_increment_peak_mib": 15934,
+    "system_available_low_GiB": 27.15072250366211,
+    "unique_output_hashes": [
+      "aa57b4f692834084c9ab4863454ad9191ae806c628104dc0a39d5ea0452c977f"
+    ],
+    "expert_cache_mib": 13369.4,
+    "exact_verify_calls": [
+      0,
+      0,
+      0
+    ]
+  },
+  "gpu-cache-16g-mtp": {
+    "runs": 3,
+    "decode_tok_s": [
+      31.89,
+      32.24,
+      31.92
+    ],
+    "decode_tok_s_median": 31.92,
+    "decode_tok_s_min": 31.89,
+    "decode_tok_s_max": 32.24,
+    "decode_s_median": 8.019,
+    "prefill_s_median": 1.915,
+    "host_rss_peak_GiB": 23.84073257446289,
+    "host_private_commit_peak_GiB": 40.24942398071289,
+    "gpu_peak_mib": 16258,
+    "gpu_increment_peak_mib": 16158,
+    "system_available_low_GiB": 26.72722625732422,
+    "unique_output_hashes": [
+      "3e5e13ee971fcf1fe659fa7a0b0fc48ce5f2af031c9ca421b9f22c5076530fe8"
+    ],
+    "expert_cache_mib": 11687.2,
+    "exact_verify_calls": [
+      11760,
+      11760,
+      11760
+    ]
+  },
+  "median_decode_speedup_fraction": 0.2004512974802557,
+  "all_runs_same_exe_sha256": true,
+  "first_token_logits_identical": true
+}

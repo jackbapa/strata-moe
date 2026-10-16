@@ -32,4 +32,20 @@ void fused_gdn_step_norm(float* state, const float* q, const float* k, const flo
                          const float* beta, const float* z, const float* gamma, float eps, float* y, int h_k, int h_v,
                          void* stream);
 
+/// Qwen3.5/3.6 A3B single-token GDN step plus output RMSNorm and SiLU gate.
+/// Unlike Strata's native state, GGML stores the recurrence as [head][column][row].
+/// q/k are [h_k][128], v/z/y are [h_v][128], gate/beta are [h_v], gamma is [128].
+/// state_out may equal state_in for an in-place update; other overlapping ranges are unsupported.
+/// This is a standalone CUDA candidate. It does not change any GGML graph or server path by itself.
+void fused_gdn_a3b_step_norm(const float* state_in, float* state_out, const float* q, const float* k,
+                             const float* v, const float* gate, const float* beta, const float* z,
+                             const float* gamma, float eps, float* y, int h_k, int h_v, void* stream);
+
+/// A3B's alpha/beta projections are F32 in the IQ3_S GGUF, not the BF16 used
+/// by Strata's fused_gdn_ab. This version keeps the fused projection epilogues.
+/// x is [n_embd], weights [h_v][n_embd], outputs [h_v].
+void fused_gdn_a3b_ab_f32(const float* x, const float* w_alpha, const float* w_beta,
+                           const float* dt, const float* ssm_a, float* gate, float* beta,
+                           int n_embd, int h_v, void* stream);
+
 }  // namespace strata::kernels

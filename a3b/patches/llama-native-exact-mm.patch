@@ -1,0 +1,19 @@
+--- a/src/llama-graph.cpp
++++ b/src/llama-graph.cpp
+@@ -1515,7 +1515,15 @@
+           ggml_tensor * w,
+           ggml_tensor * cur,
+           ggml_tensor * w_s) const {
+-    ggml_tensor * res = ggml_mul_mat(ctx0, w, cur);
++    ggml_tensor * res = nullptr;
++    if (loras->empty()) {
++        if (auto * reg = ggml_backend_reg_by_name("StrataMoE")) {
++            using mm_hook = ggml_tensor * (*)(ggml_context *, ggml_tensor *, ggml_tensor *);
++            auto hook = reinterpret_cast<mm_hook>(ggml_backend_reg_get_proc_address(reg, "strata_a3b_build_mm_v1"));
++            if (hook) res = hook(ctx0, w, cur);
++        }
++    }
++    if (!res) res = ggml_mul_mat(ctx0, w, cur);
+ 
+     if (w_s) {
+         res = ggml_mul(ctx0, res, w_s);

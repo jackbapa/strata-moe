@@ -1,0 +1,10 @@
+{
+  "model_path": "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-IQ3_S.gguf",
+  "model_bytes": 13676723168,
+  "model_sha256": "66a3ca888ce13482b40c333db2432c0ebde3a7b13754fc29f0c6f5e89703ec66",
+  "mtp_path": "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0-DV-ASCII-CJK-PUNCT.gguf",
+  "mtp_sha256": "7a0bd6c1a1c8d5037262c52b50375d063e128a254f5f6348a0772543893512ae",
+  "prompt_sha256": "b8ab043b91a3610f7137bde026f938a0d8d21ef4469dcc49963442271b47bd9a",
+  "target_prompt_tokens": 50000,
+  "max_tokens": 256
+}

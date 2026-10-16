@@ -1,0 +1,110 @@
+{
+  "note": "Live warm API requests after stopping WSL vLLM and dropping Linux file caches; not fresh-process benchmark trials.",
+  "requests": [
+    {
+      "temperature": 0,
+      "wall_s": 10.453000000008615,
+      "response": {
+        "id": "chatcmpl-37d4aafbf0724c028d8fe633",
+        "object": "chat.completion",
+        "created": 1791963546,
+        "model": "qwen3.6-35b-a3b-ud-q5_k_m",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "混合专家模型（Mixture of Experts, MoE）是一种高效的神经网络架构，其核心思想是**“分工合作”**与**“动态路由”**。\n\n它的工作流程可以简要概括为以下三步：\n\n1.  **输入分发（路由）**：\n    当数据输入模型时，一个专门的**门控网络（Gating Network）**会分析输入内容，并决定将数据发送给哪几个最合适的“专家”（Expert）模块。通常只会激活少数几个专家，而不是全部。\n\n2.  **并行处理**：\n    被选中的“专家”模块（通常是独立的神经网络层）对输入数据进行并行处理。每个专家擅长处理特定类型的数据或任务。\n\n3.  **结果融合**：\n    各个专家的输出结果会根据门控网络给出的权重进行加权求和，最终合并成一个完整的输出结果。\n\n**简单来说**：MoE 就像一家医院，门控网络是“分诊台”，根据病人的症状（输入）将其引导至最合适的专科医生（专家）处就诊，最后由护士（融合层）汇总所有医生的诊断意见，给出最终治疗方案。\n\n**优势**：相比传统密集模型，MoE 在保持强大能力的"
+            },
+            "finish_reason": "length"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 22,
+          "completion_tokens": 256,
+          "total_tokens": 278,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 22,
+          "prompt_ms": 453.0,
+          "prompt_per_token_ms": 20.591,
+          "prompt_per_second": 48.6,
+          "predicted_n": 256,
+          "predicted_ms": 9971.4,
+          "predicted_per_token_ms": 38.951,
+          "predicted_per_second": 25.7,
+          "draft_n": 294,
+          "draft_n_accepted": 155
+        }
+      }
+    },
+    {
+      "temperature": 0.7,
+      "wall_s": 8.921999999991385,
+      "response": {
+        "id": "chatcmpl-a711f3ad56f3437c8997c92b",
+        "object": "chat.completion",
+        "created": 1791963557,
+        "model": "qwen3.6-35b-a3b-ud-q5_k_m",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "混合专家模型（Mixture of Experts, MoE）是一种高效的深度学习架构，其核心思想是**“分工合作”**与**“按需激活”**。\n\n它的工作流程可以简要概括为以下三步：\n\n1.  **路由选择（Gating）**：\n    当一个输入数据进入模型时，首先由一个专门的“门控网络”（Gating Network）进行处理。这个网络会根据输入内容，动态地计算出哪些“专家”最适合处理当前任务，并分配相应的权重。\n\n2.  **专家处理（Experts）**：\n    模型内部包含多个独立的子网络，称为“专家”（Experts）。每个专家通常只擅长处理特定类型的数据或子任务（例如，有的专家擅长语法，有的擅长逻辑推理）。根据门控网络的指令，只有被选中的少数几个专家会被激活并参与计算，其余专家保持休眠。\n\n3.  **结果加权汇总**：\n    被激活的专家各自对输入进行处理，产生各自的输出。最后，门控网络根据之前计算的权重，将这些输出进行加权求和，得到最终的模型输出。\n\n**核心优势**：\n- **高效性**：相比传统密集模型，MoE 在参数量巨大的"
+            },
+            "finish_reason": "length"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 22,
+          "completion_tokens": 256,
+          "total_tokens": 278,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 22,
+          "prompt_ms": 286.2,
+          "prompt_per_token_ms": 13.009,
+          "prompt_per_second": 76.9,
+          "predicted_n": 256,
+          "predicted_ms": 8635.0,
+          "predicted_per_token_ms": 33.73,
+          "predicted_per_second": 29.6,
+          "draft_n": 295,
+          "draft_n_accepted": 156
+        }
+      }
+    }
+  ],
+  "system_available_GiB": 81.0119857788086,
+  "memory": [
+    {
+      "pid": 9160,
+      "name": "vmmem",
+      "rss_GiB": 8.170658111572266
+    },
+    {
+      "pid": 21340,
+      "name": "strata-moe.exe",
+      "rss_GiB": 23.90814971923828
+    }
+  ],
+  "gpu_memory_mib": "0, 16300\n1, 176\n2, 0",
+  "health": {
+    "status": "ok",
+    "max_context": 4096,
+    "model": "qwen3.6-35b-a3b-ud-q5_k_m",
+    "images": false,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  }
+}

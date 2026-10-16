@@ -1,0 +1,101 @@
+--- a/ggml/src/ggml-backend.cpp
++++ b/ggml/src/ggml-backend.cpp
+@@ -1643,6 +1643,17 @@
+     return true;
+ }
+ 
++// Optional same-device stream bridge for StrataMoE's RAM expert backend. A
++// disabled or absent provider returns nullptr, preserving the upstream path.
++static ggml_backend_t ggml_backend_sched_strata_gpu(ggml_backend_t backend) {
++    if (!backend || !backend->device || !backend->device->reg ||
++        strcmp(ggml_backend_reg_name(backend->device->reg), "StrataMoE") != 0) return nullptr;
++    using unwrap_fn = ggml_backend_t (*)(ggml_backend_t);
++    auto unwrap = reinterpret_cast<unwrap_fn>(ggml_backend_reg_get_proc_address(
++        backend->device->reg, "strata_a3b_async_gpu_backend_v1"));
++    return unwrap ? unwrap(backend) : nullptr;
++}
++
+ static enum ggml_status ggml_backend_sched_compute_splits(ggml_backend_sched_t sched) {
+     GGML_ASSERT(sched);
+     struct ggml_backend_sched_split * splits = sched->splits;
+@@ -1658,9 +1669,29 @@
+         int split_backend_id = split->backend_id;
+         ggml_backend_t split_backend = sched->backends[split_backend_id];
+ 
++        ggml_backend_t split_gpu = ggml_backend_sched_strata_gpu(split_backend);
++        ggml_backend_t prev_backend = prev_backend_id >= 0 ? sched->backends[prev_backend_id] : nullptr;
++        ggml_backend_t prev_gpu = ggml_backend_sched_strata_gpu(prev_backend);
++        ggml_backend_t real_split = split_gpu ? split_gpu : split_backend;
++        ggml_backend_t real_prev = prev_gpu ? prev_gpu : prev_backend;
++        const bool strata_bridge = (split_gpu || prev_gpu) && real_prev &&
++            real_split->device == real_prev->device && split_backend->iface.event_wait &&
++            sched->events[prev_backend_id][sched->cur_copy];
++
++        // Explicitly order the shared allocator even when there are copied
++        // inputs too: compatible GPU buffers need no copy and may alias an
++        // earlier split's scratch. This wait stays entirely on the device.
++        if (strata_bridge && prev_backend_id != split_backend_id) {
++            ggml_backend_event_wait(split_backend, sched->events[prev_backend_id][sched->cur_copy]);
++        }
++
+         // ensure the previous split's async work has completed before we start
+         // this split, the allocator may have reused buffer regions across splits
+-        if (split->n_inputs == 0 && prev_backend_id >= 0 && prev_backend_id != split_backend_id) {
++        if (!strata_bridge && (split->n_inputs == 0 || prev_gpu) &&
++            prev_backend_id >= 0 && prev_backend_id != split_backend_id) {
++            // An unrelated CPU/different-device split can sit between the
++            // expert producer and a later shared-buffer GPU consumer. Keep a
++            // host barrier when a device event cannot carry that dependency.
+             if (sched->events[prev_backend_id][sched->cur_copy] != NULL) {
+                 ggml_backend_event_synchronize(sched->events[prev_backend_id][sched->cur_copy]);
+             } else {
+@@ -1676,6 +1707,10 @@
+ 
+             if (input->flags & GGML_TENSOR_FLAG_INPUT) {
+                 // inputs from the user must be copied immediately to prevent the user overwriting the data before the copy is done
++                // Blocking buffer copies use a per-thread stream. The new
++                // cross-backend wait is on the destination compute stream,
++                // beyond its old tail event, so join it before such a copy.
++                if (strata_bridge) ggml_backend_synchronize(split_backend);
+                 if (sched->events[split_backend_id][sched->cur_copy] != NULL) {
+                     ggml_backend_event_synchronize(sched->events[split_backend_id][sched->cur_copy]);
+                 } else {
+@@ -1782,8 +1817,16 @@
+                 } else {
+                     // try async copy, but if not possible, we can still use a sync copy without synchronizing the dst backend, since we handle the synchronization here with multiple copies and events
+                     // TODO: add public function to facilitate this, since applications do not have direct access to the backend interface
+-                    if (!split_backend->iface.cpy_tensor_async || !split_backend->iface.cpy_tensor_async(input_backend, split_backend, input, input_cpy)) {
++                    auto input_gpu = ggml_backend_sched_strata_gpu(input_backend);
++                    auto copy_src = input_gpu ? input_gpu : input_backend;
++                    auto copy_dst = split_gpu ? split_gpu : split_backend;
++                    // CUDA rejects custom backend GUIDs. Unwrap only an
++                    // explicitly enabled StrataMoE stream on the same device.
++                    const bool bridge_copy = (input_gpu || split_gpu) && copy_src->device == copy_dst->device;
++                    if (!bridge_copy) { copy_src = input_backend; copy_dst = split_backend; }
++                    if (!copy_dst->iface.cpy_tensor_async || !copy_dst->iface.cpy_tensor_async(copy_src, copy_dst, input, input_cpy)) {
+                         ggml_backend_synchronize(input_backend);
++                        if (strata_bridge) ggml_backend_synchronize(split_backend);
+                         if (sched->events[split_backend_id][sched->cur_copy] != NULL) {
+                             ggml_backend_event_synchronize(sched->events[split_backend_id][sched->cur_copy]);
+                         } else {
+@@ -1897,12 +1940,19 @@
+     sched->graph_inputs_capacity = GGML_SCHED_MAX_SPLIT_INPUTS;
+     sched->graph_inputs = (struct ggml_tensor **) calloc(sched->graph_inputs_capacity, sizeof(struct ggml_tensor *));
+ 
++    // Single-copy inference normally has no events. The opt-in expert stream
++    // bridge needs them too, without enabling parallel graph/input copies.
++    ggml_backend_dev_t strata_event_device = nullptr;
++    for (int b = 0; b < n_backends; ++b) {
++        if (auto gpu = ggml_backend_sched_strata_gpu(backends[b])) strata_event_device = gpu->device;
++    }
+     for (int b = 0; b < n_backends; b++) {
+         sched->backends[b] = backends[b];
+         sched->bufts[b] = bufts ? bufts[b] : ggml_backend_get_default_buffer_type(backends[b]);
+         GGML_ASSERT(ggml_backend_supports_buft(backends[b], sched->bufts[b]));
+ 
+-        if (sched->n_copies > 1) {
++        if (sched->n_copies > 1 || (strata_event_device &&
++            (backends[b]->device == strata_event_device || ggml_backend_sched_strata_gpu(backends[b])))) {
+             for (int c = 0; c < sched->n_copies; c++) {
+                 sched->events[b][c] = ggml_backend_event_new(backends[b]->device);
+             }

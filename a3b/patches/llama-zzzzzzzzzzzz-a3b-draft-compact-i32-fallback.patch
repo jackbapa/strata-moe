@@ -1,0 +1,12 @@
+--- a/src/models/qwen35moe.cpp
++++ b/src/models/qwen35moe.cpp
+@@ -834,7 +834,8 @@
+         const int64_t n_draft = cur->ne[0];
+         const int64_t n_outputs = cur->ne[1];
+         const int64_t n_full = (int64_t) model.vocab.n_tokens();
+-        GGML_ASSERT(model.d2t->type == GGML_TYPE_I64 && model.d2t->ne[0] == n_draft);
++        GGML_ASSERT((model.d2t->type == GGML_TYPE_I64 || model.d2t->type == GGML_TYPE_I32) &&
++                    model.d2t->ne[0] == n_draft);
+         // The A3B CPU greedy path and device finite guard both require finite
+         // logits.  A finite sentinel also leaves the K2 sampled token as a
+         // full vocabulary ID for the next embedding lookup.

@@ -1,0 +1,9 @@
+{
+  "exe_sha256": "3a5dfba63ae41ec5c2e3cbc355c8f3812dc942d255e6e9d254a1f6d2250ea4ae",
+  "model": "Qwen3.6-35B-A3B-UD-Q5_K_M.gguf",
+  "model_sha256": "c13ce26253ea334df472bd8fbd2d6da66d8a41195c17f6fcbf44c4d20ece0932",
+  "hardware": "Threadripper 3960X, 128 GiB RAM, RTX 2080 Ti GPU0 reporting 22 GiB, Windows WDDM",
+  "measurement": "Sequential --serve launches, ctx4096, 9 input and 4 greedy output tokens; each process receives QUIT; unrelated WSL GPU1 service untouched",
+  "region_residency": "QueryWorkingSetEx at regular 64 KiB page samples; approximate, not an exact page walk",
+  "psutil_version": "7.2.2"
+}

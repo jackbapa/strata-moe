@@ -1,0 +1,53 @@
+{
+  "model_path": "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-IQ3_S.gguf",
+  "model_bytes": 13676723168,
+  "model_sha256": "66a3ca888ce13482b40c333db2432c0ebde3a7b13754fc29f0c6f5e89703ec66",
+  "mtp_path": "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+  "mtp_sha256": "f6cb995fab78e7284097b2e13508e8daad4ffc6a747b433aef399f4e48524b5a",
+  "prompt_sha256": "b8ab043b91a3610f7137bde026f938a0d8d21ef4469dcc49963442271b47bd9a",
+  "target_prompt_tokens": 50000,
+  "max_tokens": 256,
+  "config_path": "G:\\Strata-Moe\\bench\\results\\2026-10-15-a3b-iq3s-prefill-batch8192\\batch8192-config.json",
+  "config_sha256": "8814e4381723db2c483c02ec1c5caf67fa5f89c2dda0c36c80dcb2e49a55f0e9",
+  "binary_sha256": "db5c4d92f8ce7b99bf9b376293187e2201270257f77981162ec9d9bec4794f0d",
+  "binary_path": "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe",
+  "engine_identity": {
+    "engine_pid": 4384,
+    "engine_created_at": 1792077593.901058,
+    "engine_exe": "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe",
+    "engine_command": [
+      "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe",
+      "--serve",
+      "--model",
+      "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-IQ3_S.gguf",
+      "--ctx",
+      "262144",
+      "--batch",
+      "8192",
+      "--device",
+      "0",
+      "--vram-mib",
+      "0",
+      "--mtp-model",
+      "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+      "--mtp-draft",
+      "2",
+      "--mtp-ubatch",
+      "512",
+      "--exact-verify",
+      "--native-gpu",
+      "--gpu-embedding",
+      "--gpu-sampling",
+      "--defer-mtp-catchup",
+      "--fused-moe",
+      "--native-dense-exact",
+      "--kv-tiered",
+      "--kv-tiered-f16-short",
+      "--strata-native-experts"
+    ],
+    "engine_environment": {
+      "STRATA_A3B_Q6_GROUPED_EXACT": "1"
+    }
+  },
+  "url": "http://127.0.0.1:8096"
+}

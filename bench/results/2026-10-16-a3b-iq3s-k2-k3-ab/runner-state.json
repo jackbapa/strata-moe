@@ -1,0 +1,145 @@
+{
+  "suite": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab",
+  "order": [
+    "off",
+    "combined",
+    "off",
+    "combined",
+    "off",
+    "combined"
+  ],
+  "arm_depths": {
+    "off": 2,
+    "combined": 3
+  },
+  "selected_config": "G:\\Strata-Moe\\strata-a3b-iq3s-strata-optimized.json",
+  "selected_config_sha256": "94bb567296d56ebbf5225fb0533f7dd30422f40d0f85e02284e24e551417ac0f",
+  "config_sha256": {
+    "off": "e372d42b9b9e14608bdbacf6ed2b0476ef31bacac1f57fb0c086e762f991a359",
+    "combined": "ea63bc9af4583f4aed8e9eceeda00eaf657e12f6e77dec48f50d21a42858a3dd"
+  },
+  "execution_differences": [
+    "fixed_mtp_draft_2_vs_3"
+  ],
+  "engine_args_identical_except_mtp_draft": true,
+  "same_binary_and_four_switches": true,
+  "dry_run": false,
+  "strict_gate_pass": true,
+  "strict_fingerprint": {
+    "engine_binary_sha256": "24af1eb4bbd7901f45924a0edd2bf8680413e8d8842f57ed90697ff64ec14a4f",
+    "fixture_binary_sha256": "9f9aef4cedbba61360ce12ed561ce1855e4908953fd3392907e9fb036fba43c5",
+    "target_sha256": "66a3ca888ce13482b40c333db2432c0ebde3a7b13754fc29f0c6f5e89703ec66",
+    "mtp_sha256": "f6cb995fab78e7284097b2e13508e8daad4ffc6a747b433aef399f4e48524b5a"
+  },
+  "trials": [
+    {
+      "index": 1,
+      "arm": "off",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\runner-logs\\01-off.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\arms\\off\\run001.json",
+      "elapsed_s": 47.328,
+      "returncode": 0,
+      "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+      "proposal_windows": 119,
+      "service_pid": 944,
+      "engine_pid": 35784,
+      "model_status": "loaded",
+      "status_loaded": true
+    },
+    {
+      "index": 2,
+      "arm": "combined",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\runner-logs\\02-combined.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\arms\\combined\\run001.json",
+      "elapsed_s": 47.468,
+      "returncode": 0,
+      "proposal_trace_sha256": "191ec07f5fc07b4d0bdb6f196254c18cdaadfead6e8d497d12f7b0ae73852c97",
+      "proposal_windows": 106,
+      "service_pid": 35740,
+      "engine_pid": 37792,
+      "model_status": "loaded",
+      "status_loaded": true
+    },
+    {
+      "index": 3,
+      "arm": "off",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\runner-logs\\03-off.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\arms\\off\\run002.json",
+      "elapsed_s": 47.687,
+      "returncode": 0,
+      "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+      "proposal_windows": 119,
+      "service_pid": 39084,
+      "engine_pid": 19124,
+      "model_status": "loaded",
+      "status_loaded": true
+    },
+    {
+      "index": 4,
+      "arm": "combined",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\runner-logs\\04-combined.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\arms\\combined\\run002.json",
+      "elapsed_s": 47.843,
+      "returncode": 0,
+      "proposal_trace_sha256": "191ec07f5fc07b4d0bdb6f196254c18cdaadfead6e8d497d12f7b0ae73852c97",
+      "proposal_windows": 106,
+      "service_pid": 43048,
+      "engine_pid": 42800,
+      "model_status": "loaded",
+      "status_loaded": true
+    },
+    {
+      "index": 5,
+      "arm": "off",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\runner-logs\\05-off.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\arms\\off\\run003.json",
+      "elapsed_s": 47.594,
+      "returncode": 0,
+      "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+      "proposal_windows": 119,
+      "service_pid": 860,
+      "engine_pid": 43964,
+      "model_status": "loaded",
+      "status_loaded": true
+    },
+    {
+      "index": 6,
+      "arm": "combined",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\runner-logs\\06-combined.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-k2-k3-ab\\arms\\combined\\run003.json",
+      "elapsed_s": 47.765,
+      "returncode": 0,
+      "proposal_trace_sha256": "191ec07f5fc07b4d0bdb6f196254c18cdaadfead6e8d497d12f7b0ae73852c97",
+      "proposal_windows": 106,
+      "service_pid": 10168,
+      "engine_pid": 27492,
+      "model_status": "loaded",
+      "status_loaded": true
+    }
+  ],
+  "primary_error": null,
+  "cleanup_errors": [],
+  "restore": {
+    "ok": true,
+    "server_pid": 828,
+    "engine_pid": 14848,
+    "engine_environment": {
+      "STRATA_A3B_Q6_GROUPED_EXACT": "1",
+      "STRATA_A3B_MTP_KV_ONLY_DIAGNOSTIC": "0",
+      "STRATA_A3B_MTP_PROPOSAL_TRACE": "1",
+      "STRATA_A3B_FUSED_GU": "1",
+      "STRATA_A3B_DOWN_MODE": "1",
+      "STRATA_A3B_Q6_REUSE_EXACT": "1",
+      "STRATA_A3B_MTP_KV_ONLY": "1"
+    },
+    "loaded": true,
+    "model_id": "qwen3.6-35b-a3b-ud-iq3_s",
+    "n_ctx": 262144,
+    "snapshot_config_sha256": "1d8c098edaf6b467e2f40f1815569bb9b8fc04e84739516a07a7f999c5d8e3c8",
+    "selected_source_sha256_at_start": "94bb567296d56ebbf5225fb0533f7dd30422f40d0f85e02284e24e551417ac0f",
+    "selected_source_sha256_at_restore": "94bb567296d56ebbf5225fb0533f7dd30422f40d0f85e02284e24e551417ac0f",
+    "selected_source_changed": false
+  },
+  "experiment_complete": true,
+  "complete": true
+}

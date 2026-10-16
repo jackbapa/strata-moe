@@ -1,0 +1,41 @@
+{
+  "pass": true,
+  "order": [
+    "off",
+    "combined",
+    "off",
+    "combined",
+    "off",
+    "combined"
+  ],
+  "same_request_output_and_proposals": true,
+  "output_sha256": "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7",
+  "mtp_offered_tokens": 238,
+  "mtp_accepted_tokens": 136,
+  "gpu_memory_scope": "sampled whole GPU 0, not process-attributed",
+  "arms": {
+    "off": {
+      "runs": 3,
+      "http_response_first_byte_s_median": 0.019997499999590218,
+      "ttft_any_content_or_reasoning_s_median": 28.40128169997479,
+      "engine_prompt_tokens_per_s_median": 1778.6,
+      "engine_predicted_tokens_per_s_median": 85.1,
+      "gpu0_total_used_mib_observed_peak_median": 17103
+    },
+    "combined": {
+      "runs": 3,
+      "http_response_first_byte_s_median": 0.019472300016786903,
+      "ttft_any_content_or_reasoning_s_median": 28.62468610002543,
+      "engine_prompt_tokens_per_s_median": 1766.7,
+      "engine_predicted_tokens_per_s_median": 84.7,
+      "gpu0_total_used_mib_observed_peak_median": 17103
+    }
+  },
+  "combined_minus_off": {
+    "http_response_first_byte_s_median": -0.0005251999828033149,
+    "ttft_any_content_or_reasoning_s_median": 0.2234044000506401,
+    "engine_prompt_tokens_per_s_median": -11.899999999999864,
+    "engine_predicted_tokens_per_s_median": -0.3999999999999915,
+    "gpu0_total_used_mib_observed_peak_median": 0
+  }
+}

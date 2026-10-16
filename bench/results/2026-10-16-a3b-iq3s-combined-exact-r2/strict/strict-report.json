@@ -1,0 +1,89 @@
+{
+  "pass": true,
+  "fingerprint": {
+    "engine_binary_sha256": "a0a3deaec132200616e7db2c0a18e3cfd719575e660ce6a7d29af58f6c4d9c04",
+    "fixture_binary_sha256": "02d535824cc05233f459179d97dafc7a96d57d3f154a380986ba965cb8cdb046",
+    "target_sha256": "66a3ca888ce13482b40c333db2432c0ebde3a7b13754fc29f0c6f5e89703ec66",
+    "mtp_sha256": "f6cb995fab78e7284097b2e13508e8daad4ffc6a747b433aef399f4e48524b5a",
+    "config_off_sha256": "951d0da6e8e30443e81633702354c92041ee8aac0804d7349b38008a02ad9a52",
+    "config_combined_sha256": "c248aac006e19e8539db37e7ee3bf81e239505afc7e74f21c1e56633878cd933"
+  },
+  "classes": [
+    "MTP class limit=1 output=1 offered=0 accepted=0 GPU_draft_samples=0 draft_sampling_download_bytes=0 target_GPU_sampler=1 deferred=1 PASS",
+    "MTP class limit=2 output=2 offered=0 accepted=0 GPU_draft_samples=0 draft_sampling_download_bytes=0 target_GPU_sampler=1 deferred=1 PASS",
+    "MTP class limit=3 output=3 offered=1 accepted=0 GPU_draft_samples=1 draft_sampling_download_bytes=8 target_GPU_sampler=1 deferred=1 PASS",
+    "MTP class limit=4 output=4 offered=3 accepted=1 GPU_draft_samples=3 draft_sampling_download_bytes=24 target_GPU_sampler=1 deferred=1 PASS",
+    "MTP class limit=5 output=5 offered=4 accepted=2 GPU_draft_samples=4 draft_sampling_download_bytes=32 target_GPU_sampler=1 deferred=1 PASS",
+    "MTP class limit=8 output=8 offered=7 accepted=2 GPU_draft_samples=7 draft_sampling_download_bytes=56 target_GPU_sampler=1 deferred=1 PASS",
+    "MTP class limit=16 output=16 offered=14 accepted=8 GPU_draft_samples=14 draft_sampling_download_bytes=112 target_GPU_sampler=1 deferred=1 PASS",
+    "MTP class limit=32 output=32 offered=26 accepted=17 GPU_draft_samples=26 draft_sampling_download_bytes=208 target_GPU_sampler=1 deferred=1 PASS"
+  ],
+  "proposal_trace_lines": 29,
+  "state_pairs_bitwise_equal": 16,
+  "state_files": {
+    "limit-1.draft-seq0.bin": {
+      "bytes": 16624,
+      "sha256": "396b9b8ef8643231ffc5c748d04ffde1476c59fa9265fc295d0c2de9cfad7650"
+    },
+    "limit-1.target-seq0.bin": {
+      "bytes": 66028716,
+      "sha256": "503ab26b26f5f66b1e7070d4a0d2f84e68d91b26f46f15622042bf2c00f35c82"
+    },
+    "limit-16.draft-seq0.bin": {
+      "bytes": 47704,
+      "sha256": "fc841285df8f49007310bba0e81e08a3f9cd4c5314d5df209b2227c47f3685ec"
+    },
+    "limit-16.target-seq0.bin": {
+      "bytes": 66336276,
+      "sha256": "1bde1b5b824c58c78f6d7ac2a0d4f647d383af68b56f9596300474c4385a7b94"
+    },
+    "limit-2.draft-seq0.bin": {
+      "bytes": 18696,
+      "sha256": "7c17d8466468ac0d6b9d325d87c8ea24bf77731b4f9ac2e1e420ccf8040a314b"
+    },
+    "limit-2.target-seq0.bin": {
+      "bytes": 66049220,
+      "sha256": "e281d669ba78c9cf627d6105f042047157b4b571fb27d66299601173909e78be"
+    },
+    "limit-3.draft-seq0.bin": {
+      "bytes": 20768,
+      "sha256": "4fdad8f3061753a07d4de9df1303c20060787bb275d36f4c515a0e5228bb0393"
+    },
+    "limit-3.target-seq0.bin": {
+      "bytes": 66069724,
+      "sha256": "51d0c15cb03c33eca944f8daaa19b6a604121581bac28106da96199ff095f96d"
+    },
+    "limit-32.draft-seq0.bin": {
+      "bytes": 80856,
+      "sha256": "74297d2b93171efb9638cd398e2283ba447c0fc9355fa0b1d23cc5cb5ee9ec2e"
+    },
+    "limit-32.target-seq0.bin": {
+      "bytes": 66664340,
+      "sha256": "3abde3259d7483c91a4192851be157dea6c45df14863b6895a059bd0f8ce3ae8"
+    },
+    "limit-4.draft-seq0.bin": {
+      "bytes": 22840,
+      "sha256": "2ed9fdbc75836f712494c062b8ed5705f7ecef1a81e234e13e39b618a1547737"
+    },
+    "limit-4.target-seq0.bin": {
+      "bytes": 66090228,
+      "sha256": "0aa28ffcb206668f72c44aae958828e90c53de167db21a97c8189668c001771f"
+    },
+    "limit-5.draft-seq0.bin": {
+      "bytes": 24912,
+      "sha256": "f04e65a071b7995e88cf07c61b37aabc32c3c88ae028d79eaaf5cbf3593ace91"
+    },
+    "limit-5.target-seq0.bin": {
+      "bytes": 66110732,
+      "sha256": "3389bc04860375e99dc00349fabf5d75e02cb8111a4c0da9212a7371520895e5"
+    },
+    "limit-8.draft-seq0.bin": {
+      "bytes": 31128,
+      "sha256": "c8a428de6b3949f603e01bd4505e3ae1c54acdfc3e1a8fed1a56e1d27f548007"
+    },
+    "limit-8.target-seq0.bin": {
+      "bytes": 66172244,
+      "sha256": "7c40a9ab0f43f483c05a9c93984e9db785a67c3c93b25c8afb331c57de5ee352"
+    }
+  }
+}

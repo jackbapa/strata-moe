@@ -1,0 +1,14 @@
+{
+  "scope": "Prepared only; no model/service/GPU request and no production config change.",
+  "source_config": "G:\\Strata-Moe\\strata-a3b-q8.json",
+  "source_config_sha256": "3474d3a417706748b8785536dce1c2c2e6cd28ea1c0058f2c4e4fc992f5c8609",
+  "config_sha256": "06998b4b3f56bcdd2f75bb4a3cf54fa926a94a0be56fba14469843aab92c8f23",
+  "frozen_exe_sha256": "a506677ca04b1c6f643f6c127cba61cd45c84f5d5ad6ddc7a324b8e17fe0c81a",
+  "changes": [
+    "frozen hybrid executable and independent engine log",
+    "hybrid experts with Q8 CPU pool",
+    "threads 8",
+    "PCIe fraction 0.25"
+  ],
+  "preserved": "official Q8 target/MTP, strict shared weights, context4096/batch512, MTP6adaptive, profile/decay4/reserve384, exact dense/attention, async, existing env and sampling defaults"
+}

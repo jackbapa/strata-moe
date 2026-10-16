@@ -1,0 +1,410 @@
+{
+  "region": "First target multi-token exact dense kernel through last GPU kernel; excludes model load and bulk prefill, slightly excludes initial draft work. Profiled timings include instrumentation overhead.",
+  "start_ns": 24094258696,
+  "end_ns": 28533597725,
+  "wall_ms": 4439.339029,
+  "gpu_kernel_plus_memcpy_union_ms": 1182.4274,
+  "gpu_active_fraction": 0.266352128610991,
+  "runtime": [
+    {
+      "name": "cudaStreamSynchronize_v3020",
+      "total_ms": 2751.997224,
+      "count": 15031,
+      "mean_us": 183.08809952764287
+    },
+    {
+      "name": "cudaMemcpyAsync_v3020",
+      "total_ms": 216.82129,
+      "count": 26353,
+      "mean_us": 8.227575228626723
+    },
+    {
+      "name": "cudaLaunchKernel_v7000",
+      "total_ms": 133.146895,
+      "count": 27823,
+      "mean_us": 4.785497430183661
+    },
+    {
+      "name": "cudaGraphLaunch_v10000",
+      "total_ms": 86.693822,
+      "count": 5032,
+      "mean_us": 17.228501987281398
+    },
+    {
+      "name": "cudaGraphInstantiate_v12000",
+      "total_ms": 28.3993,
+      "count": 319,
+      "mean_us": 89.02601880877742
+    },
+    {
+      "name": "cudaMalloc_v3020",
+      "total_ms": 10.237225,
+      "count": 362,
+      "mean_us": 28.279627071823207
+    },
+    {
+      "name": "cudaStreamBeginCapture_v10000",
+      "total_ms": 7.73862,
+      "count": 1798,
+      "mean_us": 4.304015572858732
+    },
+    {
+      "name": "cudaGraphExecUpdate_v10020",
+      "total_ms": 7.483313,
+      "count": 1798,
+      "mean_us": 4.162020578420467
+    },
+    {
+      "name": "cudaEventSynchronize_v3020",
+      "total_ms": 7.233575,
+      "count": 1360,
+      "mean_us": 5.318805147058823
+    },
+    {
+      "name": "cudaEventRecord_v3020",
+      "total_ms": 7.057014,
+      "count": 2720,
+      "mean_us": 2.5944904411764704
+    },
+    {
+      "name": "cudaGraphDestroy_v10000",
+      "total_ms": 4.974236,
+      "count": 1485,
+      "mean_us": 3.3496538720538718
+    },
+    {
+      "name": "cudaStreamWaitEvent_v3020",
+      "total_ms": 3.223279,
+      "count": 1360,
+      "mean_us": 2.370058088235294
+    },
+    {
+      "name": "cudaStreamEndCapture_v10000",
+      "total_ms": 1.446314,
+      "count": 1798,
+      "mean_us": 0.8044015572858733
+    },
+    {
+      "name": "cudaGraphExecDestroy_v10000",
+      "total_ms": 0.482071,
+      "count": 6,
+      "mean_us": 80.34516666666667
+    },
+    {
+      "name": "cudaMemcpy2DAsync_v3020",
+      "total_ms": 0.231217,
+      "count": 25,
+      "mean_us": 9.24868
+    }
+  ],
+  "kernels": [
+    {
+      "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)1, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "total_ms": 159.67335,
+      "count": 2652,
+      "mean_us": 60.20865384615385
+    },
+    {
+      "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)1, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "total_ms": 88.52097,
+      "count": 2649,
+      "mean_us": 33.41674971687429
+    },
+    {
+      "name": "quantize_q8_1(const float *, void *, long long, long long, long long, long long, long long, unsigned int, uint3)",
+      "total_ms": 14.579754,
+      "count": 6300,
+      "mean_us": 2.314246666666667
+    },
+    {
+      "name": "void strata_a3b_dense_q8_reuse<(int)3>(const block_q8_0 *, const block_q8_1 *, float *, int, int, int, int)",
+      "total_ms": 9.014135,
+      "count": 391,
+      "mean_us": 23.0540537084399
+    },
+    {
+      "name": "void k_get_rows_float<float, float>(const T1 *, const int *, T2 *, long long, long long, uint3, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long)",
+      "total_ms": 8.103759,
+      "count": 2655,
+      "mean_us": 3.0522632768361584
+    },
+    {
+      "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "total_ms": 7.693155,
+      "count": 250,
+      "mean_us": 30.77262
+    },
+    {
+      "name": "void strata_a3b_dense_q8_reuse<(int)2>(const block_q8_0 *, const block_q8_1 *, float *, int, int, int, int)",
+      "total_ms": 6.954041,
+      "count": 359,
+      "mean_us": 19.370587743732592
+    },
+    {
+      "name": "void k_set_rows<float, long long, float>(const T1 *, const T2 *, T3 *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, uint3, uint3, uint3, uint3, uint3)",
+      "total_ms": 6.854201,
+      "count": 2587,
+      "mean_us": 2.649478546579049
+    },
+    {
+      "name": "void mul_mat_vec_f<float, float, (int)1, (int)256, (bool)0, (bool)0>(const T1 *, const float *, const int *, ggml_cuda_mm_fusion_args_device, float *, int, uint3, int, int, int, uint3, int, int, int, uint3, int, int, int, int)",
+      "total_ms": 1.793768,
+      "count": 290,
+      "mean_us": 6.185406896551724
+    },
+    {
+      "name": "void rms_norm_f32<(int)1024, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+      "total_ms": 1.706343,
+      "count": 367,
+      "mean_us": 4.649435967302453
+    },
+    {
+      "name": "void concat_non_cont<unsigned int, (int)0>(const char *, const char *, char *, long long, long long, long long, long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, long long, long long, long long, long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, long long, long long, long long, long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long)",
+      "total_ms": 1.654497,
+      "count": 60,
+      "mean_us": 27.57495
+    },
+    {
+      "name": "void flash_attn_ext_f16<(int)256, (int)256, (int)1, (int)8, (bool)0, (bool)0, (bool)0>(const char *, const char *, const char *, const char *, const char *, const int *, float *, float2 *, float, float, float, float, unsigned int, float, int, uint3, int, int, int, int, int, int, int, int, int, int, int, long long, int, int, long long, int, int, int, int, int, long long)",
+      "total_ms": 1.319656,
+      "count": 111,
+      "mean_us": 11.888792792792792
+    },
+    {
+      "name": "void gated_delta_net_cuda<(int)128, (bool)0, (bool)1>(const float *, const float *, const float *, const float *, const float *, const float *, float *, float *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, uint3, uint3, float, long long, int)",
+      "total_ms": 1.052943,
+      "count": 90,
+      "mean_us": 11.699366666666666
+    },
+    {
+      "name": "void cpy_scalar<&cpy_1_scalar<float, float>>(const char *, char *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long)",
+      "total_ms": 1.047154,
+      "count": 325,
+      "mean_us": 3.2220123076923075
+    },
+    {
+      "name": "void topk_moe_cuda<(int)256, (bool)0>(const float *, float *, int *, float *, int, int, float, float, topk_moe_config)",
+      "total_ms": 0.845974,
+      "count": 145,
+      "mean_us": 5.834303448275862
+    },
+    {
+      "name": "void rms_norm_f32<(int)256, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+      "total_ms": 0.606259,
+      "count": 200,
+      "mean_us": 3.031295
+    },
+    {
+      "name": "void k_get_rows_float_vec<float>(const T1 *, const int *, T1 *, long long, long long, uint3, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long)",
+      "total_ms": 0.592155,
+      "count": 90,
+      "mean_us": 6.5794999999999995
+    },
+    {
+      "name": "void k_bin_bcast<&op_add, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "total_ms": 0.570294,
+      "count": 216,
+      "mean_us": 2.64025
+    },
+    {
+      "name": "moe_weighted_reduction_f32(const float *, const float *, const float *, float *, long long, int)",
+      "total_ms": 0.561081,
+      "count": 145,
+      "mean_us": 3.869524137931035
+    },
+    {
+      "name": "void k_bin_bcast<&op_mul, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "total_ms": 0.488507,
+      "count": 212,
+      "mean_us": 2.3042783018867925
+    },
+    {
+      "name": "void unary_gated_op_kernel<&op_silu, float>(const T2 *, const T2 *, T2 *, long long, long long, long long, long long)",
+      "total_ms": 0.441241,
+      "count": 202,
+      "mean_us": 2.184361386138614
+    },
+    {
+      "name": "scale_f32(const float *, float *, float, float, long long)",
+      "total_ms": 0.411314,
+      "count": 194,
+      "mean_us": 2.120175257731959
+    },
+    {
+      "name": "void rms_norm_f32<(int)256, (bool)0, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+      "total_ms": 0.395578,
+      "count": 180,
+      "mean_us": 2.1976555555555555
+    },
+    {
+      "name": "void unary_op_kernel<&op_sigmoid, float>(const T2 *, T2 *, int)",
+      "total_ms": 0.393982,
+      "count": 235,
+      "mean_us": 1.6765191489361704
+    },
+    {
+      "name": "void k_bin_bcast<&op_add, float, float, float, const float *, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "total_ms": 0.356253,
+      "count": 145,
+      "mean_us": 2.45691724137931
+    },
+    {
+      "name": "void flash_attn_stream_k_fixup_uniform<(int)256, (int)1, (int)8>(float *, const float2 *, int, int, int, int, int, int, uint3, uint3, uint3)",
+      "total_ms": 0.261116,
+      "count": 111,
+      "mean_us": 2.3523963963963963
+    },
+    {
+      "name": "void rope_multi<(bool)1, (bool)0, float>(const T3 *, T3 *, int, int, int, int, int, int, int, int, int, int, int, const int *, float, float, float, rope_corr_dims, float, const float *, mrope_sections, bool, bool)",
+      "total_ms": 0.253472,
+      "count": 110,
+      "mean_us": 2.304290909090909
+    },
+    {
+      "name": "void k_set_rows<float, long long, __half>(const T1 *, const T2 *, T3 *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, uint3, uint3, uint3, uint3, uint3)",
+      "total_ms": 0.248442,
+      "count": 110,
+      "mean_us": 2.2585636363636366
+    },
+    {
+      "name": "void ssm_conv_f32<(bool)1, (unsigned long long)128, (unsigned long long)4>(const float *, const float *, const float *, int, int, int, int, float *, int, int, int, long long)",
+      "total_ms": 0.240381,
+      "count": 90,
+      "mean_us": 2.6709
+    },
+    {
+      "name": "void concat_cont<unsigned int, (int)0>(const T1 *, const T1 *, T1 *, long long, long long, long long, long long, long long, long long)",
+      "total_ms": 0.154078,
+      "count": 55,
+      "mean_us": 2.801418181818182
+    },
+    {
+      "name": "void concat_cont<unsigned int, (int)2>(const T1 *, const T1 *, T1 *, long long, long long, long long, long long, long long, long long)",
+      "total_ms": 0.111775,
+      "count": 56,
+      "mean_us": 1.995982142857143
+    },
+    {
+      "name": "void unary_gated_op_kernel<&op_sigmoid, float>(const T2 *, const T2 *, T2 *, long long, long long, long long, long long)",
+      "total_ms": 0.106528,
+      "count": 55,
+      "mean_us": 1.9368727272727273
+    },
+    {
+      "name": "void unary_op_kernel<&op_softplus, float>(const T2 *, T2 *, int)",
+      "total_ms": 0.10105,
+      "count": 60,
+      "mean_us": 1.6841666666666666
+    },
+    {
+      "name": "void k_get_rows<(int)32, (int)1, &dequantize_q8_0, float>(const void *, const int *, T4 *, long long, long long, uint3, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long)",
+      "total_ms": 0.093086,
+      "count": 27,
+      "mean_us": 3.4476296296296294
+    },
+    {
+      "name": "void strata_a3b_argmax_tiles_f32<(int)256, (int)4096>(const float *, strata_a3b_argmax_pair *, long long, int)",
+      "total_ms": 0.075837,
+      "count": 14,
+      "mean_us": 5.4169285714285715
+    },
+    {
+      "name": "void k_bin_bcast<&op_repeat, float, float, float, >(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "total_ms": 0.064512,
+      "count": 23,
+      "mean_us": 2.804869565217391
+    },
+    {
+      "name": "void k_bin_bcast<&op_sub, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "total_ms": 0.06355,
+      "count": 14,
+      "mean_us": 4.539285714285714
+    },
+    {
+      "name": "void unary_gated_op_kernel<&op_softplus, float>(const T2 *, const T2 *, T2 *, long long, long long, long long, long long)",
+      "total_ms": 0.060316,
+      "count": 30,
+      "mean_us": 2.0105333333333335
+    },
+    {
+      "name": "pad_f32(const float *, unsigned long long, unsigned long long, unsigned long long, unsigned long long, float *, int, int, int, int, int, int, int, int, int, int, int, int, bool)",
+      "total_ms": 0.047648,
+      "count": 4,
+      "mean_us": 11.912
+    },
+    {
+      "name": "void strata_a3b_argmax_merge_f32<(int)256>(const strata_a3b_argmax_pair *, int *, int)",
+      "total_ms": 0.038559,
+      "count": 14,
+      "mean_us": 2.7542142857142857
+    },
+    {
+      "name": "void unary_op_kernel<&op_step, float>(const T2 *, T2 *, int)",
+      "total_ms": 0.027774,
+      "count": 7,
+      "mean_us": 3.967714285714286
+    },
+    {
+      "name": "void unary_op_kernel<&op_neg, float>(const T2 *, T2 *, int)",
+      "total_ms": 0.027552,
+      "count": 7,
+      "mean_us": 3.936
+    },
+    {
+      "name": "void cub::CUB_200500_750_NS::DeviceReduceKernel<cub::CUB_200500_750_NS::DeviceReducePolicy<float, unsigned long long, cuda::std::__4::plus<void>>::Policy600, const float *, unsigned long long, cuda::std::__4::plus<void>, float, cuda::std::__4::__identity>(T2, T5 *, T3, cub::CUB_200500_750_NS::GridEvenShare<T3>, T4, T6)",
+      "total_ms": 0.027072,
+      "count": 7,
+      "mean_us": 3.8674285714285714
+    },
+    {
+      "name": "arange_f32(float *, int, float, float)",
+      "total_ms": 0.021886,
+      "count": 7,
+      "mean_us": 3.1265714285714283
+    },
+    {
+      "name": "void cub::CUB_200500_750_NS::DeviceReduceSingleTileKernel<cub::CUB_200500_750_NS::DeviceReducePolicy<float, unsigned long long, cuda::std::__4::plus<void>>::Policy600, float *, float *, int, cuda::std::__4::plus<void>, float, float, cuda::std::__4::__identity>(T2, T3, T4, T5, T6, T8)",
+      "total_ms": 0.015007,
+      "count": 7,
+      "mean_us": 2.1438571428571427
+    },
+    {
+      "name": "void cpy_scalar_contiguous<int, float>(const char *, char *, long long)",
+      "total_ms": 0.012448,
+      "count": 7,
+      "mean_us": 1.7782857142857142
+    },
+    {
+      "name": "void op_clamp_kernel<float>(const T1 *, T1 *, T1, T1, int)",
+      "total_ms": 0.012447,
+      "count": 7,
+      "mean_us": 1.778142857142857
+    },
+    {
+      "name": "void cpy_scalar_contiguous<float, int>(const char *, char *, long long)",
+      "total_ms": 0.011488,
+      "count": 7,
+      "mean_us": 1.641142857142857
+    }
+  ],
+  "memory": {
+    "2": {
+      "total_ms": 6.167805,
+      "bytes": 6261720,
+      "count": 2732
+    },
+    "1": {
+      "total_ms": 859.908159,
+      "bytes": 11253835352,
+      "count": 23618
+    },
+    "8": {
+      "total_ms": 0.026625,
+      "bytes": 1344,
+      "count": 16
+    }
+  },
+  "gpu_including_graph_union_ms": 2247.282703,
+  "gpu_including_graph_active_fraction": 0.5062201125707265,
+  "note": "Graph-granularity trace omits kernels inside graphs from kernel table; use graph-inclusive union, not kernel-only active fraction."
+}

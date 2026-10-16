@@ -1,0 +1,49 @@
+{
+  "utc": "2026-10-14T16:30:13.764590+00:00",
+  "monotonic_s": 103113.093,
+  "pid": 21356,
+  "memory": {
+    "rss": 36661846016,
+    "vms": 62075510784,
+    "num_page_faults": 9833151,
+    "peak_wset": 36706398208,
+    "wset": 36661846016,
+    "peak_paged_pool": 2105784,
+    "paged_pool": 2105400,
+    "peak_nonpaged_pool": 101536,
+    "nonpaged_pool": 100720,
+    "pagefile": 62075510784,
+    "peak_pagefile": 63787704320,
+    "private": 62075510784
+  },
+  "system_memory": {
+    "total": 137300127744,
+    "available": 83708080128,
+    "percent": 39.0,
+    "used": 53592047616,
+    "free": 83708080128
+  },
+  "gpu": [
+    {
+      "index": 0,
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "used_mib": 22025,
+      "total_mib": 22528,
+      "utilization_pct": 86
+    },
+    {
+      "index": 1,
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "used_mib": 51,
+      "total_mib": 22528,
+      "utilization_pct": 0
+    },
+    {
+      "index": 2,
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "used_mib": 0,
+      "total_mib": 22528,
+      "utilization_pct": 0
+    }
+  ]
+}

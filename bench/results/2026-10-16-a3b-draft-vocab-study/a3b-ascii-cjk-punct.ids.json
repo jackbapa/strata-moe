@@ -1,0 +1,25 @@
+{
+  "source": "A3B GGUF tokenizer; no Flash-Next token IDs reused",
+  "target": "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-IQ3_S.gguf",
+  "draft": "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+  "tokenizer_sha256": "40bc939c6102fdf83d1f560f8e55d163b3193f075b558268b7e282dfbcef1c44",
+  "n_vocab": 248320,
+  "selected_rows": 194208,
+  "required_special_rows": 276,
+  "q8_output_bytes": 422596608,
+  "full_q8_output_bytes": 540344320,
+  "ascii": true,
+  "punctuation": true,
+  "scripts": [
+    "cjk_punct",
+    "han",
+    "hangul",
+    "kana"
+  ],
+  "corpora": [],
+  "coverage": 0.99,
+  "corpus_tokens": 0,
+  "corpus_outside_before": null,
+  "corpus_outside_after": null,
+  "ids_sha256": "4d4bb0a6aa5723bf7c8838631b194956b94636d5ae1360ce0e0b905ce9335dd0"
+}

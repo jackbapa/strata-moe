@@ -1,0 +1,71 @@
+{
+  "request": {
+    "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+    "messages": [
+      {
+        "role": "user",
+        "content": "请用中文逐步解释HTTPS握手流程，并给出一个具体例子。"
+      }
+    ],
+    "max_tokens": 256,
+    "stream": true,
+    "stream_options": {
+      "include_usage": true
+    },
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "config_sampling": {
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20
+  },
+  "result": {
+    "http_response_first_byte_s": 0.01160169999639038,
+    "http_headers_received_s": 0.01175939998938702,
+    "body_first_bytes_s": 0.01197649999812711,
+    "first_sse_event_s": 0.01197649999812711,
+    "ttft_any_content_or_reasoning_s": 0.08362079999642447,
+    "ttft_visible_content_s": 0.08362079999642447,
+    "ttft_reasoning_s": null,
+    "last_any_content_or_reasoning_s": 3.385980599996401,
+    "last_visible_content_s": 3.385980599996401,
+    "total_response_s": 3.3865519999963,
+    "client_usage_decode_tokens_per_s": 77.21750973349477,
+    "client_visible_usage_decode_tokens_per_s": 77.21750973349477,
+    "client_completion_tokens_per_total_second": 75.5931106329623,
+    "engine_predicted_tokens_per_s": 77.5,
+    "engine_prompt_tokens_per_s": 372.5,
+    "usage": {
+      "prompt_tokens": 26,
+      "completion_tokens": 256,
+      "total_tokens": 282,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 26,
+      "prompt_ms": 69.8,
+      "prompt_per_token_ms": 2.685,
+      "prompt_per_second": 372.5,
+      "predicted_n": 256,
+      "predicted_ms": 3301.7,
+      "predicted_per_token_ms": 12.897,
+      "predicted_per_second": 77.5,
+      "draft_n": 208,
+      "draft_n_accepted": 151
+    },
+    "finish_reason": "length",
+    "received_done": true,
+    "sse_frames": 246,
+    "data_events": 244,
+    "nonempty_text_events": 242,
+    "visible_characters": 511,
+    "reasoning_characters": 0,
+    "request_sha256": "30924ddc9daf7d0e22c5564e0452cbd925d670efe7c479f40a94532340d92e79",
+    "rate_note": "Client rate is (API completion_tokens - 1)/(last nonempty delta - first nonempty delta). SSE deltas need not equal single model tokens; MTP can emit bursts, and usage may include hidden/stop tokens. Visible-only rate is null if reasoning was emitted."
+  }
+}

@@ -1,0 +1,8 @@
+<|im_start|>user
+请用中文简要解释混合专家模型如何工作。
+<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+

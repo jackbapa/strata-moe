@@ -1,0 +1,114 @@
+--- a/ggml/src/ggml-cuda/argmax.cu
++++ b/ggml/src/ggml-cuda/argmax.cu
+@@ -1,9 +1,84 @@
+ #include <algorithm>
+ #include <cstdint>
++#include <cstdlib>
+ 
+ #include "argmax.cuh"
+ #include "common.cuh"
+ #include "sum.cuh"
++
++#if !defined(GGML_USE_HIP) && !defined(GGML_USE_MUSA)
++// Opt-in large-vocabulary reduction. Many small CTAs read separate vocabulary
++// tiles, then one CTA merges their maxima. CUDA pool scratch follows the same
++// stream/graph lifetime as other GGML CUDA temporary allocations.
++struct strata_a3b_argmax_pair {
++    float value;
++    int32_t index;
++};
++
++static __device__ __forceinline__ strata_a3b_argmax_pair strata_a3b_argmax_better(
++        strata_a3b_argmax_pair a, strata_a3b_argmax_pair b) {
++    // Ignore NaNs. An explicit minimum-index tie break preserves the neutral
++    // greedy sampler's first-maximum rule across tiles and warp reductions.
++    if (b.index >= 0 && (a.index < 0 || b.value > a.value ||
++                        (b.value == a.value && b.index < a.index))) return b;
++    return a;
++}
++
++template<int threads>
++static __device__ __forceinline__ strata_a3b_argmax_pair strata_a3b_argmax_block(
++        strata_a3b_argmax_pair best) {
++#pragma unroll
++    for (int offset = WARP_SIZE / 2; offset > 0; offset >>= 1) {
++        strata_a3b_argmax_pair other{
++            __shfl_xor_sync(0xFFFFFFFF, best.value, offset, WARP_SIZE),
++            __shfl_xor_sync(0xFFFFFFFF, best.index, offset, WARP_SIZE)};
++        best = strata_a3b_argmax_better(best, other);
++    }
++    constexpr int warps = threads / WARP_SIZE;
++    __shared__ strata_a3b_argmax_pair shared[warps];
++    const int warp = threadIdx.x / WARP_SIZE, lane = threadIdx.x % WARP_SIZE;
++    if (lane == 0) shared[warp] = best;
++    __syncthreads();
++    if (warp == 0) {
++        best = lane < warps ? shared[lane] : strata_a3b_argmax_pair{-INFINITY, -1};
++#pragma unroll
++        for (int offset = WARP_SIZE / 2; offset > 0; offset >>= 1) {
++            strata_a3b_argmax_pair other{
++                __shfl_xor_sync(0xFFFFFFFF, best.value, offset, WARP_SIZE),
++                __shfl_xor_sync(0xFFFFFFFF, best.index, offset, WARP_SIZE)};
++            best = strata_a3b_argmax_better(best, other);
++        }
++    }
++    return best;
++}
++
++template<int threads, int span>
++static __global__ __launch_bounds__(threads) void strata_a3b_argmax_tiles_f32(
++        const float * __restrict__ x, strata_a3b_argmax_pair * __restrict__ partial,
++        const int64_t ncols, const int tiles) {
++    const int64_t row = blockIdx.y, begin = int64_t(blockIdx.x) * span;
++    const int64_t end = begin + span < ncols ? begin + span : ncols;
++    strata_a3b_argmax_pair best{-INFINITY, -1};
++    for (int64_t col = begin + threadIdx.x; col < end; col += threads) {
++        const float value = x[row * ncols + col];
++        if (value == value) best = strata_a3b_argmax_better(best, {value, (int32_t) col});
++    }
++    best = strata_a3b_argmax_block<threads>(best);
++    if (threadIdx.x == 0) partial[row * tiles + blockIdx.x] = best;
++}
++
++template<int threads>
++static __global__ __launch_bounds__(threads) void strata_a3b_argmax_merge_f32(
++        const strata_a3b_argmax_pair * __restrict__ partial, int32_t * __restrict__ dst,
++        const int tiles) {
++    const int64_t row = blockIdx.x;
++    strata_a3b_argmax_pair best{-INFINITY, -1};
++    for (int tile = threadIdx.x; tile < tiles; tile += threads)
++        best = strata_a3b_argmax_better(best, partial[row * tiles + tile]);
++    best = strata_a3b_argmax_block<threads>(best);
++    if (threadIdx.x == 0) dst[row] = best.index;
++}
++#endif
+ 
+ static __global__ void argmax_f32(const float * __restrict__ x, int32_t * __restrict__ dst, const int64_t ncols) {
+     const int64_t row = blockIdx.x;
+@@ -82,6 +157,26 @@
+ 
+     cudaStream_t stream = ctx.stream();
+ 
++#if !defined(GGML_USE_HIP) && !defined(GGML_USE_MUSA)
++    static const bool multi = [] {
++        const char * value = std::getenv("STRATA_A3B_ARGMAX_MULTI");
++        return value != nullptr && std::atoi(value) != 0;
++    }();
++    // Bound scratch and grid dimensions; all unsupported shapes retain the
++    // original kernel below. Qwen's 248,320 logits use 61 * 8 scratch bytes.
++    if (multi && ne00 >= 16384 && ne00 <= 16777216 && nrows >= 1 && nrows <= 64) {
++        constexpr int threads = 256, span = 4096;
++        const int tiles = (int) ((ne00 + span - 1) / span);
++        ggml_cuda_pool_alloc<strata_a3b_argmax_pair> partial(ctx.pool(), (size_t) nrows * tiles);
++        strata_a3b_argmax_tiles_f32<threads, span><<<dim3(tiles, (unsigned) nrows), threads, 0, stream>>>(
++            src0_d, partial.get(), ne00, tiles);
++        strata_a3b_argmax_merge_f32<threads><<<dim3((unsigned) nrows), threads, 0, stream>>>(
++            partial.get(), dst_d, tiles);
++        CUDA_CHECK(cudaGetLastError());
++        return;
++    }
++#endif
++
+     const int64_t num_blocks = nrows;
+     const int64_t num_threads = std::min<int64_t>(1024, (ne00 + WARP_SIZE - 1) / WARP_SIZE * WARP_SIZE);
+     const dim3 blocks_dim(num_threads, 1, 1);

@@ -1,0 +1,50 @@
+{
+  "2026-10-15-a3b-q8-doorbell-reuse0-k2\\results.json": {
+    "bytes": 3705,
+    "sha256": "11efb7fca710b12ab2386efdc4cc06d68dc674cd4f3ea4124e20f11c04b04c36"
+  },
+  "2026-10-15-a3b-q8-doorbell-reuse0-k2\\prompt.txt": {
+    "bytes": 135,
+    "sha256": "22f016ed4590a69122b787a8fd497bf128b5da0abb753476b7ef4f39f92d6c46"
+  },
+  "2026-10-15-a3b-q8-doorbell-reuse0-k2\\gpu-cache-full-mtp.stdout.txt": {
+    "bytes": 1197,
+    "sha256": "749833c97c2be16194944623dbf2dd51ac7ede6f4a2c86b5531a27ac968c73b2"
+  },
+  "2026-10-15-a3b-q8-doorbell-reuse0-k2\\gpu-cache-full-mtp.stderr.txt": {
+    "bytes": 28180,
+    "sha256": "eeebb61539c47a9db87fec1a219667ad8a78b9e57c59f9b013c5758a63afbe7b"
+  },
+  "2026-10-15-a3b-q8-doorbell-reuse2-k2\\results.json": {
+    "bytes": 3705,
+    "sha256": "69480d456a27a47630b0e38acd7f50bea61b05b02f6b3fd03fbeee04eb9a3837"
+  },
+  "2026-10-15-a3b-q8-doorbell-reuse2-k2\\prompt.txt": {
+    "bytes": 135,
+    "sha256": "22f016ed4590a69122b787a8fd497bf128b5da0abb753476b7ef4f39f92d6c46"
+  },
+  "2026-10-15-a3b-q8-doorbell-reuse2-k2\\gpu-cache-full-mtp.stdout.txt": {
+    "bytes": 1197,
+    "sha256": "749833c97c2be16194944623dbf2dd51ac7ede6f4a2c86b5531a27ac968c73b2"
+  },
+  "2026-10-15-a3b-q8-doorbell-reuse2-k2\\gpu-cache-full-mtp.stderr.txt": {
+    "bytes": 28181,
+    "sha256": "14dd88182796284826efef82037e97c33f8baa9edf64350d11376b3399b0584b"
+  },
+  "2026-10-15-a3b-q8-doorbell-reuse4-k2\\results.json": {
+    "bytes": 3714,
+    "sha256": "6bb282558b0f4dc18971c847b3cc6e26a70f0c8a33e97608b07ea12c3f7f8b0d"
+  },
+  "2026-10-15-a3b-q8-doorbell-reuse4-k2\\prompt.txt": {
+    "bytes": 135,
+    "sha256": "22f016ed4590a69122b787a8fd497bf128b5da0abb753476b7ef4f39f92d6c46"
+  },
+  "2026-10-15-a3b-q8-doorbell-reuse4-k2\\gpu-cache-full-mtp.stdout.txt": {
+    "bytes": 1197,
+    "sha256": "749833c97c2be16194944623dbf2dd51ac7ede6f4a2c86b5531a27ac968c73b2"
+  },
+  "2026-10-15-a3b-q8-doorbell-reuse4-k2\\gpu-cache-full-mtp.stderr.txt": {
+    "bytes": 28179,
+    "sha256": "97053a19265beb3a575d09553037f0b36964eac131346128de1fb6b05caaa03a"
+  }
+}

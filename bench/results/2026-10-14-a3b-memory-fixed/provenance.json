@@ -1,0 +1,12 @@
+{
+  "files_sha256": {
+    "build-a3b/bin/strata-moe.exe": "903795fbc8cf7ba83c6bee973bd93355c70c857485382a8eff79b180032f31c6",
+    "a3b/main.cpp": "68f6733751e6b6f7a70de10f846ca37bded29bb6dcc0bbdf764699327cad5b29",
+    "a3b/backend.cpp": "7118232d7a9279b367ee639faa46d19e430a332abee1069539062fbfbb691883",
+    "a3b/backend.hpp": "9cd35775d9b92a42f93bc4068e3f365bb6b1d4ff2b564f22e9b75ab2ee49b496",
+    "tools/inspect_a3b_memory.py": "42102fcc8cb25c0da185cb5b0517a841e069d9caa656b3cf57fa321077afec38"
+  },
+  "model_sha256": "c13ce26253ea334df472bd8fbd2d6da66d8a41195c17f6fcbf44c4d20ece0932",
+  "hardware": "Threadripper 3960X, 128 GiB RAM, RTX 2080 Ti GPU0 reporting 22 GiB, Windows WDDM",
+  "source_snapshot_note": "Source hashes were captured after the three arms; other agents can edit shared source concurrently. The executable hash identifies the binary actually measured."
+}

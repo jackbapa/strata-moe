@@ -10,6 +10,8 @@ main { flex: 1; min-height: 0; display: flex; }
 .small { font-size: var(--st-fs-xs); }
 .card-title { font-weight: var(--st-fw-bold); font-size: var(--st-fs-base); color: var(--st-ink); }
 .st-header { position: relative; z-index: 2; flex: none; }
+.st-header__brand { display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; }
+.st-brand-mark { width: 26px; height: 26px; flex: none; }
 .st-header .st-tabs { margin-left: var(--st-s-4); }
 #drawer-close .st-icon { transform: rotate(-90deg); }
 

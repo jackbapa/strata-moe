@@ -1,0 +1,168 @@
+--- a/ggml/src/ggml-cuda/ggml-cuda.cu
++++ b/ggml/src/ggml-cuda/ggml-cuda.cu
+@@ -1,6 +1,7 @@
+ #include "ggml-cuda.h"
+ #include "ggml-impl.h"
+ #include "ggml-backend-impl.h"
++#include "strata/kernels/fused_gdn.hpp"
+ 
+ #include "ggml-cuda/allreduce.cuh"
+ #include "ggml-cuda/common.cuh"
+@@ -2821,6 +2822,90 @@
+     return skip;
+ }
+ 
++static std::atomic<uint64_t> ggml_cuda_a3b_gdn_fused_graph_nodes{0};
++
++extern "C" uint64_t ggml_backend_cuda_a3b_gdn_fused_graph_nodes() {
++    // This counts graph evaluations/captures, not CUDA Graph replays.
++    return ggml_cuda_a3b_gdn_fused_graph_nodes.load(std::memory_order_relaxed);
++}
++
++static bool ggml_cuda_a3b_ranges_overlap(const void * a, size_t an, const void * b, size_t bn) {
++    const uintptr_t aa = (uintptr_t) a, bb = (uintptr_t) b;
++    return aa < bb + bn && bb < aa + an;
++}
++
++// Qwen3.5/3.6 A3B single-token graph only. The model builder expands z before
++// the GDN when STRATA_A3B_GDN_FUSED_STEP=1, making the following exact span
++// contiguous. The existing multi-token GDN and cache-copy paths stay intact.
++static int ggml_cuda_try_a3b_gdn_step_fusion(
++        ggml_backend_cuda_context * cuda_ctx, ggml_cgraph * cgraph, int i,
++        const ggml_cuda_gated_delta_net_fused_cache & cache, int cache_skip) {
++    if (cache_skip != 3 || i + 9 >= cgraph->n_nodes) return 0;
++    const ggml_op ops[] = {GGML_OP_GATED_DELTA_NET, GGML_OP_VIEW, GGML_OP_VIEW, GGML_OP_CPY,
++                           GGML_OP_VIEW, GGML_OP_RMS_NORM, GGML_OP_MUL, GGML_OP_RESHAPE,
++                           GGML_OP_UNARY, GGML_OP_MUL};
++    const int outputs[] = {i + 2, i + 3, i + 7, i + 9};
++    if (!ggml_can_fuse_subgraph(cgraph, i, 10, ops, outputs, 4)) return 0;
++    ggml_tensor * gdn = cgraph->nodes[i];
++    ggml_tensor * state_view = cgraph->nodes[i + 1];
++    ggml_tensor * state_cache = cgraph->nodes[i + 2];
++    ggml_tensor * state_cpy = cgraph->nodes[i + 3];
++    ggml_tensor * output_view = cgraph->nodes[i + 4];
++    ggml_tensor * norm = cgraph->nodes[i + 5];
++    ggml_tensor * weighted = cgraph->nodes[i + 6];
++    ggml_tensor * z = cgraph->nodes[i + 7];
++    ggml_tensor * silu = cgraph->nodes[i + 8];
++    ggml_tensor * y = cgraph->nodes[i + 9];
++    const ggml_tensor * q = gdn->src[0], * k = gdn->src[1], * v = gdn->src[2];
++    const ggml_tensor * gate = gdn->src[3], * beta = gdn->src[4], * state = gdn->src[5];
++    const ggml_tensor * gamma = weighted->src[1];
++    constexpr size_t score_bytes = 128 * 32 * sizeof(float);
++    constexpr size_t state_bytes = 128 * 128 * 32 * sizeof(float);
++    const bool shapes = v->ne[0] == 128 && v->ne[1] == 32 && v->ne[2] == 1 && v->ne[3] == 1 &&
++        q->ne[0] == 128 && q->ne[1] == 16 && q->ne[2] == 1 && q->ne[3] == 1 &&
++        k->ne[0] == 128 && k->ne[1] == 16 && k->ne[2] == 1 && k->ne[3] == 1 &&
++        gate->ne[0] == 1 && gate->ne[1] == 32 && beta->ne[0] == 1 && beta->ne[1] == 32 &&
++        state->ne[0] == 128 && state->ne[1] == 128 && state->ne[2] == 32 && state->ne[3] == 1 &&
++        gamma->ne[0] == 128 && ggml_nelements(gamma) == 128 &&
++        z->ne[0] == 128 && z->ne[1] == 32 && ggml_nelements(z) == 4096 &&
++        ggml_nelements(y) == 4096 &&
++        ggml_nelements(state_view) == 524288 && ggml_nelements(state_cache) == 524288;
++    if (!shapes || ggml_get_op_params_i32(gdn, 0) < 1 ||
++        state_view->src[0] != gdn || state_view->view_src != gdn ||
++        state_view->view_offs != score_bytes ||
++        state_cpy->src[0] != state_view || state_cpy->src[1] != state_cache ||
++        output_view->src[0] != gdn || output_view->view_src != gdn || output_view->view_offs != 0 ||
++        norm->src[0] != output_view || weighted->src[0] != norm ||
++        silu->src[0] != z || ggml_get_unary_op(silu) != GGML_UNARY_OP_SILU ||
++        y->src[0] != weighted || y->src[1] != silu) return 0;
++    const float eps = ggml_get_op_params_f32(norm, 0);
++    if (!(eps >= 0.0f) || !std::isfinite(eps)) return 0;
++    const ggml_tensor * checked[] = {q, k, v, gate, beta, state, gamma, z, y};
++    for (const ggml_tensor * t : checked) {
++        if (t->type != GGML_TYPE_F32 || t->data == nullptr || !ggml_is_contiguous(t)) return 0;
++    }
++    if (cache.data == nullptr ||
++        (cache.data != state->data && ggml_cuda_a3b_ranges_overlap(cache.data, state_bytes, state->data, state_bytes)))
++        return 0;
++    const ggml_tensor * inputs[] = {q, k, v, gate, beta, state, gamma, z};
++    for (const ggml_tensor * src : inputs) {
++        if (ggml_cuda_a3b_ranges_overlap(y->data, score_bytes, src->data,
++                ggml_nbytes(src))) return 0;
++    }
++    strata::kernels::fused_gdn_a3b_step_norm(
++        (const float *) state->data, cache.data, (const float *) q->data, (const float *) k->data,
++        (const float *) v->data, (const float *) gate->data, (const float *) beta->data,
++        (const float *) z->data, (const float *) gamma->data, eps, (float *) y->data,
++        16, 32, (void *) cuda_ctx->stream());
++    const uint64_t total = ggml_cuda_a3b_gdn_fused_graph_nodes.fetch_add(1, std::memory_order_relaxed) + 1;
++    const char * trace = std::getenv("STRATA_A3B_GDN_GRAPH_TRACE");
++    if (trace && trace[0] == '1' && total <= 2) {
++        std::fprintf(stderr, "A3B Strata fused GDN graph match: %llu (single-token, 32 heads)\n",
++                     (unsigned long long) total);
++    }
++    return 9;
++}
++
+ static bool ggml_cuda_topk_moe_fusion(const struct ggml_cgraph * cgraph, int node_idx, ggml_cuda_topk_moe_args & args) {
+     args.sigmoid         = false;
+     args.sqrt_softplus   = false;
+@@ -3460,9 +3545,39 @@
+ 
+     // gated_delta_net -> cpy: scatter recurrent-state snapshots into the cache
+     if (node->op == GGML_OP_GATED_DELTA_NET) {
++        static std::atomic<int> gdn_trace_count{0};
++        const char * gdn_trace = std::getenv("STRATA_A3B_GDN_GRAPH_TRACE");
++        if (gdn_trace && gdn_trace[0] == '1' && node->src[2]->ne[0] == 128 &&
++            node->src[2]->ne[1] == 32 && node->src[2]->ne[2] == 1 &&
++            gdn_trace_count.fetch_add(1) < 2) {
++            std::fprintf(stderr, "A3B GDN graph trace at %d: K=%d n_tokens=%lld n_seqs=%lld\n",
++                i, ggml_get_op_params_i32(node, 0),
++                (long long) node->src[2]->ne[2], (long long) node->src[2]->ne[3]);
++            for (int j = i; j < cgraph->n_nodes && j < i + 22; ++j) {
++                const ggml_tensor * t = cgraph->nodes[j];
++                std::fprintf(stderr,
++                    "  %+d %s %s tensor=%p src0=%p src1=%p view=%p off=%zu ne=[%lld,%lld,%lld,%lld]\n",
++                    j - i, ggml_op_name(t->op), t->name, (const void *) t,
++                    (const void *) t->src[0], (const void *) t->src[1],
++                    (const void *) t->view_src, t->view_offs,
++                    (long long) t->ne[0], (long long) t->ne[1],
++                    (long long) t->ne[2], (long long) t->ne[3]);
++            }
++        }
+         ggml_cuda_gated_delta_net_fused_cache fused_state_cpy;
+         const int nodes_to_skip = ggml_cuda_try_gdn_cache_fusion(cgraph, i, fused_state_cpy);
+         if (nodes_to_skip > 0) {
++            static const bool a3b_gdn_step_enabled = [] {
++                const char * value = std::getenv("STRATA_A3B_GDN_FUSED_STEP");
++                return value != nullptr && value[0] == '1';
++            }();
++            if (a3b_gdn_step_enabled) {
++                const int fused_skip = ggml_cuda_try_a3b_gdn_step_fusion(
++                    cuda_ctx, cgraph, i, fused_state_cpy, nodes_to_skip);
++                if (fused_skip > 0) {
++                    return fused_skip;
++                }
++            }
+ #ifdef GGML_CUDA_DEBUG
+             GGML_LOG_INFO("%s: fused gated_delta_net snapshot copies for %s (skipped %d nodes)\n",
+                           __func__, node->name, nodes_to_skip);
+--- a/src/models/qwen35moe.cpp
++++ b/src/models/qwen35moe.cpp
+@@ -1,5 +1,7 @@
+ #include "models.h"
+ #include "llama-memory-recurrent.h"
++
++#include <cstdlib>
+ 
+ void llama_model_qwen35moe::load_arch_hparams(llama_model_loader & ml) {
+     ml.get_key_or_arr(LLM_KV_EXPERT_FEED_FORWARD_LENGTH, hparams.n_ff_exp_arr, hparams.n_layer_all, false);
+@@ -378,6 +380,16 @@
+     auto qkvz = build_qkvz(cur, il);
+     ggml_tensor * qkv_mixed = qkvz.first;
+     ggml_tensor * z         = qkvz.second;
++
++    // The optional A3B CUDA GDN step folds the output RMSNorm and SiLU(z)
++    // into the recurrent kernel. Make z available before that kernel; the
++    // default graph retains its existing node order exactly.
++    const char * fused_gdn = std::getenv("STRATA_A3B_GDN_FUSED_STEP");
++    if (fused_gdn && fused_gdn[0] == '1' && n_seq_tokens == 1 &&
++        hparams.ssm_d_inner == 4096 && hparams.ssm_d_state == 128 &&
++        hparams.ssm_n_group == 16 && hparams.ssm_dt_rank == 32) {
++        ggml_build_forward_expand(gf, z);
++    }
+ 
+     ggml_tensor * beta = build_lora_mm(model.layers[il].ssm_beta, cur, model.layers[il].ssm_beta_s);
+     beta = ggml_reshape_4d(ctx0, beta, 1, num_v_heads, n_seq_tokens, n_seqs);

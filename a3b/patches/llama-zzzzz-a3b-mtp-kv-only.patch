@@ -1,0 +1,59 @@
+diff --git a/src/models/qwen35moe.cpp b/src/models/qwen35moe.cpp
+--- a/src/models/qwen35moe.cpp
++++ b/src/models/qwen35moe.cpp
+@@ -1,6 +1,7 @@
+ #include "models.h"
+ #include "llama-memory-recurrent.h"
+ 
++#include <atomic>
+ #include <cstdlib>
+ 
+ void llama_model_qwen35moe::load_arch_hparams(llama_model_loader & ml) {
+@@ -608,8 +609,21 @@
+ 
+     res->add_input(std::move(inp));
+ 
++    // The A3B catch-up supplies its next hidden row from the target and only
++    // needs this block's K/V writes. Keep the opt-in fixed for the process:
++    // graph reuse does not include environment variables in its cache key.
++    static const bool kv_only_enabled = [] {
++        const char * value = std::getenv("STRATA_A3B_MTP_KV_ONLY");
++        return value && value[0] == '1' && value[1] == '\0';
++    }();
++    const bool kv_only = kv_only_enabled && n_outputs == 0 &&
++            cparams.embeddings_nextn && cparams.embeddings_nextn_masked &&
++            !cparams.embeddings && cparams.pooling_type == LLAMA_POOLING_TYPE_NONE;
++
+     ggml_tensor * inp_pos     = build_inp_pos();
+-    ggml_tensor * inp_out_ids = build_inp_out_ids();
++    // An unused output-index input has no buffer, but its input setter expects
++    // one. Do not create it for the KV-only graph.
++    ggml_tensor * inp_out_ids = kv_only ? nullptr : build_inp_out_ids();
+ 
+     auto * inp_attn = build_attn_inp_kv();
+ 
+@@ -673,6 +687,24 @@
+     cur = build_attn(inp_attn,
+             nullptr, nullptr, nullptr,
+             Qcur, Kcur, Vcur, nullptr, nullptr, nullptr, kq_scale, il);
++
++    // build_attn has already expanded Q/K/V and both cache-copy operations.
++    // Its attention result is not a graph root yet. Omitting that root skips
++    // attention, FFN and head work without changing the stored K/V arithmetic.
++    // The masked n_outputs == 0 contract requests no draft hidden rows/logits.
++    if (kv_only) {
++        static const bool diagnostic = [] {
++            const char * value = std::getenv("STRATA_A3B_MTP_KV_ONLY_DIAGNOSTIC");
++            return value && value[0] == '1' && value[1] == '\0';
++        }();
++        if (diagnostic) {
++            static std::atomic<uint64_t> graph_builds{0};
++            const uint64_t count = graph_builds.fetch_add(1, std::memory_order_relaxed) + 1;
++            LLAMA_LOG_INFO("A3B MTP KV-only graph build: count=%llu tokens=%lld outputs=0; not an execution count\n",
++                    (unsigned long long) count, (long long) n_tokens);
++        }
++        return;
++    }
+     cb(cur, "mtp_attn_pregate", il);
+ 
+     cur = ggml_mul(ctx0, cur, ggml_sigmoid(ctx0, gate));

@@ -1,0 +1,114 @@
+{
+  "identity": {
+    "config_and_model": {
+      "i32_scatter": {
+        "engine": "074122f906d5a46eb9f3bdf41239c32fdecf4ddbe27c86c1ee3972bdbf3c7cc3",
+        "target": "66a3ca888ce13482b40c333db2432c0ebde3a7b13754fc29f0c6f5e89703ec66",
+        "mtp": "cd2a20b807b38dfa199b530809e3fc7f3811e992c0511c77fe1f766fb31cbf93",
+        "mtp_path": "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0-DV-ASCII-CJK-PUNCT-I32.gguf",
+        "config_sha256": "af54b0ff10d4a03a099f1380864908448314966cb7bf64f7e8c7dff7a3e58828"
+      },
+      "i32_compact": {
+        "engine": "074122f906d5a46eb9f3bdf41239c32fdecf4ddbe27c86c1ee3972bdbf3c7cc3",
+        "target": "66a3ca888ce13482b40c333db2432c0ebde3a7b13754fc29f0c6f5e89703ec66",
+        "mtp": "cd2a20b807b38dfa199b530809e3fc7f3811e992c0511c77fe1f766fb31cbf93",
+        "mtp_path": "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0-DV-ASCII-CJK-PUNCT-I32.gguf",
+        "config_sha256": "172132492d720357942dcd769e6bb10e2d2478f4cdcf2bb386cc920c3396e8ea"
+      }
+    },
+    "strict": {
+      "chain": false,
+      "same_binary_sha256": "7791bb36237c1a274c3131bef95dfdbd4cd430ec6dbb1c42e3bc650b4e2661ee",
+      "strict_pass_classes_each": 8,
+      "subset_full_id_traces_equal": true,
+      "subset_target_draft_states_equal": true,
+      "proposal_windows": 29,
+      "full_head_passed_sequential_reference": true,
+      "state_pairs_bitwise_equal": 16,
+      "i32_compact_graph_rows_short": 26
+    },
+    "order": [
+      "i32_scatter",
+      "i32_compact",
+      "i32_scatter",
+      "i32_compact",
+      "i32_scatter",
+      "i32_compact"
+    ],
+    "request": {
+      "prompt_tokens": 50000,
+      "completion_tokens": 256,
+      "temperature": 0,
+      "seed": 12345,
+      "thinking": false
+    },
+    "selected_config_sha256": "94bb567296d56ebbf5225fb0533f7dd30422f40d0f85e02284e24e551417ac0f",
+    "only_execution_difference": "STRATA_A3B_DRAFT_COMPACT_GPU=0/1"
+  },
+  "order": [
+    "i32_scatter",
+    "i32_compact",
+    "i32_scatter",
+    "i32_compact",
+    "i32_scatter",
+    "i32_compact"
+  ],
+  "arms": {
+    "i32_scatter": {
+      "runs": 3,
+      "output_sha256": [
+        "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7"
+      ],
+      "proposal_sha256": [
+        "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a"
+      ],
+      "http_response_first_byte_s_median": 0.010412400006316602,
+      "ttft_any_content_or_reasoning_s_median": 28.507554299983894,
+      "engine_prompt_tokens_per_s_median": 1768.3,
+      "engine_predicted_tokens_per_s_median": 85.0,
+      "gpu0_total_used_mib_observed_peak_median": 16991,
+      "gpu0_total_used_mib_observed_peak_over_before_median": 92,
+      "engine_rss_bytes_observed_peak_median": 1740685312,
+      "mtp_compact_gpu_sample_rows_median": 0,
+      "mtp_offered_tokens_median": 238,
+      "mtp_accepted_tokens_median": 136,
+      "mtp_acceptance_rate_median": 0.5714285714285714
+    },
+    "i32_compact": {
+      "runs": 3,
+      "output_sha256": [
+        "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7"
+      ],
+      "proposal_sha256": [
+        "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a"
+      ],
+      "http_response_first_byte_s_median": 0.010383300017565489,
+      "ttft_any_content_or_reasoning_s_median": 28.501825499988627,
+      "engine_prompt_tokens_per_s_median": 1763.3,
+      "engine_predicted_tokens_per_s_median": 85.4,
+      "gpu0_total_used_mib_observed_peak_median": 16991,
+      "gpu0_total_used_mib_observed_peak_over_before_median": 92,
+      "engine_rss_bytes_observed_peak_median": 1740292096,
+      "mtp_compact_gpu_sample_rows_median": 238,
+      "mtp_offered_tokens_median": 238,
+      "mtp_accepted_tokens_median": 136,
+      "mtp_acceptance_rate_median": 0.5714285714285714
+    }
+  },
+  "compact_minus_scatter": {
+    "http_response_first_byte_s": -2.9099988751113415e-05,
+    "ttft_any_content_or_reasoning_s": -0.005728799995267764,
+    "engine_prompt_tokens_per_s": -5.0,
+    "engine_predicted_tokens_per_s": 0.4000000000000057,
+    "gpu0_total_used_mib_observed_peak": 0,
+    "gpu0_total_used_mib_observed_peak_over_before": 0,
+    "engine_rss_bytes_observed_peak": -393216,
+    "mtp_compact_gpu_sample_rows": 238,
+    "mtp_offered_tokens": 0,
+    "mtp_accepted_tokens": 0,
+    "mtp_acceptance_rate": 0.0
+  },
+  "final_output_identical": true,
+  "proposal_trace_identical": true,
+  "note": "One 50K Chinese repetition workload; three alternating trials per arm. Whole GPU 0 memory, not process VRAM."
+}

@@ -1,0 +1,324 @@
+{
+  "started": "2026-10-13T22:28:50.502984+08:00",
+  "profiles": [
+    {
+      "mode": "off",
+      "status": "passed",
+      "startup_s": 49.04181880000033,
+      "common_total_tok_s": 107.92637616048471,
+      "common_per_slot_tok_s": {
+        "0": 35.97545872016157,
+        "1": 35.97545872016157,
+        "2": 35.97545872016157
+      },
+      "common_window_s": 25.295021449997876,
+      "wall_s": 88.99276380000083,
+      "end_to_end_output_tok_s": 34.519660574919364,
+      "ttft_s": [
+        19.841177100001005,
+        39.747852200000125,
+        60.11331260000043
+      ],
+      "available_ram_start_gib": 47.862464904785156,
+      "available_ram_min_gib": 47.299434661865234,
+      "max_temperature_c": 85,
+      "min_gpu_free_mib": 2045,
+      "start_temperatures_c": [
+        55,
+        36,
+        54
+      ],
+      "verified": {
+        "health": {
+          "status": "ok",
+          "max_context": 262144,
+          "model": "qwen3.8-flash-next-iq3_s",
+          "images": true,
+          "api_key": false,
+          "loaded": true,
+          "service": "strata"
+        },
+        "slots": [
+          {
+            "id": 0,
+            "n_ctx": 262144,
+            "is_processing": false,
+            "n_prompt_tokens": 0
+          },
+          {
+            "id": 1,
+            "n_ctx": 262144,
+            "is_processing": false,
+            "n_prompt_tokens": 0
+          },
+          {
+            "id": 2,
+            "n_ctx": 262144,
+            "is_processing": false,
+            "n_prompt_tokens": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "on",
+      "status": "passed",
+      "startup_s": 64.03663430000051,
+      "common_total_tok_s": 107.72883524939223,
+      "common_per_slot_tok_s": {
+        "0": 35.90961174979741,
+        "1": 35.90961174979741,
+        "2": 35.90961174979741
+      },
+      "common_window_s": 25.230013799999142,
+      "wall_s": 86.16359369999918,
+      "end_to_end_output_tok_s": 35.65310902300526,
+      "ttft_s": [
+        18.97792069999923,
+        38.04230710000047,
+        57.14028249999865
+      ],
+      "available_ram_start_gib": 74.71649932861328,
+      "available_ram_min_gib": 74.04824829101562,
+      "max_temperature_c": 86,
+      "min_gpu_free_mib": 2049,
+      "start_temperatures_c": [
+        57,
+        37,
+        56
+      ],
+      "verified": {
+        "health": {
+          "status": "ok",
+          "max_context": 262144,
+          "model": "qwen3.8-flash-next-iq3_s",
+          "images": true,
+          "api_key": false,
+          "loaded": true,
+          "service": "strata"
+        },
+        "slots": [
+          {
+            "id": 0,
+            "n_ctx": 262144,
+            "is_processing": false,
+            "n_prompt_tokens": 0
+          },
+          {
+            "id": 1,
+            "n_ctx": 262144,
+            "is_processing": false,
+            "n_prompt_tokens": 0
+          },
+          {
+            "id": 2,
+            "n_ctx": 262144,
+            "is_processing": false,
+            "n_prompt_tokens": 0
+          }
+        ]
+      }
+    }
+  ],
+  "status": "complete",
+  "input_tokens_per_request": 32768,
+  "output_tokens_per_request": 1024,
+  "context_per_slot": 262144,
+  "driver": "617.42",
+  "order": [
+    "off",
+    "on"
+  ],
+  "layer_split": "17,34",
+  "method": "identical inputs, fresh server per arm, same warmup and cooling rule; one burst per arm",
+  "on_vs_off_decode_ratio": 0.9981696697496937,
+  "on_vs_off_wall_ratio": 0.968208987122146,
+  "available_ram_gain_gib": 26.74881362915039,
+  "selected": "on",
+  "selection_rule": "enable only if simultaneous decode is within 3% and full wall time within 3% of off; otherwise prioritize speed",
+  "final_verified": {
+    "health": {
+      "status": "ok",
+      "max_context": 262144,
+      "model": "qwen3.8-flash-next-iq3_s",
+      "images": true,
+      "api_key": false,
+      "loaded": true,
+      "service": "strata"
+    },
+    "slots": [
+      {
+        "id": 0,
+        "n_ctx": 262144,
+        "is_processing": false,
+        "n_prompt_tokens": 0
+      },
+      {
+        "id": 1,
+        "n_ctx": 262144,
+        "is_processing": false,
+        "n_prompt_tokens": 0
+      },
+      {
+        "id": 2,
+        "n_ctx": 262144,
+        "is_processing": false,
+        "n_prompt_tokens": 0
+      }
+    ]
+  },
+  "final_config": {
+    "exe": "G:\\Strata\\engine\\strata.exe",
+    "args": [
+      "--pack",
+      "G:\\Strata-data\\packs\\iq3_s",
+      "--native",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "--ple-gguf",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00002-of-00002.gguf",
+      "--expert-profile",
+      "G:\\Strata\\data\\expert-profile.bin",
+      "--expert-cache",
+      "auto",
+      "--prefill",
+      "8192",
+      "--spec",
+      "4",
+      "--mtp",
+      "G:\\Strata-data\\mtp\\rt",
+      "--max-context",
+      "262144",
+      "--kv",
+      "int8",
+      "--kv-resident",
+      "32768",
+      "--vision",
+      "--vram-reserve-mib",
+      "1536",
+      "--vram-reserve-later-mib",
+      "1536",
+      "--pcie-frac",
+      "0.75",
+      "--spec-min-p",
+      "0.70",
+      "--pool-workers",
+      "6",
+      "--batch-groups",
+      "3",
+      "--resident-experts"
+    ],
+    "cwd": "G:\\Strata",
+    "tokenizer": "G:\\Strata-data\\packs\\iq3_s\\tokenizer",
+    "model_name": "qwen3.8-flash-next-iq3_s",
+    "log": "G:\\Strata\\strata-iq3_s.log",
+    "lib_dirs": [
+      "G:\\Strata\\.venv\\Lib\\site-packages\\nvidia\\cu13\\bin\\x86_64"
+    ],
+    "port": 8080,
+    "host": "127.0.0.1",
+    "parallel": 3,
+    "gpu": [
+      0,
+      1,
+      2
+    ],
+    "gpus_asked": true,
+    "gpu_order": "as_given",
+    "layer_split": "17,34",
+    "vision": {
+      "exe": "G:\\Strata\\engine\\strata-vision.exe",
+      "mmproj": "G:\\Strata-data\\models\\mmproj-Qwen3.8-Flash-Next-BF16.gguf",
+      "model": "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "gpu": true,
+      "max_tokens": 1024
+    }
+  },
+  "smoke": [
+    {
+      "first": 2.4310316999999486,
+      "total": 3.581039200000305,
+      "text": "READY 0.",
+      "usage": {
+        "prompt_tokens": 18,
+        "completion_tokens": 5,
+        "total_tokens": 23,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 18,
+        "prompt_ms": 568.9,
+        "prompt_per_token_ms": 31.606,
+        "prompt_per_second": 31.6,
+        "predicted_n": 5,
+        "predicted_ms": 1073.1,
+        "predicted_per_token_ms": 214.62,
+        "predicted_per_second": 4.7,
+        "draft_n": 0,
+        "draft_n_accepted": 0
+      },
+      "err": null,
+      "pieces": 4
+    },
+    {
+      "first": 3.1411358999994263,
+      "total": 3.595878999998604,
+      "text": "READY 1.",
+      "usage": {
+        "prompt_tokens": 18,
+        "completion_tokens": 5,
+        "total_tokens": 23,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 18,
+        "prompt_ms": 527.7,
+        "prompt_per_token_ms": 29.317,
+        "prompt_per_second": 34.1,
+        "predicted_n": 5,
+        "predicted_ms": 332.0,
+        "predicted_per_token_ms": 66.4,
+        "predicted_per_second": 15.1,
+        "draft_n": 0,
+        "draft_n_accepted": 0
+      },
+      "err": null,
+      "pieces": 4
+    },
+    {
+      "first": 1.4723770000000513,
+      "total": 3.546217400000387,
+      "text": "READY 2.",
+      "usage": {
+        "prompt_tokens": 18,
+        "completion_tokens": 5,
+        "total_tokens": 23,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 18,
+        "prompt_ms": 1316.6,
+        "prompt_per_token_ms": 73.144,
+        "prompt_per_second": 13.7,
+        "predicted_n": 5,
+        "predicted_ms": 1998.8,
+        "predicted_per_token_ms": 399.76,
+        "predicted_per_second": 2.5,
+        "draft_n": 0,
+        "draft_n_accepted": 0
+      },
+      "err": null,
+      "pieces": 4
+    }
+  ],
+  "service_left_running": true,
+  "finished": "2026-10-13T22:36:39.252183+08:00"
+}

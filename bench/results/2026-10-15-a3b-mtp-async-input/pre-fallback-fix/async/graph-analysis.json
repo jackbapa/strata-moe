@@ -1,0 +1,117 @@
+{
+  "chain_ranges": 26,
+  "total_duration_ms": 100.810294,
+  "cuda_api_total": {
+    "cudaStreamSynchronize_v3020": 52,
+    "cudaMemcpyAsync_v3020": 546,
+    "cudaGraphInstantiate_v12000": 1,
+    "cudaGraphExecUpdate_v10020": 3,
+    "cudaGraphLaunch_v10000": 49,
+    "cudaGraphDestroy_v10000": 2
+  },
+  "cuda_api_total_duration_ms": {
+    "cudaStreamSynchronize_v3020": 85.153184,
+    "cudaMemcpyAsync_v3020": 3.415918,
+    "cudaGraphInstantiate_v12000": 0.24307,
+    "cudaGraphExecUpdate_v10020": 0.046198,
+    "cudaGraphLaunch_v10000": 1.079048,
+    "cudaGraphDestroy_v10000": 0.073057
+  },
+  "graph_launch_per_range": {
+    "1": 3,
+    "2": 23
+  },
+  "memcpy_kind_bytes_count": [
+    {
+      "kind": 1,
+      "bytes": 4,
+      "count": 78
+    },
+    {
+      "kind": 1,
+      "bytes": 8,
+      "count": 104
+    },
+    {
+      "kind": 1,
+      "bytes": 16,
+      "count": 52
+    },
+    {
+      "kind": 1,
+      "bytes": 512,
+      "count": 52
+    },
+    {
+      "kind": 1,
+      "bytes": 8192,
+      "count": 26
+    },
+    {
+      "kind": 2,
+      "bytes": 4,
+      "count": 104
+    },
+    {
+      "kind": 2,
+      "bytes": 8192,
+      "count": 26
+    },
+    {
+      "kind": 8,
+      "bytes": 4,
+      "count": 52
+    },
+    {
+      "kind": 8,
+      "bytes": 8192,
+      "count": 52
+    }
+  ],
+  "first_five_ranges": [
+    {
+      "duration_ms": 3.623962,
+      "cuda_api": {
+        "cudaStreamSynchronize_v3020": 2,
+        "cudaMemcpyAsync_v3020": 21,
+        "cudaGraphInstantiate_v12000": 1,
+        "cudaGraphExecUpdate_v10020": 1,
+        "cudaGraphLaunch_v10000": 1
+      }
+    },
+    {
+      "duration_ms": 3.552254,
+      "cuda_api": {
+        "cudaStreamSynchronize_v3020": 2,
+        "cudaMemcpyAsync_v3020": 21,
+        "cudaGraphDestroy_v10000": 1,
+        "cudaGraphExecUpdate_v10020": 1,
+        "cudaGraphLaunch_v10000": 1
+      }
+    },
+    {
+      "duration_ms": 4.394582,
+      "cuda_api": {
+        "cudaStreamSynchronize_v3020": 2,
+        "cudaMemcpyAsync_v3020": 21,
+        "cudaGraphLaunch_v10000": 2
+      }
+    },
+    {
+      "duration_ms": 3.594732,
+      "cuda_api": {
+        "cudaStreamSynchronize_v3020": 2,
+        "cudaMemcpyAsync_v3020": 21,
+        "cudaGraphLaunch_v10000": 2
+      }
+    },
+    {
+      "duration_ms": 5.938933,
+      "cuda_api": {
+        "cudaStreamSynchronize_v3020": 2,
+        "cudaMemcpyAsync_v3020": 21,
+        "cudaGraphLaunch_v10000": 2
+      }
+    }
+  ]
+}

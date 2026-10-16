@@ -1,0 +1,42 @@
+{
+  "pass": true,
+  "order": [
+    "off",
+    "on",
+    "off",
+    "on",
+    "off",
+    "on"
+  ],
+  "trials_per_arm": 3,
+  "same_50k_request_output_and_proposals": true,
+  "output_sha256": "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7",
+  "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+  "mtp_offered_tokens": 238,
+  "mtp_accepted_tokens": 136,
+  "strict_fixture_attention_difference": "selected strict uses --native-attention-exact for fixture rollback reference; selected service does not set this flag, so long service output/proposal parity remains a separate gate",
+  "gpu_memory_scope": "observed whole GPU 0, not process-attributed",
+  "arms": {
+    "off": {
+      "http_response_first_byte_s_median": 0.01884429997880943,
+      "ttft_any_content_or_reasoning_s_median": 28.545007400010945,
+      "engine_prompt_tokens_per_s_median": 1763.7,
+      "engine_predicted_tokens_per_s_median": 82.6,
+      "gpu0_total_used_mib_observed_peak_median": 17103
+    },
+    "on": {
+      "http_response_first_byte_s_median": 0.010370799980591983,
+      "ttft_any_content_or_reasoning_s_median": 28.663793399988208,
+      "engine_prompt_tokens_per_s_median": 1760.3,
+      "engine_predicted_tokens_per_s_median": 82.6,
+      "gpu0_total_used_mib_observed_peak_median": 17103
+    }
+  },
+  "on_minus_off": {
+    "http_response_first_byte_s_median": -0.008473499998217449,
+    "ttft_any_content_or_reasoning_s_median": 0.11878599997726269,
+    "engine_prompt_tokens_per_s_median": -3.400000000000091,
+    "engine_predicted_tokens_per_s_median": 0.0,
+    "gpu0_total_used_mib_observed_peak_median": 0
+  }
+}

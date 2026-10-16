@@ -1,0 +1,36 @@
+--- a/src/llama-graph.cpp
++++ b/src/llama-graph.cpp
+@@ -2664,14 +2664,26 @@
+             v = ggml_cast(ctx0, v, GGML_TYPE_F16);
+         }
+ 
+-        cur = ggml_flash_attn_ext(ctx0, q, k, v, kq_mask, kq_scale, hparams.f_max_alibi_bias,
+-                                  hparams.attn_soft_cap ? hparams.f_attn_logit_softcapping : 0.0f);
+-        res->add_fused_node({LLM_FUSED_OP_FLASH_ATTN, cur, il});
+-
+-        ggml_flash_attn_ext_add_sinks(cur, sinks);
++        cur = nullptr;
++        ggml_tensor * attention_probe = nullptr;
+         GGML_ASSERT(n_kv_max >= 0 && n_kv_max <= INT32_MAX);
+-        ggml_flash_attn_ext_set_n_kv_max(cur, static_cast<int32_t>(n_kv_max));
+-        ggml_prec_set_acc(cur, GGML_PREC_F32);
++        if (auto * reg = ggml_backend_reg_by_name("StrataMoE")) {
++            using attention_hook = ggml_tensor * (*)(ggml_context *, ggml_tensor *, ggml_tensor *, ggml_tensor *, ggml_tensor *, ggml_tensor *, float, float, float, int32_t, ggml_tensor **);
++            auto hook = reinterpret_cast<attention_hook>(ggml_backend_reg_get_proc_address(reg, "strata_a3b_build_attention_v1"));
++            if (hook) cur = hook(ctx0, q, k, v, kq_mask, sinks, kq_scale, hparams.f_max_alibi_bias,
++                hparams.attn_soft_cap ? hparams.f_attn_logit_softcapping : 0.0f,
++                static_cast<int32_t>(n_kv_max), &attention_probe);
++        }
++        if (cur) {
++            res->add_fused_node({LLM_FUSED_OP_FLASH_ATTN, attention_probe, il});
++        } else {
++            cur = ggml_flash_attn_ext(ctx0, q, k, v, kq_mask, kq_scale, hparams.f_max_alibi_bias,
++                                      hparams.attn_soft_cap ? hparams.f_attn_logit_softcapping : 0.0f);
++            res->add_fused_node({LLM_FUSED_OP_FLASH_ATTN, cur, il});
++            ggml_flash_attn_ext_add_sinks(cur, sinks);
++            ggml_flash_attn_ext_set_n_kv_max(cur, static_cast<int32_t>(n_kv_max));
++            ggml_prec_set_acc(cur, GGML_PREC_F32);
++        }
+ 
+         if (v_mla) {
+ #if 0

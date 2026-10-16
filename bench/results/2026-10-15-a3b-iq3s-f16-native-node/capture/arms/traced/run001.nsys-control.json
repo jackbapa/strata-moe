@@ -1,0 +1,46 @@
+{
+  "session": "A3BF16NativeNode",
+  "first_model_delta_monotonic_s": 180890.9879273,
+  "nsys_start_attempted": true,
+  "nsys_started": true,
+  "commands": [
+    {
+      "action": "start",
+      "command": [
+        "C:\\Program Files\\NVIDIA Corporation\\Nsight Systems 2024.4.2\\target-windows-x64\\nsys.exe",
+        "start",
+        "--session=A3BF16NativeNode"
+      ],
+      "elapsed_s": 1.8131373000214808,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "action": "stop",
+      "command": [
+        "C:\\Program Files\\NVIDIA Corporation\\Nsight Systems 2024.4.2\\target-windows-x64\\nsys.exe",
+        "stop",
+        "--session=A3BF16NativeNode"
+      ],
+      "elapsed_s": 3.6766580999828875,
+      "returncode": 0,
+      "stdout": "Generating 'C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\nsys-report-c882.qdstrm'\n\n[1/1] [0%                          ] f16-native-output.nsys-rep\n[1/1] [0%                          ] f16-native-output.nsys-rep\n[1/1] [6%                          ] f16-native-output.nsys-rep\n[1/1] [8%                          ] f16-native-output.nsys-rep\n[1/1] [9%                          ] f16-native-output.nsys-rep\n[1/1] [=15%                        ] f16-native-output.nsys-rep\n[1/1] [==19%                       ] f16-native-output.nsys-rep\n[1/1] [===24%                      ] f16-native-output.nsys-rep\n[1/1] [=====29%                    ] f16-native-output.nsys-rep\n[1/1] [======33%                   ] f16-native-output.nsys-rep\n[1/1] [=======38%                  ] f16-native-output.nsys-rep\n[1/1] [=========43%                ] f16-native-output.nsys-rep\n[1/1] [=========44%                ] f16-native-output.nsys-rep\n[1/1] [=========46%                ] f16-native-output.nsys-rep\n[1/1] [===========50%              ] f16-native-output.nsys-rep\n[1/1] [============54%             ] f16-native-output.nsys-rep\n[1/1] [=============58%            ] f16-native-output.nsys-rep\n[1/1] [========================100%] f16-native-output.nsys-rep\n[1/1] [========================100%] f16-native-output.nsys-rep\nGenerated:\n    G:\\Strata-Moe\\bench\\results\\2026-10-15-a3b-iq3s-f16-native-node\\f16-native-output.nsys-rep\n",
+      "stderr": ""
+    },
+    {
+      "action": "shutdown",
+      "command": [
+        "C:\\Program Files\\NVIDIA Corporation\\Nsight Systems 2024.4.2\\target-windows-x64\\nsys.exe",
+        "shutdown",
+        "--session=A3BF16NativeNode",
+        "--kill=false"
+      ],
+      "elapsed_s": 0.04724519999581389,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "capture_note": "SSE trigger is after model output began; profiling may miss early output tokens and perturbs stream timing."
+}

@@ -43,7 +43,6 @@ int main(int argc, char** argv) {
     const int iters = argc > 7 ? std::atoi(argv[7]) : 200;
     const int NTOK = 8;
     if (T < 1 || T > NTOK || G < 1) { std::fprintf(stderr, "tokens 1..8, groups >= 1\n"); return 2; }
-    const int64_t H = 2560, FF_FULL = 640, FF = FF_FULL;   // Flash-Next's expert geometry
     int failures = 0;
     cudaStream_t s;
     cudaStreamCreate(&s);
@@ -57,6 +56,30 @@ int main(int argc, char** argv) {
             for (int r = 0; r < 3; ++r)
                 if (ti.name == "blk." + std::to_string(l) + ".ffn_" + roles[r] + "_exps.weight") t[r] = &ti;
         if (!t[0] || !t[1] || !t[2]) { std::printf("layer %d: no expert tensors\n", l); ++failures; continue; }
+        // Take the geometry from this GGUF layer. Flash-Next uses 2560/640;
+        // Qwen3.6-35B-A3B uses 2048/512. The grouped CUDA kernel is already
+        // dimensioned at runtime, so a benchmark must not reject the latter.
+        if (t[0]->shape.size() != 3 || t[1]->shape.size() != 3 || t[2]->shape.size() != 3) {
+            std::printf("layer %d: expert tensors are not rank three\n", l);
+            ++failures;
+            continue;
+        }
+        const int64_t H = (int64_t) t[0]->shape[0], FF_FULL = (int64_t) t[0]->shape[1], FF = FF_FULL;
+        if (H <= 0 || FF <= 0 || t[1]->shape[0] != (uint64_t) H || t[1]->shape[1] != (uint64_t) FF ||
+            t[2]->shape[0] != (uint64_t) FF || t[2]->shape[1] != (uint64_t) H ||
+            t[0]->shape[2] != t[1]->shape[2] || t[0]->shape[2] != t[2]->shape[2] ||
+            !K::native_expert_supported((int) t[0]->type, (int) t[2]->type, H, FF)) {
+            std::printf("layer %d: unsupported expert shape or quantization: gate %s [%llu,%llu,%llu], "
+                        "up %s [%llu,%llu,%llu], down %s [%llu,%llu,%llu]\n", l,
+                        t[0]->type_name(), (unsigned long long) t[0]->shape[0],
+                        (unsigned long long) t[0]->shape[1], (unsigned long long) t[0]->shape[2],
+                        t[1]->type_name(), (unsigned long long) t[1]->shape[0],
+                        (unsigned long long) t[1]->shape[1], (unsigned long long) t[1]->shape[2],
+                        t[2]->type_name(), (unsigned long long) t[2]->shape[0],
+                        (unsigned long long) t[2]->shape[1], (unsigned long long) t[2]->shape[2]);
+            ++failures;
+            continue;
+        }
         cpu::NativeFmt f;
         std::string err;
         if (!cpu::native_fmt((int) t[0]->type, (int) t[2]->type, H, FF, f, err)) {
@@ -70,7 +93,7 @@ int main(int argc, char** argv) {
         const size_t drow = dsz / H, drow_full = dsz_full / H;
         std::vector<uint8_t> blobs((size_t) G * f.bytes);
         for (int g = 0; g < G; ++g) {
-            const size_t E = (size_t) ((g * 37 + 5) % 256);
+            const size_t E = (size_t) ((g * 37 + 5) % t[0]->shape[2]);
             uint8_t* b = blobs.data() + (size_t) g * f.bytes;
             std::memcpy(b, gguf.tensor_data(*t[0]) + E * ff.up_off, f.up_off);
             std::memcpy(b + f.up_off, gguf.tensor_data(*t[1]) + E * ff.up_off, f.up_off);
@@ -89,6 +112,7 @@ int main(int argc, char** argv) {
         void *dx, *dxq, *dscr;
         float* dout;
         unsigned long long* dptr;
+        unsigned long long* dptr_split;
         int32_t *dstart, *dn, *ddst, *dtok;
         cudaMalloc((void**) &dblob, blobs.size());
         cudaMalloc(&dx, x.size() * 4);
@@ -96,6 +120,7 @@ int main(int argc, char** argv) {
         cudaMalloc(&dscr, K::native_expert_scratch_bytes(NE, FF));
         cudaMalloc((void**) &dout, (size_t) NE * H * 4);
         cudaMalloc((void**) &dptr, (size_t) G * 8);
+        cudaMalloc((void**) &dptr_split, (size_t) G * 3 * 8);
         cudaMalloc((void**) &dstart, (size_t) (G + 1) * 4);
         cudaMalloc((void**) &dn, 4);
         cudaMalloc((void**) &ddst, (size_t) NE * 4);
@@ -109,9 +134,16 @@ int main(int argc, char** argv) {
             }
         }
         start[G] = NE;
+        std::vector<unsigned long long> split_ptr((size_t) G * 3);
+        for (int g = 0; g < G; ++g) {
+            split_ptr[3 * g] = ptr[g];
+            split_ptr[3 * g + 1] = ptr[g] + f.up_off;
+            split_ptr[3 * g + 2] = ptr[g] + f.down_off;
+        }
         cudaMemcpy(dblob, blobs.data(), blobs.size(), cudaMemcpyHostToDevice);
         cudaMemcpy(dx, x.data(), x.size() * 4, cudaMemcpyHostToDevice);
         cudaMemcpy(dptr, ptr.data(), (size_t) G * 8, cudaMemcpyHostToDevice);
+        cudaMemcpy(dptr_split, split_ptr.data(), (size_t) G * 3 * 8, cudaMemcpyHostToDevice);
         cudaMemcpy(dstart, start.data(), (size_t) (G + 1) * 4, cudaMemcpyHostToDevice);
         cudaMemcpy(dn, &G, 4, cudaMemcpyHostToDevice);
         cudaMemcpy(ddst, dst.data(), (size_t) NE * 4, cudaMemcpyHostToDevice);
@@ -129,6 +161,17 @@ int main(int argc, char** argv) {
         run(mode, 0);
         cudaMemcpyAsync(got.data(), dout, got.size() * 4, cudaMemcpyDeviceToHost, s);
         if (cudaStreamSynchronize(s) != cudaSuccess) { std::printf("layer %d: CUDA error\n", l); return 1; }
+        const auto split = [&] {
+            auto layout = L;
+            layout.split_storage = true;
+            K::native_expert_grouped(layout, dptr_split, dstart, dn, ddst, dtok, G, NE, dxq, dscr, dout, s);
+        };
+        std::vector<float> split_got(ref.size());
+        split();
+        cudaMemcpyAsync(split_got.data(), dout, split_got.size() * 4, cudaMemcpyDeviceToHost, s);
+        cudaStreamSynchronize(s);
+        const size_t split_diff = std::memcmp(ref.data(), split_got.data(), ref.size() * 4) != 0;
+        if (split_diff) ++failures;
         size_t ndiff = 0;
         double worst = 0;
         for (size_t i = 0; i < ref.size(); ++i)
@@ -157,13 +200,14 @@ int main(int argc, char** argv) {
                     mref, us[0][0], us[0][1], gu_b / us[0][1] / 1e3, us[0][2], d_b / us[0][2] / 1e3,
                     mode, us[1][0], us[1][1], gu_b / us[1][1] / 1e3, us[1][2], d_b / us[1][2] / 1e3,
                     ndiff ? "DIFFERS" : "bitwise equal");
+        std::printf("          split GGUF pointers: %s\n", split_diff ? "DIFFERS" : "bitwise equal");
         if (ndiff) {
             std::printf("          %zu of %zu outputs differ, worst rel %.2e\n", ndiff, ref.size(), worst);
             ++failures;
         }
         K::native_expert_set_mode(-1, 0);
         cudaFree(dblob); cudaFree(dx); cudaFree(dxq); cudaFree(dscr); cudaFree(dout); cudaFree(dptr);
-        cudaFree(dstart); cudaFree(dn); cudaFree(ddst); cudaFree(dtok);
+        cudaFree(dptr_split); cudaFree(dstart); cudaFree(dn); cudaFree(ddst); cudaFree(dtok);
     }
     std::printf("native_expert_bench: %d differing\n", failures);
     return failures ? 1 : 0;

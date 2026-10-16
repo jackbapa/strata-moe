@@ -1,0 +1,223 @@
+{
+  "status": "complete",
+  "stages": [],
+  "config": {
+    "exe": "G:\\Strata\\engine\\strata.exe",
+    "args": [
+      "--pack",
+      "G:\\Strata-data\\packs\\iq3_s",
+      "--native",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "--ple-gguf",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00002-of-00002.gguf",
+      "--expert-profile",
+      "G:\\Strata\\data\\expert-profile.bin",
+      "--expert-cache",
+      "auto",
+      "--prefill",
+      "8192",
+      "--spec",
+      "4",
+      "--mtp",
+      "G:\\Strata-data\\mtp\\rt",
+      "--max-context",
+      "262144",
+      "--kv",
+      "int8",
+      "--kv-resident",
+      "32768",
+      "--vision",
+      "--vram-reserve-mib",
+      "1536",
+      "--vram-reserve-later-mib",
+      "1536",
+      "--pcie-frac",
+      "0.75",
+      "--spec-min-p",
+      "0.70",
+      "--pool-workers",
+      "6",
+      "--batch-groups",
+      "3"
+    ],
+    "cwd": "G:\\Strata",
+    "tokenizer": "G:\\Strata-data\\packs\\iq3_s\\tokenizer",
+    "model_name": "qwen3.8-flash-next-iq3_s",
+    "log": "G:\\Strata\\bench\\results\\2026-10-13-tune-256kx3\\resident-ab-fixed17-34\\off\\engine.log",
+    "lib_dirs": [
+      "G:\\Strata\\.venv\\Lib\\site-packages\\nvidia\\cu13\\bin\\x86_64"
+    ],
+    "port": 8080,
+    "host": "127.0.0.1",
+    "parallel": 3,
+    "gpu": [
+      0,
+      1,
+      2
+    ],
+    "gpus_asked": true,
+    "gpu_order": "as_given",
+    "layer_split": "17,34",
+    "vision": {
+      "exe": "G:\\Strata\\engine\\strata-vision.exe",
+      "mmproj": "G:\\Strata-data\\models\\mmproj-Qwen3.8-Flash-Next-BF16.gguf",
+      "model": "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "gpu": true,
+      "max_tokens": 1024
+    }
+  },
+  "health": {
+    "status": "ok",
+    "max_context": 262144,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "images": true,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  },
+  "slots": [
+    {
+      "id": 0,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    },
+    {
+      "id": 1,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    },
+    {
+      "id": 2,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    }
+  ],
+  "output_cap": 1024,
+  "input_target": 32768,
+  "context_limit": 262144,
+  "max_observed_running": 3,
+  "summary": {
+    "status": "complete",
+    "wall_s": 88.99276380000083,
+    "output_tokens": 3072,
+    "end_to_end_output_tok_s": 34.519660574919364,
+    "common_window_s": 25.295021449997876,
+    "common_start_since_submission_s": 62.53866895000101,
+    "common_end_since_submission_s": 87.83369039999889,
+    "common_start_tokens": {
+      "0": 74,
+      "1": 73,
+      "2": 73
+    },
+    "common_end_tokens": {
+      "0": 984,
+      "1": 983,
+      "2": 983
+    },
+    "common_per_slot_tok_s": {
+      "0": 35.97545872016157,
+      "1": 35.97545872016157,
+      "2": 35.97545872016157
+    },
+    "common_total_tok_s": 107.92637616048471,
+    "requests": [
+      {
+        "first": 19.841177100001005,
+        "total": 88.94449760000134,
+        "text": "1. The orbit of the planet was calculated using precise mathematical models. Astronomers observed its path through the telescope for several consecutive nights.\n2. Copper pipes were installed to carry water throughout the building. The metal gleamed under the sunlight as it was polished to a shine.\n3. The canyon walls rose steeply on either side of the river. Erosion had carved deep grooves into the red rock over millennia.\n4. A large stone was placed at the entrance to mark the boundary. It was heavy and rough, covered in patches of green moss.\n5. The market bustled with activity as vendors called out their prices. Fresh produce was displayed in colorful crates along the narrow aisles.\n6. The anchor held the ship firmly in place against the strong current. Its iron flukes dug deep into the sandy seabed below.\n7. A lantern hung from the branch of an old oak tree. Its glass shade flickered gently in the evening breeze.\n8. The velvet fabric felt soft and luxurious against the skin. It was dyed a deep purple that absorbed the light.\n9. Violet flowers bloomed in the garden during the early spring. Their petals were delicate and arranged in tight clusters.\n10. Another stone was found near the riverbank, smooth and round. It had been tumbled by the water for many years.\n11. The market square was filled with the aroma of spices. Merchants from distant lands brought their unique wares to sell.\n12. An ember glowed faintly in the center of the campfire. It provided a small amount of warmth to the surrounding area.\n13. The signal was sent using a series of bright flashes. It was intended to communicate a specific message to the distant tower.\n14. Winter arrived with a blanket of white snow. The trees stood bare against the gray, overcast sky.\n15. Quartz crystals were mined from the depths of the earth. They sparkled with an inner light when held up to the sun.\n16. The ledger contained detailed records of all financial transactions. Each page was filled with neat, handwritten numbers and notes.\n17. A needle was used to stitch the torn fabric together. The thread was pulled tight to ensure the repair was durable.\n18. The harbor was busy with ships coming and going. Cranes lifted heavy cargo onto the waiting vessels.\n19. The river flowed steadily through the valley. Its water was clear and cold, reflecting the surrounding landscape.\n20. Thunder rumbled in the distance, signaling an approaching storm. The clouds darkened rapidly as the wind picked up speed.\n21. The garden was meticulously maintained by the groundskeeper. Flowers were planted in geometric patterns along the winding paths.\n22. A copper coin was found in the dirt near the old well. It was tarnished but still recognizable as currency.\n23. The anchor was raised slowly from the water. Water dripped from its chains as it was pulled onto the deck.\n24. Lanterns lined the pathway leading to the main house. They cast a warm, inviting glow on the gravel surface.\n25. Velvet curtains were drawn across the large windows. They blocked out the harsh afternoon sun effectively.\n26. Violet dye was extracted from the petals of the flowers. It was used to color the fabric for the royal garments.\n27. Stone steps led up to the ancient temple entrance. They were worn smooth by centuries of foot traffic.\n28. The market closed its stalls as the sun set. Vendors packed up their goods and prepared to leave for the night.\n29. An ember was carefully placed in a metal container. It was meant to be transported safely to another location.\n30. The signal fire burned brightly on the hilltop. It was visible from miles away, serving as a warning beacon.\n31. Winter winds howled through the empty streets. Snow accumulated on the sidewalks, making travel difficult.\n32. Quartz was used to make the lenses for the telescope. Its clarity allowed for precise astronomical observations.\n33. The ledger was locked in a heavy wooden chest. Only the accountant had the key to access its contents.\n34. A needle was threaded with silk for embroidery. The design was intricate and required great patience to complete.\n35. The harbor was calm in the early morning hours. Mist hung low over the water, obscuring the distant ships.\n36. The river froze over during the coldest part of winter. Ice skaters took advantage of the smooth, solid surface.\n37. Thunder echoed through the canyon walls. The sound was amplified by the narrow, rocky enclosure.\n38. The garden was covered in a layer of frost. The plants were dormant, waiting for the warmth of spring.\n39. Copper wire was used to conduct electricity. It was insulated with rubber",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 19631.2,
+          "prompt_per_token_ms": 0.599,
+          "prompt_per_second": 1669.2,
+          "predicted_n": 1024,
+          "predicted_ms": 68807.9,
+          "predicted_per_token_ms": 67.195,
+          "predicted_per_second": 14.9,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 986,
+        "tag": "A",
+        "client_start": 9504.8968026,
+        "client_end": 9593.8420701
+      },
+      {
+        "first": 60.11331260000043,
+        "total": 88.98413450000044,
+        "text": "1. The orbit of the copper planet is tracked by a signal that pulses through the canyon. This celestial movement is recorded in the ledger, which sits on the velvet-covered desk.\n2. A stone anchor rests at the bottom of the harbor, holding the lantern steady against the winter wind. The velvet rope attached to it is frayed, indicating years of use in the market.\n3. The violet signal from the garden is intercepted by the orbiting satellite, which logs the data in the ledger. This process is repeated every time the ember glows in the canyon.\n4. Copper needles are used to stitch the velvet banner that hangs above the market stall. The banner features a design of a stone anchor and a violet lantern.\n5. The winter storm causes the river to rise, threatening the harbor where the anchor is moored. A signal is sent to the orbiting station to request assistance.\n6. The garden is filled with violet flowers that bloom only when the ember is lit in the canyon. This phenomenon is documented in the ledger by the market keeper.\n7. A copper lantern hangs from the branch of a tree in the garden, casting a warm glow. The light reflects off the stone path that leads to the harbor.\n8. The orbit of the moon affects the tides in the harbor, causing the anchor to shift slightly. This movement is noted in the ledger alongside the signal strength.\n9. Velvet curtains are drawn across the windows of the market to block out the winter sun. The fabric is dyed violet, matching the flowers in the garden.\n10. The stone wall surrounding the garden is reinforced with copper bolts to withstand the winter winds. A signal is sent to the orbiting station to confirm the structural integrity.\n11. The ember in the canyon glows brighter when the signal from the orbiting station is strong. This correlation is recorded in the ledger by the market analyst.\n12. A violet lantern is placed at the entrance of the harbor to guide ships during the winter. The lantern is attached to a stone anchor to prevent it from drifting.\n13. The copper needle is used to repair the velvet sail of the ship docked in the harbor. The repair is necessary before the ship can leave for the market.\n14. The garden is enclosed by a stone fence that is topped with copper wire. A signal is sent to the orbiting station to monitor the fence for breaches.\n15. The winter snow covers the garden, hiding the violet flowers beneath a white blanket. The ember in the canyon provides the only source of heat in the area.\n16. The orbiting station sends a signal to the market to update the price of copper. The price is recorded in the ledger, which is kept in the velvet-lined office.\n17. A stone anchor is used to secure the lantern in the harbor during the winter storm. The anchor is made of copper to resist corrosion from the saltwater.\n18. The garden is planted with violet flowers that are used to dye the velvet fabric in the market. The dyeing process is documented in the ledger.\n19. The copper needle is used to sew the velvet banner that advertises the market. The banner is hung from the stone archway at the entrance.\n20. The winter wind blows through the canyon, extinguishing the ember. A signal is sent to the orbiting station to report the loss of heat.\n21. The orbit of the planet is calculated using data from the signal received in the garden. The calculations are recorded in the ledger by the astronomer.\n22. A violet lantern is placed on the stone bench in the garden to provide light. The lantern is made of copper to withstand the winter cold.\n23. The harbor is filled with ships that are anchored by stone weights. The ships are loaded with velvet fabric that is destined for the market.\n24. The copper needle is used to repair the velvet sail of the ship that is stuck in the harbor. The repair is completed before the winter storm arrives.\n25. The garden is surrounded by a stone wall that is reinforced with copper bars. A signal is sent to the orbiting station to monitor the wall for damage.\n26. The winter snow covers the garden, making it difficult to see the violet flowers. The ember in the canyon is used to melt the snow.\n27. The orbiting station sends a signal to the market to update the price of velvet. The price is recorded in the ledger, which is kept in the stone office.\n28. A stone anchor is used to secure the lantern in the harbor during the winter storm. The anchor is made of copper to resist corrosion from the saltwater.\n29. The garden is planted with violet flowers that are used to dye the velvet fabric in the market. The dyeing process is documented in the ledger.\n30. The copper needle is used to sew the velvet banner that",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 19868.9,
+          "prompt_per_token_ms": 0.606,
+          "prompt_per_second": 1649.2,
+          "predicted_n": 1024,
+          "predicted_ms": 28592.4,
+          "predicted_per_token_ms": 27.922,
+          "predicted_per_second": 35.8,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 995,
+        "tag": "B",
+        "client_start": 9504.8978252,
+        "client_end": 9593.882571
+      },
+      {
+        "first": 39.747852200000125,
+        "total": 88.9763340999998,
+        "text": "1. The orbit of the copper planet is tracked by a signal that pulses through the canyon. This celestial movement is recorded in a ledger that sits on a velvet cushion.\n2. A stone anchor rests at the bottom of the harbor, holding the lantern steady against the tide. The violet light from the lantern reflects off the water, creating a shimmering path.\n3. The market stalls are lined with velvet fabrics that absorb the winter chill. Merchants call out prices for quartz crystals that are displayed in glass cases.\n4. An ember glows faintly in the meadow, marking the spot where a garden once stood. The signal from the nearby tower indicates that the area is now safe for travelers.\n5. The anchor is made of copper and has developed a green patina over the years. It is secured to the dock with a rope that is woven from natural fibers.\n6. A lantern hangs from the branch of a tree in the garden, casting long shadows. The light is dim, suggesting that the oil inside is running low.\n7. The violet flowers in the meadow sway gently in the breeze. Their color contrasts sharply with the gray stone of the nearby wall.\n8. The market is bustling with activity as people buy and sell various goods. The noise of the crowd is a constant hum that fills the air.\n9. A signal flare is launched into the sky, illuminating the dark clouds above. The light is bright and white, cutting through the gloom of the evening.\n10. The anchor is lifted from the water, dripping with seawater and algae. It is placed on the deck of the ship, ready for the next journey.\n11. The lantern is lit with a match, and the flame flickers to life. The light reveals the intricate patterns on the glass shade.\n12. The violet sky is dotted with stars that seem to twinkle in rhythm. The beauty of the night is captured in a painting on the easel.\n13. The market closes its doors as the sun sets behind the horizon. The vendors pack up their wares and prepare for the next day.\n14. A signal is sent via radio waves, traveling across the vast ocean. The message is received by a station on the distant shore.\n15. The anchor is dropped again, sinking into the sandy bottom of the sea. The chain rattles as it pays out, securing the vessel in place.\n16. The lantern is extinguished, and the darkness returns to the room. The silence is profound, broken only by the sound of breathing.\n17. The violet hue of the twilight fades into the blackness of night. The transition is gradual, marking the end of the day.\n18. The market is empty, with only a few stray leaves blowing across the pavement. The quiet is eerie, contrasting with the earlier chaos.\n19. A signal is received, indicating that a storm is approaching from the west. The warning is urgent, urging everyone to seek shelter.\n20. The anchor is raised, and the ship begins to move through the water. The wake trails behind, creating a path of disturbed waves.\n21. The lantern is stored in a crate, protected from the elements. It will be used again when the next journey begins.\n22. The violet color of the ink is used to write a letter to a loved one. The words are heartfelt, expressing longing and hope.\n23. The market is reopened, and the crowds return with renewed energy. The atmosphere is vibrant, filled with the scent of spices and flowers.\n24. A signal is broadcast, announcing the arrival of a new shipment of goods. The excitement is palpable among the merchants and buyers.\n25. The anchor is secured to the bow of the ship, ready for deployment. The crew checks the mechanism to ensure it functions correctly.\n26. The lantern is hung on a hook, providing light for the evening meal. The warmth of the flame adds to the cozy ambiance.\n27. The violet dress is worn to a formal event, drawing attention from all. The fabric flows gracefully as the wearer moves across the floor.\n28. The market is decorated with banners and lights, creating a festive atmosphere. The decorations are colorful and intricate, reflecting the culture of the region.\n29. A signal is sent to coordinate the movements of the fleet. The communication is precise, ensuring that all ships are in the correct positions.\n30. The anchor is tested for strength, with weights attached to the chain. The results are recorded in a logbook for future reference.\n31. The lantern is cleaned, removing the soot and dust from the glass. The light shines brighter after the maintenance is complete.\n32. The violet paint is applied to the canvas, creating a dreamlike landscape. The artist works with care, blending colors to achieve the desired effect.\n",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 19452.7,
+          "prompt_per_token_ms": 0.594,
+          "prompt_per_second": 1684.5,
+          "predicted_n": 1024,
+          "predicted_ms": 48928.0,
+          "predicted_per_token_ms": 47.781,
+          "predicted_per_second": 20.9,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 993,
+        "tag": "C",
+        "client_start": 9504.8958949,
+        "client_end": 9593.8729099
+      }
+    ],
+    "method": "actual engine generated-token counter differences over one shared interval; excludes all prompt processing"
+  }
+}

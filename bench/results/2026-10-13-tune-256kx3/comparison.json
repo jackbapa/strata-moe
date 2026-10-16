@@ -1,0 +1,393 @@
+{
+  "started": "2026-10-13T21:11:14.297459+08:00",
+  "context_per_slot": 262144,
+  "slots": 3,
+  "driver": "617.42",
+  "profiles": [
+    {
+      "name": "chunk2048-g3",
+      "chunk": 2048,
+      "groups": 3,
+      "status": "passed",
+      "32k": {
+        "name": "32kx3",
+        "wall_s": 59.115420999999515,
+        "input_tokens": [
+          32768,
+          32768,
+          32768
+        ],
+        "cached_tokens": [
+          0,
+          0,
+          0
+        ],
+        "output_tokens": [
+          128,
+          128,
+          128
+        ],
+        "ttft_s": [
+          18.260463800000252,
+          36.98586260000047,
+          55.86904140000024
+        ],
+        "completion_s": [
+          59.07312649999949,
+          59.10422000000017,
+          59.1086533000007
+        ],
+        "decode_tok_s": [
+          42.4,
+          3.2,
+          5.8
+        ],
+        "prompt_tok_s": [
+          1763.0,
+          1809.0,
+          1787.1
+        ]
+      },
+      "64k": {
+        "name": "64kx3",
+        "wall_s": 112.60183169999982,
+        "input_tokens": [
+          65535,
+          65535,
+          65535
+        ],
+        "cached_tokens": [
+          0,
+          0,
+          0
+        ],
+        "output_tokens": [
+          128,
+          128,
+          128
+        ],
+        "ttft_s": [
+          35.33052689999931,
+          71.36012310000024,
+          109.09533869999996
+        ],
+        "completion_s": [
+          112.55974030000016,
+          112.59133569999995,
+          112.59356959999968
+        ],
+        "decode_tok_s": [
+          41.0,
+          1.7,
+          3.1
+        ],
+        "prompt_tok_s": [
+          1758.6,
+          1877.8,
+          1848.7
+        ]
+      },
+      "score_s": 171.71725269999934,
+      "min_available_ram_gib": 48.005435943603516,
+      "max_temperature_c": 88,
+      "min_gpu_free_mib": 2045
+    },
+    {
+      "name": "chunk4096-g3",
+      "chunk": 4096,
+      "groups": 3,
+      "status": "failed",
+      "32k": {
+        "name": "32kx3",
+        "wall_s": 57.32753119999961,
+        "input_tokens": [
+          32768,
+          32768,
+          32768
+        ],
+        "cached_tokens": [
+          0,
+          0,
+          0
+        ],
+        "output_tokens": [
+          128,
+          128,
+          128
+        ],
+        "ttft_s": [
+          17.671601900000496,
+          35.645192199999656,
+          53.84868499999993
+        ],
+        "completion_s": [
+          57.28342440000051,
+          57.31413909999992,
+          57.32010369999989
+        ],
+        "decode_tok_s": [
+          3.3,
+          39.2,
+          6.0
+        ],
+        "prompt_tok_s": [
+          1877.3,
+          1834.3,
+          1864.6
+        ]
+      },
+      "error": "RuntimeError('request failed or watchdog aborted: [\"ConnectionResetError(10054, \\'远程主机强迫关闭了一个现有的连接。\\', None, 10054, None)\", \"ConnectionResetError(10054, \\'远程主机强迫关闭了一个现有的连接。\\', None, 10054, None)\", \"ConnectionResetError(10054, \\'远程主机强迫关闭了一个现有的连接。\\', None, 10054, None)\"]')",
+      "min_available_ram_gib": 47.7203483581543,
+      "max_temperature_c": 88,
+      "min_gpu_free_mib": 2047
+    },
+    {
+      "name": "chunk8192-g3",
+      "chunk": 8192,
+      "groups": 3,
+      "status": "passed",
+      "32k": {
+        "name": "32kx3",
+        "wall_s": 63.79875189999984,
+        "input_tokens": [
+          32768,
+          32768,
+          32768
+        ],
+        "cached_tokens": [
+          0,
+          0,
+          0
+        ],
+        "output_tokens": [
+          128,
+          128,
+          128
+        ],
+        "ttft_s": [
+          19.96754250000049,
+          40.0190977000002,
+          60.39318159999948
+        ],
+        "completion_s": [
+          63.75442149999981,
+          63.785872700000255,
+          63.791822899999715
+        ],
+        "decode_tok_s": [
+          2.9,
+          40.3,
+          5.4
+        ],
+        "prompt_tok_s": [
+          1660.6,
+          1642.4,
+          1669.9
+        ]
+      },
+      "64k": {
+        "name": "64kx3",
+        "wall_s": 103.97271550000005,
+        "input_tokens": [
+          65535,
+          65535,
+          65535
+        ],
+        "cached_tokens": [
+          0,
+          0,
+          0
+        ],
+        "output_tokens": [
+          128,
+          128,
+          128
+        ],
+        "ttft_s": [
+          32.75393170000007,
+          66.0512761,
+          100.45355419999942
+        ],
+        "completion_s": [
+          103.93234380000013,
+          103.96186130000024,
+          103.96522259999983
+        ],
+        "decode_tok_s": [
+          1.8,
+          41.1,
+          3.4
+        ],
+        "prompt_tok_s": [
+          2025.9,
+          1934.8,
+          2000.5
+        ]
+      },
+      "score_s": 167.7714673999999,
+      "min_available_ram_gib": 46.763816833496094,
+      "max_temperature_c": 88,
+      "min_gpu_free_mib": 2011
+    },
+    {
+      "name": "chunk8192-g1",
+      "chunk": 8192,
+      "groups": 1,
+      "status": "passed",
+      "32k": {
+        "name": "32kx3",
+        "wall_s": 109.18412799999987,
+        "input_tokens": [
+          32768,
+          32768,
+          32768
+        ],
+        "cached_tokens": [
+          0,
+          0,
+          0
+        ],
+        "output_tokens": [
+          128,
+          128,
+          128
+        ],
+        "ttft_s": [
+          20.038177700000233,
+          62.93691659999968,
+          106.11103960000037
+        ],
+        "completion_s": [
+          42.51346680000006,
+          85.43129169999975,
+          109.18011569999999
+        ],
+        "decode_tok_s": [
+          5.8,
+          49.8,
+          5.8
+        ],
+        "prompt_tok_s": [
+          773.0,
+          766.7,
+          1657.5
+        ]
+      },
+      "64k": {
+        "name": "64kx3",
+        "wall_s": 200.82833050000045,
+        "input_tokens": [
+          65535,
+          65535,
+          65535
+        ],
+        "cached_tokens": [
+          0,
+          0,
+          0
+        ],
+        "output_tokens": [
+          128,
+          128,
+          128
+        ],
+        "ttft_s": [
+          32.75353520000044,
+          115.0860588000005,
+          197.42508679999992
+        ],
+        "completion_s": [
+          54.75348420000046,
+          136.86581250000017,
+          200.82278459999998
+        ],
+        "decode_tok_s": [
+          49.3,
+          5.9,
+          6.0
+        ],
+        "prompt_tok_s": [
+          800.4,
+          2026.0,
+          801.2
+        ]
+      },
+      "score_s": 310.0124585000003,
+      "min_available_ram_gib": 46.45975875854492,
+      "max_temperature_c": 82,
+      "min_gpu_free_mib": 2043
+    }
+  ],
+  "status": "complete",
+  "inputs": {
+    "32768": [
+      {
+        "tag": "input32768-A",
+        "input_tokens": 32768,
+        "words": 31081
+      },
+      {
+        "tag": "input32768-B",
+        "input_tokens": 32768,
+        "words": 31081
+      },
+      {
+        "tag": "input32768-C",
+        "input_tokens": 32768,
+        "words": 31081
+      }
+    ],
+    "65536": [
+      {
+        "tag": "input65536-A",
+        "input_tokens": 65535,
+        "words": 62250
+      },
+      {
+        "tag": "input65536-B",
+        "input_tokens": 65535,
+        "words": 62250
+      },
+      {
+        "tag": "input65536-C",
+        "input_tokens": 65535,
+        "words": 62250
+      }
+    ]
+  },
+  "selected": "chunk8192-g3",
+  "selection_metric": "sum of one 32Kx3 and one 64Kx3 burst completion time; output cap 128",
+  "final_verified": {
+    "health": {
+      "status": "ok",
+      "max_context": 262144,
+      "model": "qwen3.8-flash-next-iq3_s",
+      "images": true,
+      "api_key": false,
+      "loaded": true,
+      "service": "strata"
+    },
+    "slots": [
+      {
+        "id": 0,
+        "n_ctx": 262144,
+        "is_processing": false,
+        "n_prompt_tokens": 0
+      },
+      {
+        "id": 1,
+        "n_ctx": 262144,
+        "is_processing": false,
+        "n_prompt_tokens": 0
+      },
+      {
+        "id": 2,
+        "n_ctx": 262144,
+        "is_processing": false,
+        "n_prompt_tokens": 0
+      }
+    ]
+  },
+  "service_left_running": true,
+  "finished": "2026-10-13T21:40:14.081883+08:00"
+}

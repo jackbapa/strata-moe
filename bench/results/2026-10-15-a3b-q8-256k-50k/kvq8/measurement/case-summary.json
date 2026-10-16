@@ -1,0 +1,61 @@
+{
+  "prompt50000-output256": {
+    "overall": {
+      "runs": 1,
+      "http_response_first_byte_s_median": 0.01842069998383522,
+      "http_headers_received_s_median": 0.018578699993668124,
+      "body_first_bytes_s_median": 0.018847200000891462,
+      "ttft_any_content_or_reasoning_s_median": 160.2393067999801,
+      "ttft_visible_content_s_median": 160.2393067999801,
+      "engine_prompt_tokens_per_s_median": 312.8,
+      "engine_predicted_tokens_per_s_median": 39.3,
+      "client_usage_decode_tokens_per_s_median": 39.3560789862148,
+      "total_response_s_median": 166.72806939997827
+    },
+    "first_run": {
+      "trial": "prompt50000-output256-repeat01-resident-first-unknown",
+      "cache_state": "resident-first-unknown",
+      "actual_prompt_tokens": 50000,
+      "actual_completion_tokens": 256,
+      "finish_reason": "length",
+      "draft_tokens_offered": 228,
+      "draft_tokens_accepted": 141,
+      "draft_acceptance_rate": 0.618421052631579,
+      "http_response_first_byte_s": 0.01842069998383522,
+      "http_headers_received_s": 0.018578699993668124,
+      "body_first_bytes_s": 0.018847200000891462,
+      "ttft_any_content_or_reasoning_s": 160.2393067999801,
+      "ttft_visible_content_s": 160.2393067999801,
+      "engine_prompt_tokens_per_s": 312.8,
+      "engine_predicted_tokens_per_s": 39.3,
+      "client_usage_decode_tokens_per_s": 39.3560789862148,
+      "total_response_s": 166.72806939997827
+    },
+    "subsequent_runs": {
+      "runs": 0
+    },
+    "trials": [
+      {
+        "trial": "prompt50000-output256-repeat01-resident-first-unknown",
+        "cache_state": "resident-first-unknown",
+        "actual_prompt_tokens": 50000,
+        "actual_completion_tokens": 256,
+        "finish_reason": "length",
+        "draft_tokens_offered": 228,
+        "draft_tokens_accepted": 141,
+        "draft_acceptance_rate": 0.618421052631579,
+        "http_response_first_byte_s": 0.01842069998383522,
+        "http_headers_received_s": 0.018578699993668124,
+        "body_first_bytes_s": 0.018847200000891462,
+        "ttft_any_content_or_reasoning_s": 160.2393067999801,
+        "ttft_visible_content_s": 160.2393067999801,
+        "engine_prompt_tokens_per_s": 312.8,
+        "engine_predicted_tokens_per_s": 39.3,
+        "client_usage_decode_tokens_per_s": 39.3560789862148,
+        "total_response_s": 166.72806939997827
+      }
+    ],
+    "all_prompt_counts_match": true,
+    "note": "Overall includes every measured trial. First_run is shown separately; subsequent_runs is the remaining trials, with its actual run count. Resident cache labels describe request order and do not imply a reset or cold disk."
+  }
+}

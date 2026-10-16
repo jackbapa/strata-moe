@@ -1,0 +1,9 @@
+{
+  "strict_directory": "G:\\Strata-Moe\\a3b\\research\\parallel-plan\\strict-run01",
+  "strict_manifest_sha256": "68058d72ef4bda2ad42180a392facc79ffca32389071cd5353e472b51394678d",
+  "strict_report_sha256": "2da46fad193215817dcc6ff90987cc316361ba09979a1be2e9ff338e01de4d71",
+  "engine_binary_sha256": "24af1eb4bbd7901f45924a0edd2bf8680413e8d8842f57ed90697ff64ec14a4f",
+  "fixture_binary_sha256": "9f9aef4cedbba61360ce12ed561ce1855e4908953fd3392907e9fb036fba43c5",
+  "actual_plan_calls_per_arm": 5255,
+  "note": "References original validated strict evidence at its original absolute paths; no logs or state files were rewritten."
+}

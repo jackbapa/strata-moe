@@ -1,0 +1,70 @@
+--resident-experts 开关对照：固定三卡分层，32K×3并发，输出1024×3
+日期：2026-10-13
+
+结论
+建议开启。共同输出阶段：关闭107.93 token/s，开启107.73 token/s，差约0.18%，基本持平。
+开启后测试期间系统最小可用RAM由47.30升到74.05 GiB，增加26.75 GiB。
+专家RAM副本由46.84降到17.90 GiB，减少28.94 GiB。
+本轮未观察到开启造成实质输出速度损失。
+
+硬件与参数
+3×RTX 2080 Ti 22 GiB；Threadripper 3960X；128 GB RAM；NVIDIA 617.42。
+Strata engine 0.1.43，7695859aa13afb248bdb4d36f9b2e95707db079d；Qwen3.8-Flash-Next原生IQ3_S。
+两组固定layer_split=17,34：GPU0负责0-16层，GPU1负责17-33层，GPU2负责34-47层。
+parallel=3，batch-groups=3，prefill=8192，每路独立max-context=262144。
+kv=int8，kv-resident=32768，spec=4，MTP开启，spec-min-p=0.70，pool-workers=6。
+pcie-frac=0.75，两类vram-reserve均1536 MiB，vision保留。
+只有resident-experts开关不同，日志输出路径不同；其余配置字段与参数相同。
+两组都重新启动模型、做同样的64-token上限短请求预热，再按同一规则冷却。
+每组使用完全相同的三份输入（文件SHA256一致），各输入32768 token，实际输出1024 token。
+所有请求cached_tokens=0；temperature=0，thinking关闭。
+
+                         关闭               开启
+共同输出总速度           107.93 token/s     107.73 token/s
+槽0/1/2同时输出速度      35.98/35.98/35.98  35.91/35.91/35.91 token/s
+共同计数窗口             25.295秒           25.230秒
+完整请求总耗时           88.993秒           86.164秒
+含输入等待的总输出吞吐   34.52 token/s      35.65 token/s
+三路首字时间             19.84/39.75/60.11  18.98/38.04/57.14秒
+专家RAM副本              46.84 GiB          17.90 GiB
+测试中最小可用系统RAM    47.30 GiB          74.05 GiB
+本轮服务就绪耗时         49.04秒            64.04秒
+测试起始三卡温度         55/36/54°C         57/37/56°C
+测试中最高GPU温度        85°C               86°C
+测试中最低单卡空闲VRAM   2045 MiB           2049 MiB
+
+计数方法
+每约0.25秒读取/metrics中三个槽的真实generated计数。
+取所有槽都处于decoding的共同窗口，剔除开始2秒和末尾1秒。
+每个槽的token增量除以同一个窗口时长；三槽速度可以相加。
+这与每条请求自身timings中包含其他请求长输入处理暂停的平均速度不同。
+3072除以完整请求总耗时得到端到端吞吐；该值包含约一分钟的长输入处理和等待。
+
+resident专家覆盖
+开启组日志：提示词路径借用5739个专家缓存槽，其5739个专家均保留在RAM中。
+该组生成请求日志均报告0 blob reads from the file；本轮未出现缺失专家警告或监测中止。
+没有改变驱动、功耗、频率、TDR或引擎源码。
+
+先前自动分层对照的解释
+resident-ab-32k中，关闭组100.0、开启组112.2 token/s。
+但auto实际切分分别为18/16/14和17/17/14，因此不能把12.2%的速度差归因于resident开关。
+本报告采用后续固定17/17/14的对照作为开关选择依据，输出速度持平、RAM明显节省。
+
+限制
+固定分层每种开关各一轮，先关闭后开启；起始温度略有差异。
+共同持续输出窗口各约25秒，速度差不足以证明开启有稳定加速或减速。
+启动耗时受文件缓存影响，本轮开启就绪较慢；两种推理耗时均从服务就绪后提交请求算起。
+只验证了每路32K输入，未用resident开启模式测试64K或实际满256K输入，也未验证长时间稳定性。
+
+最终配置
+G:\Strata\strata-iq3_s.json：resident-experts开启，layer_split=17,34，parallel=3。
+保留每路独立262144上下文、prefill=8192、batch-groups=3、kv-resident=32768。
+最终重启、三个独立256K槽和三路短请求验证以comparison.json中的final_verified和smoke为准。
+服务：http://127.0.0.1:8080
+
+原始数据
+comparison.json：两组汇总、选择和最终验证。
+off/summary.json、on/summary.json：完整请求usage、timings和共同窗口统计。
+off/token-counters.jsonl、on/token-counters.jsonl：真实token计数，可复算吞吐。
+off/telemetry.jsonl、on/telemetry.jsonl：系统RAM、显存、温度与进度。
+off/engine.log、on/engine.log：实际引擎参数、分层、专家RAM驻留与文件读取记录。

@@ -1,0 +1,12 @@
+{
+  "prompt65537-output1-resident-first-unknown": {
+    "runs": 1,
+    "http_response_first_byte_s_median": 0.021751699998276308,
+    "http_headers_received_s_median": 0.021909500006586313,
+    "body_first_bytes_s_median": 0.02226249998784624,
+    "ttft_any_content_or_reasoning_s_median": 39.35324210001272,
+    "ttft_visible_content_s_median": 39.35324210001272,
+    "engine_prompt_tokens_per_s_median": 1681.3,
+    "total_response_s_median": 39.35518710000906
+  }
+}

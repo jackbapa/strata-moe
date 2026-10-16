@@ -1,0 +1,68 @@
+{
+  "baseline": {
+    "runs": 2,
+    "output_sha256": [
+      "c1d52a6c58911b9cae7600ccafb992b2dbeeddb245c8050031187a8891068379"
+    ],
+    "http_response_first_byte_s_median": 0.01524355000583455,
+    "ttft_any_content_or_reasoning_s_median": 27.437652800013893,
+    "engine_prompt_tokens_per_s_median": 1840.95,
+    "engine_predicted_tokens_per_s_median": 67.19999999999999,
+    "gpu0_total_used_mib_observed_peak_median": 20499.0,
+    "gpu0_total_used_mib_before_median": 20391.0,
+    "gpu0_total_used_mib_after_median": 20499.0,
+    "gpu0_total_used_mib_observed_peak_over_before_median": 108.0,
+    "engine_rss_bytes_before_median": 2442842112.0,
+    "engine_rss_bytes_after_median": 2760505344.0,
+    "engine_rss_bytes_observed_peak_median": 2760505344.0,
+    "engine_private_bytes_observed_peak_median": 26471632896.0,
+    "system_used_bytes_observed_peak_median": 26408036352.0,
+    "strata_native_calls_request_median": null,
+    "strata_native_calls_request_prefill_median": null,
+    "strata_native_calls_request_decode_median": null,
+    "mtp_acceptance_rate_median": 0.6211453744493393
+  },
+  "strata-combined": {
+    "runs": 2,
+    "output_sha256": [
+      "84d13770261070c02622708633f0132f7e215fc54f705196d9d72e304f80639c"
+    ],
+    "http_response_first_byte_s_median": 0.014839299983577803,
+    "ttft_any_content_or_reasoning_s_median": 27.817596349996165,
+    "engine_prompt_tokens_per_s_median": 1815.05,
+    "engine_predicted_tokens_per_s_median": 70.4,
+    "gpu0_total_used_mib_observed_peak_median": 20499.0,
+    "gpu0_total_used_mib_before_median": 20391.0,
+    "gpu0_total_used_mib_after_median": 20499.0,
+    "gpu0_total_used_mib_observed_peak_over_before_median": 108.0,
+    "engine_rss_bytes_before_median": 2443141120.0,
+    "engine_rss_bytes_after_median": 2778060800.0,
+    "engine_rss_bytes_observed_peak_median": 2778060800.0,
+    "engine_private_bytes_observed_peak_median": 26430781440.0,
+    "system_used_bytes_observed_peak_median": 26489739264.0,
+    "strata_native_calls_request_median": 5070.0,
+    "strata_native_calls_request_prefill_median": 0.0,
+    "strata_native_calls_request_decode_median": 5070.0,
+    "mtp_acceptance_rate_median": 0.5879828326180258
+  },
+  "comparison": {
+    "http_response_first_byte_s_variant_minus_baseline": -0.0004042500222567469,
+    "ttft_any_content_or_reasoning_s_variant_minus_baseline": 0.3799435499822721,
+    "engine_prompt_tokens_per_s_variant_minus_baseline": -25.90000000000009,
+    "engine_predicted_tokens_per_s_variant_minus_baseline": 3.200000000000017,
+    "gpu0_total_used_mib_observed_peak_variant_minus_baseline": 0.0,
+    "gpu0_total_used_mib_before_variant_minus_baseline": 0.0,
+    "gpu0_total_used_mib_after_variant_minus_baseline": 0.0,
+    "gpu0_total_used_mib_observed_peak_over_before_variant_minus_baseline": 0.0,
+    "engine_rss_bytes_before_variant_minus_baseline": 299008.0,
+    "engine_rss_bytes_after_variant_minus_baseline": 17555456.0,
+    "engine_rss_bytes_observed_peak_variant_minus_baseline": 17555456.0,
+    "engine_private_bytes_observed_peak_variant_minus_baseline": -40851456.0,
+    "system_used_bytes_observed_peak_variant_minus_baseline": 81702912.0,
+    "strata_native_calls_request_variant_minus_baseline": null,
+    "strata_native_calls_request_prefill_variant_minus_baseline": null,
+    "strata_native_calls_request_decode_variant_minus_baseline": null,
+    "mtp_acceptance_rate_variant_minus_baseline": -0.03316254183131351
+  },
+  "note": "GPU memory is total observed GPU 0 usage, not process-attributed VRAM. Request-native calls are unavailable for old cumulative-only logs. One trial per arm is exploratory; alternate arms and repeat before claiming an improvement."
+}

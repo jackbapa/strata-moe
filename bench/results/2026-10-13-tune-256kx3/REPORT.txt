@@ -1,0 +1,58 @@
+Strata 三卡三并发、每路 256K 配置测试
+日期：2026-10-13
+
+硬件与版本
+3 张 RTX 2080 Ti 22 GiB；Threadripper 3960X；128 GB RAM。
+NVIDIA 617.42；Strata engine 0.1.43，7695859aa13afb248bdb4d36f9b2e95707db079d。
+模型：Qwen3.8-Flash-Next GSQ-RCO IQ3_S，原生分片，MTP。
+
+resident-experts 的状态
+本轮所有配置都没有 --resident-experts、--resident-budget-gib、--mmap-experts。
+使用完整的 46.84 GiB RAM 专家副本。因此以下成绩都是关闭 resident-experts 的实测，
+不能把本轮配置之间的速度差解释为关闭这个开关的收益。
+resident-experts 是节省 RAM 的模式，性能是否下降取决于专家命中和数据搬运；不能一概认定。
+
+测试条件
+三路同时提交独立的合成英文词表输入，分别为每路 32768 和 65535 输入 token。
+每路最多输出 128 token，本轮各请求均生成 128 token，cached_tokens=0。
+表中的秒数为三条请求从提交到全部完成的总时间，包含输入处理、等待和输出。
+全部配置 parallel=3、max-context=262144，每个槽独立拥有 262144 token 的上下文上限。
+KV int8、kv-resident=32768；后者是显存驻留窗口，不是每路上下文上限。
+保留 vision、spec=4、spec-min-p=0.70、pool-workers=6、pcie-frac=0.75，
+每卡预留显存 1536 MiB。没有修改驱动、频率、功耗或 TDR。
+
+配置                            32K×3总时间      64K×3总时间      结果
+prefill 2048，batch-groups 3       59.1 s           112.6 s        完成
+prefill 4096，batch-groups 3       57.3 s           未完成         温度达到90°C，保护中止
+prefill 8192，batch-groups 3       63.8 s           104.0 s        完成，选用
+prefill 8192，batch-groups 1      109.2 s           200.8 s        完成，总耗时较大
+8192/g3，split 15,32，trim         63.4 s           101.9 s        完成，暂不采用
+
+选择与限制
+在完成的自动分层方案中，8192/g3 的两项合计耗时最少（167.8 s），
+2048/g3 为171.7 s。8192对64K输入较快，对32K输入较慢，因此不是所有输入长度都最快。
+额外试验 split=15,32 + --trim-stage-weights，专家显存驻留比例由约85%升到96%，
+但两项总耗时仅减少约1.4%（165.4 s），单轮测量不足以确认稳定收益，保留自动分层。
+新提示词的长输入处理仍会阻塞其他槽的输出，表现为首字依次出现、前两路有效输出速度偏低。
+这是本次日志所示的调度等待，不是三路共享256K上下文配额。
+8192/g3 的64K三路首字时间约32.8/66.1/100.5秒；有效输出速度约1.8/3.4/41.1 token/s，
+这些数字包含其他请求输入处理带来的等待，不能当成纯GPU输出能力。
+
+每种配置各一轮32K/64K突发测试，输入为合成词表，不能代表所有实际业务。
+测试顺序与温度有差异：2048/4096最多冷却30秒，8192/g1/trim最多冷却90秒。
+监测到的已完成配置最高GPU温度均不超过88°C；4096试验在90°C主动停止，未蓝屏。
+本轮未验证每路256K实际满载输入，也未做长时间持续负载验证。
+不能据此认定已经排除之前的蓝屏原因。
+
+最终生效配置
+G:\Strata\strata-iq3_s.json
+gpu=[0,1,2]，layer_split=auto，parallel=3，prefill=8192，batch-groups=3。
+max-context=262144，kv=int8，kv-resident=32768，resident-experts关闭。
+服务：http://127.0.0.1:8080
+最终重启及三个独立256K槽、三路短请求验证见 final-validation.json。
+
+数据索引
+comparison.json：四个流水/分块方案原始统计。
+trim-comparison.json：额外显存分配试验和最终服务验证。
+各配置目录 results.json、requests.jsonl、telemetry.jsonl：请求与监测原始记录。
+chunk4096-g3/alerts.jsonl：90°C保护中止记录。

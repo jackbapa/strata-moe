@@ -1,0 +1,72 @@
+{
+  "utc": "2026-10-14T17:25:41.577113+00:00",
+  "health": {
+    "status": "ok",
+    "max_context": 4096,
+    "model": "qwen3.6-35b-a3b-q8_0",
+    "images": false,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  },
+  "models": {
+    "object": "list",
+    "data": [
+      {
+        "id": "qwen3.6-35b-a3b-q8_0",
+        "object": "model",
+        "status": {
+          "value": "loaded"
+        },
+        "meta": {
+          "n_ctx": 4096
+        },
+        "architecture": {
+          "input_modalities": [
+            "text"
+          ],
+          "output_modalities": [
+            "text"
+          ]
+        }
+      }
+    ]
+  },
+  "pid": 40412,
+  "executable": "G:\\Strata-Moe\\build-a3b-q8-tuned\\bin\\strata-moe.exe",
+  "running_config": "G:\\Strata-Moe\\bench\\results\\2026-10-15-a3b-q8-tuned-api\\config-share.json",
+  "saved_startup_config": "G:\\Strata-Moe\\strata-a3b-q8.json",
+  "same_runtime_fields_except_log_path": true,
+  "idle_unload_s": 0,
+  "memory": {
+    "rss": 36665872384,
+    "vms": 62096125952,
+    "num_page_faults": 9760332,
+    "peak_wset": 36717522944,
+    "wset": 36665872384,
+    "peak_paged_pool": 2107648,
+    "paged_pool": 2107456,
+    "peak_nonpaged_pool": 104256,
+    "nonpaged_pool": 103032,
+    "pagefile": 62096125952,
+    "peak_pagefile": 63811457024,
+    "private": 62096125952
+  },
+  "system_memory": {
+    "total": 137300127744,
+    "available": 83286466560,
+    "percent": 39.3,
+    "used": 54013661184,
+    "free": 83286466560
+  },
+  "gpu_snapshot": "0, NVIDIA GeForce RTX 2080 Ti, 22059, 22528, 9\n1, NVIDIA GeForce RTX 2080 Ti, 51, 22528, 0\n2, NVIDIA GeForce RTX 2080 Ti, 0, 22528, 0",
+  "file_sha256": {
+    "strata-a3b-q8.json": "9e7bf31408222e5d0a5357d20495207694a54c5cfd2558086cb54bfb64792ec2",
+    "strata-a3b-q8-gpu-compatible.json": "3474d3a417706748b8785536dce1c2c2e6cd28ea1c0058f2c4e4fc992f5c8609",
+    "strata-a3b-q4-compatible.json": "0f2636b096254a50e0ef10e193dddfdcd084e321da094fa6000adcaf3ea23062",
+    "build-a3b-q8-tuned/bin/strata-moe.exe": "2da62666608dc8c9005e654bb3d9c370d400b508e6ee5c4f509046ec4801ec62",
+    "build-a3b-q8-compatible/bin/strata-moe.exe": "fb650108979dca5f6b5d9202409cf63ac73c2d1ea5498826dd213e4ada337456",
+    "build-a3b-q4-compatible/bin/strata-moe.exe": "0ef75ed69ee5fdbde27a0c8f5f2d49a426d7154d56962a7bfa20b426c3f9d2ec"
+  },
+  "original_tracked_diff_stat": ""
+}

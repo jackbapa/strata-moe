@@ -1,0 +1,14 @@
+{
+  "prompt50000-output256-resident-first-unknown": {
+    "runs": 1,
+    "http_response_first_byte_s_median": 0.009563500003423542,
+    "http_headers_received_s_median": 0.009714199986774474,
+    "body_first_bytes_s_median": 0.009976200002711266,
+    "ttft_any_content_or_reasoning_s_median": 27.623125999991316,
+    "ttft_visible_content_s_median": 27.623125999991316,
+    "engine_prompt_tokens_per_s_median": 1833.6,
+    "engine_predicted_tokens_per_s_median": 57.9,
+    "client_usage_decode_tokens_per_s_median": 57.71352459402379,
+    "total_response_s_median": 32.04323579999618
+  }
+}

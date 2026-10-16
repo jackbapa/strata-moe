@@ -1,0 +1,88 @@
+{
+  "time": "2026-10-14T18:55:22.852082",
+  "engine_processes": [
+    {
+      "pid": 35356,
+      "cmdline": [
+        "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe",
+        "--serve",
+        "--model",
+        "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-Strata-Q4_K_S-Q8Head.gguf",
+        "--ctx",
+        "4096",
+        "--batch",
+        "1024",
+        "--device",
+        "0",
+        "--vram-mib",
+        "0",
+        "--mtp-model",
+        "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+        "--mtp-draft",
+        "2",
+        "--mtp-ubatch",
+        "512",
+        "--exact-verify",
+        "--native-gpu",
+        "--gpu-embedding",
+        "--gpu-sampling",
+        "--share-mtp-weights",
+        "--defer-mtp-catchup",
+        "--fused-moe",
+        "--native-attention-exact"
+      ],
+      "rss_bytes": 1913110528,
+      "private_commit_bytes": 26072305664
+    }
+  ],
+  "system_total_bytes": 137300127744,
+  "system_available_bytes": 116067491840,
+  "system_used_physical_bytes": 21232635904,
+  "gpu": "0, 21859 MiB, 22528 MiB, 6 %\n1, 187 MiB, 22528 MiB, 5 %\n2, 0 MiB, 22528 MiB, 0 %\n",
+  "config": {
+    "model_name": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+    "exe": "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe",
+    "cwd": "G:\\Strata-Moe",
+    "tokenizer": "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-Strata-Q4_K_S-Q8Head-tokenizer",
+    "host": "127.0.0.1",
+    "port": 8096,
+    "log": "G:\\Strata-Moe\\a3b-engine-full-gpu.log",
+    "args": [
+      "--model",
+      "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-Strata-Q4_K_S-Q8Head.gguf",
+      "--ctx",
+      "4096",
+      "--batch",
+      "1024",
+      "--device",
+      "0",
+      "--vram-mib",
+      "0",
+      "--mtp-model",
+      "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+      "--mtp-draft",
+      "2",
+      "--mtp-ubatch",
+      "512",
+      "--exact-verify",
+      "--native-gpu",
+      "--gpu-embedding",
+      "--gpu-sampling",
+      "--share-mtp-weights",
+      "--defer-mtp-catchup",
+      "--fused-moe",
+      "--native-attention-exact"
+    ],
+    "sampling": {
+      "temperature": 0.7,
+      "top_p": 0.8,
+      "top_k": 20
+    },
+    "open_browser": false,
+    "idle_unload_s": 0,
+    "env": {
+      "STRATA_A3B_ARGMAX_MULTI": "1"
+    }
+  },
+  "original_tracked_diff": ""
+}

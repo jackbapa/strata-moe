@@ -1,0 +1,81 @@
+{
+  "fingerprint": {
+    "engine_binary_sha256": "a0a3deaec132200616e7db2c0a18e3cfd719575e660ce6a7d29af58f6c4d9c04",
+    "fixture_binary_sha256": "02d535824cc05233f459179d97dafc7a96d57d3f154a380986ba965cb8cdb046",
+    "target_sha256": "66a3ca888ce13482b40c333db2432c0ebde3a7b13754fc29f0c6f5e89703ec66",
+    "mtp_sha256": "f6cb995fab78e7284097b2e13508e8daad4ffc6a747b433aef399f4e48524b5a",
+    "config_off_sha256": "951d0da6e8e30443e81633702354c92041ee8aac0804d7349b38008a02ad9a52",
+    "config_combined_sha256": "c248aac006e19e8539db37e7ee3bf81e239505afc7e74f21c1e56633878cd933"
+  },
+  "commands": {
+    "off": [
+      "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe-speculative-test.exe",
+      "--model",
+      "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-IQ3_S.gguf",
+      "--device",
+      "0",
+      "--native-gpu",
+      "--fused-moe",
+      "--native-dense-exact",
+      "--native-attention-exact",
+      "--gpu-embedding",
+      "--nextn-hidden",
+      "--mtp-model",
+      "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+      "--gpu-sampling",
+      "--defer-mtp-catchup",
+      "--draft-count",
+      "2",
+      "--draft-ubatch",
+      "2",
+      "--assert-sequential",
+      "--draft-state-dir",
+      "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-combined-exact-r3\\strict\\off\\state"
+    ],
+    "combined": [
+      "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe-speculative-test.exe",
+      "--model",
+      "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-IQ3_S.gguf",
+      "--device",
+      "0",
+      "--native-gpu",
+      "--fused-moe",
+      "--native-dense-exact",
+      "--native-attention-exact",
+      "--gpu-embedding",
+      "--nextn-hidden",
+      "--mtp-model",
+      "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+      "--gpu-sampling",
+      "--defer-mtp-catchup",
+      "--draft-count",
+      "2",
+      "--draft-ubatch",
+      "2",
+      "--assert-sequential",
+      "--draft-state-dir",
+      "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-iq3s-combined-exact-r3\\strict\\combined\\state"
+    ]
+  },
+  "gpu": "CUDA_VISIBLE_DEVICES=0, device 0",
+  "arms": {
+    "off": {
+      "STRATA_A3B_Q6_GROUPED_EXACT": "1",
+      "STRATA_A3B_MTP_KV_ONLY_DIAGNOSTIC": "0",
+      "STRATA_A3B_MTP_PROPOSAL_TRACE": "1",
+      "STRATA_A3B_FUSED_GU": "0",
+      "STRATA_A3B_DOWN_MODE": "0",
+      "STRATA_A3B_Q6_REUSE_EXACT": "0",
+      "STRATA_A3B_MTP_KV_ONLY": "0"
+    },
+    "combined": {
+      "STRATA_A3B_Q6_GROUPED_EXACT": "1",
+      "STRATA_A3B_MTP_KV_ONLY_DIAGNOSTIC": "0",
+      "STRATA_A3B_MTP_PROPOSAL_TRACE": "1",
+      "STRATA_A3B_FUSED_GU": "1",
+      "STRATA_A3B_DOWN_MODE": "1",
+      "STRATA_A3B_Q6_REUSE_EXACT": "1",
+      "STRATA_A3B_MTP_KV_ONLY": "1"
+    }
+  }
+}

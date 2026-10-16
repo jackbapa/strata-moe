@@ -1,0 +1,92 @@
+[
+  {
+    "trial": "prompt32-output256-repeat01-resident-first-unknown",
+    "prefill_upload_mib": 10710.0,
+    "decode_upload_mib": 16947.9,
+    "decode_gpu_rows": 337920,
+    "decode_cpu_rows": 0,
+    "decode_hits": 320181,
+    "decode_misses": 17739,
+    "decode_hit_rate": 0.9475053267045455
+  },
+  {
+    "trial": "prompt32-output256-repeat02-resident-repeat",
+    "prefill_upload_mib": 1351.5,
+    "decode_upload_mib": 9444.6,
+    "decode_gpu_rows": 349440,
+    "decode_cpu_rows": 0,
+    "decode_hits": 339948,
+    "decode_misses": 9492,
+    "decode_hit_rate": 0.9728365384615385
+  },
+  {
+    "trial": "prompt32-output256-repeat03-resident-repeat",
+    "prefill_upload_mib": 1428.0,
+    "decode_upload_mib": 8204.6,
+    "decode_gpu_rows": 346560,
+    "decode_cpu_rows": 0,
+    "decode_hits": 338403,
+    "decode_misses": 8157,
+    "decode_hit_rate": 0.9764629501385041
+  },
+  {
+    "trial": "natural-code-repeat01",
+    "prefill_upload_mib": 6049.9,
+    "decode_upload_mib": 111081.2,
+    "decode_gpu_rows": 511680,
+    "decode_cpu_rows": 0,
+    "decode_hits": 392067,
+    "decode_misses": 119613,
+    "decode_hit_rate": 0.766234756097561
+  },
+  {
+    "trial": "natural-code-repeat02",
+    "prefill_upload_mib": 5339.1,
+    "decode_upload_mib": 78670.7,
+    "decode_gpu_rows": 508800,
+    "decode_cpu_rows": 0,
+    "decode_hits": 427542,
+    "decode_misses": 81258,
+    "decode_hit_rate": 0.8402948113207547
+  },
+  {
+    "trial": "natural-code-repeat03",
+    "prefill_upload_mib": 5246.6,
+    "decode_upload_mib": 69624.6,
+    "decode_gpu_rows": 517440,
+    "decode_cpu_rows": 0,
+    "decode_hits": 446199,
+    "decode_misses": 71241,
+    "decode_hit_rate": 0.8623202690166976
+  },
+  {
+    "trial": "natural-chinese-repeat01",
+    "prefill_upload_mib": 5418.8,
+    "decode_upload_mib": 45941.4,
+    "decode_gpu_rows": 406080,
+    "decode_cpu_rows": 0,
+    "decode_hits": 351489,
+    "decode_misses": 54591,
+    "decode_hit_rate": 0.8655658983451536
+  },
+  {
+    "trial": "natural-chinese-repeat02",
+    "prefill_upload_mib": 4956.6,
+    "decode_upload_mib": 32544.4,
+    "decode_gpu_rows": 411840,
+    "decode_cpu_rows": 0,
+    "decode_hits": 375540,
+    "decode_misses": 36300,
+    "decode_hit_rate": 0.9118589743589743
+  },
+  {
+    "trial": "natural-chinese-repeat03",
+    "prefill_upload_mib": 4720.7,
+    "decode_upload_mib": 30520.3,
+    "decode_gpu_rows": 446400,
+    "decode_cpu_rows": 0,
+    "decode_hits": 413181,
+    "decode_misses": 33219,
+    "decode_hit_rate": 0.9255846774193548
+  }
+]

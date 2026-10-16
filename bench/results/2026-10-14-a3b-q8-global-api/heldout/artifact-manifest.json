@@ -1,0 +1,86 @@
+{
+  "recorded_at_utc": "2026-10-14T14:38:16.519653+00:00",
+  "scope": "Six new-prompt requests on separate frozen-Q8 service process; no GPU-static option; mutable README excluded",
+  "files": {
+    "case-summary.json": {
+      "bytes": 9896,
+      "sha256": "a233159f371f0bab13beecbc2f3a2ad4743c3ad1c5d1299dbde3d0b17a13a834"
+    },
+    "config.json": {
+      "bytes": 1490,
+      "sha256": "3474d3a417706748b8785536dce1c2c2e6cd28ea1c0058f2c4e4fc992f5c8609"
+    },
+    "engine-counters.json": {
+      "bytes": 9474,
+      "sha256": "1c3a94b4b8968e535ef32ef2d69e7ad95788b77b3998e9ce1a238401378bee6e"
+    },
+    "engine.log": {
+      "bytes": 62839,
+      "sha256": "04ef2cdc4872ae0fd75d5bf0a9d37633e1476c7dc6304c9534203e7d05d3c6fd"
+    },
+    "extract-engine-counters.py": {
+      "bytes": 3508,
+      "sha256": "36e473fa3af9d30dc913611da685ada0d2220ca8ed7206ac8b57fca723614b7b"
+    },
+    "heldout-chinese-transactions-repeat01.events.jsonl": {
+      "bytes": 99309,
+      "sha256": "e3bda7a2b781a89c0332c7685ecbb020e7e0edf279273cd6bc49ee51ab8d68dd"
+    },
+    "heldout-chinese-transactions-repeat01.output.json": {
+      "bytes": 1523,
+      "sha256": "44a0dfe58f5588e1253c090a4d04fbfcac920d44b87a08fbb673b1f30195c044"
+    },
+    "heldout-chinese-transactions-repeat02.events.jsonl": {
+      "bytes": 96528,
+      "sha256": "df5cc71028d155bf3e98b3fc8a10b0f018774c3ac9c57c9e03bfa22099261066"
+    },
+    "heldout-chinese-transactions-repeat02.output.json": {
+      "bytes": 1443,
+      "sha256": "810444b301f6ce09c26e0285cc5d8c37d0b80466d12d77635fafc6c90971dba7"
+    },
+    "heldout-chinese-transactions-repeat03.events.jsonl": {
+      "bytes": 99333,
+      "sha256": "33f340903cabda9e9249f743fec9a05f210361b153165b891c0356e45b630bc8"
+    },
+    "heldout-chinese-transactions-repeat03.output.json": {
+      "bytes": 1558,
+      "sha256": "061d5d8e4c42d9a3fdaea4e08f827d50272542985f9c011a1cd7ec08add5a025"
+    },
+    "heldout-python-bfs-repeat01.events.jsonl": {
+      "bytes": 138819,
+      "sha256": "6e9c1cf42fe92a6ad3388b1cc50adff884bb141f9d7c7c30ad0ede1501a10f1d"
+    },
+    "heldout-python-bfs-repeat01.output.json": {
+      "bytes": 2097,
+      "sha256": "55d3c0d90e79c3a8061ce4f3a0076a800180e950dd131859c2bb6eff9ab031f0"
+    },
+    "heldout-python-bfs-repeat02.events.jsonl": {
+      "bytes": 138839,
+      "sha256": "cee46c49f1515d7b6f55d1c9c1cdcad8b18de7114a8becfa5773b20bc2fad133"
+    },
+    "heldout-python-bfs-repeat02.output.json": {
+      "bytes": 2097,
+      "sha256": "55d3c0d90e79c3a8061ce4f3a0076a800180e950dd131859c2bb6eff9ab031f0"
+    },
+    "heldout-python-bfs-repeat03.events.jsonl": {
+      "bytes": 138839,
+      "sha256": "481b41f71e86f9c0ada07d6475ccc450be5d6fa98505fed0772c777756db993f"
+    },
+    "heldout-python-bfs-repeat03.output.json": {
+      "bytes": 2097,
+      "sha256": "55d3c0d90e79c3a8061ce4f3a0076a800180e950dd131859c2bb6eff9ab031f0"
+    },
+    "plan.json": {
+      "bytes": 3072,
+      "sha256": "ca12e92290580dc470274a9d2097a7f27606a9be1f2b3ff215b10cd3a9921815"
+    },
+    "resources-final.json": {
+      "bytes": 966,
+      "sha256": "3528ec4069a5ee682b461fcfe564b2778330ba520bd21ea1ebb186104986bf47"
+    },
+    "results.json": {
+      "bytes": 14044,
+      "sha256": "730a01930704bdc8d94751b7ad383aa8e1a846554dee25a2b00c8d789fc5aa80"
+    }
+  }
+}

@@ -1,0 +1,340 @@
+{
+  "method": "Excludes 40 startup mailbox publications and prefill. Starts at first decode layer0 mailbox publish, omits preceding layer0 trunk; ends at final GPU kernel. Profiler overhead applies; no throughput claim.",
+  "start_ns": 61925219089,
+  "end_ns": 63151440496,
+  "wall_ms": 1226.221407,
+  "gpu_kernel_sum_ms": 946.69066,
+  "mailbox_publishes_all": 1080,
+  "kernels": [
+    {
+      "name": "void strata_a3b_dense_q8_reuse<(int)3>(const block_q8_0 *, const block_q8_1 *, float *, int, int, int, int)",
+      "total_ms": 217.867829,
+      "count": 7914,
+      "kernel_time_share": 0.23013624006811265
+    },
+    {
+      "name": "<unnamed>::mailbox_wait(const <unnamed>::DevicePlan *, const <unnamed>::Mailbox *)",
+      "total_ms": 180.594476,
+      "count": 1040,
+      "kernel_time_share": 0.19076397774960618
+    },
+    {
+      "name": "<unnamed>::mailbox_merge(const <unnamed>::DevicePlan *, <unnamed>::DeviceStats *, const <unnamed>::Mailbox *, float *)",
+      "total_ms": 91.004299,
+      "count": 1040,
+      "kernel_time_share": 0.096128865367701
+    },
+    {
+      "name": "<unnamed>::gate_up(const <unnamed>::DevicePlan *, const block_q8_1 *, float *, int)",
+      "total_ms": 89.744821,
+      "count": 1040,
+      "kernel_time_share": 0.0947984645797604
+    },
+    {
+      "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "total_ms": 61.853622,
+      "count": 449,
+      "kernel_time_share": 0.06533667713590836
+    },
+    {
+      "name": "<unnamed>::down(const <unnamed>::DevicePlan *, const block_q8_1 *, float *)",
+      "total_ms": 56.239771,
+      "count": 1040,
+      "kernel_time_share": 0.05940670313574235
+    },
+    {
+      "name": "quantize_q8_1(const float *, void *, long long, long long, long long, long long, long long, unsigned int, uint3)",
+      "total_ms": 30.284049,
+      "count": 10854,
+      "kernel_time_share": 0.031989381832498484
+    },
+    {
+      "name": "void concat_non_cont<unsigned int, (int)0>(const char *, const char *, char *, long long, long long, long long, long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, long long, long long, long long, long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, long long, long long, long long, long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long)",
+      "total_ms": 28.084698,
+      "count": 749,
+      "kernel_time_share": 0.029666182615554693
+    },
+    {
+      "name": "void mul_mat_vec_f<float, float, (int)1, (int)256, (bool)0, (bool)0>(const T1 *, const float *, const int *, ggml_cuda_mm_fusion_args_device, float *, int, uint3, int, int, int, uint3, int, int, int, uint3, int, int, int, int)",
+      "total_ms": 19.603819,
+      "count": 2227,
+      "kernel_time_share": 0.020707734668048802
+    },
+    {
+      "name": "<unnamed>::mailbox_publish(const float *, unsigned long long, unsigned long long, const int *, int, int, int, const <unnamed>::DevicePlan *, <unnamed>::DeviceStats *, <unnamed>::Mailbox *)",
+      "total_ms": 18.820722,
+      "count": 1040,
+      "kernel_time_share": 0.019880540492498364
+    },
+    {
+      "name": "void rms_norm_f32<(int)1024, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+      "total_ms": 14.709552,
+      "count": 2474,
+      "kernel_time_share": 0.015537865346638152
+    },
+    {
+      "name": "void gated_delta_net_cuda<(int)128, (bool)0, (bool)1>(const float *, const float *, const float *, const float *, const float *, const float *, float *, float *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, uint3, uint3, float, long long, int)",
+      "total_ms": 14.313025,
+      "count": 779,
+      "kernel_time_share": 0.015119009413275505
+    },
+    {
+      "name": "void cpy_scalar<&cpy_1_scalar<float, float>>(const char *, char *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long)",
+      "total_ms": 11.745137,
+      "count": 2671,
+      "kernel_time_share": 0.012406520415021311
+    },
+    {
+      "name": "void flash_attn_ext_f16<(int)256, (int)256, (int)1, (int)8, (bool)0, (bool)0, (bool)0>(const char *, const char *, const char *, const char *, const char *, const int *, float *, float2 *, float, float, float, float, unsigned int, float, int, uint3, int, int, int, int, int, int, int, int, int, int, int, long long, int, int, long long, int, int, int, int, int, long long)",
+      "total_ms": 10.818798,
+      "count": 871,
+      "kernel_time_share": 0.011428018102555273
+    },
+    {
+      "name": "void topk_moe_cuda<(int)256, (bool)0>(const float *, float *, int *, float *, int, int, float, float, topk_moe_config)",
+      "total_ms": 7.848548,
+      "count": 1113,
+      "kernel_time_share": 0.008290509594760341
+    },
+    {
+      "name": "<unnamed>::route_plan(const int *, int, int, const <unnamed>::DeviceLayer *, <unnamed>::DevicePlan *, <unnamed>::DeviceStats *, unsigned char *, unsigned char *, unsigned char *, bool, int)",
+      "total_ms": 6.724111,
+      "count": 1039,
+      "kernel_time_share": 0.007102754135125829
+    },
+    {
+      "name": "void k_get_rows_float_vec<float>(const T1 *, const int *, T1 *, long long, long long, uint3, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long)",
+      "total_ms": 6.561981,
+      "count": 779,
+      "kernel_time_share": 0.006931494391209056
+    },
+    {
+      "name": "void k_bin_bcast<&op_add, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "total_ms": 5.858443,
+      "count": 1827,
+      "kernel_time_share": 0.006188339282865641
+    },
+    {
+      "name": "scale_f32(const float *, float *, float, float, long long)",
+      "total_ms": 5.795136,
+      "count": 1806,
+      "kernel_time_share": 0.006121467386189275
+    },
+    {
+      "name": "void k_bin_bcast<&op_mul, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "total_ms": 5.755543,
+      "count": 1987,
+      "kernel_time_share": 0.006079644854634987
+    },
+    {
+      "name": "void rms_norm_f32<(int)256, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+      "total_ms": 5.140427,
+      "count": 1447,
+      "kernel_time_share": 0.005429890900159509
+    },
+    {
+      "name": "moe_weighted_reduction_f32(const float *, const float *, const float *, float *, long long, int)",
+      "total_ms": 4.809526,
+      "count": 1114,
+      "kernel_time_share": 0.005080356449275627
+    },
+    {
+      "name": "void unary_gated_op_kernel<&op_silu, float>(const T2 *, const T2 *, T2 *, long long, long long, long long, long long)",
+      "total_ms": 4.67969,
+      "count": 1798,
+      "kernel_time_share": 0.004943209221056432
+    },
+    {
+      "name": "void unary_op_kernel<&op_sigmoid, float>(const T2 *, T2 *, int)",
+      "total_ms": 4.392647,
+      "count": 1893,
+      "kernel_time_share": 0.004640002469233192
+    },
+    {
+      "name": "void rms_norm_f32<(int)256, (bool)0, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+      "total_ms": 4.213679,
+      "count": 1558,
+      "kernel_time_share": 0.004450956556389813
+    },
+    {
+      "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)1, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "total_ms": 4.119524,
+      "count": 215,
+      "kernel_time_share": 0.004351499570091882
+    },
+    {
+      "name": "void k_bin_bcast<&op_add, float, float, float, const float *, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "total_ms": 3.303093,
+      "count": 1114,
+      "kernel_time_share": 0.003489094315137745
+    },
+    {
+      "name": "void k_get_rows_float<float, float>(const T1 *, const int *, T2 *, long long, long long, uint3, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long)",
+      "total_ms": 3.260423,
+      "count": 977,
+      "kernel_time_share": 0.0034440215138490963
+    },
+    {
+      "name": "void ssm_conv_f32<(bool)1, (unsigned long long)128, (unsigned long long)4>(const float *, const float *, const float *, int, int, int, int, float *, int, int, int, long long)",
+      "total_ms": 3.036526,
+      "count": 779,
+      "kernel_time_share": 0.003207516592590023
+    },
+    {
+      "name": "void flash_attn_stream_k_fixup_uniform<(int)256, (int)1, (int)8>(float *, const float2 *, int, int, int, int, int, int, uint3, uint3, uint3)",
+      "total_ms": 2.525648,
+      "count": 871,
+      "kernel_time_share": 0.002667870410805574
+    },
+    {
+      "name": "void rope_multi<(bool)1, (bool)0, float>(const T3 *, T3 *, int, int, int, int, int, int, int, int, int, int, int, const int *, float, float, float, rope_corr_dims, float, const float *, mrope_sections, bool, bool)",
+      "total_ms": 2.322963,
+      "count": 668,
+      "kernel_time_share": 0.0024537719639063514
+    },
+    {
+      "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)1, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "total_ms": 2.213979,
+      "count": 150,
+      "kernel_time_share": 0.0023386509379948886
+    },
+    {
+      "name": "void mul_mat_vec_q_moe<(ggml_type)8, (int)2, (bool)1>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "total_ms": 1.858885,
+      "count": 19,
+      "kernel_time_share": 0.00196356114889736
+    },
+    {
+      "name": "void k_set_rows<float, long long, __half>(const T1 *, const T2 *, T3 *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, uint3, uint3, uint3, uint3, uint3)",
+      "total_ms": 1.764172,
+      "count": 668,
+      "kernel_time_share": 0.0018635147409186439
+    },
+    {
+      "name": "void unary_op_kernel<&op_softplus, float>(const T2 *, T2 *, int)",
+      "total_ms": 1.55145,
+      "count": 749,
+      "kernel_time_share": 0.001638814097944095
+    },
+    {
+      "name": "void strata_a3b_argmax_tiles_f32<(int)256, (int)4096>(const float *, strata_a3b_argmax_pair *, long long, int)",
+      "total_ms": 1.431981,
+      "count": 248,
+      "kernel_time_share": 0.001512617648514669
+    },
+    {
+      "name": "void concat_cont<unsigned int, (int)2>(const T1 *, const T1 *, T1 *, long long, long long, long long, long long, long long, long long)",
+      "total_ms": 1.341624,
+      "count": 537,
+      "kernel_time_share": 0.0014171725323665917
+    },
+    {
+      "name": "pad_f32(const float *, unsigned long long, unsigned long long, unsigned long long, unsigned long long, float *, int, int, int, int, int, int, int, int, int, int, int, int, bool)",
+      "total_ms": 1.321482,
+      "count": 74,
+      "kernel_time_share": 0.001395896311050539
+    },
+    {
+      "name": "void k_bin_bcast<&op_sub, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "total_ms": 1.256779,
+      "count": 248,
+      "kernel_time_share": 0.001327549803860957
+    },
+    {
+      "name": "void strata_a3b_argmax_merge_f32<(int)256>(const strata_a3b_argmax_pair *, int *, int)",
+      "total_ms": 1.175372,
+      "count": 248,
+      "kernel_time_share": 0.001241558673453058
+    },
+    {
+      "name": "void unary_op_kernel<&op_step, float>(const T2 *, T2 *, int)",
+      "total_ms": 0.996115,
+      "count": 124,
+      "kernel_time_share": 0.0010522074866567291
+    },
+    {
+      "name": "void mul_mat_vec_q_moe<(ggml_type)8, (int)2, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)",
+      "total_ms": 0.948083,
+      "count": 19,
+      "kernel_time_share": 0.0010014707444140202
+    },
+    {
+      "name": "void unary_gated_op_kernel<&op_sigmoid, float>(const T2 *, const T2 *, T2 *, long long, long long, long long, long long)",
+      "total_ms": 0.840245,
+      "count": 334,
+      "kernel_time_share": 0.0008875602512018023
+    },
+    {
+      "name": "void unary_op_kernel<&op_neg, float>(const T2 *, T2 *, int)",
+      "total_ms": 0.538743,
+      "count": 124,
+      "kernel_time_share": 0.0005690802949297081
+    },
+    {
+      "name": "void cub::CUB_200500_750_NS::DeviceReduceKernel<cub::CUB_200500_750_NS::DeviceReducePolicy<float, unsigned long long, cuda::std::__4::plus<void>>::Policy600, const float *, unsigned long long, cuda::std::__4::plus<void>, float, cuda::std::__4::__identity>(T2, T5 *, T3, cub::CUB_200500_750_NS::GridEvenShare<T3>, T4, T6)",
+      "total_ms": 0.512508,
+      "count": 124,
+      "kernel_time_share": 0.0005413679691315429
+    },
+    {
+      "name": "void k_bin_bcast<&op_repeat, float, float, float, >(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+      "total_ms": 0.511964,
+      "count": 124,
+      "kernel_time_share": 0.000540793335808341
+    },
+    {
+      "name": "arange_f32(float *, int, float, float)",
+      "total_ms": 0.434586,
+      "count": 124,
+      "kernel_time_share": 0.00045905808345040607
+    },
+    {
+      "name": "void cub::CUB_200500_750_NS::DeviceReduceSingleTileKernel<cub::CUB_200500_750_NS::DeviceReducePolicy<float, unsigned long long, cuda::std::__4::plus<void>>::Policy600, float *, float *, int, cuda::std::__4::plus<void>, float, float, cuda::std::__4::__identity>(T2, T3, T4, T5, T6, T8)",
+      "total_ms": 0.356379,
+      "count": 124,
+      "kernel_time_share": 0.00037644714906134174
+    },
+    {
+      "name": "void k_get_rows<(int)32, (int)1, &dequantize_q8_0, float>(const void *, const int *, T4 *, long long, long long, uint3, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long)",
+      "total_ms": 0.346203,
+      "count": 99,
+      "kernel_time_share": 0.0003656981257214474
+    },
+    {
+      "name": "void concat_cont<unsigned int, (int)0>(const T1 *, const T1 *, T1 *, long long, long long, long long, long long, long long, long long)",
+      "total_ms": 0.281949,
+      "count": 104,
+      "kernel_time_share": 0.00029782590228575825
+    },
+    {
+      "name": "void op_clamp_kernel<float>(const T1 *, T1 *, T1, T1, int)",
+      "total_ms": 0.267676,
+      "count": 124,
+      "kernel_time_share": 0.0002827491717304996
+    },
+    {
+      "name": "void cpy_scalar_contiguous<int, float>(const char *, char *, long long)",
+      "total_ms": 0.265791,
+      "count": 124,
+      "kernel_time_share": 0.0002807580250131548
+    },
+    {
+      "name": "void cpy_scalar_contiguous<float, int>(const char *, char *, long long)",
+      "total_ms": 0.251452,
+      "count": 124,
+      "kernel_time_share": 0.00026561157791500764
+    },
+    {
+      "name": "void strata_a3b_dense_q8_reuse<(int)2>(const block_q8_0 *, const block_q8_1 *, float *, int, int, int, int)",
+      "total_ms": 0.130461,
+      "count": 8,
+      "kernel_time_share": 0.00013780742275412328
+    },
+    {
+      "name": "void unary_gated_op_kernel<&op_softplus, float>(const T2 *, const T2 *, T2 *, long long, long long, long long, long long)",
+      "total_ms": 0.060255,
+      "count": 30,
+      "kernel_time_share": 6.364803472340163e-05
+    }
+  ]
+}

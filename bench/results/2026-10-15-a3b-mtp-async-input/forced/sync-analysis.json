@@ -1,0 +1,94 @@
+{
+  "ranges": 26,
+  "sync_total": 364,
+  "by_preceding_api": [
+    {
+      "previous": "cudaStreamSynchronize_v3020",
+      "count": 130,
+      "sync_duration_ms": 0.129285,
+      "example_offset_ms": [
+        4.210809,
+        4.358284,
+        4.399962
+      ]
+    },
+    {
+      "previous": "cudaMemcpyAsync_v3020: (2, 4)",
+      "count": 52,
+      "sync_duration_ms": 72.222299,
+      "example_offset_ms": [
+        1.128337,
+        4.98277,
+        1.04558
+      ]
+    },
+    {
+      "previous": "cudaMemcpyAsync_v3020: (1, 8)",
+      "count": 52,
+      "sync_duration_ms": 2.676341,
+      "example_offset_ms": [
+        4.363053,
+        4.404462,
+        4.747649
+      ]
+    },
+    {
+      "previous": "cudaMemcpyAsync_v3020: (8, 8192)",
+      "count": 26,
+      "sync_duration_ms": 1.207114,
+      "example_offset_ms": [
+        4.268967,
+        4.660842,
+        2.195356
+      ]
+    },
+    {
+      "previous": "cudaMemcpyAsync_v3020: (1, 16)",
+      "count": 26,
+      "sync_duration_ms": 1.142242,
+      "example_offset_ms": [
+        4.318445,
+        4.70532,
+        2.236375
+      ]
+    },
+    {
+      "previous": "cudaMemcpyAsync_v3020: (1, 512)",
+      "count": 26,
+      "sync_duration_ms": 1.075987,
+      "example_offset_ms": [
+        4.44439,
+        4.827256,
+        2.350121
+      ]
+    },
+    {
+      "previous": "cudaMemcpyAsync_v3020: (1, 4)",
+      "count": 26,
+      "sync_duration_ms": 1.166735,
+      "example_offset_ms": [
+        4.483869,
+        4.866634,
+        2.385929
+      ]
+    },
+    {
+      "previous": "no prior API",
+      "count": 25,
+      "sync_duration_ms": 5.238056,
+      "example_offset_ms": [
+        0.207732,
+        0.192393,
+        0.25353
+      ]
+    },
+    {
+      "previous": "cudaMallocHost_v3020",
+      "count": 1,
+      "sync_duration_ms": 0.202122,
+      "example_offset_ms": [
+        0.27273
+      ]
+    }
+  ]
+}

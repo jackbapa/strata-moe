@@ -1,0 +1,168 @@
+{
+  "suite": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2",
+  "strict_suite": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-strict-v3",
+  "order": [
+    "off",
+    "on",
+    "off",
+    "on",
+    "off",
+    "on"
+  ],
+  "selected_config_sha256": "94bb567296d56ebbf5225fb0533f7dd30422f40d0f85e02284e24e551417ac0f",
+  "frozen_engine": "G:\\Strata-Moe\\build-a3b-shared-candidate\\bin\\strata-moe.exe",
+  "frozen_engine_sha256": "851971b05547d527e1413cbdb384db3da5ab5b4490699295d202ce4d5a12997b",
+  "selected_args_identical": true,
+  "only_compute_switch_difference": "STRATA_A3B_SHARED_STREAM",
+  "prompt_tokens": 50000,
+  "max_tokens": 256,
+  "uncached": true,
+  "diagnostic_node_logging": false,
+  "strict_report_sha256": "3ea3eac2a97a3a847bc5b92d4b63ce05e675c75e8628fa8aa719c48bc9430db5",
+  "trials": [
+    {
+      "index": 1,
+      "arm": "off",
+      "config": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\configs\\01-off.json",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\runner-logs\\01-off.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\arms\\off\\run001.json",
+      "elapsed_s": 47.579,
+      "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+      "proposal_windows": 119,
+      "archived_engine_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\engine-logs\\01-off.log",
+      "service_pid": 35052,
+      "engine_pid": 13840,
+      "model_status": "loaded",
+      "status_loaded": true
+    },
+    {
+      "index": 2,
+      "arm": "on",
+      "config": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\configs\\02-on.json",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\runner-logs\\02-on.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\arms\\on\\run001.json",
+      "elapsed_s": 47.25,
+      "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+      "proposal_windows": 119,
+      "archived_engine_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\engine-logs\\02-on.log",
+      "service_pid": 7324,
+      "engine_pid": 22428,
+      "model_status": "loaded",
+      "status_loaded": true
+    },
+    {
+      "index": 3,
+      "arm": "off",
+      "config": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\configs\\03-off.json",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\runner-logs\\03-off.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\arms\\off\\run002.json",
+      "elapsed_s": 47.829,
+      "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+      "proposal_windows": 119,
+      "archived_engine_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\engine-logs\\03-off.log",
+      "service_pid": 41524,
+      "engine_pid": 43032,
+      "model_status": "loaded",
+      "status_loaded": true
+    },
+    {
+      "index": 4,
+      "arm": "on",
+      "config": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\configs\\04-on.json",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\runner-logs\\04-on.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\arms\\on\\run002.json",
+      "elapsed_s": 47.922,
+      "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+      "proposal_windows": 119,
+      "archived_engine_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\engine-logs\\04-on.log",
+      "service_pid": 5760,
+      "engine_pid": 36064,
+      "model_status": "loaded",
+      "status_loaded": true
+    },
+    {
+      "index": 5,
+      "arm": "off",
+      "config": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\configs\\05-off.json",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\runner-logs\\05-off.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\arms\\off\\run003.json",
+      "elapsed_s": 48.235,
+      "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+      "proposal_windows": 119,
+      "archived_engine_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\engine-logs\\05-off.log",
+      "service_pid": 27088,
+      "engine_pid": 41708,
+      "model_status": "loaded",
+      "status_loaded": true
+    },
+    {
+      "index": 6,
+      "arm": "on",
+      "config": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\configs\\06-on.json",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\runner-logs\\06-on.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\arms\\on\\run003.json",
+      "elapsed_s": 47.828,
+      "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+      "proposal_windows": 119,
+      "archived_engine_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab-r2\\engine-logs\\06-on.log",
+      "service_pid": 43464,
+      "engine_pid": 42088,
+      "model_status": "loaded",
+      "status_loaded": true
+    }
+  ],
+  "primary_error": null,
+  "restore": {
+    "ok": true,
+    "server_pid": 35876,
+    "engine_pid": 38584,
+    "loaded": true,
+    "model_id": "qwen3.6-35b-a3b-ud-iq3_s",
+    "n_ctx": 262144,
+    "selected_source_changed": false
+  },
+  "cleanup_errors": [],
+  "complete": true,
+  "exact_report": {
+    "pass": true,
+    "order": [
+      "off",
+      "on",
+      "off",
+      "on",
+      "off",
+      "on"
+    ],
+    "trials_per_arm": 3,
+    "same_50k_request_output_and_proposals": true,
+    "output_sha256": "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7",
+    "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+    "mtp_offered_tokens": 238,
+    "mtp_accepted_tokens": 136,
+    "strict_fixture_attention_difference": "selected strict uses --native-attention-exact for fixture rollback reference; selected service does not set this flag, so long service output/proposal parity remains a separate gate",
+    "gpu_memory_scope": "observed whole GPU 0, not process-attributed",
+    "arms": {
+      "off": {
+        "http_response_first_byte_s_median": 0.01884429997880943,
+        "ttft_any_content_or_reasoning_s_median": 28.545007400010945,
+        "engine_prompt_tokens_per_s_median": 1763.7,
+        "engine_predicted_tokens_per_s_median": 82.6,
+        "gpu0_total_used_mib_observed_peak_median": 17103
+      },
+      "on": {
+        "http_response_first_byte_s_median": 0.010370799980591983,
+        "ttft_any_content_or_reasoning_s_median": 28.663793399988208,
+        "engine_prompt_tokens_per_s_median": 1760.3,
+        "engine_predicted_tokens_per_s_median": 82.6,
+        "gpu0_total_used_mib_observed_peak_median": 17103
+      }
+    },
+    "on_minus_off": {
+      "http_response_first_byte_s_median": -0.008473499998217449,
+      "ttft_any_content_or_reasoning_s_median": 0.11878599997726269,
+      "engine_prompt_tokens_per_s_median": -3.400000000000091,
+      "engine_predicted_tokens_per_s_median": 0.0,
+      "gpu0_total_used_mib_observed_peak_median": 0
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "status": "complete",
+  "wall_s": 90.05527100000108,
+  "output_tokens": 3072,
+  "end_to_end_output_tok_s": 34.11238416016718,
+  "common_window_s": 27.441378699999404,
+  "common_start_since_submission_s": 61.41994415000045,
+  "common_end_since_submission_s": 88.86132284999985,
+  "common_start_tokens": {
+    "0": 70,
+    "1": 69,
+    "2": 68
+  },
+  "common_end_tokens": {
+    "0": 985,
+    "1": 983,
+    "2": 983
+  },
+  "common_per_slot_tok_s": {
+    "0": 33.34380571775061,
+    "1": 33.307364400026295,
+    "2": 33.34380571775061
+  },
+  "common_total_tok_s": 99.99497583552751,
+  "requests": [
+    {
+      "first": 39.19604750000144,
+      "total": 90.03956500000095,
+      "text": "1. The orbit of the planet was calculated using precise mathematical models. Astronomers observed the celestial body moving through the dark vacuum of space.\n2. Copper pipes were installed to carry water throughout the building. The metal gleamed under the sunlight as it was polished to a shine.\n3. The canyon walls rose steeply on either side of the river. Erosion had carved deep channels into the red rock over millennia.\n4. A large stone was placed at the entrance of the garden. It served as a marker for visitors entering the private grounds.\n5. The market bustled with activity as vendors called out prices. Fresh produce was displayed in colorful crates along the narrow aisles.\n6. An anchor was dropped into the harbor to secure the ship. The heavy iron chain rattled as it descended into the murky water.\n7. A lantern hung from the branch of an old oak tree. Its warm glow illuminated the path for those walking at night.\n8. Velvet curtains were drawn across the windows of the theater. The deep red fabric absorbed the light and created a sense of intimacy.\n9. Violet flowers bloomed in the spring garden. Their delicate petals swayed gently in the breeze.\n10. Stone steps led up to the ancient temple. Each step was worn smooth by centuries of foot traffic.\n11. The market square was filled with the scent of spices. Merchants arranged their goods on wooden tables for customers to browse.\n12. An ember glowed in the center of the campfire. It provided warmth to the huddled group of travelers.\n13. A signal was sent from the lighthouse to warn ships. The rotating beam cut through the fog on the coastline.\n14. The anchor rested on the sandy bottom of the sea. It held the vessel steady against the strong currents.\n15. Lanterns lined the pathway leading to the festival. They created a magical atmosphere for the evening celebration.\n16. Velvet cushions were placed on the wooden benches. They offered comfort to those waiting for the performance to begin.\n17. Violet dye was used to color the royal robes. The rich hue signified status and power within the court.\n18. Stone tools were discovered in the archaeological dig. They provided insight into the lives of early humans.\n19. The market closed its doors as the sun set. Vendors packed up their unsold goods for the next day.\n20. An ember from the fire was used to light a candle. The small flame flickered in the drafty room.\n21. A signal flag was raised on the ship's mast. It communicated important information to the fleet nearby.\n22. The anchor was lifted from the seabed. The ship began to drift slowly with the tide.\n23. Lanterns were extinguished one by one. The darkness returned to the quiet village.\n24. Velvet gloves were worn by the opera singer. They added an air of elegance to her stage presence.\n25. Violet shadows lengthened across the grass. The day was coming to an end.\n26. Stone walls surrounded the medieval castle. They provided protection against invading armies.\n27. The market was empty in the early morning. Only a few early birds walked through the silent streets.\n28. An ember died out in the cold ash. The fire had burned down to nothing.\n29. A signal was received by the radio operator. It contained urgent news from the front lines.\n30. The anchor was secured to the deck. It was ready to be deployed when needed.\n31. Lanterns were lit in the windows of the houses. They welcomed the approaching holiday season.\n32. Velvet upholstery covered the antique chair. It showed signs of wear but remained comfortable.\n33. Violet clouds gathered on the horizon. A storm was approaching from the west.\n34. Stone statues stood in the park. They depicted historical figures from the past.\n35. The market reopened with new vendors. Fresh flowers were added to the existing stalls.\n36. An ember was caught in a jar. It was kept as a reminder of the campfire night.\n37. A signal was given to start the race. The runners took off from the starting line.\n38. The anchor was inspected for rust. Maintenance was required before the next voyage.\n39. Lanterns were hung in the trees. They created a canopy of light above the picnic area.\n40. Velvet ribbons tied the gift boxes. They added a touch of luxury to the presents.\n41. Violet light filtered through the stained glass. It cast colorful patterns on the church floor.\n42. Stone bridges crossed the river. They connected the two sides of the town.\n43. The market was crowded with tourists. They took photos of the historic architecture.\n44. An",
+      "usage": {
+        "prompt_tokens": 32768,
+        "completion_tokens": 1024,
+        "total_tokens": 33792,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 32768,
+        "prompt_ms": 19381.6,
+        "prompt_per_token_ms": 0.591,
+        "prompt_per_second": 1690.7,
+        "predicted_n": 1024,
+        "predicted_ms": 50628.3,
+        "predicted_per_token_ms": 49.442,
+        "predicted_per_second": 20.2,
+        "draft_n": 0,
+        "draft_n_accepted": 0
+      },
+      "err": null,
+      "pieces": 981,
+      "tag": "A",
+      "client_start": 8951.1751121,
+      "client_end": 9041.2152939
+    },
+    {
+      "first": 59.08532959999866,
+      "total": 90.04610639999919,
+      "text": "1. The orbit of the copper planet traces a path through the canyon. Its stone surface reflects the light of the distant market.\n2. An anchor rests heavily on the velvet floor of the garden. It holds the lantern steady against the winter wind.\n3. Violet flowers bloom in the meadow near the stone wall. Their scent mixes with the ember glow from the signal fire.\n4. The quartz crystal sits on the ledger page. It captures the light of the harbor lantern.\n5. A needle pierces the velvet fabric in the garden. The thread connects to the anchor at the harbor.\n6. The market stalls line the river bank. They sell copper goods and violet stones.\n7. Winter snow covers the canyon floor. The stone path is hidden beneath the white layer.\n8. The orbit of the moon affects the tide in the harbor. The anchor holds the boat steady in the water.\n9. Copper wires connect the signal tower to the lantern. The light guides ships through the canyon.\n10. The velvet curtain hides the garden from view. Behind it, the violet flowers grow wild.\n11. A stone marker indicates the edge of the market. It is carved with symbols of the orbit.\n12. The ember glows in the dark canyon. It provides warmth to the travelers.\n13. The ledger records the transactions of the harbor. Each entry is written with a copper pen.\n14. The needle is used to stitch the velvet sail. It is kept in a stone case.\n15. The garden is enclosed by a high stone wall. The gate is locked with an iron anchor.\n16. The signal fire burns bright in the winter night. It warns of the approaching storm.\n17. The quartz lens focuses the light of the lantern. It illuminates the path through the canyon.\n18. The orbit of the satellite tracks the weather patterns. It sends data to the market station.\n19. The copper pot boils water over the ember. It is used to make tea in the garden.\n20. The velvet cushion rests on the stone bench. It is embroidered with violet flowers.\n21. The anchor is raised from the harbor floor. It is covered in barnacles and rust.\n22. The market is bustling with activity. People buy and sell goods made of stone and copper.\n23. The winter wind howls through the canyon. It carries the scent of pine and snow.\n24. The orbit of the planet is elliptical. It brings it closer to the sun in summer.\n25. The copper statue stands in the center of the garden. It depicts a figure holding a lantern.\n26. The velvet rope separates the VIP area from the market. It is guarded by a stone pillar.\n27. The anchor chain is wrapped around the bollard. It is secured with a heavy lock.\n28. The signal flag is raised on the mast. It indicates the direction of the wind.\n29. The quartz watch ticks steadily on the wrist. It measures the time spent in the garden.\n30. The orbit of the moon causes the tides to rise. The harbor water laps against the stone wall.\n31. The copper bell rings in the tower. It calls the people to the market.\n32. The velvet dress flows in the wind. It is dyed with violet pigment.\n33. The anchor is dropped in the deep water. It sinks to the bottom of the harbor.\n34. The signal light flashes in the darkness. It guides the ships to safety.\n35. The quartz crystal is used in the radio. It helps to tune the frequency.\n36. The orbit of the earth around the sun creates the seasons. Winter brings cold and snow.\n37. The copper wire conducts electricity to the lantern. It powers the light in the garden.\n38. The velvet sofa is soft and comfortable. It is placed near the stone fireplace.\n39. The anchor is lifted by the crane. It is moved to the dry dock.\n40. The signal is sent across the ocean. It travels through the air and water.\n41. The quartz clock keeps accurate time. It is used to schedule the market hours.\n42. The orbit of the satellite provides communication. It connects the remote canyon to the city.\n43. The copper roof shines in the sun. It protects the building from the rain.\n44. The velvet carpet covers the floor. It adds warmth to the room.\n45. The anchor is tested for strength. It must hold the ship in a storm.\n46. The signal is received by the antenna. It is decoded by the computer.\n47. The quartz lens is polished to perfection. It provides a clear view of the stars.\n48. The orbit of",
+      "usage": {
+        "prompt_tokens": 32768,
+        "completion_tokens": 1024,
+        "total_tokens": 33792,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 32768,
+        "prompt_ms": 19564.5,
+        "prompt_per_token_ms": 0.597,
+        "prompt_per_second": 1674.9,
+        "predicted_n": 1024,
+        "predicted_ms": 30751.8,
+        "predicted_per_token_ms": 30.031,
+        "predicted_per_second": 33.3,
+        "draft_n": 0,
+        "draft_n_accepted": 0
+      },
+      "err": null,
+      "pieces": 977,
+      "tag": "B",
+      "client_start": 8951.1760122,
+      "client_end": 9041.2228298
+    },
+    {
+      "first": 19.44878549999885,
+      "total": 90.00839329999872,
+      "text": "1. The orbit of the copper planet is tracked by a signal that pulses through the canyon. This celestial movement is recorded in a ledger that sits on the velvet-covered desk.\n2. A stone anchor rests at the bottom of the harbor, holding the lantern steady against the winter wind. The velvet rope attached to it is frayed from years of use in the market.\n3. The violet signal from the garden is intercepted by the orbiting satellite above the canyon. This data is stored in a quartz crystal embedded in the stone wall.\n4. Copper needles are used to stitch the velvet banner that hangs in the market square. The banner depicts a lantern glowing in the winter snow.\n5. The anchor is made of iron, but it is wrapped in velvet to prevent scratching the stone dock. A signal flare is launched from the harbor to mark the occasion.\n6. The orbit of the moon is visible from the garden, casting a violet hue over the meadow. The stone path leading to the garden is lined with copper lanterns.\n7. A signal is sent from the canyon to the market, indicating that the velvet stock is low. The anchor in the harbor is raised to allow ships to pass.\n8. The quartz crystal in the lantern emits a violet light that illuminates the stone garden. The velvet curtains in the market are drawn to block the winter wind.\n9. The anchor is dropped into the harbor, creating ripples that disturb the reflection of the orbiting stars. The signal from the canyon is lost in the noise of the market.\n10. Copper wire is used to connect the signal tower in the canyon to the lantern in the garden. The velvet seat in the market is worn smooth by years of use.\n11. The orbit of the satellite is calculated using data from the quartz sensor in the stone anchor. The signal is transmitted through the velvet-lined tunnel in the harbor.\n12. A violet flower blooms in the garden, attracting bees that are drawn to the copper lantern. The stone bench in the market is covered in velvet for comfort.\n13. The anchor is lifted from the harbor, revealing a signal flare that was hidden beneath the water. The orbit of the debris is tracked by the canyon observatory.\n14. The quartz lens in the lantern focuses the violet light onto the stone path in the garden. The velvet awning in the market protects the goods from the winter rain.\n15. The signal from the orbiting satellite is received by the copper antenna in the canyon. The anchor in the harbor is secured with a velvet rope.\n16. The garden is filled with violet flowers that sway in the winter wind. The stone wall surrounding the garden is topped with copper spikes.\n17. The market is bustling with activity, as vendors sell velvet goods and copper trinkets. The anchor in the harbor is a popular spot for tourists to take photos.\n18. The orbit of the planet is observed through the quartz telescope in the canyon. The signal from the lantern in the garden is used to guide ships into the harbor.\n19. The stone anchor is engraved with the name of the ship that was lost in the winter storm. The velvet sail is preserved in a glass case in the market.\n20. The violet signal from the garden is a code for the arrival of the orbiting spacecraft. The copper lantern in the harbor is lit to welcome the visitors.\n21. The anchor is used as a makeshift table in the market, covered with a velvet cloth. The signal from the canyon is ignored by the busy vendors.\n22. The orbit of the moon is tracked by the quartz clock in the stone tower. The signal from the lantern in the garden is used to synchronize the clocks.\n23. The garden is a sanctuary of peace, with violet flowers and stone paths. The market is a chaotic place, with velvet goods and copper noise.\n24. The anchor in the harbor is a symbol of stability, while the orbit of the satellite is a symbol of change. The signal from the canyon is a reminder of the connection between the two.\n25. The quartz crystal in the lantern is a rare find, mined from the stone cliffs of the canyon. The velvet rope on the anchor is a luxury item, imported from the market.\n26. The violet light from the garden is a natural phenomenon, caused by the orbit of the planet. The copper lantern in the harbor is a man-made object, designed to withstand the winter.\n27. The signal from the orbiting satellite is a message from the future, warning of a coming storm. The anchor in the harbor is a relic of the past, a reminder of the dangers of the sea.\n28. The garden is a place of beauty, with violet flowers and stone sculptures. The market is a place of commerce, with velvet goods and copper coins.\n29. The anchor is a tool for sailors, while the",
+      "usage": {
+        "prompt_tokens": 32768,
+        "completion_tokens": 1024,
+        "total_tokens": 33792,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 32768,
+        "prompt_ms": 19229.0,
+        "prompt_per_token_ms": 0.587,
+        "prompt_per_second": 1704.1,
+        "predicted_n": 1024,
+        "predicted_ms": 70332.8,
+        "predicted_per_token_ms": 68.684,
+        "predicted_per_second": 14.6,
+        "draft_n": 0,
+        "draft_n_accepted": 0
+      },
+      "err": null,
+      "pieces": 996,
+      "tag": "C",
+      "client_start": 8951.1739546,
+      "client_end": 9041.1831744
+    }
+  ],
+  "method": "actual engine generated-token counter differences over one shared interval; excludes all prompt processing"
+}

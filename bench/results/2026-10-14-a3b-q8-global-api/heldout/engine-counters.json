@@ -1,0 +1,313 @@
+{
+  "scope": "Latest process block only; copied engine.log also contains an older initial-baseline process, deliberately excluded.",
+  "source_sha256": "04ef2cdc4872ae0fd75d5bf0a9d37633e1476c7dc6304c9534203e7d05d3c6fd",
+  "engine_start_line": "[strata] 2026-10-14 22:13:12 engine started: G:\\Strata-Moe\\build-a3b-q8-compatible\\bin\\strata-moe.exe --serve --model G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-Q8_0.gguf --ctx 4096 --batch 512 --device 0 --vram-mib 0 --mtp-model G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf --mtp-draft 6 --mtp-ubatch 512 --exact-verify --gpu-only-experts --expert-staging-slots 8 --gpu-embedding --gpu-sampling --share-mtp-weights --defer-mtp-catchup --native-attention-exact --pageable-experts --native-dense-exact --async-expert-events --expert-profile G:\\Strata-Moe\\models\\a3b\\profiles\\qwen3.6-q8-broad-v1.profile --mtp-adaptive --cache-decay-interval 4 --cache-reserve-mib 384",
+  "requests": [
+    {
+      "request_index_1based": 1,
+      "trial": "heldout-python-bfs-repeat01",
+      "case_id": "heldout-python-bfs",
+      "prefill_upload_mib": 6069.0,
+      "decode_upload_mib": 41517.2,
+      "decode_gpu_rows": 569280,
+      "decode_cpu_rows": 0,
+      "decode_hits": 524382,
+      "decode_misses": 44898,
+      "decode_hit_fraction": 0.9211319561551433,
+      "mtp_accepted": 390,
+      "mtp_offered": 472,
+      "output_text_sha256": "417b0ab29e8a893977adfbcef4f01d87c8801556c70f51925cc5931b9acd7317",
+      "mtp_adaptive_windows_by_k": {
+        "0": 3,
+        "1": 3,
+        "2": 2,
+        "3": 20,
+        "4": 68,
+        "5": 17,
+        "6": 8
+      },
+      "mtp_adaptive_round_ms_by_k": {
+        "0": 151.7,
+        "1": 208.8,
+        "2": 229.9,
+        "3": 2329.8,
+        "4": 8364.8,
+        "5": 2310.3,
+        "6": 1349.7
+      },
+      "mtp_adaptive_mean_round_ms_by_k": {
+        "0": 50.56666666666666,
+        "1": 69.60000000000001,
+        "2": 114.95,
+        "3": 116.49000000000001,
+        "4": 123.01176470588234,
+        "5": 135.9,
+        "6": 168.7125
+      },
+      "prefill_cache_decay_sweeps": 0,
+      "decode_cache_decay_sweeps": 1200
+    },
+    {
+      "request_index_1based": 2,
+      "trial": "heldout-python-bfs-repeat02",
+      "case_id": "heldout-python-bfs",
+      "prefill_upload_mib": 6776.6,
+      "decode_upload_mib": 39875.6,
+      "decode_gpu_rows": 561600,
+      "decode_cpu_rows": 0,
+      "decode_hits": 518904,
+      "decode_misses": 42696,
+      "decode_hit_fraction": 0.923974358974359,
+      "mtp_accepted": 381,
+      "mtp_offered": 455,
+      "output_text_sha256": "417b0ab29e8a893977adfbcef4f01d87c8801556c70f51925cc5931b9acd7317",
+      "mtp_adaptive_windows_by_k": {
+        "0": 3,
+        "1": 5,
+        "2": 5,
+        "3": 62,
+        "4": 34,
+        "5": 8,
+        "6": 13
+      },
+      "mtp_adaptive_round_ms_by_k": {
+        "0": 123.2,
+        "1": 361.0,
+        "2": 441.7,
+        "3": 6068.6,
+        "4": 4545.2,
+        "5": 1309.6,
+        "6": 1908.4
+      },
+      "mtp_adaptive_mean_round_ms_by_k": {
+        "0": 41.06666666666667,
+        "1": 72.2,
+        "2": 88.34,
+        "3": 97.88064516129033,
+        "4": 133.68235294117648,
+        "5": 163.7,
+        "6": 146.8
+      },
+      "prefill_cache_decay_sweeps": 40,
+      "decode_cache_decay_sweeps": 1280
+    },
+    {
+      "request_index_1based": 3,
+      "trial": "heldout-python-bfs-repeat03",
+      "case_id": "heldout-python-bfs",
+      "prefill_upload_mib": 6789.4,
+      "decode_upload_mib": 39365.6,
+      "decode_gpu_rows": 554880,
+      "decode_cpu_rows": 0,
+      "decode_hits": 512814,
+      "decode_misses": 42066,
+      "decode_hit_fraction": 0.9241890138408304,
+      "mtp_accepted": 378,
+      "mtp_offered": 445,
+      "output_text_sha256": "417b0ab29e8a893977adfbcef4f01d87c8801556c70f51925cc5931b9acd7317",
+      "mtp_adaptive_windows_by_k": {
+        "0": 4,
+        "1": 26,
+        "2": 3,
+        "3": 32,
+        "4": 38,
+        "5": 15,
+        "6": 15
+      },
+      "mtp_adaptive_round_ms_by_k": {
+        "0": 163.3,
+        "1": 1478.2,
+        "2": 295.3,
+        "3": 3487.9,
+        "4": 4582.2,
+        "5": 2382.1,
+        "6": 2227.9
+      },
+      "mtp_adaptive_mean_round_ms_by_k": {
+        "0": 40.825,
+        "1": 56.853846153846156,
+        "2": 98.43333333333334,
+        "3": 108.996875,
+        "4": 120.58421052631579,
+        "5": 158.80666666666667,
+        "6": 148.52666666666667
+      },
+      "prefill_cache_decay_sweeps": 0,
+      "decode_cache_decay_sweeps": 1360
+    },
+    {
+      "request_index_1based": 4,
+      "trial": "heldout-chinese-transactions-repeat01",
+      "case_id": "heldout-chinese-transactions",
+      "prefill_upload_mib": 7879.5,
+      "decode_upload_mib": 20900.4,
+      "decode_gpu_rows": 574080,
+      "decode_cpu_rows": 0,
+      "decode_hits": 551601,
+      "decode_misses": 22479,
+      "decode_hit_fraction": 0.9608434364548495,
+      "mtp_accepted": 207,
+      "mtp_offered": 476,
+      "output_text_sha256": "ad03f3ebdec93e56547aa40d1f51301ddde49973fe68871eec6f7344b6001b38",
+      "mtp_adaptive_windows_by_k": {
+        "0": 2,
+        "1": 2,
+        "2": 2,
+        "3": 5,
+        "4": 101,
+        "5": 9,
+        "6": 1
+      },
+      "mtp_adaptive_round_ms_by_k": {
+        "0": 103.7,
+        "1": 147.5,
+        "2": 173.4,
+        "3": 460.6,
+        "4": 8626.5,
+        "5": 945.9,
+        "6": 147.2
+      },
+      "mtp_adaptive_mean_round_ms_by_k": {
+        "0": 51.85,
+        "1": 73.75,
+        "2": 86.7,
+        "3": 92.12,
+        "4": 85.41089108910892,
+        "5": 105.1,
+        "6": 147.2
+      },
+      "prefill_cache_decay_sweeps": 0,
+      "decode_cache_decay_sweeps": 1200
+    },
+    {
+      "request_index_1based": 5,
+      "trial": "heldout-chinese-transactions-repeat02",
+      "case_id": "heldout-chinese-transactions",
+      "prefill_upload_mib": 4539.0,
+      "decode_upload_mib": 14289.6,
+      "decode_gpu_rows": 424320,
+      "decode_cpu_rows": 0,
+      "decode_hits": 409536,
+      "decode_misses": 14784,
+      "decode_hit_fraction": 0.965158371040724,
+      "mtp_accepted": 178,
+      "mtp_offered": 302,
+      "output_text_sha256": "e2aa8bf12df2e0bed848ec689e1292328c296d0437f261dc58f51fb66edaa898",
+      "mtp_adaptive_windows_by_k": {
+        "0": 2,
+        "1": 6,
+        "2": 114,
+        "3": 10,
+        "4": 4,
+        "5": 2,
+        "6": 2
+      },
+      "mtp_adaptive_round_ms_by_k": {
+        "0": 68.9,
+        "1": 417.2,
+        "2": 6570.2,
+        "3": 790.0,
+        "4": 338.6,
+        "5": 217.7,
+        "6": 216.8
+      },
+      "mtp_adaptive_mean_round_ms_by_k": {
+        "0": 34.45,
+        "1": 69.53333333333333,
+        "2": 57.63333333333333,
+        "3": 79.0,
+        "4": 84.65,
+        "5": 108.85,
+        "6": 108.4
+      },
+      "prefill_cache_decay_sweeps": 40,
+      "decode_cache_decay_sweeps": 1400
+    },
+    {
+      "request_index_1based": 6,
+      "trial": "heldout-chinese-transactions-repeat03",
+      "case_id": "heldout-chinese-transactions",
+      "prefill_upload_mib": 4264.9,
+      "decode_upload_mib": 13556.4,
+      "decode_gpu_rows": 423360,
+      "decode_cpu_rows": 0,
+      "decode_hits": 409443,
+      "decode_misses": 13917,
+      "decode_hit_fraction": 0.9671272675736962,
+      "mtp_accepted": 187,
+      "mtp_offered": 300,
+      "output_text_sha256": "c7f307df8ad8dd1baab3e461c0dba5deb4a23fa05021782ba31bff1236820a19",
+      "mtp_adaptive_windows_by_k": {
+        "0": 2,
+        "1": 5,
+        "2": 119,
+        "3": 9,
+        "4": 2,
+        "5": 2,
+        "6": 2
+      },
+      "mtp_adaptive_round_ms_by_k": {
+        "0": 79.7,
+        "1": 277.1,
+        "2": 6793.1,
+        "3": 750.6,
+        "4": 175.2,
+        "5": 196.1,
+        "6": 209.4
+      },
+      "mtp_adaptive_mean_round_ms_by_k": {
+        "0": 39.85,
+        "1": 55.42,
+        "2": 57.08487394957984,
+        "3": 83.4,
+        "4": 87.6,
+        "5": 98.05,
+        "6": 104.7
+      },
+      "prefill_cache_decay_sweeps": 0,
+      "decode_cache_decay_sweeps": 1400
+    }
+  ],
+  "cases": {
+    "heldout-python-bfs": {
+      "runs": 3,
+      "mtp_accepted": 1149,
+      "mtp_offered": 1372,
+      "pooled_acceptance": 0.8374635568513119,
+      "distinct_outputs": 1,
+      "prefill_upload_mib_median": 6776.6,
+      "decode_upload_mib_median": 39875.6,
+      "decode_hit_fraction_median": 0.923974358974359,
+      "decode_cache_decay_sweeps_median": 1280,
+      "adaptive_windows_by_k_total": {
+        "0": 10,
+        "1": 34,
+        "2": 10,
+        "3": 114,
+        "4": 140,
+        "5": 40,
+        "6": 36
+      }
+    },
+    "heldout-chinese-transactions": {
+      "runs": 3,
+      "mtp_accepted": 572,
+      "mtp_offered": 1078,
+      "pooled_acceptance": 0.5306122448979592,
+      "distinct_outputs": 3,
+      "prefill_upload_mib_median": 4539.0,
+      "decode_upload_mib_median": 14289.6,
+      "decode_hit_fraction_median": 0.965158371040724,
+      "decode_cache_decay_sweeps_median": 1400,
+      "adaptive_windows_by_k_total": {
+        "0": 6,
+        "1": 13,
+        "2": 235,
+        "3": 24,
+        "4": 107,
+        "5": 13,
+        "6": 5
+      }
+    }
+  }
+}

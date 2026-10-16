@@ -1,0 +1,18 @@
+{
+  "count_endpoint": {
+    "input_tokens": 50017
+  },
+  "usage": {
+    "prompt_tokens": 50017,
+    "completion_tokens": 9,
+    "total_tokens": 50026,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "elapsed_s": 28.93577969999751,
+  "needle": "海蓝-73192",
+  "answer": "海蓝-73192",
+  "reasoning": null,
+  "passed": true
+}

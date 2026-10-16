@@ -1,0 +1,122 @@
+--- a/ggml/src/ggml-cuda/mmvq.cu
++++ b/ggml/src/ggml-cuda/mmvq.cu
+@@ -4,6 +4,7 @@
+ #include "vecdotq.cuh"
+ 
+ #include <cstdint>
++#include <cstdlib>
+ #include <type_traits>
+ 
+ // only enabled on DGX Spark, where it is a gain on every type below. On the higher-bandwidth parts the kernel
+@@ -827,6 +828,87 @@
+         GGML_UNUSED_VARS(use_scale, use_gate_scale, x_scale, gate_scale, x_scales, gate_scales);
+     }
+ }
++
++#if !defined(GGML_USE_HIP) && !defined(GGML_USE_MUSA)
++// The native dense exact graph puts verification tokens on axis 2: [K,1,T].
++// Keep SM75 Q8_0's singleton four-warp K partition and reduction, but hold the
++// weight's packed values in registers across T independent dot products.
++// Other architectures, ID/fused projections and ordinary layouts stay on the
++// original dispatch. Input rows are quantized by the original q8_1 kernel.
++template<int tokens>
++__launch_bounds__(128, 1)
++static __global__ void strata_a3b_dense_q8_reuse(
++        const block_q8_0 * __restrict__ weights,
++        const block_q8_1 * __restrict__ inputs,
++        float * __restrict__ output, const int blocks_per_row,
++        const int stride_row_x, const int stride_token_y, const int stride_token_dst) {
++    constexpr int nwarps = 4;
++    constexpr int warp_size = 32;
++    constexpr int vdr = VDR_Q8_0_Q8_1_MMVQ;
++    constexpr int qi = ggml_cuda_type_traits<GGML_TYPE_Q8_0>::qi;
++    constexpr int blocks_per_iter = vdr * nwarps * warp_size / qi;
++    static_assert(vdr == 2 && qi == 8, "canonical Q8_0 lane mapping changed");
++    const int tid = warp_size * threadIdx.y + threadIdx.x;
++    const int row = blockIdx.x;
++    const int iqs = vdr * (tid % (qi / vdr));
++    float sums[tokens] = {0.0f};
++    ggml_cuda_pdl_sync();
++    for (int kbx = tid / (qi / vdr); kbx < blocks_per_row; kbx += blocks_per_iter) {
++        const block_q8_0 * bx = weights + row * stride_row_x + kbx;
++        // Explicit register reuse: these two weight loads and the exact half
++        // conversion are outside the token loop, unlike separate token CTAs.
++        const int v[vdr] = {get_int_b2(bx->qs, iqs), get_int_b2(bx->qs, iqs + 1)};
++        const float dx = bx->d;
++#pragma unroll
++        for (int token = 0; token < tokens; ++token) {
++            const block_q8_1 * by = inputs + token * stride_token_y + kbx;
++            const int u[vdr] = {get_int_b4(by->qs, iqs), get_int_b4(by->qs, iqs + 1)};
++            // The same helper and accumulation expression as singleton MMVQ.
++            sums[token] += vec_dot_q8_0_q8_1_impl<float, vdr>(v, u, dx, __low2half(by->ds));
++        }
++    }
++    __shared__ float partial[nwarps - 1][tokens][warp_size];
++    if (threadIdx.y > 0) {
++#pragma unroll
++        for (int token = 0; token < tokens; ++token)
++            partial[threadIdx.y - 1][token][threadIdx.x] = sums[token];
++    }
++    __syncthreads();
++    if (threadIdx.y > 0) return;
++#pragma unroll
++    for (int token = 0; token < tokens; ++token) {
++        // Match singleton's ascending warp partials, then its XOR shuffle tree.
++#pragma unroll
++        for (int warp = 0; warp < nwarps - 1; ++warp)
++            sums[token] += partial[warp][token][threadIdx.x];
++        sums[token] = warp_reduce_sum<warp_size>(sums[token]);
++        if (threadIdx.x == 0) output[token * stride_token_dst + row] = sums[token];
++    }
++}
++
++static void strata_a3b_dense_q8_reuse_launch(
++        const void * weights, const void * inputs, float * output, int tokens,
++        int ncols, int nrows, int stride_row_x, int stride_token_y,
++        int stride_token_dst, cudaStream_t stream) {
++    const dim3 grid(nrows, 1, 1), block(32, 4, 1);
++#define STRATA_A3B_Q8_REUSE_CASE(T) \
++    case T: strata_a3b_dense_q8_reuse<T><<<grid, block, 0, stream>>>( \
++        (const block_q8_0 *) weights, (const block_q8_1 *) inputs, output, \
++        ncols / QK8_0, stride_row_x, stride_token_y, stride_token_dst); break
++    switch (tokens) {
++        STRATA_A3B_Q8_REUSE_CASE(2);
++        STRATA_A3B_Q8_REUSE_CASE(3);
++        STRATA_A3B_Q8_REUSE_CASE(4);
++        STRATA_A3B_Q8_REUSE_CASE(5);
++        STRATA_A3B_Q8_REUSE_CASE(6);
++        STRATA_A3B_Q8_REUSE_CASE(7);
++        STRATA_A3B_Q8_REUSE_CASE(8);
++        default: GGML_ABORT("invalid canonical Q8 dense token count");
++    }
++#undef STRATA_A3B_Q8_REUSE_CASE
++    CUDA_CHECK(cudaGetLastError());
++}
++#endif
+ 
+ // Dedicated MoE multi-token kernel.
+ // Grid: (ceil(nrows_x / c_rows_per_block), nchannels_dst)
+@@ -1512,6 +1594,23 @@
+ 
+     const int64_t ids_stride = ids ? ids->nb[1] / ggml_type_size(ids->type) : 0;
+ 
++#if !defined(GGML_USE_HIP) && !defined(GGML_USE_MUSA)
++    static const bool dense_q8_reuse = [] {
++        const char * value = std::getenv("STRATA_A3B_DENSE_Q8_REUSE");
++        return value != nullptr && std::atoi(value) != 0;
++    }();
++    // Only the existing exact graph's independently broadcast dense tokens.
++    // Do not change singleton, routed-ID, fusion, prefill or other GPU paths.
++    const int cc = ggml_cuda_info().devices[ctx.device].cc;
++    if (dense_q8_reuse && cc == GGML_CUDA_CC_TURING && !ids && !fusion &&
++            src0->type == GGML_TYPE_Q8_0 && ne02 == 1 && ne03 == 1 &&
++            ne11 == 1 && ne12 >= 2 && ne12 <= 8 && ne13 == 1 && ne1 == 1 && ne3 == 1) {
++        strata_a3b_dense_q8_reuse_launch(src0->data, src1_q8_1.get(), dst_d, ne12,
++            ne00, ne01, s01, stride_channel_y, stride_channel_dst, stream);
++        return;
++    }
++#endif
++
+     mul_mat_vec_q_switch_type(
+         src0->data, src0->type, src1_q8_1.get(), ids_d, fusion_local, dst_d, ne00,
+         ne01,              ncols_dst,     s01, stride_col_y,     stride_col_dst,

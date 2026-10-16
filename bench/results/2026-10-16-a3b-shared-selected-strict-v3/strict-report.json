@@ -1,0 +1,109 @@
+{
+  "pass": true,
+  "profile": "selected",
+  "fixture_binary_sha256": "c2579a59856fbbc24e77ae06120e29b2e10887c14195cc1afd8ec51ebf65a419",
+  "engine_binary_sha256": "851971b05547d527e1413cbdb384db3da5ab5b4490699295d202ce4d5a12997b",
+  "classes_equal": 8,
+  "proposal_lines_equal": 29,
+  "state_pairs_sha256_equal": 16,
+  "stream_counts": {
+    "off": {
+      "a3b_fork_launches": 0,
+      "stream_1_node_assignments": 0,
+      "alloc_safety_rejections": 0
+    },
+    "on": {
+      "a3b_fork_launches": 1560,
+      "stream_1_node_assignments": 8520,
+      "alloc_safety_rejections": 0
+    }
+  },
+  "strata_native_expert_calls": {
+    "off": 5255,
+    "on": 5255
+  },
+  "fixture_exact_verify_note": "selected service has --exact-verify; the native-GPU fixture sets Config.native_exact_verify=true internally and rejects the cache-only --exact-verify CLI option",
+  "fixture_attention_note": "selected strict uses --native-attention-exact for fixture rollback reference; selected service does not set this flag, so long service output/proposal parity remains a separate gate",
+  "log_repairs": {
+    "off": [],
+    "on": [
+      {
+        "head_line": 19602,
+        "head_raw": "MTset_sampler: seq_id = 0, sampler = 0000023709FACE00",
+        "tail_line": 22610,
+        "tail_raw": "P class limit=5 output=5 offered=4 accepted=2 GPU_draft_samples=4 draft_sampling_download_bytes=32 target_GPU_sampler=1 deferred=1 PASS",
+        "reconstructed": "MTP class limit=5 output=5 offered=4 accepted=2 GPU_draft_samples=4 draft_sampling_download_bytes=32 target_GPU_sampler=1 deferred=1 PASS"
+      }
+    ]
+  },
+  "raw_log_sha256": {
+    "off": "920964ad43955d51f10f98ff0adf768ee8d4869952f07a388526f78a959a38bc",
+    "on": "7e3b26d9ea2f867a84ce905a28549d7d5dc4194f8aedc2ba18a4b8898d76a978"
+  },
+  "states": {
+    "limit-1.draft-seq0.bin": {
+      "bytes": 16624,
+      "sha256": "396b9b8ef8643231ffc5c748d04ffde1476c59fa9265fc295d0c2de9cfad7650"
+    },
+    "limit-1.target-seq0.bin": {
+      "bytes": 66028716,
+      "sha256": "503ab26b26f5f66b1e7070d4a0d2f84e68d91b26f46f15622042bf2c00f35c82"
+    },
+    "limit-2.draft-seq0.bin": {
+      "bytes": 18696,
+      "sha256": "7c17d8466468ac0d6b9d325d87c8ea24bf77731b4f9ac2e1e420ccf8040a314b"
+    },
+    "limit-2.target-seq0.bin": {
+      "bytes": 66049220,
+      "sha256": "1205a610aaa4205eda71e12744059b0521dff000cad143c96e02e43052c5252d"
+    },
+    "limit-3.draft-seq0.bin": {
+      "bytes": 20768,
+      "sha256": "ea7901f7763494b628f5f371a63e0a2a53c729caadf4d398d3b318be1b009ee7"
+    },
+    "limit-3.target-seq0.bin": {
+      "bytes": 66069724,
+      "sha256": "75a9876d2d8af5018654ca56600c6f5a7b54f8fc1585905edc9fec2565df0fdb"
+    },
+    "limit-4.draft-seq0.bin": {
+      "bytes": 22840,
+      "sha256": "9060317806d777d2daee3dd290f3be4dd4dcffae2dedb70fbcf934110adbdbe8"
+    },
+    "limit-4.target-seq0.bin": {
+      "bytes": 66090228,
+      "sha256": "107edf6ec2fe081be2bd2b5fdf85413bb312d723e923cfebcc4c1e679efc252a"
+    },
+    "limit-5.draft-seq0.bin": {
+      "bytes": 24912,
+      "sha256": "21a49fc7bfbb592dd7e7231ebd51a7e8983a5ca1f425e2bf49a6e4b9491944b4"
+    },
+    "limit-5.target-seq0.bin": {
+      "bytes": 66110732,
+      "sha256": "653f3954bd8fbfe9b9c628ef889525b05a97c5f4afc62713ce208578015f1275"
+    },
+    "limit-8.draft-seq0.bin": {
+      "bytes": 31128,
+      "sha256": "fececafe3b5b2f8d83928bf7d5a98546499dd24cd6caa0bd1c40697cacdc4307"
+    },
+    "limit-8.target-seq0.bin": {
+      "bytes": 66172244,
+      "sha256": "762551d250d38a462fb7e0d36bd88ca6ff011598eb9a1c154e1dd8f023bf6c50"
+    },
+    "limit-16.draft-seq0.bin": {
+      "bytes": 47704,
+      "sha256": "8ad73394e353db2005f0545c49e3479c0845e931fe5fa48cff93f0ab3efe52e6"
+    },
+    "limit-16.target-seq0.bin": {
+      "bytes": 66336276,
+      "sha256": "21733cb3c0de582e173c0a126d5b048962eed7f7133cb4b49e34e003b6a1fc02"
+    },
+    "limit-32.draft-seq0.bin": {
+      "bytes": 80856,
+      "sha256": "d51c1440f9a853900a23a004f40ae816a05c2f8cc760fec7b475cdd5013c1ea3"
+    },
+    "limit-32.target-seq0.bin": {
+      "bytes": 66664340,
+      "sha256": "f3a11f63c392093c7549fc264114de1d19703e81d21b6b824416e1971e80ccd5"
+    }
+  }
+}

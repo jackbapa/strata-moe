@@ -1,0 +1,13 @@
+{
+  "target_prompt_tokens": 32,
+  "max_tokens": 64,
+  "temperature": 0,
+  "seed": 12345,
+  "thinking": false,
+  "messages": [
+    {
+      "role": "user",
+      "content": "资料：模型由路由器、专家与共享网\n详细解释MoE，写满千字。"
+    }
+  ]
+}

@@ -70,6 +70,95 @@ __global__ void __launch_bounds__(S * RG) gdn_step_norm_kernel(float* __restrict
     }
 }
 
+// A3B uses GGML's [head][column][row] state, rather than Strata's
+// [row][head][column] layout. One warp owns a column and loads four contiguous
+// groups of 32 rows, as in GGML's gated_delta_net_cuda. All 128 columns for a
+// head live in one block, so the output RMSNorm and SiLU gate share this launch.
+__global__ void __launch_bounds__(512) gdn_a3b_step_norm_kernel(
+        const float* state_in, float* state_out,
+        const float* __restrict__ q, const float* __restrict__ k, const float* __restrict__ v,
+        const float* __restrict__ gate, const float* __restrict__ beta,
+        const float* __restrict__ z, const float* __restrict__ gamma,
+        float eps, float* __restrict__ y, int h_k) {
+    __shared__ float score[S];
+    __shared__ float norm_part[S / 32];
+    const int head = blockIdx.x;
+    const int lane = threadIdx.x & 31;
+    const int warp = threadIdx.x >> 5;
+    const int qh = head % h_k;
+    const float decay = expf(gate[head]);
+    const float step = beta[head];
+    const float* qh_data = q + qh * S;
+    const float* kh_data = k + qh * S;
+    const float attn_scale = 1.0f / sqrtf((float) S);
+
+    for (int col = warp; col < S; col += 16) {
+        const size_t off = ((size_t) head * S + col) * S + lane;
+        const float* state_col = state_in + off;
+        float* out_col = state_out + off;
+        float s0 = state_col[0 * 32];
+        float s1 = state_col[1 * 32];
+        float s2 = state_col[2 * 32];
+        float s3 = state_col[3 * 32];
+        const float k0 = kh_data[0 * 32 + lane];
+        const float k1 = kh_data[1 * 32 + lane];
+        const float k2 = kh_data[2 * 32 + lane];
+        const float k3 = kh_data[3 * 32 + lane];
+        const float q0 = qh_data[0 * 32 + lane];
+        const float q1 = qh_data[1 * 32 + lane];
+        const float q2 = qh_data[2 * 32 + lane];
+        const float q3 = qh_data[3 * 32 + lane];
+
+        float kv = 0.0f;
+        kv += s0 * k0;
+        kv += s1 * k1;
+        kv += s2 * k2;
+        kv += s3 * k3;
+#pragma unroll
+        for (int shift = 16; shift > 0; shift >>= 1) {
+            kv += __shfl_xor_sync(0xffffffffu, kv, shift);
+        }
+        const float delta = (v[head * S + col] - decay * kv) * step;
+        s0 = decay * s0 + k0 * delta;
+        s1 = decay * s1 + k1 * delta;
+        s2 = decay * s2 + k2 * delta;
+        s3 = decay * s3 + k3 * delta;
+        out_col[0 * 32] = s0;
+        out_col[1 * 32] = s1;
+        out_col[2 * 32] = s2;
+        out_col[3 * 32] = s3;
+        float o = 0.0f;
+        o += s0 * q0;
+        o += s1 * q1;
+        o += s2 * q2;
+        o += s3 * q3;
+#pragma unroll
+        for (int shift = 16; shift > 0; shift >>= 1) {
+            o += __shfl_xor_sync(0xffffffffu, o, shift);
+        }
+        if (lane == 0) score[col] = o * attn_scale;
+    }
+    __syncthreads();
+
+    // Four warps sum 128 scores. Only the first warp emits the final result.
+    if (threadIdx.x < S) {
+        const float a = score[threadIdx.x];
+        float ss = a * a;
+#pragma unroll
+        for (int shift = 16; shift > 0; shift >>= 1) {
+            ss += __shfl_xor_sync(0xffffffffu, ss, shift);
+        }
+        if (lane == 0) norm_part[warp] = ss;
+    }
+    __syncthreads();
+    if (threadIdx.x < S) {
+        const float ss = norm_part[0] + norm_part[1] + norm_part[2] + norm_part[3];
+        const float normalized = score[threadIdx.x] * rsqrtf(ss / (float) S + eps) * gamma[threadIdx.x];
+        const float zz = z[head * S + threadIdx.x];
+        y[head * S + threadIdx.x] = normalized * (zz / (1.0f + expf(-zz)));
+    }
+}
+
 __global__ void __launch_bounds__(S) gdn_conv_l2_kernel(float* __restrict__ hist, const float* __restrict__ qkv,
                                                         const float* __restrict__ w, float* __restrict__ h,
                                                         int qk_heads, float eps) {
@@ -122,6 +211,39 @@ __global__ void __launch_bounds__(256) gdn_ab_kernel(const float* __restrict__ x
     }
 }
 
+__global__ void __launch_bounds__(256) gdn_a3b_ab_f32_kernel(
+        const float* __restrict__ x, const float* __restrict__ wa,
+        const float* __restrict__ wb, const float* __restrict__ dt,
+        const float* __restrict__ ssm_a, float* __restrict__ gate,
+        float* __restrict__ beta, int n, int h_v) {
+    const int row = blockIdx.x * 8 + (threadIdx.x >> 5);
+    const int lane = threadIdx.x & 31;
+    if (row >= 2 * h_v) return;
+    const bool is_beta = row >= h_v;
+    const int r = is_beta ? row - h_v : row;
+    const float4* w4 = reinterpret_cast<const float4*>((is_beta ? wb : wa) + (size_t) r * n);
+    const float4* x4 = reinterpret_cast<const float4*>(x);
+    float acc = 0.0f;
+    for (int j = lane; j < n / 4; j += 32) {
+        const float4 wv = w4[j];
+        const float4 xv = x4[j];
+        acc = fmaf(wv.x, xv.x, acc);
+        acc = fmaf(wv.y, xv.y, acc);
+        acc = fmaf(wv.z, xv.z, acc);
+        acc = fmaf(wv.w, xv.w, acc);
+    }
+#pragma unroll
+    for (int shift = 16; shift > 0; shift >>= 1) acc += __shfl_xor_sync(0xffffffffu, acc, shift);
+    if (lane != 0) return;
+    if (is_beta) {
+        beta[r] = 1.0f / (1.0f + expf(-acc));
+    } else {
+        const float biased = acc + dt[r];
+        const float sp = biased > 20.0f ? biased : logf(1.0f + expf(biased));
+        gate[r] = sp * ssm_a[r];
+    }
+}
+
 }  // namespace
 
 void fused_gdn_conv_l2(float* history, const float* qkv, const float* conv_w, float* h, int channels, int qk_heads,
@@ -159,6 +281,40 @@ void fused_gdn_step_norm(float* state, const float* q, const float* k, const flo
     const cudaError_t e = cudaGetLastError();
     if (e != cudaSuccess) {
         std::fprintf(stderr, "fused_gdn_step_norm: %s\n", cudaGetErrorString(e));
+        std::exit(1);
+    }
+}
+
+void fused_gdn_a3b_step_norm(const float* state_in, float* state_out, const float* q, const float* k,
+                             const float* v, const float* gate, const float* beta, const float* z,
+                             const float* gamma, float eps, float* y, int h_k, int h_v, void* stream) {
+    if (!state_in || !state_out || !q || !k || !v || !gate || !beta || !z || !gamma || !y ||
+        h_k <= 0 || h_v <= 0 || h_v % h_k != 0 || eps < 0.0f) {
+        std::fprintf(stderr, "fused_gdn_a3b_step_norm: invalid arguments\n");
+        std::exit(1);
+    }
+    gdn_a3b_step_norm_kernel<<<(unsigned) h_v, 512, 0, (cudaStream_t) stream>>>(
+        state_in, state_out, q, k, v, gate, beta, z, gamma, eps, y, h_k);
+    const cudaError_t e = cudaGetLastError();
+    if (e != cudaSuccess) {
+        std::fprintf(stderr, "fused_gdn_a3b_step_norm: %s\n", cudaGetErrorString(e));
+        std::exit(1);
+    }
+}
+
+void fused_gdn_a3b_ab_f32(const float* x, const float* w_alpha, const float* w_beta,
+                           const float* dt, const float* ssm_a, float* gate, float* beta,
+                           int n_embd, int h_v, void* stream) {
+    if (!x || !w_alpha || !w_beta || !dt || !ssm_a || !gate || !beta || n_embd <= 0 ||
+        n_embd % 4 != 0 || h_v <= 0) {
+        std::fprintf(stderr, "fused_gdn_a3b_ab_f32: invalid arguments\n");
+        std::exit(1);
+    }
+    gdn_a3b_ab_f32_kernel<<<(unsigned) ((2 * h_v + 7) / 8), 256, 0, (cudaStream_t) stream>>>(
+        x, w_alpha, w_beta, dt, ssm_a, gate, beta, n_embd, h_v);
+    const cudaError_t e = cudaGetLastError();
+    if (e != cudaSuccess) {
+        std::fprintf(stderr, "fused_gdn_a3b_ab_f32: %s\n", cudaGetErrorString(e));
         std::exit(1);
     }
 }

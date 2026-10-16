@@ -1,0 +1,5 @@
+{
+  "ProcessId": 37728,
+  "ParentProcessId": 29956,
+  "CommandLine": "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe --serve --model G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-IQ3_S.gguf --ctx 262144 --batch 2048 --device 0 --vram-mib 0 --mtp-model G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf --mtp-draft 2 --mtp-ubatch 512 --exact-verify --native-gpu --gpu-embedding --gpu-sampling --defer-mtp-catchup --fused-moe --native-dense-exact --kv-tiered --kv-tiered-f16-short --strata-native-experts"
+}

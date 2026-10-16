@@ -1,9 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- The tab icon: the layer stack the app's panels use (serve/web/sprite.svg, i-layers),
-       drawn bold enough to stay readable at 16 px. -->
-  <path d="M16 2.38 28.42 9.08 16 15.78 3.58 9.08Z" fill="#10b981"/>
-  <path d="M3.58 14.8 16 21.5 28.42 14.8" fill="none" stroke="#10b981" stroke-width="3.67"
-        stroke-linecap="round" stroke-linejoin="round" opacity="0.92"/>
-  <path d="M3.58 21.28 16 27.98 28.42 21.28" fill="none" stroke="#10b981" stroke-width="3.67"
-        stroke-linecap="round" stroke-linejoin="round" opacity="0.78"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="strata-moe logo">
+  <defs>
+    <linearGradient id="a" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#0d9488"/>
+      <stop offset="1" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="url(#a)"/>
+  <path d="M12 17v28m0-28 10 11 10-11 10 11 10-11v28" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="32" cy="43" r="3" fill="#a7f3d0"/>
 </svg>

@@ -1,0 +1,752 @@
+{
+  "name": "cache16g",
+  "command": [
+    "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe",
+    "--serve",
+    "--model",
+    "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-Q5_K_M.gguf",
+    "--ctx",
+    "4096",
+    "--device",
+    "0",
+    "--vram-mib",
+    "16384"
+  ],
+  "before": {
+    "time": 1791956395.6506526,
+    "system_available": 54546812928,
+    "system_used": 82753314816,
+    "vram_mib": [
+      "0, 100, 22131",
+      "1, 21586, 645",
+      "2, 0, 22230"
+    ]
+  },
+  "ready": {
+    "time": 1791956403.6543503,
+    "system_available": 29728329728,
+    "system_used": 107571580928,
+    "vram_mib": [
+      "0, 2548, 19683",
+      "1, 21586, 645",
+      "2, 0, 22230"
+    ],
+    "pid": 26164,
+    "memory": {
+      "rss": 24699281408,
+      "vms": 27771363328,
+      "num_page_faults": 6074429,
+      "peak_wset": 24699973632,
+      "wset": 24699281408,
+      "peak_paged_pool": 1991336,
+      "paged_pool": 1991336,
+      "peak_nonpaged_pool": 30768,
+      "nonpaged_pool": 30704,
+      "pagefile": 27771363328,
+      "peak_pagefile": 27771363328,
+      "private": 27771363328
+    },
+    "mapped_files": [
+      {
+        "path": "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe",
+        "rss": 193327104
+      },
+      {
+        "path": "C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\bin\\cublasLt64_12.dll",
+        "rss": 560693248
+      },
+      {
+        "path": "C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\bin\\cublas64_12.dll",
+        "rss": 100900864
+      }
+    ],
+    "virtual_regions": {
+      "committed_by_type_and_protection": {
+        "private/protect=0x2": 8192,
+        "private/protect=0x4": 24965992448,
+        "private/protect=0x104": 233472,
+        "private/protect=0x404": 2613313536,
+        "mapped/protect=0x2": 7938048,
+        "mapped/protect=0x4": 69632,
+        "private/protect=0x1": 1585152,
+        "image/protect=0x2": 641040384,
+        "image/protect=0x20": 175071232,
+        "image/protect=0x4": 68100096,
+        "image/protect=0x8": 65314816
+      },
+      "largest_committed_regions": [
+        {
+          "address": "0x21c1fa02000",
+          "allocation_base": "0x21c1fa00000",
+          "bytes": 23767027712,
+          "type": "private",
+          "protect": "0x4"
+        },
+        {
+          "address": "0x204000000",
+          "allocation_base": "0x204000000",
+          "bytes": 541065216,
+          "type": "private",
+          "protect": "0x4"
+        },
+        {
+          "address": "0x221b23a1000",
+          "allocation_base": "0x221b23a0000",
+          "bytes": 474046464,
+          "type": "private",
+          "protect": "0x4"
+        },
+        {
+          "address": "0x7ffc8f7fa000",
+          "allocation_base": "0x7ffc7ec60000",
+          "bytes": 280092672,
+          "type": "image",
+          "protect": "0x2"
+        },
+        {
+          "address": "0x7ff6e6985000",
+          "allocation_base": "0x7ff6e5750000",
+          "bytes": 174235648,
+          "type": "image",
+          "protect": "0x2"
+        },
+        {
+          "address": "0x7ffcd2709000",
+          "allocation_base": "0x7ffcd2250000",
+          "bytes": 95948800,
+          "type": "image",
+          "protect": "0x2"
+        },
+        {
+          "address": "0x7ffc7ec61000",
+          "allocation_base": "0x7ffc7ec60000",
+          "bytes": 93847552,
+          "type": "image",
+          "protect": "0x20"
+        },
+        {
+          "address": "0x21b80000000",
+          "allocation_base": "0x21b80000000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21b84000000",
+          "allocation_base": "0x21b84000000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21b88000000",
+          "allocation_base": "0x21b88000000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21ba0210000",
+          "allocation_base": "0x21ba0210000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bac200000",
+          "allocation_base": "0x21bac200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bb0200000",
+          "allocation_base": "0x21bb0200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bb4200000",
+          "allocation_base": "0x21bb4200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bb8200000",
+          "allocation_base": "0x21bb8200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bbc200000",
+          "allocation_base": "0x21bbc200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bc0200000",
+          "allocation_base": "0x21bc0200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bc4200000",
+          "allocation_base": "0x21bc4200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bc8200000",
+          "allocation_base": "0x21bc8200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bcc200000",
+          "allocation_base": "0x21bcc200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bd0200000",
+          "allocation_base": "0x21bd0200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bd4200000",
+          "allocation_base": "0x21bd4200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bd8200000",
+          "allocation_base": "0x21bd8200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bdc200000",
+          "allocation_base": "0x21bdc200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21be0200000",
+          "allocation_base": "0x21be0200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21be4200000",
+          "allocation_base": "0x21be4200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21be8200000",
+          "allocation_base": "0x21be8200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bec200000",
+          "allocation_base": "0x21bec200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bf0200000",
+          "allocation_base": "0x21bf0200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bf4200000",
+          "allocation_base": "0x21bf4200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bf8200000",
+          "allocation_base": "0x21bf8200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bfc200000",
+          "allocation_base": "0x21bfc200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c00200000",
+          "allocation_base": "0x21c00200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c04200000",
+          "allocation_base": "0x21c04200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c08200000",
+          "allocation_base": "0x21c08200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c0c200000",
+          "allocation_base": "0x21c0c200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c10200000",
+          "allocation_base": "0x21c10200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c14200000",
+          "allocation_base": "0x21c14200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c18200000",
+          "allocation_base": "0x21c18200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x221a8410000",
+          "allocation_base": "0x221a8410000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        }
+      ],
+      "residency_64k_sample": {
+        "private": {
+          "sampled_committed": 27579314176,
+          "estimated_resident": 24503537664,
+          "estimated_resident_shared": 8192
+        },
+        "mapped": {
+          "sampled_committed": 8007680,
+          "estimated_resident": 655360,
+          "estimated_resident_shared": 655360
+        },
+        "image": {
+          "sampled_committed": 949526528,
+          "estimated_resident": 198078464,
+          "estimated_resident_shared": 128237568
+        }
+      }
+    }
+  },
+  "after_generation": {
+    "time": 1791956406.7944605,
+    "system_available": 29559218176,
+    "system_used": 107739873280,
+    "vram_mib": [
+      "0, 16240, 5991",
+      "1, 21586, 645",
+      "2, 0, 22230"
+    ],
+    "pid": 26164,
+    "memory": {
+      "rss": 24886960128,
+      "vms": 42375692288,
+      "num_page_faults": 6129470,
+      "peak_wset": 24889942016,
+      "wset": 24886960128,
+      "peak_paged_pool": 2058248,
+      "paged_pool": 2058152,
+      "peak_nonpaged_pool": 69032,
+      "nonpaged_pool": 68784,
+      "pagefile": 42375692288,
+      "peak_pagefile": 42378678272,
+      "private": 42375692288
+    },
+    "mapped_files": [
+      {
+        "path": "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe",
+        "rss": 193327104
+      },
+      {
+        "path": "C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\bin\\cublasLt64_12.dll",
+        "rss": 560693248
+      },
+      {
+        "path": "C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v12.6\\bin\\cublas64_12.dll",
+        "rss": 100900864
+      }
+    ],
+    "virtual_regions": {
+      "committed_by_type_and_protection": {
+        "private/protect=0x2": 8192,
+        "private/protect=0x4": 25173622784,
+        "private/protect=0x104": 233472,
+        "private/protect=0x404": 16980901888,
+        "mapped/protect=0x2": 7938048,
+        "mapped/protect=0x4": 69632,
+        "private/protect=0x1": 2142208,
+        "image/protect=0x2": 641040384,
+        "image/protect=0x20": 175071232,
+        "image/protect=0x4": 68116480,
+        "image/protect=0x8": 65298432
+      },
+      "largest_committed_regions": [
+        {
+          "address": "0x21c1fa02000",
+          "allocation_base": "0x21c1fa00000",
+          "bytes": 23767027712,
+          "type": "private",
+          "protect": "0x4"
+        },
+        {
+          "address": "0x204000000",
+          "allocation_base": "0x204000000",
+          "bytes": 541065216,
+          "type": "private",
+          "protect": "0x4"
+        },
+        {
+          "address": "0x221b23a1000",
+          "allocation_base": "0x221b23a0000",
+          "bytes": 474046464,
+          "type": "private",
+          "protect": "0x4"
+        },
+        {
+          "address": "0x7ffc8f7fa000",
+          "allocation_base": "0x7ffc7ec60000",
+          "bytes": 280092672,
+          "type": "image",
+          "protect": "0x2"
+        },
+        {
+          "address": "0x7ff6e6985000",
+          "allocation_base": "0x7ff6e5750000",
+          "bytes": 174235648,
+          "type": "image",
+          "protect": "0x2"
+        },
+        {
+          "address": "0x7ffcd2709000",
+          "allocation_base": "0x7ffcd2250000",
+          "bytes": 95948800,
+          "type": "image",
+          "protect": "0x2"
+        },
+        {
+          "address": "0x7ffc7ec61000",
+          "allocation_base": "0x7ffc7ec60000",
+          "bytes": 93847552,
+          "type": "image",
+          "protect": "0x20"
+        },
+        {
+          "address": "0x21b80000000",
+          "allocation_base": "0x21b80000000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21b84000000",
+          "allocation_base": "0x21b84000000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21b88000000",
+          "allocation_base": "0x21b88000000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21ba0210000",
+          "allocation_base": "0x21ba0210000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bac200000",
+          "allocation_base": "0x21bac200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bb0200000",
+          "allocation_base": "0x21bb0200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bb4200000",
+          "allocation_base": "0x21bb4200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bb8200000",
+          "allocation_base": "0x21bb8200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bbc200000",
+          "allocation_base": "0x21bbc200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bc0200000",
+          "allocation_base": "0x21bc0200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bc4200000",
+          "allocation_base": "0x21bc4200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bc8200000",
+          "allocation_base": "0x21bc8200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bcc200000",
+          "allocation_base": "0x21bcc200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bd0200000",
+          "allocation_base": "0x21bd0200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bd4200000",
+          "allocation_base": "0x21bd4200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bd8200000",
+          "allocation_base": "0x21bd8200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bdc200000",
+          "allocation_base": "0x21bdc200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21be0200000",
+          "allocation_base": "0x21be0200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21be4200000",
+          "allocation_base": "0x21be4200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21be8200000",
+          "allocation_base": "0x21be8200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bec200000",
+          "allocation_base": "0x21bec200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bf0200000",
+          "allocation_base": "0x21bf0200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bf4200000",
+          "allocation_base": "0x21bf4200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bf8200000",
+          "allocation_base": "0x21bf8200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21bfc200000",
+          "allocation_base": "0x21bfc200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c00200000",
+          "allocation_base": "0x21c00200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c04200000",
+          "allocation_base": "0x21c04200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c08200000",
+          "allocation_base": "0x21c08200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c0c200000",
+          "allocation_base": "0x21c0c200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c10200000",
+          "allocation_base": "0x21c10200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c14200000",
+          "allocation_base": "0x21c14200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x21c18200000",
+          "allocation_base": "0x21c18200000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        },
+        {
+          "address": "0x221a8410000",
+          "allocation_base": "0x221a8410000",
+          "bytes": 67108864,
+          "type": "private",
+          "protect": "0x404"
+        }
+      ],
+      "residency_64k_sample": {
+        "private": {
+          "sampled_committed": 42154532864,
+          "estimated_resident": 24672116736,
+          "estimated_resident_shared": 8192
+        },
+        "mapped": {
+          "sampled_committed": 8007680,
+          "estimated_resident": 655360,
+          "estimated_resident_shared": 655360
+        },
+        "image": {
+          "sampled_committed": 949526528,
+          "estimated_resident": 227979264,
+          "estimated_resident_shared": 158121984
+        }
+      }
+    }
+  },
+  "returncode": 0,
+  "stdout": [
+    "INFO engine=strata-moe-a3b context=4096",
+    "READY 4096",
+    "PP 9 9 1586.8",
+    "T 9707",
+    "T 151645",
+    "T 198",
+    "T 151644",
+    "DONE 4 9 1586.9 176.5 length 0 0 0"
+  ],
+  "after_quit": {
+    "time": 1791956409.9569123,
+    "system_available": 54504550400,
+    "system_used": 82795073536,
+    "vram_mib": [
+      "0, 100, 22131",
+      "1, 21586, 645",
+      "2, 0, 22230"
+    ]
+  }
+}

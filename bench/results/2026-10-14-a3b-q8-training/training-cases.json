@@ -1,0 +1,22 @@
+[
+  [
+    "natural-code",
+    "Write a complete Python implementation of a fixed-capacity LRU cache.\nUse collections.OrderedDict. The constructor must reject nonpositive capacity.\nget(key) should return None for a missing key and promote a hit to most recently used.\nput(key, value) must update existing keys, promote them, and evict the least recently used\nkey when needed. Include concise assertions covering eviction, updating an existing key,\nand promotion after get. Briefly explain the time and space complexity. Output the code\nfirst, followed by the explanation."
+  ],
+  [
+    "natural-chinese",
+    "请用中文给刚接触网络开发的同学解释：浏览器输入一个 HTTPS 网址后，\n从域名解析、建立连接、验证证书到收到网页，依次发生了什么？解释 DNS 缓存、TLS\n和 HTTP 各自解决的问题，给出一个贴近实际的小例子，并说明“连接成功”为什么不等于\n“网页内容已经下载完成”。用大约四百字连贯说明，术语第一次出现时给出简单解释。"
+  ],
+  [
+    "natural-english",
+    "Explain how operating systems manage virtual memory. Cover page tables, page faults, swapping, and the difference between virtual address space and physical RAM. Use a worked example, and explain why a large committed memory number does not necessarily mean equally large physical RAM use. Aim for about 500 words."
+  ],
+  [
+    "natural-sql",
+    "Design a PostgreSQL schema for a small online store with customers, orders, order_items and products. Include primary keys, foreign keys and appropriate constraints. Give SQL queries for top 5 customers by total completed sales and monthly revenue, and explain indexes needed. Output SQL first."
+  ],
+  [
+    "natural-reasoning",
+    "一个水箱有两根进水管和一根排水管。A管单开6小时注满，B管单开9小时注满，排水管单开18小时排空。从空箱开始，先只开A管1小时，再同时开A、B和排水管。求此后还需多少小时注满。用分数一步步推导，再设计一个不同数字的例子验证方法。"
+  ]
+]

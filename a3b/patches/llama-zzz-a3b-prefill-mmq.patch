@@ -1,0 +1,110 @@
+--- a/ggml/include/ggml-cuda.h
++++ b/ggml/include/ggml-cuda.h
+@@ -29,6 +29,10 @@
+     ggml_tensor * gate, ggml_tensor * up, ggml_tensor * down,
+     ggml_tensor * input, ggml_tensor * ids);
+ GGML_BACKEND_API uint64_t ggml_backend_cuda_strata_iq_calls(void);
++// Actual CUDA executions of the opt-in A3B long-prefill adapter, including
++// graph replays. Kept separate from short native-IQ expert calls.
++GGML_BACKEND_API uint64_t ggml_backend_cuda_strata_prefill_mmq_calls(void);
++GGML_BACKEND_API uint64_t ggml_backend_cuda_strata_prefill_mmq_rows(void);
+ 
+ GGML_BACKEND_API bool ggml_backend_is_cuda(ggml_backend_t backend);
+ 
+--- a/ggml/src/ggml-cuda/strata-native-iq.cu
++++ b/ggml/src/ggml-cuda/strata-native-iq.cu
+@@ -1,6 +1,7 @@
+ #include "strata-native-iq.cuh"
+ #include "ggml-cuda.h"
+ #include "strata_native_experts.hpp"
++#include "strata_prefill_mmq_adapter.hpp"
+ #include "ggml-impl.h"
+ #include <atomic>
+ #include <cstdio>
+@@ -11,11 +12,12 @@
+ namespace {
+ std::atomic<bool> any_ops{false};
+ std::mutex state_lock;
+-strata_a3b::StrataNativeExperts * state[GGML_CUDA_MAX_DEVICES]{};
++strata_a3b::StrataNativeExperts * native_state[GGML_CUDA_MAX_DEVICES]{};
++strata_a3b::StrataPrefillMmq * prefill_state[GGML_CUDA_MAX_DEVICES]{};
+ void marker(ggml_tensor *, int, int, void *) {
+     GGML_ABORT("Strata native IQ experts require CUDA");
+ }
+-bool geometry(const ggml_tensor * gate, const ggml_tensor * up, const ggml_tensor * down,
++bool native_geometry(const ggml_tensor * gate, const ggml_tensor * up, const ggml_tensor * down,
+     const ggml_tensor * x, const ggml_tensor * ids) {
+     return strata_a3b::strata_native_experts_compatible(gate, up, down) &&
+         gate->ne[0] == 2048 && gate->ne[1] == 512 && gate->ne[2] == 256 &&
+@@ -24,6 +26,14 @@
+         x->ne[2] >= 1 && x->ne[2] <= 8 && x->ne[3] == 1 &&
+         ids->ne[0] == 8 && ids->ne[1] == x->ne[2] &&
+         ids->ne[2] == 1 && ids->ne[3] == 1;
++}
++bool prefill_geometry(const ggml_tensor * gate, const ggml_tensor * up, const ggml_tensor * down,
++    const ggml_tensor * x, const ggml_tensor * ids, const ggml_tensor * output = nullptr) {
++    return strata_a3b::strata_prefill_mmq_compatible(gate, up, down, x, ids, output);
++}
++bool geometry(const ggml_tensor * gate, const ggml_tensor * up, const ggml_tensor * down,
++    const ggml_tensor * x, const ggml_tensor * ids) {
++    return native_geometry(gate, up, down, x, ids) || prefill_geometry(gate, up, down, x, ids);
+ }
+ }
+ 
+@@ -34,7 +44,7 @@
+     ggml_tensor * args[] = {gate, up, down, input, ids};
+     auto * op = ggml_custom_4d(ctx, GGML_TYPE_F32, 2048, 8, ids->ne[1], 1,
+         args, 5, marker, 1, nullptr);
+-    ggml_set_name(op, "strata_native_iq_experts");
++    ggml_set_name(op, input->ne[2] <= 8 ? "strata_native_iq_experts" : "strata_prefill_iq_mmq");
+     any_ops.store(true, std::memory_order_relaxed);
+     return op;
+ }
+@@ -55,7 +65,14 @@
+             throw std::runtime_error("invalid Strata IQ CUDA expert operation");
+         if (ctx.device != 0) throw std::runtime_error("Strata IQ CUDA path currently requires GPU 0");
+         std::lock_guard<std::mutex> guard(state_lock);
+-        if (!state[ctx.device]) state[ctx.device] = strata_a3b::strata_native_experts_create(64, 2048, 512);
++        if (prefill_geometry(op->src[0], op->src[1], op->src[2],
++                             op->src[3], op->src[4], op)) {
++            if (!prefill_state[ctx.device]) prefill_state[ctx.device] =
++                strata_a3b::strata_prefill_mmq_create(8 * 2048, 2048, 512, 256);
++        } else {
++            if (!native_state[ctx.device]) native_state[ctx.device] =
++                strata_a3b::strata_native_experts_create(64, 2048, 512);
++        }
+         return true;
+     } catch (const std::exception & e) {
+         if (error && error_size) std::snprintf(error, error_size, "%s", e.what());
+@@ -64,12 +81,27 @@
+ }
+ 
+ void ggml_cuda_strata_iq_compute(ggml_backend_cuda_context & ctx, ggml_tensor * op) {
+-    GGML_ASSERT(state[ctx.device]);
+-    strata_a3b::strata_native_experts_compute(state[ctx.device], ctx.stream(),
+-        op->src[0], op->src[1], op->src[2], op->src[3], op->src[4], op);
++    if (prefill_geometry(op->src[0], op->src[1], op->src[2],
++                         op->src[3], op->src[4], op)) {
++        GGML_ASSERT(prefill_state[ctx.device]);
++        strata_a3b::strata_prefill_mmq_compute(prefill_state[ctx.device], ctx.stream(),
++            op->src[0], op->src[1], op->src[2], op->src[3], op->src[4], op);
++    } else {
++        GGML_ASSERT(native_state[ctx.device]);
++        strata_a3b::strata_native_experts_compute(native_state[ctx.device], ctx.stream(),
++            op->src[0], op->src[1], op->src[2], op->src[3], op->src[4], op);
++    }
+ }
+ 
+ uint64_t ggml_backend_cuda_strata_iq_calls(void) {
+     std::lock_guard<std::mutex> guard(state_lock);
+-    return strata_a3b::strata_native_experts_calls(state[0]);
++    return strata_a3b::strata_native_experts_calls(native_state[0]);
+ }
++uint64_t ggml_backend_cuda_strata_prefill_mmq_calls(void) {
++    std::lock_guard<std::mutex> guard(state_lock);
++    return strata_a3b::strata_prefill_mmq_calls(prefill_state[0]);
++}
++uint64_t ggml_backend_cuda_strata_prefill_mmq_rows(void) {
++    std::lock_guard<std::mutex> guard(state_lock);
++    return strata_a3b::strata_prefill_mmq_rows(prefill_state[0]);
++}

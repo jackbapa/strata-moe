@@ -1,0 +1,45 @@
+{
+  "binary_sha256": "762eb206a939c14ea03225ffb7cd90c3be006f0624d42f7fcbdd30e2678e5a2c",
+  "cases": [
+    {
+      "case": "off-guard",
+      "returncode": 0,
+      "elapsed_s": 9.532,
+      "passes": 7,
+      "fork_launches": 0,
+      "side_nodes": 0,
+      "main_nodes": 0,
+      "state_files": 16
+    },
+    {
+      "case": "on-guard",
+      "returncode": 1,
+      "elapsed_s": 5.36,
+      "passes": 0,
+      "fork_launches": 960,
+      "side_nodes": 6720,
+      "main_nodes": 30720,
+      "state_files": 0
+    },
+    {
+      "case": "off-nofuse",
+      "returncode": 0,
+      "elapsed_s": 9.75,
+      "passes": 7,
+      "fork_launches": 0,
+      "side_nodes": 0,
+      "main_nodes": 0,
+      "state_files": 16
+    },
+    {
+      "case": "on-nofuse-guard",
+      "returncode": 0,
+      "elapsed_s": 9.843,
+      "passes": 8,
+      "fork_launches": 1560,
+      "side_nodes": 10920,
+      "main_nodes": 49920,
+      "state_files": 16
+    }
+  ]
+}

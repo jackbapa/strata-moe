@@ -1,0 +1,34 @@
+{
+  "ranges": 26,
+  "sync_total": 52,
+  "by_preceding_api": [
+    {
+      "previous": "cudaMemcpyAsync_v3020: (2, 4)",
+      "count": 26,
+      "sync_duration_ms": 76.364394,
+      "example_offset_ms": [
+        2.836552,
+        1.456274,
+        0.604737
+      ]
+    },
+    {
+      "previous": "no prior API",
+      "count": 25,
+      "sync_duration_ms": 5.728971,
+      "example_offset_ms": [
+        0.202082,
+        0.208092,
+        0.201062
+      ]
+    },
+    {
+      "previous": "cudaMallocHost_v3020",
+      "count": 1,
+      "sync_duration_ms": 0.973713,
+      "example_offset_ms": [
+        0.316168
+      ]
+    }
+  ]
+}

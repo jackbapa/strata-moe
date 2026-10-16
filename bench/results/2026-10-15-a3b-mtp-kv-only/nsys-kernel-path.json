@@ -1,0 +1,526 @@
+{
+  "off": [
+    {
+      "nvtx_name": "a3b/mtp/catchup/draft-decode",
+      "host_ranges": 41,
+      "host_ms": 81.347767,
+      "kernel_calls": 3767,
+      "kernel_ms": 24.093549999999997,
+      "flash_attention_calls": 254,
+      "kernels": [
+        {
+          "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)0, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+          "calls": 556,
+          "kernel_ms": 12.586654
+        },
+        {
+          "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+          "calls": 158,
+          "kernel_ms": 2.601749
+        },
+        {
+          "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)1, (bool)0, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+          "calls": 93,
+          "kernel_ms": 1.815845
+        },
+        {
+          "name": "void rms_norm_f32<(int)1024, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+          "calls": 395,
+          "kernel_ms": 1.298154
+        },
+        {
+          "name": "quantize_q8_1(const float *, void *, long long, long long, long long, long long, long long, unsigned int, uint3)",
+          "calls": 807,
+          "kernel_ms": 1.264968
+        },
+        {
+          "name": "void flash_attn_ext_f16<(int)256, (int)256, (int)1, (int)8, (bool)0, (bool)0, (bool)0>(const char *, const char *, const char *, const char *, const char *, const int *, float *, float2 *, float, float, float, float, unsigned int, float, int, uint3, int, int, int, int, int, int, int, int, int, int, int, long long, int, int, long long, int, int, int, int, int, long long)",
+          "calls": 127,
+          "kernel_ms": 1.050228
+        },
+        {
+          "name": "void mul_mat_vec_f<float, float, (int)1, (int)256, (bool)0, (bool)0>(const T1 *, const float *, const int *, ggml_cuda_mm_fusion_args_device, float *, int, uint3, int, int, int, uint3, int, int, int, uint3, int, int, int, int)",
+          "calls": 158,
+          "kernel_ms": 0.701749
+        },
+        {
+          "name": "void rms_norm_f32<(int)256, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+          "calls": 158,
+          "kernel_ms": 0.331707
+        },
+        {
+          "name": "void topk_moe_cuda<(int)256, (bool)0>(const float *, float *, int *, float *, int, int, float, float, topk_moe_config)",
+          "calls": 79,
+          "kernel_ms": 0.298716
+        },
+        {
+          "name": "void k_set_rows<float, long long, __half>(const T1 *, const T2 *, T3 *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, uint3, uint3, uint3, uint3, uint3)",
+          "calls": 158,
+          "kernel_ms": 0.263226
+        },
+        {
+          "name": "void rope_multi<(bool)1, (bool)0, float>(const T3 *, T3 *, int, int, int, int, int, int, int, int, int, int, int, const int *, float, float, float, rope_corr_dims, float, const float *, mrope_sections, bool, bool)",
+          "calls": 158,
+          "kernel_ms": 0.25616
+        },
+        {
+          "name": "moe_weighted_reduction_f32(const float *, const float *, const float *, float *, long long, int)",
+          "calls": 79,
+          "kernel_ms": 0.221664
+        },
+        {
+          "name": "void flash_attn_stream_k_fixup_uniform<(int)256, (int)1, (int)8>(float *, const float2 *, int, int, int, int, int, int, uint3, uint3, uint3)",
+          "calls": 127,
+          "kernel_ms": 0.209981
+        },
+        {
+          "name": "void cpy_scalar<&cpy_1_scalar<float, float>>(const char *, char *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long)",
+          "calls": 79,
+          "kernel_ms": 0.17059
+        },
+        {
+          "name": "void unary_gated_op_kernel<&op_silu, float>(const T2 *, const T2 *, T2 *, long long, long long, long long, long long)",
+          "calls": 96,
+          "kernel_ms": 0.150173
+        },
+        {
+          "name": "void k_bin_bcast<&op_add, float, float, float, const float *, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 79,
+          "kernel_ms": 0.142715
+        },
+        {
+          "name": "void concat_cont<unsigned int, (int)0>(const T1 *, const T1 *, T1 *, long long, long long, long long, long long, long long, long long)",
+          "calls": 79,
+          "kernel_ms": 0.135392
+        },
+        {
+          "name": "void k_bin_bcast<&op_mul, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 79,
+          "kernel_ms": 0.125885
+        },
+        {
+          "name": "void unary_gated_op_kernel<&op_sigmoid, float>(const T2 *, const T2 *, T2 *, long long, long long, long long, long long)",
+          "calls": 79,
+          "kernel_ms": 0.108347
+        },
+        {
+          "name": "void unary_op_kernel<&op_sigmoid, float>(const T2 *, T2 *, int)",
+          "calls": 79,
+          "kernel_ms": 0.101381
+        },
+        {
+          "name": "void k_bin_bcast<&op_add, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 48,
+          "kernel_ms": 0.098813
+        },
+        {
+          "name": "void k_bin_bcast<&op_repeat, float, float, float, >(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 48,
+          "kernel_ms": 0.088508
+        },
+        {
+          "name": "void concat_cont<unsigned int, (int)2>(const T1 *, const T1 *, T1 *, long long, long long, long long, long long, long long, long long)",
+          "calls": 48,
+          "kernel_ms": 0.070945
+        }
+      ]
+    },
+    {
+      "nvtx_name": "a3b/mtp/proposal/draft-decode",
+      "host_ranges": 55,
+      "host_ms": 46.561649,
+      "kernel_calls": 3410,
+      "kernel_ms": 71.70190999999997,
+      "flash_attention_calls": 110,
+      "kernels": [
+        {
+          "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)0, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+          "calls": 275,
+          "kernel_ms": 55.943799
+        },
+        {
+          "name": "argmax_f32(const float *, int *, long long)",
+          "calls": 110,
+          "kernel_ms": 4.245697
+        },
+        {
+          "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)1, (bool)0, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+          "calls": 165,
+          "kernel_ms": 3.253911
+        },
+        {
+          "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+          "calls": 110,
+          "kernel_ms": 1.229927
+        },
+        {
+          "name": "void rms_norm_f32<(int)1024, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+          "calls": 275,
+          "kernel_ms": 0.941943
+        },
+        {
+          "name": "quantize_q8_1(const float *, void *, long long, long long, long long, long long, long long, unsigned int, uint3)",
+          "calls": 550,
+          "kernel_ms": 0.884948
+        },
+        {
+          "name": "void flash_attn_ext_f16<(int)256, (int)256, (int)1, (int)8, (bool)0, (bool)0, (bool)0>(const char *, const char *, const char *, const char *, const char *, const int *, float *, float2 *, float, float, float, float, unsigned int, float, int, uint3, int, int, int, int, int, int, int, int, int, int, int, long long, int, int, long long, int, int, int, int, int, long long)",
+          "calls": 55,
+          "kernel_ms": 0.502493
+        },
+        {
+          "name": "void mul_mat_vec_f<float, float, (int)1, (int)256, (bool)0, (bool)0>(const T1 *, const float *, const int *, ggml_cuda_mm_fusion_args_device, float *, int, uint3, int, int, int, uint3, int, int, int, uint3, int, int, int, int)",
+          "calls": 110,
+          "kernel_ms": 0.465172
+        },
+        {
+          "name": "scale_f32(const float *, float *, float, float, long long)",
+          "calls": 110,
+          "kernel_ms": 0.404438
+        },
+        {
+          "name": "void k_bin_bcast<&op_sub, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 110,
+          "kernel_ms": 0.367893
+        },
+        {
+          "name": "pad_f32(const float *, unsigned long long, unsigned long long, unsigned long long, unsigned long long, float *, int, int, int, int, int, int, int, int, int, int, int, int, bool)",
+          "calls": 55,
+          "kernel_ms": 0.325627
+        },
+        {
+          "name": "void k_bin_bcast<&op_mul, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 110,
+          "kernel_ms": 0.277307
+        },
+        {
+          "name": "void k_get_rows_float<float, float>(const T1 *, const int *, T2 *, long long, long long, uint3, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long)",
+          "calls": 110,
+          "kernel_ms": 0.230746
+        },
+        {
+          "name": "void rms_norm_f32<(int)256, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+          "calls": 110,
+          "kernel_ms": 0.22892
+        },
+        {
+          "name": "void topk_moe_cuda<(int)256, (bool)0>(const float *, float *, int *, float *, int, int, float, float, topk_moe_config)",
+          "calls": 55,
+          "kernel_ms": 0.215902
+        },
+        {
+          "name": "void rope_multi<(bool)1, (bool)0, float>(const T3 *, T3 *, int, int, int, int, int, int, int, int, int, int, int, const int *, float, float, float, rope_corr_dims, float, const float *, mrope_sections, bool, bool)",
+          "calls": 110,
+          "kernel_ms": 0.208378
+        },
+        {
+          "name": "void k_set_rows<float, long long, __half>(const T1 *, const T2 *, T3 *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, uint3, uint3, uint3, uint3, uint3)",
+          "calls": 110,
+          "kernel_ms": 0.187294
+        },
+        {
+          "name": "void unary_op_kernel<&op_neg, float>(const T2 *, T2 *, int)",
+          "calls": 55,
+          "kernel_ms": 0.153953
+        },
+        {
+          "name": "void unary_op_kernel<&op_step, float>(const T2 *, T2 *, int)",
+          "calls": 55,
+          "kernel_ms": 0.153631
+        },
+        {
+          "name": "void cub::CUB_200500_750_NS::DeviceReduceKernel<cub::CUB_200500_750_NS::DeviceReducePolicy<float, unsigned long long, cuda::std::__4::plus<void>>::Policy600, const float *, unsigned long long, cuda::std::__4::plus<void>, float, cuda::std::__4::__identity>(T2, T5 *, T3, cub::CUB_200500_750_NS::GridEvenShare<T3>, T4, T6)",
+          "calls": 55,
+          "kernel_ms": 0.150811
+        },
+        {
+          "name": "moe_weighted_reduction_f32(const float *, const float *, const float *, float *, long long, int)",
+          "calls": 55,
+          "kernel_ms": 0.144633
+        },
+        {
+          "name": "void k_bin_bcast<&op_repeat, float, float, float, >(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 55,
+          "kernel_ms": 0.140314
+        },
+        {
+          "name": "arange_f32(float *, int, float, float)",
+          "calls": 55,
+          "kernel_ms": 0.12349
+        },
+        {
+          "name": "void cpy_scalar<&cpy_1_scalar<float, float>>(const char *, char *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long)",
+          "calls": 55,
+          "kernel_ms": 0.117755
+        },
+        {
+          "name": "void k_bin_bcast<&op_add, float, float, float, const float *, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 55,
+          "kernel_ms": 0.11635
+        },
+        {
+          "name": "void cub::CUB_200500_750_NS::DeviceReduceSingleTileKernel<cub::CUB_200500_750_NS::DeviceReducePolicy<float, unsigned long long, cuda::std::__4::plus<void>>::Policy600, float *, float *, int, cuda::std::__4::plus<void>, float, float, cuda::std::__4::__identity>(T2, T3, T4, T5, T6, T8)",
+          "calls": 55,
+          "kernel_ms": 0.099581
+        },
+        {
+          "name": "void flash_attn_stream_k_fixup_uniform<(int)256, (int)1, (int)8>(float *, const float2 *, int, int, int, int, int, int, uint3, uint3, uint3)",
+          "calls": 55,
+          "kernel_ms": 0.094849
+        },
+        {
+          "name": "void concat_cont<unsigned int, (int)0>(const T1 *, const T1 *, T1 *, long long, long long, long long, long long, long long, long long)",
+          "calls": 55,
+          "kernel_ms": 0.09193
+        },
+        {
+          "name": "void unary_gated_op_kernel<&op_sigmoid, float>(const T2 *, const T2 *, T2 *, long long, long long, long long, long long)",
+          "calls": 55,
+          "kernel_ms": 0.083519
+        },
+        {
+          "name": "void op_clamp_kernel<float>(const T1 *, T1 *, T1, T1, int)",
+          "calls": 55,
+          "kernel_ms": 0.081919
+        },
+        {
+          "name": "void unary_op_kernel<&op_sigmoid, float>(const T2 *, T2 *, int)",
+          "calls": 55,
+          "kernel_ms": 0.080319
+        },
+        {
+          "name": "void cpy_scalar_contiguous<int, float>(const char *, char *, long long)",
+          "calls": 55,
+          "kernel_ms": 0.079613
+        },
+        {
+          "name": "void cpy_scalar_contiguous<float, int>(const char *, char *, long long)",
+          "calls": 55,
+          "kernel_ms": 0.074848
+        }
+      ]
+    }
+  ],
+  "on": [
+    {
+      "nvtx_name": "a3b/mtp/catchup/draft-decode",
+      "host_ranges": 41,
+      "host_ms": 53.920622,
+      "kernel_calls": 1422,
+      "kernel_ms": 9.539565,
+      "flash_attention_calls": 0,
+      "kernels": [
+        {
+          "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)0, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+          "calls": 316,
+          "kernel_ms": 7.209619
+        },
+        {
+          "name": "void rms_norm_f32<(int)1024, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+          "calls": 237,
+          "kernel_ms": 0.809999
+        },
+        {
+          "name": "quantize_q8_1(const float *, void *, long long, long long, long long, long long, long long, unsigned int, uint3)",
+          "calls": 316,
+          "kernel_ms": 0.502515
+        },
+        {
+          "name": "void rms_norm_f32<(int)256, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+          "calls": 158,
+          "kernel_ms": 0.338744
+        },
+        {
+          "name": "void k_set_rows<float, long long, __half>(const T1 *, const T2 *, T3 *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, uint3, uint3, uint3, uint3, uint3)",
+          "calls": 158,
+          "kernel_ms": 0.278366
+        },
+        {
+          "name": "void rope_multi<(bool)1, (bool)0, float>(const T3 *, T3 *, int, int, int, int, int, int, int, int, int, int, int, const int *, float, float, float, rope_corr_dims, float, const float *, mrope_sections, bool, bool)",
+          "calls": 158,
+          "kernel_ms": 0.259583
+        },
+        {
+          "name": "void concat_cont<unsigned int, (int)0>(const T1 *, const T1 *, T1 *, long long, long long, long long, long long, long long, long long)",
+          "calls": 79,
+          "kernel_ms": 0.140739
+        }
+      ]
+    },
+    {
+      "nvtx_name": "a3b/mtp/proposal/draft-decode",
+      "host_ranges": 55,
+      "host_ms": 53.170599,
+      "kernel_calls": 3410,
+      "kernel_ms": 76.030432,
+      "flash_attention_calls": 110,
+      "kernels": [
+        {
+          "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)0, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+          "calls": 275,
+          "kernel_ms": 60.314761
+        },
+        {
+          "name": "argmax_f32(const float *, int *, long long)",
+          "calls": 110,
+          "kernel_ms": 4.243584
+        },
+        {
+          "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)1, (bool)0, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+          "calls": 165,
+          "kernel_ms": 3.255251
+        },
+        {
+          "name": "void mul_mat_vec_q<(ggml_type)8, (int)1, (bool)0, (bool)1, (bool)0, (bool)0, (bool)0>(const void *, const void *, const int *, ggml_cuda_mm_fusion_args_device, float *, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, uint3, unsigned int, unsigned int, unsigned int, unsigned int)",
+          "calls": 110,
+          "kernel_ms": 1.245997
+        },
+        {
+          "name": "void rms_norm_f32<(int)1024, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+          "calls": 275,
+          "kernel_ms": 0.944839
+        },
+        {
+          "name": "quantize_q8_1(const float *, void *, long long, long long, long long, long long, long long, unsigned int, uint3)",
+          "calls": 550,
+          "kernel_ms": 0.879411
+        },
+        {
+          "name": "void flash_attn_ext_f16<(int)256, (int)256, (int)1, (int)8, (bool)0, (bool)0, (bool)0>(const char *, const char *, const char *, const char *, const char *, const int *, float *, float2 *, float, float, float, float, unsigned int, float, int, uint3, int, int, int, int, int, int, int, int, int, int, int, long long, int, int, long long, int, int, int, int, int, long long)",
+          "calls": 55,
+          "kernel_ms": 0.506718
+        },
+        {
+          "name": "void mul_mat_vec_f<float, float, (int)1, (int)256, (bool)0, (bool)0>(const T1 *, const float *, const int *, ggml_cuda_mm_fusion_args_device, float *, int, uint3, int, int, int, uint3, int, int, int, uint3, int, int, int, int)",
+          "calls": 110,
+          "kernel_ms": 0.462838
+        },
+        {
+          "name": "scale_f32(const float *, float *, float, float, long long)",
+          "calls": 110,
+          "kernel_ms": 0.401022
+        },
+        {
+          "name": "void k_bin_bcast<&op_sub, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 110,
+          "kernel_ms": 0.364891
+        },
+        {
+          "name": "pad_f32(const float *, unsigned long long, unsigned long long, unsigned long long, unsigned long long, float *, int, int, int, int, int, int, int, int, int, int, int, int, bool)",
+          "calls": 55,
+          "kernel_ms": 0.325496
+        },
+        {
+          "name": "void k_bin_bcast<&op_mul, float, float, float, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 110,
+          "kernel_ms": 0.271932
+        },
+        {
+          "name": "void k_get_rows_float<float, float>(const T1 *, const int *, T2 *, long long, long long, uint3, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long, unsigned long long)",
+          "calls": 110,
+          "kernel_ms": 0.228894
+        },
+        {
+          "name": "void rms_norm_f32<(int)256, (bool)1, (bool)0>(const float *, float *, int, long long, long long, long long, float, const float *, long long, long long, long long, uint3, uint3, uint3, uint3, const float *, long long, long long, long long, uint3, uint3, uint3, uint3)",
+          "calls": 110,
+          "kernel_ms": 0.224599
+        },
+        {
+          "name": "void topk_moe_cuda<(int)256, (bool)0>(const float *, float *, int *, float *, int, int, float, float, topk_moe_config)",
+          "calls": 55,
+          "kernel_ms": 0.212409
+        },
+        {
+          "name": "void rope_multi<(bool)1, (bool)0, float>(const T3 *, T3 *, int, int, int, int, int, int, int, int, int, int, int, const int *, float, float, float, rope_corr_dims, float, const float *, mrope_sections, bool, bool)",
+          "calls": 110,
+          "kernel_ms": 0.201689
+        },
+        {
+          "name": "void k_set_rows<float, long long, __half>(const T1 *, const T2 *, T3 *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, uint3, uint3, uint3, uint3, uint3)",
+          "calls": 110,
+          "kernel_ms": 0.185466
+        },
+        {
+          "name": "void unary_op_kernel<&op_step, float>(const T2 *, T2 *, int)",
+          "calls": 55,
+          "kernel_ms": 0.152445
+        },
+        {
+          "name": "void unary_op_kernel<&op_neg, float>(const T2 *, T2 *, int)",
+          "calls": 55,
+          "kernel_ms": 0.150844
+        },
+        {
+          "name": "void cub::CUB_200500_750_NS::DeviceReduceKernel<cub::CUB_200500_750_NS::DeviceReducePolicy<float, unsigned long long, cuda::std::__4::plus<void>>::Policy600, const float *, unsigned long long, cuda::std::__4::plus<void>, float, cuda::std::__4::__identity>(T2, T5 *, T3, cub::CUB_200500_750_NS::GridEvenShare<T3>, T4, T6)",
+          "calls": 55,
+          "kernel_ms": 0.147393
+        },
+        {
+          "name": "moe_weighted_reduction_f32(const float *, const float *, const float *, float *, long long, int)",
+          "calls": 55,
+          "kernel_ms": 0.142331
+        },
+        {
+          "name": "void k_bin_bcast<&op_repeat, float, float, float, >(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 55,
+          "kernel_ms": 0.139517
+        },
+        {
+          "name": "arange_f32(float *, int, float, float)",
+          "calls": 55,
+          "kernel_ms": 0.123065
+        },
+        {
+          "name": "void cpy_scalar<&cpy_1_scalar<float, float>>(const char *, char *, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long, long long)",
+          "calls": 55,
+          "kernel_ms": 0.117788
+        },
+        {
+          "name": "void k_bin_bcast<&op_add, float, float, float, const float *, const float *>(const T2 *, const T3 *, T4 *, unsigned int, unsigned int, unsigned int, uint3, uint3, uint3, uint3, uint3, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, T5...)",
+          "calls": 55,
+          "kernel_ms": 0.113153
+        },
+        {
+          "name": "void cub::CUB_200500_750_NS::DeviceReduceSingleTileKernel<cub::CUB_200500_750_NS::DeviceReducePolicy<float, unsigned long long, cuda::std::__4::plus<void>>::Policy600, float *, float *, int, cuda::std::__4::plus<void>, float, float, cuda::std::__4::__identity>(T2, T3, T4, T5, T6, T8)",
+          "calls": 55,
+          "kernel_ms": 0.100191
+        },
+        {
+          "name": "void flash_attn_stream_k_fixup_uniform<(int)256, (int)1, (int)8>(float *, const float2 *, int, int, int, int, int, int, uint3, uint3, uint3)",
+          "calls": 55,
+          "kernel_ms": 0.0936
+        },
+        {
+          "name": "void concat_cont<unsigned int, (int)0>(const T1 *, const T1 *, T1 *, long long, long long, long long, long long, long long, long long)",
+          "calls": 55,
+          "kernel_ms": 0.092412
+        },
+        {
+          "name": "void unary_gated_op_kernel<&op_sigmoid, float>(const T2 *, const T2 *, T2 *, long long, long long, long long, long long)",
+          "calls": 55,
+          "kernel_ms": 0.079741
+        },
+        {
+          "name": "void unary_op_kernel<&op_sigmoid, float>(const T2 *, T2 *, int)",
+          "calls": 55,
+          "kernel_ms": 0.078813
+        },
+        {
+          "name": "void op_clamp_kernel<float>(const T1 *, T1 *, T1, T1, int)",
+          "calls": 55,
+          "kernel_ms": 0.07805
+        },
+        {
+          "name": "void cpy_scalar_contiguous<int, float>(const char *, char *, long long)",
+          "calls": 55,
+          "kernel_ms": 0.07766
+        },
+        {
+          "name": "void cpy_scalar_contiguous<float, int>(const char *, char *, long long)",
+          "calls": 55,
+          "kernel_ms": 0.073632
+        }
+      ]
+    }
+  ]
+}

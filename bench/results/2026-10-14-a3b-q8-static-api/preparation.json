@@ -1,0 +1,24 @@
+{
+  "scope": "Prepared only; no service/model request, GPU work or production config change.",
+  "frozen_config": "G:\\Strata-Moe\\strata-a3b-q8.json",
+  "frozen_config_sha256": "3474d3a417706748b8785536dce1c2c2e6cd28ea1c0058f2c4e4fc992f5c8609",
+  "experiment_configs": {
+    "static": {
+      "path": "G:\\Strata-Moe\\bench\\results\\2026-10-14-a3b-q8-static-api\\config-static.json",
+      "sha256": "0b7a1a82e3fb381f422b53db598a6f38888efa0ddcd5afacd955cffadddb7756"
+    },
+    "dynamic": {
+      "path": "G:\\Strata-Moe\\bench\\results\\2026-10-14-a3b-q8-static-api\\config-dynamic.json",
+      "sha256": "72efe25d0265751e35d7e02a8bab55d063abfdd6f690a8e1ea6244783b516e4d"
+    }
+  },
+  "profile_sha256": "10b4803644cecca0e81cca038f5425cf8b1281c8557c0cfca7428ee9d8ba7e8b",
+  "changes": [
+    "build-a3b prototype executable",
+    "isolated per-mode engine logs",
+    "GPU-static opt-in; dynamic opt-in in second config only",
+    "cache decay 0",
+    "reserve 640 MiB plus main's separate static scratch reservation"
+  ],
+  "measurements": "Run run-latency.py only after root starts and verifies the isolated service; it hashes the actual executable then."
+}

@@ -1,0 +1,32 @@
+diff --git a/src/llama-context.cpp b/src/llama-context.cpp
+--- a/src/llama-context.cpp
++++ b/src/llama-context.cpp
+@@ -1451,5 +1451,14 @@ llm_graph_result * llama_context::process_ubatch(const llama_ubatch & ubatch, llm_graph_type gtype, llama_memory_context_i * mctx, ggml_status & ret) {
+     bool async_graph_retry = false;
+     bool reused_graph = false;
+ retry_without_async_inputs:
++    // A second-step fallback may arrive while the first pinned upload and
++    // graph still use the scheduler arena. Finish every split before reset.
++    // This branch never runs on the normal asynchronous path.
++    if (async_graph_retry && mtp_device_chain.input_host_pending) {
++        ggml_backend_sched_synchronize(sched.get());
++        if (mtp_device_chain.between_steps) ++mtp_device_chain.inter_step_syncs;
++        mtp_device_chain.input_host_pending = false;
++    }
++
+     auto * res = get_gf_res_prev();
+     auto * gf  = res->get_gf();
+@@ -4678,7 +4687,9 @@ int llama_mtp_device_chain_k2(llama_context * draft, llama_batch first,
+-    auto finish = [&chain, cuda_backend](int status) {
+-        // A failed chain must finish any queued reads of its pinned source
+-        // before a later request can overwrite either slot.
+-        if (status != 1 && chain.input_host_pending) ggml_backend_synchronize(cuda_backend);
++    auto finish = [&chain, draft](int status) {
++        // A failed chain may still have ordinary graph work in flight.
++        if (status != 1) {
++            ggml_backend_sched_synchronize(draft->sched.get());
++            if (chain.between_steps) ++chain.inter_step_syncs;
++        }
+         chain.active = false;
+         chain.first_step_output = false;
+         chain.input_pending = false;

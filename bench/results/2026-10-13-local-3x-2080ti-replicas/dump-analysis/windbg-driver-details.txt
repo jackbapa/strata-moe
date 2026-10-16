@@ -1,0 +1,195 @@
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*G:\Strata\.local-tools\symbols*https://msdl.microsoft.com/download/symbols
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+OK                                             C:\Windows\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_383c5255ad7f81b4
+Opened log file 'G:\Strata\bench\results\2026-10-13-local-3x-2080ti-replicas\dump-analysis\windbg-driver-details.txt'
+
+************* Preparing the environment for Debugger Extensions Gallery repositories **************
+   ExtensionRepository : Implicit
+   UseExperimentalFeatureForNugetShare : true
+   AllowNugetExeUpdate : true
+   NonInteractiveNuget : true
+   AllowNugetMSCredentialProviderInstall : true
+   AllowParallelInitializationOfLocalRepositories : true
+
+   -- Configuring repositories
+      ----> Repository : LocalInstalled, Enabled: true
+      ----> Repository : UserExtensions, Enabled: true
+
+>>>>>>>>>>>>> Preparing the environment for Debugger Extensions Gallery repositories completed, duration 0.016 seconds
+
+************* Waiting for Debugger Extensions Gallery to Initialize **************
+
+>>>>>>>>>>>>> Waiting for Debugger Extensions Gallery to Initialize completed, duration 0.016 seconds
+   ----> Repository : UserExtensions, Enabled: true, Packages count: 0
+   ----> Repository : LocalInstalled, Enabled: true, Packages count: 46
+
+Microsoft (R) Windows Debugger Version 10.0.29661.1004 AMD64
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+
+Loading Dump File [G:\Strata\bench\results\2026-10-13-local-3x-2080ti-replicas\dump-analysis\101326-32531-01.dmp]
+Mini Kernel Dump File: Only registers and stack trace are available
+
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+OK                                             C:\Windows\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_383c5255ad7f81b4
+
+************* Path validation summary **************
+Response                         Time (ms)     Location
+Deferred                                       srv*G:\Strata\.local-tools\symbols*https://msdl.microsoft.com/download/symbols
+Symbol search path is: srv*G:\Strata\.local-tools\symbols*https://msdl.microsoft.com/download/symbols
+Executable search path is: C:\Windows\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_383c5255ad7f81b4
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\atlmfc.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\concurrency.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\cpp_rest.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Kernel.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\ObjectiveC.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\stl.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Usb4Kd.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Windows.Data.Json.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Windows.Devices.Geolocation.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Windows.Devices.Sensors.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Windows.Media.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\windows.natvis'
+NatVis script successfully loaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\winrt.natvis'
+Windows 10 Kernel Version 20348 MP (48 procs) Free x64
+Product: Server, suite: TerminalServer DataCenter SingleUserTS
+Edition build lab: 20348.859.amd64fre.fe_release_svc_prod2.220707-1832
+Kernel base = 0xfffff806`84e00000 PsLoadedModuleList = 0xfffff806`85a33d40
+Debug session time: Tue Oct 13 19:50:01.755 2026 (UTC + 8:00)
+System Uptime: 0 days 2:24:37.047
+Loading Kernel Symbols
+...............................................................
+................................................................
+................................................................
+......................
+Loading User Symbols
+Unable to read KTHREAD address ffffd401b0e9d678
+Unable to read KTHREAD address ffffd401b0e9d678
+PEB is paged out (Peb.Ldr = 000000d7`2b564018).  Type ".hh dbgerr001" for details
+Loading unloaded module list
+.............
+Unable to read KTHREAD address ffffd401b0e9d678
+Unable to read KTHREAD address ffffd401b0e9d678
+For analysis of this file, run !analyze -v
+35: kd> .reload /f nvlddmkm.sys; lmvm nvlddmkm; .trap 0xffffd28fe920d6c0; ub @rip L12; u @rip L18; dt nt!DPC_WATCHDOG_GLOBAL_TRIAGE_BLOCK 0xfffff80685b0f328; !blackboxpnp; q
+
+************* Symbol Loading Error Summary **************
+Module name            Error
+nvlddmkm               The system cannot find the file specified
+
+You can troubleshoot most symbol related issues by turning on symbol loading diagnostics (!sym noisy) and repeating the command that caused symbols to be loaded.
+You should also verify that your symbol search path (.sympath) is correct.
+Browse full module list
+start             end                 module name
+fffff806`e4dd0000 fffff806`eb50a000   nvlddmkm   (export symbols)       C:\Windows\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_383c5255ad7f81b4\nvlddmkm.sys
+    Loaded symbol image file: C:\Windows\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_383c5255ad7f81b4\nvlddmkm.sys
+    Mapped memory image file: c:\windows\system32\driverstore\filerepository\nv_dispsi.inf_amd64_383c5255ad7f81b4\nvlddmkm.sys
+    Image path: \SystemRoot\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_383c5255ad7f81b4\nvlddmkm.sys
+    Image name: nvlddmkm.sys
+    Browse all global symbols  functions  data  Symbol Reload
+    Timestamp:        Tue Dec  2 17:20:29 2025 (692EAF5D)
+    CheckSum:         06468CB7
+    ImageSize:        0673A000
+    Mapping Form:     Loaded
+    File version:     32.0.15.9144
+    Product version:  32.0.15.9144
+    File flags:       8 (Mask 3F) Private
+    File OS:          40004 NT Win32
+    File type:        3.4 Driver
+    File date:        00000000.00000000
+    Translations:     0409.04b0
+    Information from resource tables:
+        CompanyName:      NVIDIA Corporation
+        ProductName:      NVIDIA Windows Kernel Mode Driver, Version 591.44 
+        InternalName:     nvlddmkm.sys, NV_LDDM:10011, NV_LDDM_DDK_BUILD:unused
+        OriginalFilename: nvlddmkm.sys
+        ProductVersion:   32.0.15.9144
+        FileVersion:      32.0.15.9144
+        FileDescription:  NVIDIA Windows Kernel Mode Driver, Version 591.44 
+        LegalCopyright:   (C) 2025 NVIDIA Corporation. All rights reserved.
+NOTE: The trap frame does not contain all registers.
+Some register values may be zeroed or incorrect.
+rax=0000000000000087 rbx=0000000000000000 rcx=ffffd401a51eeb20
+rdx=ffffd401a5582000 rsi=0000000000000000 rdi=0000000000000000
+rip=fffff806e4ef1f3a rsp=ffffd28fe920d850 rbp=ffffd28fe920d980
+ r8=0000000000000002  r9=ffffd4017f5ac000 r10=0000000000000003
+r11=0000000000000000 r12=0000000000000000 r13=0000000000000000
+r14=0000000000000000 r15=0000000000000000
+iopl=0         nv up ei pl nz na po nc
+nvlddmkm+0x121f3a:
+fffff806`e4ef1f3a a801            test    al,1
+nvlddmkm+0x121f08:
+fffff806`e4ef1f08 4883c430        add     rsp,30h
+fffff806`e4ef1f0c 5e              pop     rsi
+fffff806`e4ef1f0d c3              ret
+fffff806`e4ef1f0e cc              int     3
+fffff806`e4ef1f0f cc              int     3
+fffff806`e4ef1f10 48895c2408      mov     qword ptr [rsp+8],rbx
+fffff806`e4ef1f15 4889742410      mov     qword ptr [rsp+10h],rsi
+fffff806`e4ef1f1a 57              push    rdi
+fffff806`e4ef1f1b 4883ec20        sub     rsp,20h
+fffff806`e4ef1f1f 418bd8          mov     ebx,r8d
+fffff806`e4ef1f22 488bfa          mov     rdi,rdx
+fffff806`e4ef1f25 83e307          and     ebx,7
+fffff806`e4ef1f28 488bf1          mov     rsi,rcx
+fffff806`e4ef1f2b 4885d2          test    rdx,rdx
+fffff806`e4ef1f2e 7415            je      nvlddmkm+0x121f45 (fffff806`e4ef1f45)
+fffff806`e4ef1f30 85db            test    ebx,ebx
+fffff806`e4ef1f32 7411            je      nvlddmkm+0x121f45 (fffff806`e4ef1f45)
+fffff806`e4ef1f34 8b0526c13201    mov     eax,dword ptr [nvlddmkm!nvDumpConfig+0x432ce0 (fffff806`e621e060)]
+nvlddmkm+0x121f3a:
+fffff806`e4ef1f3a a801            test    al,1
+fffff806`e4ef1f3c 7429            je      nvlddmkm+0x121f67 (fffff806`e4ef1f67)
+fffff806`e4ef1f3e e8edf8ffff      call    nvlddmkm+0x121830 (fffff806`e4ef1830)
+fffff806`e4ef1f43 eb22            jmp     nvlddmkm+0x121f67 (fffff806`e4ef1f67)
+fffff806`e4ef1f45 ba00006e03      mov     edx,36E0000h
+fffff806`e4ef1f4a b90ce5640e      mov     ecx,0E64E50Ch
+fffff806`e4ef1f4f e8ec8dfbff      call    nvlddmkm+0xdad40 (fffff806`e4eaad40)
+fffff806`e4ef1f54 b96e030000      mov     ecx,36Eh
+fffff806`e4ef1f59 e8a27efdff      call    nvlddmkm+0xf9e00 (fffff806`e4ec9e00)
+fffff806`e4ef1f5e 4885ff          test    rdi,rdi
+fffff806`e4ef1f61 747c            je      nvlddmkm+0x121fdf (fffff806`e4ef1fdf)
+fffff806`e4ef1f63 85db            test    ebx,ebx
+fffff806`e4ef1f65 7478            je      nvlddmkm+0x121fdf (fffff806`e4ef1fdf)
+fffff806`e4ef1f67 8b05f3c03201    mov     eax,dword ptr [nvlddmkm!nvDumpConfig+0x432ce0 (fffff806`e621e060)]
+fffff806`e4ef1f6d a801            test    al,1
+fffff806`e4ef1f6f 0f8483000000    je      nvlddmkm+0x121ff8 (fffff806`e4ef1ff8)
+fffff806`e4ef1f75 a808            test    al,8
+fffff806`e4ef1f77 742a            je      nvlddmkm+0x121fa3 (fffff806`e4ef1fa3)
+fffff806`e4ef1f79 4533c0          xor     r8d,r8d
+fffff806`e4ef1f7c 488bd6          mov     rdx,rsi
+fffff806`e4ef1f7f 33c9            xor     ecx,ecx
+fffff806`e4ef1f81 e8daf4ffff      call    nvlddmkm+0x121460 (fffff806`e4ef1460)
+fffff806`e4ef1f86 85c0            test    eax,eax
+fffff806`e4ef1f88 7419            je      nvlddmkm+0x121fa3 (fffff806`e4ef1fa3)
+Symbol nt!DPC_WATCHDOG_GLOBAL_TRIAGE_BLOCK not found.
+    PnpActivityId      : {00000000-0000-0000-0000-000000000000}
+    PnpActivityTime    : 134363648336617855
+    PnpEventInformation: 3
+    PnpEventInProgress : 0
+    PnpProblemCode     : 24
+    PnpVetoType        : 0
+    DeviceId           : DISPLAY\Default_Monitor\1&1f0c3c2f&0&UID256
+    VetoString         : 
+
+quit:
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\atlmfc.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\concurrency.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\cpp_rest.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Kernel.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\ObjectiveC.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\stl.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Usb4Kd.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Windows.Data.Json.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Windows.Devices.Geolocation.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Windows.Devices.Sensors.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\Windows.Media.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\windows.natvis'
+NatVis script unloaded from 'G:\Strata\.local-tools\windbg\x64\amd64\Visualizers\winrt.natvis'

@@ -1,0 +1,4 @@
+Command: build-a3b/bin/strata-moe-prefill-mmq-adapter-parity.exe models/a3b/Qwen3.6-35B-A3B-UD-IQ3_S.gguf 19 128 1 0
+Result: exit 0
+GPU: NVIDIA GeForce RTX 2080 Ti, CUDA compute capability 7.5, GPU 0
+A3B original Strata MMQ layer=19 gate/up=iq2_s down=iq3_s T=128 lanes=1 bitwise_diff=0/2097152 outside_1e-3=0 max_abs=0 max_rel=0 prefill_calls=1 prefill_rows=1024

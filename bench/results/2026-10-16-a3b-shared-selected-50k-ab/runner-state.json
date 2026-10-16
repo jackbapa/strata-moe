@@ -1,0 +1,64 @@
+{
+  "suite": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab",
+  "strict_suite": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-strict-v3",
+  "order": [
+    "off",
+    "on",
+    "off",
+    "on",
+    "off",
+    "on"
+  ],
+  "selected_config_sha256": "94bb567296d56ebbf5225fb0533f7dd30422f40d0f85e02284e24e551417ac0f",
+  "frozen_engine": "G:\\Strata-Moe\\build-a3b-shared-candidate\\bin\\strata-moe.exe",
+  "frozen_engine_sha256": "851971b05547d527e1413cbdb384db3da5ab5b4490699295d202ce4d5a12997b",
+  "selected_args_identical": true,
+  "only_compute_switch_difference": "STRATA_A3B_SHARED_STREAM",
+  "prompt_tokens": 50000,
+  "max_tokens": 256,
+  "uncached": true,
+  "diagnostic_node_logging": false,
+  "strict_report_sha256": "3ea3eac2a97a3a847bc5b92d4b63ce05e675c75e8628fa8aa719c48bc9430db5",
+  "trials": [
+    {
+      "index": 1,
+      "arm": "off",
+      "config": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab\\configs\\01-off.json",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab\\runner-logs\\01-off.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab\\arms\\off\\run001.json",
+      "elapsed_s": 47.687,
+      "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+      "proposal_windows": 119,
+      "service_pid": 35380,
+      "engine_pid": 21776,
+      "model_status": "loaded",
+      "status_loaded": true
+    },
+    {
+      "index": 2,
+      "arm": "on",
+      "config": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab\\configs\\02-on.json",
+      "runner_log": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab\\runner-logs\\02-on.log",
+      "record_path": "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab\\arms\\on\\run001.json",
+      "elapsed_s": 47.421,
+      "proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+      "proposal_windows": 119,
+      "service_pid": 34744,
+      "engine_pid": 27544,
+      "model_status": "loaded",
+      "status_loaded": true
+    }
+  ],
+  "primary_error": "ValueError: trial 3 failed; see G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-50k-ab\\runner-logs\\03-off.log",
+  "restore": {
+    "ok": true,
+    "server_pid": 25172,
+    "engine_pid": 20240,
+    "loaded": true,
+    "model_id": "qwen3.6-35b-a3b-ud-iq3_s",
+    "n_ctx": 262144,
+    "selected_source_changed": false
+  },
+  "cleanup_errors": [],
+  "complete": false
+}

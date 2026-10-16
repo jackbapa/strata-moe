@@ -1,4 +1,6 @@
-<h1 align="center">Strata</h1>
+> This is an archived translation of upstream Strata. For Strata-Moe installation and measurements, see [README.md](README.md).
+
+<h1 align="center">Strata (upstream reference)</h1>
 
 [English](README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · **Español** · [Português](README.pt-BR.md)
 

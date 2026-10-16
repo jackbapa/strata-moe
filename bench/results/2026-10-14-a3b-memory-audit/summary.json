@@ -1,0 +1,98 @@
+{
+  "cache0": {
+    "ready": {
+      "RSS_GiB": 46.625,
+      "private_GiB": 25.409,
+      "available_GiB": 3.76,
+      "committed_GiB": {
+        "private/protect=0x2": 0.0,
+        "private/protect=0x4": 22.748,
+        "private/protect=0x104": 0.0,
+        "mapped/protect=0x2": 24.647,
+        "mapped/protect=0x4": 0.0,
+        "private/protect=0x1": 0.001,
+        "private/protect=0x404": 2.435,
+        "image/protect=0x2": 0.597,
+        "image/protect=0x20": 0.163,
+        "image/protect=0x4": 0.063,
+        "image/protect=0x8": 0.061
+      },
+      "resident_GiB": {
+        "private": 22.317,
+        "mapped": 24.126,
+        "image": 0.185
+      }
+    },
+    "after_generation": {
+      "RSS_GiB": 46.791,
+      "private_GiB": 25.662,
+      "available_GiB": 3.636,
+      "committed_GiB": {
+        "private/protect=0x2": 0.0,
+        "private/protect=0x4": 22.934,
+        "private/protect=0x104": 0.0,
+        "mapped/protect=0x2": 24.647,
+        "mapped/protect=0x4": 0.0,
+        "private/protect=0x1": 0.002,
+        "private/protect=0x404": 2.501,
+        "image/protect=0x2": 0.597,
+        "image/protect=0x20": 0.163,
+        "image/protect=0x4": 0.063,
+        "image/protect=0x8": 0.061
+      },
+      "resident_GiB": {
+        "private": 22.464,
+        "mapped": 24.126,
+        "image": 0.21
+      }
+    }
+  },
+  "cache16g": {
+    "ready": {
+      "RSS_GiB": 46.625,
+      "private_GiB": 25.408,
+      "available_GiB": 3.983,
+      "committed_GiB": {
+        "private/protect=0x2": 0.0,
+        "private/protect=0x4": 22.748,
+        "private/protect=0x104": 0.0,
+        "mapped/protect=0x2": 24.647,
+        "mapped/protect=0x4": 0.0,
+        "private/protect=0x1": 0.001,
+        "private/protect=0x404": 2.434,
+        "image/protect=0x2": 0.597,
+        "image/protect=0x20": 0.163,
+        "image/protect=0x4": 0.063,
+        "image/protect=0x8": 0.061
+      },
+      "resident_GiB": {
+        "private": 22.317,
+        "mapped": 24.126,
+        "image": 0.185
+      }
+    },
+    "after_generation": {
+      "RSS_GiB": 46.8,
+      "private_GiB": 39.009,
+      "available_GiB": 4.048,
+      "committed_GiB": {
+        "private/protect=0x2": 0.0,
+        "private/protect=0x4": 22.941,
+        "private/protect=0x104": 0.0,
+        "private/protect=0x404": 15.815,
+        "mapped/protect=0x2": 24.647,
+        "mapped/protect=0x4": 0.0,
+        "private/protect=0x1": 0.002,
+        "image/protect=0x2": 0.597,
+        "image/protect=0x20": 0.163,
+        "image/protect=0x4": 0.063,
+        "image/protect=0x8": 0.061
+      },
+      "resident_GiB": {
+        "private": 22.47,
+        "mapped": 24.126,
+        "image": 0.213
+      }
+    }
+  }
+}

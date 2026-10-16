@@ -1,0 +1,146 @@
+{
+  "cache16g": {
+    "ready": {
+      "RSS_GiB": 23.003,
+      "private_GiB": 25.864,
+      "available_GiB": 27.687,
+      "committed_GiB": {
+        "private/protect=0x2": 0.0,
+        "private/protect=0x4": 23.251,
+        "private/protect=0x104": 0.0,
+        "private/protect=0x404": 2.434,
+        "mapped/protect=0x2": 0.007,
+        "mapped/protect=0x4": 0.0,
+        "private/protect=0x1": 0.001,
+        "image/protect=0x2": 0.597,
+        "image/protect=0x20": 0.163,
+        "image/protect=0x4": 0.063,
+        "image/protect=0x8": 0.061
+      },
+      "resident_GiB": {
+        "private": 22.821,
+        "mapped": 0.001,
+        "image": 0.184
+      }
+    },
+    "after_generation": {
+      "RSS_GiB": 23.178,
+      "private_GiB": 39.465,
+      "available_GiB": 27.529,
+      "committed_GiB": {
+        "private/protect=0x2": 0.0,
+        "private/protect=0x4": 23.445,
+        "private/protect=0x104": 0.0,
+        "private/protect=0x404": 15.815,
+        "mapped/protect=0x2": 0.007,
+        "mapped/protect=0x4": 0.0,
+        "private/protect=0x1": 0.002,
+        "image/protect=0x2": 0.597,
+        "image/protect=0x20": 0.163,
+        "image/protect=0x4": 0.063,
+        "image/protect=0x8": 0.061
+      },
+      "resident_GiB": {
+        "private": 22.978,
+        "mapped": 0.001,
+        "image": 0.212
+      }
+    }
+  },
+  "cache16g-mmap": {
+    "ready": {
+      "RSS_GiB": 46.626,
+      "private_GiB": 25.409,
+      "available_GiB": 4.068,
+      "committed_GiB": {
+        "private/protect=0x2": 0.0,
+        "private/protect=0x4": 22.748,
+        "private/protect=0x104": 0.0,
+        "private/protect=0x404": 2.435,
+        "private/protect=0x1": 0.001,
+        "mapped/protect=0x2": 24.647,
+        "mapped/protect=0x4": 0.0,
+        "image/protect=0x2": 0.597,
+        "image/protect=0x20": 0.163,
+        "image/protect=0x4": 0.063,
+        "image/protect=0x8": 0.061
+      },
+      "resident_GiB": {
+        "private": 22.317,
+        "mapped": 24.126,
+        "image": 0.184
+      }
+    },
+    "after_generation": {
+      "RSS_GiB": 46.8,
+      "private_GiB": 39.004,
+      "available_GiB": 3.864,
+      "committed_GiB": {
+        "private/protect=0x2": 0.0,
+        "private/protect=0x4": 22.941,
+        "private/protect=0x104": 0.0,
+        "private/protect=0x404": 15.81,
+        "private/protect=0x1": 0.002,
+        "mapped/protect=0x2": 24.647,
+        "mapped/protect=0x4": 0.0,
+        "image/protect=0x2": 0.597,
+        "image/protect=0x20": 0.163,
+        "image/protect=0x4": 0.063,
+        "image/protect=0x8": 0.061
+      },
+      "resident_GiB": {
+        "private": 22.471,
+        "mapped": 24.126,
+        "image": 0.212
+      }
+    }
+  },
+  "cache16g-pageable": {
+    "ready": {
+      "RSS_GiB": 23.004,
+      "private_GiB": 25.865,
+      "available_GiB": 27.381,
+      "committed_GiB": {
+        "private/protect=0x2": 0.0,
+        "private/protect=0x4": 23.252,
+        "private/protect=0x104": 0.0,
+        "private/protect=0x404": 2.435,
+        "mapped/protect=0x2": 0.007,
+        "mapped/protect=0x4": 0.0,
+        "private/protect=0x1": 0.001,
+        "image/protect=0x2": 0.597,
+        "image/protect=0x20": 0.163,
+        "image/protect=0x4": 0.063,
+        "image/protect=0x8": 0.061
+      },
+      "resident_GiB": {
+        "private": 22.821,
+        "mapped": 0.001,
+        "image": 0.184
+      }
+    },
+    "after_generation": {
+      "RSS_GiB": 23.178,
+      "private_GiB": 39.466,
+      "available_GiB": 27.518,
+      "committed_GiB": {
+        "private/protect=0x2": 0.0,
+        "private/protect=0x4": 23.445,
+        "private/protect=0x104": 0.0,
+        "private/protect=0x404": 15.815,
+        "mapped/protect=0x2": 0.007,
+        "mapped/protect=0x4": 0.0,
+        "private/protect=0x1": 0.002,
+        "image/protect=0x2": 0.597,
+        "image/protect=0x20": 0.163,
+        "image/protect=0x4": 0.063,
+        "image/protect=0x8": 0.061
+      },
+      "resident_GiB": {
+        "private": 22.976,
+        "mapped": 0.001,
+        "image": 0.212
+      }
+    }
+  }
+}

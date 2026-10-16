@@ -1,0 +1,73 @@
+--- a/src/models/qwen35moe.cpp
++++ b/src/models/qwen35moe.cpp
+@@ -3,6 +3,8 @@
+ 
+ #include <atomic>
+ #include <cstdlib>
++#include <limits>
++#include <stdexcept>
+ 
+ void llama_model_qwen35moe::load_arch_hparams(llama_model_loader & ml) {
+     ml.get_key_or_arr(LLM_KV_EXPERT_FEED_FORWARD_LENGTH, hparams.n_ff_exp_arr, hparams.n_layer_all, false);
+@@ -45,12 +47,27 @@
+ 
+     tok_embd = create_tensor(tn(LLM_TENSOR_TOKEN_EMBD, "weight"), { n_embd, n_vocab }, 0);
+ 
++    // An opt-in MTP GGUF can retain the full token embedding while storing
++    // only selected output rows.  d2t gives their full tokenizer IDs.
++    int64_t n_vocab_draft = n_vocab;
++    if (const ggml_tensor * d2t_meta = ml.get_tensor_meta("d2t")) {
++        if (!mtp_only || d2t_meta->type != GGML_TYPE_I64 ||
++            ggml_n_dims(d2t_meta) != 1 || d2t_meta->ne[0] < 1 || d2t_meta->ne[0] >= n_vocab) {
++            throw std::runtime_error("QWEN35MOE d2t requires an MTP-only model and a smaller I64 vocabulary map");
++        }
++        n_vocab_draft = d2t_meta->ne[0];
++        d2t = create_tensor(tn(LLM_TENSOR_D2T), { n_vocab_draft }, 0);
++        LLAMA_LOG_INFO("QWEN35MOE MTP draft vocabulary: %lld of %lld output rows\n",
++            (long long) n_vocab_draft, (long long) n_vocab);
++    }
++
+     // output
+     output_norm = create_tensor(tn(LLM_TENSOR_OUTPUT_NORM, "weight"), { n_embd }, 0);
+-    output = create_tensor(tn(LLM_TENSOR_OUTPUT, "weight"), { n_embd, n_vocab }, TENSOR_NOT_REQUIRED);
++    output = create_tensor(tn(LLM_TENSOR_OUTPUT, "weight"), { n_embd, n_vocab_draft }, TENSOR_NOT_REQUIRED);
+ 
+     // if output is NULL, init from the input tok embed
+     if (output == NULL) {
++        if (d2t) throw std::runtime_error("QWEN35MOE MTP draft vocabulary needs its own output.weight");
+         output = create_tensor(tn(LLM_TENSOR_TOKEN_EMBD, "weight"), { n_embd, n_vocab }, TENSOR_DUPLICATED);
+     }
+ 
+@@ -137,7 +154,7 @@
+         layer.nextn.enorm            = create_tensor(tn(LLM_TENSOR_NEXTN_ENORM,            "weight", il), { n_embd },              mtp_flags);
+         layer.nextn.hnorm            = create_tensor(tn(LLM_TENSOR_NEXTN_HNORM,            "weight", il), { n_embd },              mtp_flags);
+         layer.nextn.embed_tokens     = create_tensor(tn(LLM_TENSOR_NEXTN_EMBED_TOKENS,     "weight", il), { n_embd, n_vocab },     mtp_flags|TENSOR_NOT_REQUIRED);
+-        layer.nextn.shared_head_head = create_tensor(tn(LLM_TENSOR_NEXTN_SHARED_HEAD_HEAD, "weight", il), { n_embd, n_vocab },     mtp_flags|TENSOR_NOT_REQUIRED);
++        layer.nextn.shared_head_head = create_tensor(tn(LLM_TENSOR_NEXTN_SHARED_HEAD_HEAD, "weight", il), { n_embd, n_vocab_draft }, mtp_flags|TENSOR_NOT_REQUIRED);
+         layer.nextn.shared_head_norm = create_tensor(tn(LLM_TENSOR_NEXTN_SHARED_HEAD_NORM, "weight", il), { n_embd },              mtp_flags|TENSOR_NOT_REQUIRED);
+     };
+ 
+@@ -777,6 +794,23 @@
+     ggml_tensor * head_s = layer.nextn.shared_head_head ? layer.nextn.shared_head_head_s : model.output_s;
+     GGML_ASSERT(head_w && "QWEN35MOE MTP: missing LM head (nextn.shared_head_head or model.output)");
+     cur = build_lora_mm(head_w, cur, head_s);
++
++    if (model.d2t) {
++        const int64_t n_draft = cur->ne[0];
++        const int64_t n_outputs = cur->ne[1];
++        const int64_t n_full = (int64_t) model.vocab.n_tokens();
++        GGML_ASSERT(model.d2t->type == GGML_TYPE_I64 && model.d2t->ne[0] == n_draft);
++        // The A3B CPU greedy path and device finite guard both require finite
++        // logits.  A finite sentinel also leaves the K2 sampled token as a
++        // full vocabulary ID for the next embedding lookup.
++        ggml_tensor * logits = ggml_fill(ctx0,
++            ggml_new_tensor_3d(ctx0, GGML_TYPE_F32, 1, n_full, n_outputs),
++            std::numeric_limits<float>::lowest());
++        cur = ggml_set_rows(ctx0, logits,
++            ggml_reshape_3d(ctx0, cur, 1, n_draft, n_outputs),
++            ggml_reshape_3d(ctx0, model.d2t, n_draft, 1, 1));
++        cur = ggml_reshape_2d(ctx0, cur, n_full, n_outputs);
++    }
+     cb(cur, "result_output", -1);
+ 
+     res->t_logits = cur;

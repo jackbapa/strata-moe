@@ -1,0 +1,70 @@
+蓝屏分析与三卡并发配置，2026-10-13（Asia/Shanghai）
+
+分析已完成。使用微软签名有效的 CDB/WinDbg 10.0.29661.1004 在本地读取
+小转储，通过微软符号服务器下载 Windows 符号。转储未上传到外部服务。
+
+本次蓝屏：101326-32531-01.dmp
+  转储记录时间：2026-10-13 19:50:01.755 UTC+8。
+  事件日志中的 19:49:47 意外关闭时间和 19:52:13 报告写入时间是其他时点。
+  BugCheck：0x133，参数 1 = 1，累计高 IRQL 执行超时。
+  FAILURE_BUCKET_ID：0x133_ISR_nvlddmkm!unknown_function。
+  IMAGE_NAME：nvlddmkm.sys。
+  SYMBOL_NAME：nvlddmkm+121f3a。
+  PROCESS_NAME：strata.exe。
+  中断栈落在 NVIDIA 驱动 +0x121f3a；同一 CPU 的 DPC 队列也包含 NVIDIA 驱动。
+  驱动映像时间戳 0x692eaf5d，映像大小 0x0673a000。
+  DriverStore 中对应映像文件版本为 32.0.15.9144（591.44）。
+
+更早一次蓝屏：101326-58203-01.dmp
+  转储记录时间：2026-10-13 17:22:33.159 UTC+8，早于本次并发测试。
+  BugCheck：0x133，参数 1 = 0，单次 DPC/ISR 超时。
+  FAILURE_BUCKET_ID：0x133_DPC_nvlddmkm!unknown_function。
+  SYMBOL_NAME：nvlddmkm+fd2ef；栈中包含 NVIDIA 驱动到 Windows ETW 日志写入的调用。
+  PROCESS_NAME：System。
+  驱动映像与后一转储相同。
+
+结论：两次蓝屏都定位到 NVIDIA 内核驱动的中断/DPC 路径，证据强于仅看
+事件日志。可以确认出错模块及执行路径，不能据此单独证明“591.44 的代码
+缺陷”或“显卡损坏”。GPU/PCIe/显存状态、引擎触发的驱动交互等仍可能是底层
+触发因素。后一次崩溃时进程名是 strata.exe，表示崩溃上下文；它本身不证明
+用户态程序就是内核缺陷的根因。
+
+小转储仅含有限内核状态，NVIDIA 私有函数符号不可用，部分线程/PEB 信息缺失。
+无法从这两份小转储确定物理卡号，也不能确认调整某个参数就能修复问题。
+此次未分析约 5.24GB 的完整 MEMORY.DMP，未重复制造崩溃。
+
+当前 NVIDIA 驱动已是 617.42；此次没有更换驱动、修改 TDR、系统电源或时钟。
+当前系统确认为 Windows Server 2022 Datacenter，build 20348。
+
+已应用配置：G:\Strata\strata-iq3_s.json
+  GPU：0,1,2；gpu_order=as_given，固定为上次测试的顺序。
+  layer_split=auto：一个引擎共享模型；没有 replicas，也没有 resident-experts。
+  parallel=3；--batch-groups 3：三个会话按三卡流水执行。
+  --max-context 65536：每个会话的完整上下文上限 64K。
+  --kv int8；--kv-resident 32768：保留原有 KV 格式和显存窗口。
+  --prefill 2048：从上次 auto 实际选出的 8192 下调，减少单块读取工作量，
+    也让长提示词更频繁地在块边界给并发解码让出执行机会。
+  --vram-reserve-mib 1536；--vram-reserve-later-mib 1536：三卡均预留 1.5GiB，
+    以降低上次仅 300–600MiB 空闲时的显存压力；实际余量仍需启动日志确认。
+  --expert-cache auto；--pool-workers 6：保持上次测试选择。
+  --spec 4 和原 MTP 文件：保留单请求路径设置；三个流水组不启用 --batch-mtp。
+  --pcie-frac 0.75；--spec-min-p 0.70：保持原配置。
+  host=127.0.0.1；port=8080。
+  视觉编码器及现有模型文件保持原配置。
+
+性能依据与限制：
+  上次三卡层切分 + 三并发，驱动 591.44、prefill auto=8192、显存预留 700MiB：
+  短请求解码中位数 47.2 tok/s/路，三轮整体吞吐中位数 111.6 tok/s。
+  可用 RAM 最少约 64.64GiB。三个新 4K 输入完成，但明显慢于短请求。
+  本次 2048 分块、1536MiB 预留和新驱动 617.42 的组合尚未加载模型或测速。
+  它是按已有测量增加运行余量的候选配置，不能称为已经实测的最快点，
+  也不保证继续达到 47.2/111.6 tok/s。增加预留会减少专家缓存；较小分块可能
+  降低大输入吞吐，换取较小的每块工作量。
+
+验证：JSON 可读，三并发与三流水组一致，无三个 RAM 副本；模型/引擎路径存在。
+引擎读取全套配置参数后 --help 正常退出（退出码 0），未加载 GPU 模型。
+原 run-iq3_s.bat 已指向这个主配置，无须改启动入口。当前服务保持停止。
+回退配置：上级目录 original-config.json（原 256K、单会话、三卡层切分配置）。
+
+原始分析：windbg-analysis.txt、windbg-earlier-crash.txt、windbg-driver-details.txt。
+配置快照：sweetspot-config.json；参数检查：config-validation.json。

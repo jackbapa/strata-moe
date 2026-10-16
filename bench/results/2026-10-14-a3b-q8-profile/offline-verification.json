@@ -1,0 +1,46 @@
+{
+  "recorded_at_utc": "2026-10-14T13:18:03.516703+00:00",
+  "scope": "Offline tests only; no GPU backend created, network request, or model inference",
+  "tests": [
+    {
+      "command": "build-a3b/bin/strata-moe-cache-profile-test.exe",
+      "checks": 34,
+      "exit_code": 0
+    },
+    {
+      "command": "build-a3b-cpu/bin/strata-moe-cache-profile-test.exe",
+      "checks": 34,
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe tools/test_a3b_cache_profile.py",
+      "tests": 14,
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe tools/test_a3b_download.py",
+      "tests": 9,
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe tools/test_a3b_protocol.py",
+      "result": "PASS serializer boundaries; legacy unchanged",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/Scripts/python.exe -m py_compile tools/a3b.py tools/a3b_cache_profile.py tools/bench_a3b.py tools/bench_a3b_latency.py tools/bench_a3b_supplemental.py tools/test_a3b_cache_profile.py tools/test_a3b_download.py",
+      "exit_code": 0
+    }
+  ],
+  "expected_negative_fixture_log": "gguf_init_from_reader: failed to read magic",
+  "sha256": {
+    "a3b/cache_profile.hpp": "ded2e6c8c3c3b9395defaeb3ff422ec5d1aa4ad01bec6163e1c22f87b95b1366",
+    "a3b/cache_profile.cpp": "f33219d3ae86901607dba6a16faac93cccd4e4ee35c4264226b4eeecd7a90e7b",
+    "a3b/cache_profile_test.cpp": "680352738ca6bbba5f0fee6509f3b8868d15b29dbf3fed1e9b2ee1f3a255bb06",
+    "tools/a3b_cache_profile.py": "8ddf4375c95892d455f0820748901856697a27cf53031a24edc11761f6c3ebfe",
+    "tools/test_a3b_cache_profile.py": "506f9f5f0025f4b217956d8eab19400d90a02a06f1011343d99af7468ffd2fd7",
+    "tools/test_a3b_download.py": "539491a91895388a969649d0907751484b39d2dbe71bd891592521ea7660d50f",
+    "build-a3b/bin/strata-moe-cache-profile-test.exe": "c895e7e28c2ba0e8d0424a492bdd35d82a1bba18b492f9654f9f88aa1050c52b",
+    "build-a3b-cpu/bin/strata-moe-cache-profile-test.exe": "bab55254588628c27d5798f4fb75b97d8c8f4760f3a2ae01d238a3d9503f2156"
+  }
+}

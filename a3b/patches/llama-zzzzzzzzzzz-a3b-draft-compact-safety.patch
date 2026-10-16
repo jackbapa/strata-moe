@@ -1,0 +1,18 @@
+--- a/src/models/qwen35moe.cpp
++++ b/src/models/qwen35moe.cpp
+@@ -18,10 +18,14 @@
+         model.d2t->type != GGML_TYPE_I32 || cparams.ctx_type != LLAMA_CONTEXT_TYPE_MTP ||
+         ggml_backend_dev_type(model.dev_output()) != GGML_BACKEND_DEVICE_TYPE_GPU ||
+         samplers.size() != 1 || samplers.begin()->first != 0) return false;
++    if (!model.d2t->buffer ||
++        ggml_backend_buft_get_device(ggml_backend_buffer_get_type(model.d2t->buffer)) != model.dev_output() ||
++        !ubatch.output) return false;
+     auto * sampler = samplers.begin()->second;
+     auto * child = sampler && llama_sampler_chain_n(sampler) == 1 ?
+         llama_sampler_chain_get(sampler, 0) : nullptr;
+-    if (!child || std::strcmp(llama_sampler_name(child), "strata-device-greedy-guard") != 0)
++    const char * name = child ? llama_sampler_name(child) : nullptr;
++    if (!name || std::strcmp(name, "strata-device-greedy-guard") != 0)
+         return false;
+     for (uint32_t i = 0; i < ubatch.n_tokens; ++i) {
+         if (ubatch.output[i] && (!ubatch.seq_id || !ubatch.n_seq_id ||

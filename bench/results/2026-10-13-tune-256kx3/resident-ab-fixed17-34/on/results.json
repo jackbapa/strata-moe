@@ -1,0 +1,224 @@
+{
+  "status": "complete",
+  "stages": [],
+  "config": {
+    "exe": "G:\\Strata\\engine\\strata.exe",
+    "args": [
+      "--pack",
+      "G:\\Strata-data\\packs\\iq3_s",
+      "--native",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "--ple-gguf",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00002-of-00002.gguf",
+      "--expert-profile",
+      "G:\\Strata\\data\\expert-profile.bin",
+      "--expert-cache",
+      "auto",
+      "--prefill",
+      "8192",
+      "--spec",
+      "4",
+      "--mtp",
+      "G:\\Strata-data\\mtp\\rt",
+      "--max-context",
+      "262144",
+      "--kv",
+      "int8",
+      "--kv-resident",
+      "32768",
+      "--vision",
+      "--vram-reserve-mib",
+      "1536",
+      "--vram-reserve-later-mib",
+      "1536",
+      "--pcie-frac",
+      "0.75",
+      "--spec-min-p",
+      "0.70",
+      "--pool-workers",
+      "6",
+      "--batch-groups",
+      "3",
+      "--resident-experts"
+    ],
+    "cwd": "G:\\Strata",
+    "tokenizer": "G:\\Strata-data\\packs\\iq3_s\\tokenizer",
+    "model_name": "qwen3.8-flash-next-iq3_s",
+    "log": "G:\\Strata\\bench\\results\\2026-10-13-tune-256kx3\\resident-ab-fixed17-34\\on\\engine.log",
+    "lib_dirs": [
+      "G:\\Strata\\.venv\\Lib\\site-packages\\nvidia\\cu13\\bin\\x86_64"
+    ],
+    "port": 8080,
+    "host": "127.0.0.1",
+    "parallel": 3,
+    "gpu": [
+      0,
+      1,
+      2
+    ],
+    "gpus_asked": true,
+    "gpu_order": "as_given",
+    "layer_split": "17,34",
+    "vision": {
+      "exe": "G:\\Strata\\engine\\strata-vision.exe",
+      "mmproj": "G:\\Strata-data\\models\\mmproj-Qwen3.8-Flash-Next-BF16.gguf",
+      "model": "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "gpu": true,
+      "max_tokens": 1024
+    }
+  },
+  "health": {
+    "status": "ok",
+    "max_context": 262144,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "images": true,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  },
+  "slots": [
+    {
+      "id": 0,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    },
+    {
+      "id": 1,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    },
+    {
+      "id": 2,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    }
+  ],
+  "output_cap": 1024,
+  "input_target": 32768,
+  "context_limit": 262144,
+  "max_observed_running": 3,
+  "summary": {
+    "status": "complete",
+    "wall_s": 86.16359369999918,
+    "output_tokens": 3072,
+    "end_to_end_output_tok_s": 35.65310902300526,
+    "common_window_s": 25.230013799999142,
+    "common_start_since_submission_s": 59.67337609999959,
+    "common_end_since_submission_s": 84.90338989999873,
+    "common_start_tokens": {
+      "0": 75,
+      "1": 74,
+      "2": 74
+    },
+    "common_end_tokens": {
+      "0": 981,
+      "1": 980,
+      "2": 980
+    },
+    "common_per_slot_tok_s": {
+      "0": 35.90961174979741,
+      "1": 35.90961174979741,
+      "2": 35.90961174979741
+    },
+    "common_total_tok_s": 107.72883524939223,
+    "requests": [
+      {
+        "first": 18.97792069999923,
+        "total": 86.11500510000042,
+        "text": "1. The orbit of the planet was calculated using precise mathematical models. Astronomers observed the celestial body moving through the dark vacuum of space.\n2. Copper pipes were installed to carry water throughout the building. The metal gleamed under the sunlight as it was polished to a shine.\n3. The canyon walls rose steeply on either side of the river. Erosion had carved deep grooves into the red rock over millennia.\n4. A large stone was placed at the entrance of the garden. It served as a marker for visitors entering the private grounds.\n5. The market bustled with activity as vendors called out prices. Fresh produce was displayed in colorful crates along the narrow aisles.\n6. The anchor held the ship firmly against the strong current. Chains rattled as the vessel remained stationary in the harbor.\n7. A lantern hung from the branch of an old oak tree. Its warm glow illuminated the path for those walking at night.\n8. Velvet curtains draped elegantly across the stage. The fabric absorbed the light, creating a rich and deep texture.\n9. Violet flowers bloomed in the spring garden. Their delicate petals swayed gently in the morning breeze.\n10. Another stone was added to the wall to reinforce its structure. Masons carefully fitted it into place with mortar and precision.\n11. The market square was filled with the scent of spices. Merchants arranged their goods on wooden tables for customers to browse.\n12. An anchor was lifted from the seabed with great effort. The crew worked together to bring the heavy metal onto the deck.\n13. A lantern flickered in the wind, casting dancing shadows. The flame inside was protected by a glass enclosure.\n14. Velvet upholstery covered the seats in the theater. The material felt soft and luxurious to the touch.\n15. Violet hues painted the sky during the sunset. The colors blended seamlessly with the fading light of day.\n16. Stone steps led up to the ancient temple. Each step was worn smooth by centuries of foot traffic.\n17. The market closed its stalls as evening approached. Vendors began packing up their unsold items for the night.\n18. An ember glowed brightly in the center of the fire. It provided warmth to those gathered around the hearth.\n19. Another ember fell from the log onto the ash bed. It sizzled slightly before fading into darkness.\n20. The market was crowded with people seeking bargains. Shoppers moved quickly between the various stalls and shops.\n21. A signal was sent out using a bright flare. It was visible for miles across the open water.\n22. The market continued to operate despite the rain. Umbrellas were opened to protect the goods from getting wet.\n23. An anchor was secured tightly to the ship's bow. It ensured the vessel would not drift away in the storm.\n24. An ember was carefully placed in a metal container. It was used to start a new fire in the morning.\n25. Stone foundations supported the weight of the tall building. They were dug deep into the earth for stability.\n26. Violet light filtered through the stained glass windows. It cast colorful patterns on the floor of the church.\n27. A lantern was carried by the night watchman. He used it to inspect the perimeter of the estate.\n28. Signal flags were raised on the ship's mast. They communicated messages to other vessels in the distance.\n29. Violet dyes were used to color the fabric. The process required careful handling to achieve the right shade.\n30. Stone arches supported the roof of the cathedral. They were engineered to distribute the weight evenly.\n31. Violet shadows lengthened as the sun set. The garden became a place of mystery and quiet.\n32. Violet petals were scattered on the ground. They formed a delicate carpet beneath the blooming trees.\n33. Violet light reflected off the surface of the lake. It created a shimmering effect on the water.\n34. Canyon walls echoed with the sound of wind. The natural acoustics amplified the howling gusts.\n35. Stone tools were used to carve the statue. The sculptor worked meticulously to shape the rock.\n36. Signal lights blinked in a specific pattern. They indicated the status of the railway crossing.\n37. Stone pathways wound through the forest. They were lined with moss and small ferns.\n38. An anchor was dropped to stop the boat. The splash was heard clearly in the quiet cove.\n39. Copper wire was used to conduct electricity. It was insulated to prevent short circuits.\n40. A needle was threaded with strong thread. The seamstress began to stitch the fabric together.\n41. An ember was blown upon to increase its heat. The fire grew larger and brighter in",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 18755.2,
+          "prompt_per_token_ms": 0.572,
+          "prompt_per_second": 1747.1,
+          "predicted_n": 1024,
+          "predicted_ms": 66773.2,
+          "predicted_per_token_ms": 65.208,
+          "predicted_per_second": 15.3,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 984,
+        "tag": "A",
+        "client_start": 9735.2369197,
+        "client_end": 9821.3525072
+      },
+      {
+        "first": 57.14028249999865,
+        "total": 86.15521359999912,
+        "text": "1. The orbit of the copper planet is tracked by a signal that pulses through the canyon. This signal is often mistaken for the natural resonance of the stone formations nearby.\n2. A velvet curtain hangs over the entrance to the market, shielding the vendors from the harsh winter wind. Inside, the air is thick with the scent of ember and old stone.\n3. The anchor rests heavily on the seabed, its iron chains tangled with the roots of underwater meadow grass. It serves as a silent witness to the shifting tides of the harbor.\n4. Lanterns glow with a violet hue, casting long shadows across the garden paths. The light reflects off the quartz crystals embedded in the walkways.\n5. The stone archway at the canyon entrance is carved with intricate patterns that mimic the flow of the river. These carvings have weathered centuries of wind and rain.\n6. Market stalls are arranged in a spiral pattern, guiding customers through a maze of goods. The layout encourages a slow, deliberate exploration of the wares.\n7. An anchor made of polished copper gleams under the moonlight, contrasting with the dark water. It is a symbol of stability in an otherwise turbulent sea.\n8. The lantern’s flame flickers, casting a warm glow on the velvet upholstery of the nearby chair. The fabric absorbs the light, creating a cozy atmosphere.\n9. Violet flowers bloom in the meadow, their petals delicate against the rough texture of the surrounding stone. They sway gently in the breeze that sweeps through the canyon.\n10. The garden is enclosed by a high wall of stone, protecting the rare plants within from the elements. Inside, the air is still and heavy with humidity.\n11. Stone benches line the path, offering rest to those who walk the long distance through the canyon. Their surfaces are smooth from years of use.\n12. The market buzzes with activity, as merchants call out prices for their goods. The noise echoes off the canyon walls, creating a chaotic symphony.\n13. An anchor is dropped into the deep water, sending ripples across the surface. The sound of the splash is muffled by the distance.\n14. Lanterns are hung from the branches of trees, creating a canopy of light above the garden. The effect is magical, transforming the ordinary into the extraordinary.\n15. Velvet cushions are placed on the stone steps, adding a touch of luxury to the rugged environment. They invite visitors to sit and enjoy the view.\n16. Violet dye is used to color the fabrics sold in the market, giving them a rich, deep hue. The process involves boiling the flowers with water and salt.\n17. The stone bridge spans the river, connecting the two sides of the canyon. It is a marvel of engineering, built without mortar.\n18. Market traders exchange goods, bartering for items they need. The transactions are quick and efficient, reflecting the fast pace of life.\n19. An anchor is lifted from the water, dripping with seaweed and barnacles. It is cleaned and polished before being used again.\n20. Lanterns are carried by travelers, lighting their way through the dark canyon. The light is a beacon of safety in the wilderness.\n21. Velvet robes are worn by the elders of the community, signifying their status and wisdom. The fabric is soft and warm, providing comfort in the cold.\n22. Violet ink is used to write important documents, ensuring they last for generations. The ink is mixed with water and applied with a fine brush.\n23. The stone quarry is active, with workers extracting blocks for construction. The dust hangs in the air, coating everything in a fine layer.\n24. Market prices fluctuate daily, depending on the supply and demand of goods. Traders must be quick to adapt to these changes.\n25. An anchor is secured to the ship, holding it steady against the current. The chain is checked regularly for signs of wear.\n26. Lanterns are extinguished at dawn, as the natural light takes over. The transition is gradual, marking the end of the night.\n27. Velvet tapestries hang on the walls, depicting scenes from history. They are carefully maintained to preserve their beauty.\n28. Violet berries are gathered from the bushes, used to make jams and wines. The process is labor-intensive but rewarding.\n29. The stone circle is a place of gathering, where people come to share stories. The acoustics are perfect, allowing voices to carry clearly.\n30. Market stalls are packed with goods, from food to clothing. The variety is overwhelming, offering something for everyone.\n31. An anchor is painted with a protective coating, preventing rust and corrosion. This maintenance is essential for the longevity of the equipment.\n32. Lanterns are decorated with intricate designs, reflecting the culture of the region. The",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 18755.0,
+          "prompt_per_token_ms": 0.572,
+          "prompt_per_second": 1747.2,
+          "predicted_n": 1024,
+          "predicted_ms": 28727.5,
+          "predicted_per_token_ms": 28.054,
+          "predicted_per_second": 35.6,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 993,
+        "tag": "B",
+        "client_start": 9735.2376899,
+        "client_end": 9821.3935856
+      },
+      {
+        "first": 38.04230710000047,
+        "total": 86.14914660000068,
+        "text": "1. The orbit of the copper planet traces a path through the canyon, casting long shadows over the stone formations. This celestial movement is mirrored by the anchor of the ship, which holds steady against the turbulent waters of the market harbor.\n\n2. A lantern flickers in the velvet darkness, illuminating the violet hues of the distant meadow. The garden beyond is silent, save for the whisper of the wind through the stone arches that frame the view.\n\n3. The market bustles with activity as vendors sell copper trinkets and velvet fabrics. An anchor rests on the dock, symbolizing the stability required to navigate the volatile currents of trade and commerce.\n\n4. Stone pathways wind through the garden, leading to a hidden meadow where wildflowers bloom. The violet petals contrast sharply with the green grass, creating a natural tapestry that soothes the weary traveler.\n\n5. Ember glows softly in the hearth, providing warmth against the chill of the winter night. The signal from the lighthouse cuts through the fog, guiding ships safely into the harbor where the anchor awaits.\n\n6. The velvet curtain rises to reveal a stage set with stone props and copper accents. A violet backdrop adds depth to the scene, while the audience watches in anticipation of the unfolding drama.\n\n7. Copper pipes run along the ceiling, carrying water to the garden below. The stone foundation supports the structure, ensuring that the market remains stable despite the heavy foot traffic.\n\n8. A lantern hangs from the branch of an old tree in the meadow. Its light casts intricate shadows on the ground, highlighting the delicate veins of the violet leaves that surround it.\n\n9. The anchor is lifted from the seabed, revealing a treasure chest made of stone and copper. Inside, one finds velvet pouches filled with rare gems that sparkle in the sunlight.\n\n10. Signal flags flutter in the breeze, communicating messages between ships in the harbor. The velvet sails catch the wind, propelling the vessel toward the distant canyon where new opportunities await.\n\n11. Stone walls enclose the garden, protecting the delicate flowers from harsh weather. Copper gates provide access, their green patina adding a touch of antiquity to the modern landscape.\n\n12. The violet sky darkens as night falls, and the lanterns are lit one by one. The meadow transforms into a sea of light, guiding visitors through the maze of paths and stone benches.\n\n13. Copper coins clink in the market, exchanged for goods wrapped in velvet. The anchor of the merchant ship is secured, ensuring that the cargo remains safe during the stormy night.\n\n14. A stone statue stands in the center of the garden, depicting a figure holding a lantern. The violet flowers at its base seem to glow in the moonlight, creating an ethereal atmosphere.\n\n15. The ember in the fireplace crackles, sending sparks up the chimney. Outside, the signal from the tower blinks rhythmically, warning ships of the rocky shoals near the harbor.\n\n16. Velvet ropes cordon off the area around the stone monument. Copper plaques detail the history of the site, inviting visitors to learn about the ancient civilization that once thrived here.\n\n17. The violet orchids in the meadow sway gently in the breeze. A lantern placed nearby casts a warm glow, enhancing the natural beauty of the flowers and the surrounding stone rocks.\n\n18. Copper wires connect the lanterns in the market, creating a network of light. The anchor of the ship is visible from the shore, a reminder of the maritime heritage of the town.\n\n19. Stone steps lead up to the garden entrance, lined with violet moss. The velvet carpet inside provides a soft surface for visitors to walk on, contrasting with the rugged exterior.\n\n20. The signal horn sounds, announcing the arrival of a new ship. The anchor is dropped, and the crew begins to unload crates of copper and velvet goods into the harbor.\n\n21. A stone bridge spans the river, connecting the market to the garden. Copper railings line the sides, offering support and adding a decorative element to the functional structure.\n\n22. The violet twilight descends, and the lanterns are switched on. The meadow becomes a magical place, with light reflecting off the stone surfaces and the water in the pond.\n\n23. Copper bells ring in the tower, marking the hour. The anchor of the ship is raised, and the vessel departs, leaving behind a trail of foam in the harbor.\n\n24. Velvet cushions are placed on the stone benches in the garden. Visitors sit and relax, enjoying the view of the violet sky and the distant canyon.\n\n25. The ember cools to ash, but the warmth remains in the room. The signal from the lighthouse continues to guide ships, ensuring safe passage through the treacherous waters.\n\n26. Stone pillars support the roof of the market hall. Copper beams reinforce the",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 18516.1,
+          "prompt_per_token_ms": 0.565,
+          "prompt_per_second": 1769.7,
+          "predicted_n": 1024,
+          "predicted_ms": 47849.0,
+          "predicted_per_token_ms": 46.728,
+          "predicted_per_second": 21.4,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 999,
+        "tag": "C",
+        "client_start": 9735.2359617,
+        "client_end": 9821.3859365
+      }
+    ],
+    "method": "actual engine generated-token counter differences over one shared interval; excludes all prompt processing"
+  }
+}

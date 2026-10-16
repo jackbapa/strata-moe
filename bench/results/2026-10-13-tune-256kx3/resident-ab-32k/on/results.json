@@ -1,0 +1,224 @@
+{
+  "status": "complete",
+  "stages": [],
+  "config": {
+    "exe": "G:\\Strata\\engine\\strata.exe",
+    "args": [
+      "--pack",
+      "G:\\Strata-data\\packs\\iq3_s",
+      "--native",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "--ple-gguf",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00002-of-00002.gguf",
+      "--expert-profile",
+      "G:\\Strata\\data\\expert-profile.bin",
+      "--expert-cache",
+      "auto",
+      "--prefill",
+      "8192",
+      "--spec",
+      "4",
+      "--mtp",
+      "G:\\Strata-data\\mtp\\rt",
+      "--max-context",
+      "262144",
+      "--kv",
+      "int8",
+      "--kv-resident",
+      "32768",
+      "--vision",
+      "--vram-reserve-mib",
+      "1536",
+      "--vram-reserve-later-mib",
+      "1536",
+      "--pcie-frac",
+      "0.75",
+      "--spec-min-p",
+      "0.70",
+      "--pool-workers",
+      "6",
+      "--batch-groups",
+      "3",
+      "--resident-experts"
+    ],
+    "cwd": "G:\\Strata",
+    "tokenizer": "G:\\Strata-data\\packs\\iq3_s\\tokenizer",
+    "model_name": "qwen3.8-flash-next-iq3_s",
+    "log": "G:\\Strata\\bench\\results\\2026-10-13-tune-256kx3\\resident-ab-32k\\on\\engine.log",
+    "lib_dirs": [
+      "G:\\Strata\\.venv\\Lib\\site-packages\\nvidia\\cu13\\bin\\x86_64"
+    ],
+    "port": 8080,
+    "host": "127.0.0.1",
+    "parallel": 3,
+    "gpu": [
+      0,
+      1,
+      2
+    ],
+    "gpus_asked": true,
+    "gpu_order": "as_given",
+    "layer_split": "auto",
+    "vision": {
+      "exe": "G:\\Strata\\engine\\strata-vision.exe",
+      "mmproj": "G:\\Strata-data\\models\\mmproj-Qwen3.8-Flash-Next-BF16.gguf",
+      "model": "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "gpu": true,
+      "max_tokens": 1024
+    }
+  },
+  "health": {
+    "status": "ok",
+    "max_context": 262144,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "images": true,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  },
+  "slots": [
+    {
+      "id": 0,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    },
+    {
+      "id": 1,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    },
+    {
+      "id": 2,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    }
+  ],
+  "output_cap": 1024,
+  "input_target": 32768,
+  "context_limit": 262144,
+  "max_observed_running": 3,
+  "summary": {
+    "status": "complete",
+    "wall_s": 84.71552080000038,
+    "output_tokens": 3072,
+    "end_to_end_output_tok_s": 36.26254045291765,
+    "common_window_s": 23.993081350001376,
+    "common_start_since_submission_s": 59.49991554999906,
+    "common_end_since_submission_s": 83.49299690000043,
+    "common_start_tokens": {
+      "0": 83,
+      "1": 82,
+      "2": 82
+    },
+    "common_end_tokens": {
+      "0": 981,
+      "1": 979,
+      "2": 979
+    },
+    "common_per_slot_tok_s": {
+      "0": 37.42745614455846,
+      "1": 37.385777462883006,
+      "2": 37.385777462883006
+    },
+    "common_total_tok_s": 112.19901107032447,
+    "requests": [
+      {
+        "first": 37.807173299999704,
+        "total": 84.69825800000035,
+        "text": "1. The orbit of the copper planet is tracked by a signal that pulses through the canyon. This signal is often mistaken for the natural resonance of the stone formations nearby.\n2. A velvet curtain hangs over the entrance to the market, shielding the anchor from the wind. The anchor itself is made of iron and rests heavily on the cobblestones.\n3. The lantern flickers in the meadow, casting long shadows across the garden. These shadows dance in rhythm with the violet flowers that bloom in the spring.\n4. Stone walls enclose the garden, providing a stark contrast to the soft velvet of the cushions. The velvet is dyed a deep violet, reminiscent of the twilight sky.\n5. The market is bustling with activity, as vendors sell their wares under the glow of lanterns. Each lantern is suspended from a copper hook attached to the stone archway.\n6. An anchor rests in the harbor, its chain tangled with the roots of a meadow plant. The plant has grown wild, ignoring the boundaries of the garden.\n7. The signal from the tower is strong, guiding ships through the canyon safely. The canyon walls are lined with quartz, which reflects the light of the lanterns.\n8. Velvet ropes cordon off the area around the anchor, preventing unauthorized access. The velvet is thick and luxurious, a stark contrast to the rough stone.\n9. The garden is filled with violet flowers, their petals soft to the touch. These flowers are protected by a stone wall that keeps out the wind.\n10. The market stalls are arranged in a circle, with the anchor at the center. The anchor is a symbol of stability in the chaotic market.\n11. A lantern hangs from the branch of a tree in the meadow, illuminating the path. The path leads to the garden, where the violet flowers bloom.\n12. The stone bench in the garden is worn smooth by years of use. It is a popular spot for people to rest and enjoy the view.\n13. The market is open from dawn until dusk, with the lanterns lit at night. The lanterns are fueled by oil, which is stored in copper containers.\n14. The anchor is painted red, making it visible from a distance. It is a landmark for sailors navigating the harbor.\n15. The velvet blanket on the bench is warm and inviting, perfect for a cold winter day. The winter snow covers the garden, hiding the violet flowers.\n16. The signal tower is located on a high cliff overlooking the canyon. The cliff is made of stone, and the tower is built from copper.\n17. The lanterns in the market are made of glass, allowing the light to shine through. The glass is clear, so the flame is visible.\n18. The garden is a sanctuary for birds, who nest in the trees. The trees are planted in a row, creating a natural barrier.\n19. The market is a place of exchange, where goods are traded for money. The money is often exchanged for goods like velvet and stone.\n20. The anchor is a reminder of the sea, which is always present in the harbor. The sea is vast and deep, with currents that shift.\n21. The velvet dress worn by the vendor is elegant and stylish. It is made of high-quality fabric, which is soft and smooth.\n22. The stone statue in the garden depicts a historical figure. The statue is weathered by time, but still stands tall.\n23. The market is a hub of activity, with people coming and going. The people are diverse, representing many different cultures.\n24. The anchor is a symbol of hope, as it holds ships in place. It is a vital part of the harbor infrastructure.\n25. The velvet pillow on the bench is comfortable and supportive. It is filled with feathers, which are soft and light.\n26. The garden is a place of peace, where people can relax and unwind. The garden is well-maintained, with flowers and plants in abundance.\n27. The market is a place of commerce, where goods are bought and sold. The goods are varied, ranging from food to clothing.\n28. The anchor is a symbol of strength, as it withstands the forces of nature. It is made of durable materials, such as iron and steel.\n29. The velvet scarf worn by the customer is warm and cozy. It is made of wool, which is soft and insulating.\n30. The stone path in the garden is lined with moss, which grows in the damp areas. The moss is green and lush, adding to the beauty of the garden.\n31. The market is a place of community, where people come together to socialize. The market is a central part of the town's life.\n32. The anchor is a symbol of safety, as it",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 18620.6,
+          "prompt_per_token_ms": 0.568,
+          "prompt_per_second": 1759.8,
+          "predicted_n": 1024,
+          "predicted_ms": 46542.4,
+          "predicted_per_token_ms": 45.452,
+          "predicted_per_second": 22.0,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 993,
+        "tag": "A",
+        "client_start": 9198.4562873,
+        "client_end": 9283.1553016
+      },
+      {
+        "first": 56.832608300001084,
+        "total": 84.70736969999962,
+        "text": "1. The orbit of the copper planet is tracked by a signal that pulses through the canyon. This celestial movement is recorded in a ledger that sits on a velvet cushion.\n2. A stone anchor rests at the bottom of the harbor, holding the lantern steady against the tide. The violet light from the lantern reflects off the water, creating a shimmering path.\n3. The market stalls are lined with velvet fabrics that absorb the ambient noise of the crowd. Merchants sell copper needles that are sharp enough to pierce the thick winter coats.\n4. An ember glows faintly in the garden, surrounded by frost-covered quartz crystals. The heat from the ember is barely enough to melt the ice on the nearby stone bench.\n5. The signal tower stands tall above the meadow, broadcasting data to the distant orbit. Its base is anchored by heavy stones that prevent it from swaying in the wind.\n6. A velvet curtain separates the market from the garden, providing a sense of privacy. Behind the curtain, a lantern illuminates a table covered in quartz samples.\n7. The anchor chain is made of copper links that have turned green with age. It connects the boat to the stone seabed, ensuring stability in the rough harbor.\n8. Winter snow covers the canyon walls, making the stone surfaces slippery and dangerous. Hikers use needles to test the ice before placing their feet on the ground.\n9. The orbit of the moon affects the tides in the harbor, causing the water to rise and fall. This movement is carefully monitored by the signal operators in the tower.\n10. A velvet rope marks the boundary of the garden, keeping visitors from trampling the flowers. The rope is attached to stone posts that are embedded in the earth.\n11. The market is bustling with activity, as vendors sell copper pots and pans. The clanging of metal creates a rhythmic sound that echoes through the canyon.\n12. An anchor is dropped in the deep water, securing the ship against the strong currents. The chain is long enough to reach the stone bottom, which is covered in sand.\n13. The signal is transmitted via a lantern that flashes in a specific pattern. This code is understood by the sailors who navigate the harbor at night.\n14. Velvet gloves are worn by the workers who handle the delicate quartz crystals. The soft fabric prevents scratches on the polished surfaces of the stones.\n15. The orbit of the satellite provides communication links for the remote market. Without this connection, the traders would be isolated from the rest of the world.\n16. A stone bridge spans the canyon, allowing people to cross from one side to the other. The bridge is reinforced with copper cables that are anchored to the cliffs.\n17. The garden is filled with violet flowers that bloom in the early spring. Their scent mixes with the fresh air, creating a pleasant aroma for visitors.\n18. An ember is used to light the lanterns in the market, providing a warm glow. The fire is contained in a metal bowl that is placed on a stone pedestal.\n19. The signal is received by a device that is connected to a ledger. The data is recorded in ink, creating a permanent record of the events.\n20. Velvet shoes are worn by the dancers in the garden, allowing them to move gracefully. The soft soles do not damage the stone tiles of the dance floor.\n21. The orbit of the planet is calculated using mathematical formulas. These calculations are written in a ledger that is kept in a secure vault.\n22. A stone statue stands in the center of the market, depicting a historical figure. The statue is surrounded by velvet ropes that keep people at a respectful distance.\n23. The anchor is lifted from the water, revealing the muddy bottom of the harbor. The chain is coiled neatly on the deck of the ship, ready for the next journey.\n24. The signal is amplified by a tower that is located on the highest point of the canyon. The tower is made of steel and is painted with a bright color.\n25. Velvet pillows are placed on the benches in the garden, inviting people to sit and relax. The pillows are embroidered with intricate patterns that reflect the local culture.\n26. The orbit of the moon is observed by astronomers who use telescopes. They record their observations in a ledger that is stored in a library.\n27. A stone wall surrounds the market, providing security and protection. The wall is topped with copper spikes that deter intruders from climbing over.\n28. The garden is home to many species of birds that nest in the trees. Their songs fill the air, creating a natural soundtrack for the visitors.\n29. An ember is used to start a fire in the fireplace, providing warmth during the winter. The fire crackles and pops, casting a flickering light on the walls.\n30. The signal is decoded",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 18575.6,
+          "prompt_per_token_ms": 0.567,
+          "prompt_per_second": 1764.0,
+          "predicted_n": 1024,
+          "predicted_ms": 27546.7,
+          "predicted_per_token_ms": 26.901,
+          "predicted_per_second": 37.2,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 995,
+        "tag": "B",
+        "client_start": 9198.4570662,
+        "client_end": 9283.1650282
+      },
+      {
+        "first": 18.667079700000613,
+        "total": 84.67034749999948,
+        "text": "1. The orbit of the copper planet is tracked by a signal that pulses through the canyon. This celestial movement is recorded in a ledger that sits on a velvet cushion.\n2. A stone anchor rests at the bottom of the harbor, holding the lantern steady against the winter wind. The velvet rope attached to it is frayed from years of use in the market.\n3. The violet signal from the garden is intercepted by the orbiting satellite, which sends data to the ledger. This process is monitored by an anchor that is made of quartz and stone.\n4. Copper needles are used to stitch the velvet banner that hangs in the market square. The banner depicts a canyon scene with a lantern glowing in the winter night.\n5. The orbit of the moon is visible from the garden, where the violet flowers bloom in the winter. A stone bench sits nearby, offering a place to rest and observe the sky.\n6. The anchor in the harbor is made of iron, but it is wrapped in velvet to prevent scratching the hull. The signal from the lighthouse guides ships through the canyon entrance.\n7. A copper lantern hangs from the branch of a tree in the garden, casting a warm glow. The stone path leading to it is covered in a thin layer of winter frost.\n8. The orbit of the satellite is calculated using a ledger that contains complex mathematical equations. The anchor for this calculation is the constant speed of light in a vacuum.\n9. The velvet curtain in the market is drawn back to reveal a display of quartz crystals. The signal from the vendor’s radio is drowned out by the noise of the crowd.\n10. A stone wall surrounds the garden, protecting the violet flowers from the harsh winter wind. The anchor of this protection is the deep root system of the plants.\n11. The orbit of the planet is influenced by the gravitational pull of a nearby moon. This interaction is recorded in a ledger that is kept in a velvet-lined box.\n12. The copper anchor in the harbor is covered in green algae, indicating it has been submerged for a long time. The signal from the sonar device helps locate it in the murky water.\n13. A lantern made of quartz is placed on the stone table in the garden. The violet light it emits is reflected by the copper frame surrounding it.\n14. The orbit of the satellite is adjusted by a signal sent from the ground station. This adjustment is logged in a ledger that is stored in a secure vault.\n15. The velvet rope in the market is used to cordon off the area around the quartz display. The signal from the security camera monitors the crowd for any suspicious activity.\n16. A stone statue of an anchor stands in the center of the harbor. The velvet base it rests on is embroidered with a pattern of violet flowers.\n17. The orbit of the moon is tracked by a signal that is transmitted from a satellite. This data is stored in a ledger that is accessible only to authorized personnel.\n18. The copper lantern in the garden is powered by a small battery hidden in the stone base. The violet light it casts creates a serene atmosphere in the winter night.\n19. The anchor in the harbor is used to secure a boat that is carrying a load of quartz. The signal from the captain’s radio indicates that the boat is approaching the dock.\n20. A velvet cushion is placed on the stone bench in the garden for added comfort. The violet color of the cushion complements the flowers that grow nearby.\n21. The orbit of the satellite is monitored by a signal that is received by a ground station. This signal is analyzed using a computer that is connected to a ledger.\n22. The copper anchor in the harbor is inspected regularly to ensure it is not corroded. The signal from the inspection drone provides detailed images of its condition.\n23. A lantern made of velvet is hung in the market to create a cozy atmosphere. The stone floor beneath it is polished to a shine, reflecting the warm light.\n24. The orbit of the planet is predicted using a model that is stored in a ledger. This model takes into account the gravitational effects of other celestial bodies.\n25. The velvet rope in the harbor is used to mark the boundary of the swimming area. The signal from the lifeguard’s whistle warns swimmers when they are too close to the edge.\n26. A stone anchor is used to hold a net in place in the garden. The violet flowers around it are protected from being trampled by the net.\n27. The orbit of the satellite is corrected by a signal sent from a control center. This correction is recorded in a ledger that is kept up to date.\n28. The copper lantern in the garden is turned on at dusk, illuminating the stone path. The violet light it emits is a result of a special filter in the glass.\n29. The anchor in the harbor",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 18441.6,
+          "prompt_per_token_ms": 0.563,
+          "prompt_per_second": 1776.9,
+          "predicted_n": 1024,
+          "predicted_ms": 65596.0,
+          "predicted_per_token_ms": 64.059,
+          "predicted_per_second": 15.6,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 996,
+        "tag": "C",
+        "client_start": 9198.4552755,
+        "client_end": 9283.1264119
+      }
+    ],
+    "method": "actual engine generated-token counter differences over one shared interval; excludes all prompt processing"
+  }
+}

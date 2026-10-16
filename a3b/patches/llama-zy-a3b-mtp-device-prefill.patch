@@ -1,0 +1,480 @@
+diff --git a/src/llama-context.cpp b/src/llama-context.cpp
+--- a/src/llama-context.cpp
++++ b/src/llama-context.cpp
+@@ -30,6 +30,52 @@
+         case LLAMA_CONTEXT_TYPE_MTP    : return LLM_GRAPH_TYPE_DECODER_MTP;
+     }
+     throw std::runtime_error("Unsupported ctx type");
++}
++
++// The A3B MTP prefill bridge only accepts same-device CUDA tensors. GGML's
++// async tensor copy then records an event on the target stream and makes the
++// draft stream wait for it; it never stages the hidden rows through host RAM.
++static bool mtp_device_cuda_backend(ggml_backend_t backend) {
++    const char * name = backend ? ggml_backend_name(backend) : nullptr;
++    return name && std::strncmp(name, "CUDA", 4) == 0;
++}
++
++static bool mtp_device_hidden_layout(const ggml_tensor * t, uint32_t width, uint32_t rows) {
++    if (!t || !t->data || t->type != GGML_TYPE_F32 || t->ne[0] != width || t->ne[1] < rows ||
++        t->ne[2] != 1 || t->ne[3] != 1 || t->nb[0] != sizeof(float) ||
++        t->nb[1] != size_t(width) * sizeof(float)) return false;
++    const ggml_backend_buffer_t buffer = t->view_src ? t->view_src->buffer : t->buffer;
++    return buffer && !ggml_backend_buffer_is_host(buffer);
++}
++
++static bool mtp_host_hidden_layout(const ggml_tensor * t, uint32_t width, uint32_t rows) {
++    return t && t->data && t->type == GGML_TYPE_F32 && t->ne[0] == width && t->ne[1] >= rows &&
++           t->ne[2] == 1 && t->ne[3] == 1 && t->nb[0] == sizeof(float) &&
++           t->nb[1] == size_t(width) * sizeof(float);
++}
++
++static bool mtp_device_cuda_buffer(const ggml_tensor * t, ggml_backend_t backend) {
++    const auto buffer = t->view_src ? t->view_src->buffer : t->buffer;
++    return buffer && mtp_device_cuda_backend(backend) &&
++           ggml_backend_buffer_get_type(buffer) == ggml_backend_get_default_buffer_type(backend);
++}
++
++static ggml_tensor mtp_device_hidden_slice(const ggml_tensor * base, uint32_t row, uint32_t rows) {
++    ggml_tensor slice = *base;
++    slice.data = static_cast<char *>(base->data) + size_t(row) * base->nb[1];
++    slice.ne[1] = rows;
++    slice.ne[2] = slice.ne[3] = 1;
++    slice.nb[2] = slice.nb[3] = size_t(rows) * slice.nb[1];
++    return slice;
++}
++
++static ggml_tensor mtp_device_pending_tensor(const ggml_tensor * shape, ggml_backend_buffer_t buffer) {
++    ggml_tensor row = mtp_device_hidden_slice(shape, 0, 1);
++    row.data = ggml_backend_buffer_get_base(buffer);
++    row.buffer = buffer;
++    row.view_src = nullptr;
++    row.view_offs = 0;
++    return row;
+ }
+ 
+ struct llm_fused_op_probe {
+@@ -954,12 +1000,20 @@
+ }
+ 
+ float * llama_context::get_embeddings_nextn() {
++    if (llama_mtp_device_prefill_host_restore(this) < 0) {
++        return nullptr;
++    }
+     output_reorder();
+ 
+     return embd_nextn.data;
+ }
+ 
+ float * llama_context::get_embeddings_nextn_ith(int32_t i) {
++    if ((mtp_prefill_host.deferred || mtp_prefill_host.last_only) &&
++        !(mtp_prefill_host.last_only && i == (int32_t) mtp_prefill_host.rows - 1) &&
++        llama_mtp_device_prefill_host_restore(this) < 0) {
++        return nullptr;
++    }
+     output_reorder();
+ 
+     try {
+@@ -1384,6 +1438,25 @@
+             return nullptr;
+         }
+ 
++        // GGML normally assigns graph inputs to its last (host) backend.
++        // The opt-in MTP bridge needs h on the same CUDA device as NextN;
++        // assign it before scheduler allocation, while user assignments can
++        // still override GGML's default input placement.
++        if (mtp_device_prefill.target) {
++            for (const auto & input : res->inputs) {
++                auto * mtp_input = dynamic_cast<llm_graph_input_embd_h *>(input.get());
++                if (!mtp_input || !mtp_input->h) continue;
++                for (const auto & backend : backends) {
++                    if (mtp_device_cuda_backend(backend.get()) &&
++                        ggml_backend_get_device(backend.get()) == mtp_device_prefill.source_device) {
++                        ggml_backend_sched_set_tensor_backend(sched.get(), mtp_input->h, backend.get());
++                        break;
++                    }
++                }
++                break;
++            }
++        }
++
+         if (!ggml_backend_sched_alloc_graph(sched.get(), gf)) {
+             LLAMA_LOG_ERROR("%s: failed to allocate graph\n", __func__);
+             ret = GGML_STATUS_ALLOC_FAILED;
+@@ -1398,7 +1471,83 @@
+         //const auto t_start_us = ggml_time_us();
+ 
+         // FIXME this call causes a crash if any model inputs were not used in the graph and were therefore not allocated
+-        res->set_inputs(&ubatch);
++        auto & bridge = mtp_device_prefill;
++        llm_graph_input_embd_h * mtp_input = nullptr;
++        if (bridge.target) {
++            for (auto & input : res->inputs) {
++                mtp_input = dynamic_cast<llm_graph_input_embd_h *>(input.get());
++                if (mtp_input) break;
++            }
++            if (!mtp_input || !mtp_input->h || !ubatch.token || !ubatch.embd ||
++                bridge.copied_rows + ubatch.n_tokens > bridge.total_rows ||
++                !mtp_host_hidden_layout(mtp_input->h, bridge.width, ubatch.n_tokens))
++                throw std::runtime_error("MTP prefill graph lost its hidden input before draft compute");
++            const auto dst_backend = ggml_backend_sched_get_tensor_backend(sched.get(), mtp_input->h);
++            const bool cuda_ready = mtp_device_hidden_layout(mtp_input->h, bridge.width, ubatch.n_tokens) &&
++                mtp_device_cuda_buffer(mtp_input->h, dst_backend) &&
++                ggml_backend_get_device(bridge.source_backend) == ggml_backend_get_device(dst_backend);
++            if (!bridge.host_fallback && !cuda_ready) {
++                // No draft compute has started for this microbatch. Restore
++                // the complete target block once and use GGML's host input.
++                if (llama_mtp_device_prefill_host_restore(bridge.target) < 0)
++                    throw std::runtime_error("MTP prefill cannot restore target hidden rows for host fallback");
++                bridge.target->synchronize();
++                if (!bridge.target->embd_nextn.data)
++                    throw std::runtime_error("MTP prefill host fallback has no target hidden rows");
++                bridge.host_fallback = true;
++                LLAMA_LOG_WARN("%s: MTP hidden input is not on the target CUDA device; using host input for this block\n", __func__);
++            }
++            if (bridge.host_fallback) {
++                const uint32_t off = bridge.copied_rows;
++                const uint32_t n = ubatch.n_tokens;
++                const float * host_rows = bridge.target->embd_nextn.data;
++                if (off == 0) {
++                    auto pending = mtp_device_pending_tensor(bridge.source, bridge.pending.get());
++                    ggml_backend_tensor_get_async(bridge.source_backend, &pending,
++                        ubatch.embd, 0, size_t(bridge.width) * sizeof(float));
++                    ggml_backend_synchronize(bridge.source_backend);
++                    if (n > 1) std::memcpy(ubatch.embd + bridge.width, host_rows,
++                        size_t(n - 1) * bridge.width * sizeof(float));
++                } else {
++                    std::memcpy(ubatch.embd, host_rows + size_t(off - 1) * bridge.width,
++                        size_t(n) * bridge.width * sizeof(float));
++                }
++            } else {
++                mtp_input->device_hidden_input = true;
++            }
++        }
++        try {
++            res->set_inputs(&ubatch);
++        } catch (...) {
++            if (mtp_input) mtp_input->device_hidden_input = false;
++            throw;
++        }
++        if (mtp_input) {
++            mtp_input->device_hidden_input = false;
++            const uint32_t off = bridge.copied_rows;
++            const uint32_t n = ubatch.n_tokens;
++            if (!bridge.host_fallback) {
++                auto * dst = mtp_input->h;
++                auto * src = bridge.source;
++                const auto src_backend = bridge.source_backend;
++                const auto dst_backend = ggml_backend_sched_get_tensor_backend(sched.get(), dst);
++                if (off == 0) {
++                    auto pending = mtp_device_pending_tensor(dst, bridge.pending.get());
++                    auto first = mtp_device_hidden_slice(dst, 0, 1);
++                    ggml_backend_tensor_copy_async(src_backend, dst_backend, &pending, &first);
++                    if (n > 1) {
++                        auto source_rows = mtp_device_hidden_slice(src, 0, n - 1);
++                        auto dest_rows = mtp_device_hidden_slice(dst, 1, n - 1);
++                        ggml_backend_tensor_copy_async(src_backend, dst_backend, &source_rows, &dest_rows);
++                    }
++                } else {
++                    auto source_rows = mtp_device_hidden_slice(src, off - 1, n);
++                    auto dest_rows = mtp_device_hidden_slice(dst, 0, n);
++                    ggml_backend_tensor_copy_async(src_backend, dst_backend, &source_rows, &dest_rows);
++                }
++            }
++            bridge.copied_rows += n;
++        }
+ 
+         //LLAMA_LOG_INFO("graph set inputs time: %.3f ms\n", (ggml_time_us() - t_start_us)/1000.0);
+     }
+@@ -1657,6 +1806,16 @@
+     // MTP hook batches carry both token (next-token id) and embd (h_nextn row),
+     // so accept either present rather than requiring exactly one.
+     GGML_ASSERT(batch_inp.token || batch_inp.embd);
++
++    // The previous prompt's graph arena may be reused by this decode. Its
++    // partial host output is no longer a valid fallback after reuse begins.
++    if (!mtp_prefill_host.armed) {
++        mtp_prefill_host.deferred = false;
++        mtp_prefill_host.last_only = false;
++        mtp_prefill_host.source = nullptr;
++        mtp_prefill_host.backend = nullptr;
++        mtp_prefill_host.saved_bytes = 0;
++    }
+ 
+     if (!memory) {
+         LLAMA_LOG_DEBUG("%s: cannot decode batches with this context (calling encode() instead)\n", __func__);
+@@ -1974,7 +2133,19 @@
+                 float * embd_nextn_out = embd_nextn.data + offset*n_embd;
+ 
+                 GGML_ASSERT((offset + n_rows)*n_embd <= (int64_t) embd_nextn.size);
+-                ggml_backend_tensor_get_async(backend_h, t_h_nextn, embd_nextn_out, 0, n_rows*n_embd*sizeof(float));
++                auto & host = mtp_prefill_host;
++                const bool defer_host = host.armed && !host.deferred && !host.last_only &&
++                    model.arch == LLM_ARCH_QWEN35MOE && !masked && n_tokens_prev == 0 &&
++                    ubatch.n_tokens == n_tokens_all && host.rows == n_tokens_all &&
++                    host.width == n_embd && mtp_device_hidden_layout(t_h_nextn, host.width, host.rows) &&
++                    mtp_device_cuda_buffer(t_h_nextn, backend_h);
++                if (defer_host) {
++                    host.deferred = true;
++                    host.source = t_h_nextn;
++                    host.backend = backend_h;
++                } else {
++                    ggml_backend_tensor_get_async(backend_h, t_h_nextn, embd_nextn_out, 0, n_rows*n_embd*sizeof(float));
++                }
+             }
+         }
+ 
+@@ -3950,6 +4121,134 @@
+     return ctx->get_embeddings_nextn_ith(i);
+ }
+ 
++int llama_mtp_device_prefill_decode(llama_context * target, llama_context * draft,
++                                   llama_batch batch, uint32_t width) {
++    if (!target || !draft || target == draft || !batch.token || !batch.embd ||
++        batch.n_tokens < 1 || width == 0 || draft->get_cparams().ctx_type != LLAMA_CONTEXT_TYPE_MTP ||
++        !target->get_cparams().embeddings_nextn || target->get_cparams().embeddings_nextn_masked ||
++        draft->mtp_device_prefill.target) return 0;
++    const auto * result = target->gf_res_prev_active;
++    auto * source = result ? result->get_h_nextn() : nullptr;
++    if (!mtp_device_hidden_layout(source, width, (uint32_t) batch.n_tokens)) return 0;
++    const auto source_backend = ggml_backend_sched_get_tensor_backend(target->sched.get(), source);
++    if (!mtp_device_cuda_buffer(source, source_backend)) return 0;
++    const auto source_device = ggml_backend_get_device(source_backend);
++    bool draft_same_device = false;
++    for (const auto & backend : draft->backends)
++        if (mtp_device_cuda_backend(backend.get()) && ggml_backend_get_device(backend.get()) == source_device)
++            draft_same_device = true;
++    if (!draft_same_device) return 0;
++
++    auto & bridge = draft->mtp_device_prefill;
++    if (bridge.pending && (bridge.width != width || bridge.source_device != source_device)) return 0;
++    if (!bridge.pending) {
++        bridge.pending.reset(ggml_backend_buft_alloc_buffer(
++            ggml_backend_get_default_buffer_type(source_backend), size_t(width) * sizeof(float)));
++        if (!bridge.pending) return 0;
++        bridge.width = width;
++        bridge.source_device = source_device;
++    }
++    if (!bridge.pending_valid) {
++        ggml_backend_buffer_clear(bridge.pending.get(), 0);
++        bridge.pending_valid = true;
++    }
++    bridge.target = target;
++    bridge.source = source;
++    bridge.source_backend = source_backend;
++    bridge.total_rows = (uint32_t) batch.n_tokens;
++    bridge.copied_rows = 0;
++    bridge.host_fallback = false;
++    int rc = -1;
++    try {
++        rc = draft->decode(batch);
++    } catch (...) {
++        bridge.target = nullptr;
++        bridge.source = nullptr;
++        bridge.source_backend = nullptr;
++        throw;
++    }
++    bridge.target = nullptr;
++    bridge.source = nullptr;
++    bridge.source_backend = nullptr;
++    if (rc != 0 || bridge.copied_rows != (uint32_t) batch.n_tokens) return -1;
++
++    // Save the final target row for the next prompt block. Both copies and
++    // the next target compute use the target stream, so that compute cannot
++    // overwrite source storage before this transfer has completed.
++    auto source_last = mtp_device_hidden_slice(source, (uint32_t) batch.n_tokens - 1, 1);
++    auto pending = mtp_device_pending_tensor(source, bridge.pending.get());
++    ggml_backend_tensor_copy_async(source_backend, source_backend, &source_last, &pending);
++    bridge.pending_backend = source_backend;
++    auto & host = target->mtp_prefill_host;
++    if (host.deferred) {
++        if (host.source != source || host.backend != source_backend ||
++            host.rows != (uint32_t) batch.n_tokens || host.width != width || !target->embd_nextn.data)
++            return -1;
++        // Preserve the only row needed by the first proposal. The target's
++        // ordinary getter synchronizes its stream before exposing this row.
++        ggml_backend_tensor_get_async(source_backend, &source_last,
++            target->embd_nextn.data + size_t(batch.n_tokens - 1) * width,
++            0, size_t(width) * sizeof(float));
++        host.deferred = false;
++        host.last_only = true;
++        host.saved_bytes = size_t(batch.n_tokens - 1) * width * sizeof(float);
++    }
++    if (bridge.host_fallback) return 2; // draft KV advanced using restored host hidden rows
++    ++bridge.calls;
++    bridge.rows += (uint32_t) batch.n_tokens;
++    return 1;
++}
++
++void llama_mtp_device_prefill_reset(llama_context * draft) {
++    if (!draft) return;
++    auto & bridge = draft->mtp_device_prefill;
++    if (bridge.target) throw std::runtime_error("cannot reset an active MTP device prefill bridge");
++    // The previous request may have ended before anyone synchronized the
++    // target stream (for example, a prompt-only request). Finish its last-row
++    // copy before a new request zeros the shared pending buffer.
++    if (bridge.pending_backend) ggml_backend_synchronize(bridge.pending_backend);
++    bridge.pending_backend = nullptr;
++    bridge.pending_valid = false;
++    bridge.host_fallback = false;
++    bridge.copied_rows = bridge.total_rows = 0;
++    bridge.calls = bridge.rows = 0;
++}
++
++void llama_mtp_device_prefill_host_arm(llama_context * target, uint32_t rows, uint32_t width) {
++    if (!target) return;
++    auto & host = target->mtp_prefill_host;
++    host = {};
++    host.armed = rows > 0 && width > 0 && target->get_cparams().embeddings_nextn &&
++        !target->get_cparams().embeddings_nextn_masked;
++    host.rows = rows;
++    host.width = width;
++}
++
++void llama_mtp_device_prefill_host_disarm(llama_context * target) {
++    if (target) target->mtp_prefill_host.armed = false;
++}
++
++int llama_mtp_device_prefill_host_restore(llama_context * target) {
++    if (!target) return -1;
++    auto & host = target->mtp_prefill_host;
++    if (!host.deferred && !host.last_only) return 0;
++    const auto * result = target->gf_res_prev_active;
++    if (!host.source || !host.backend || !result || result->get_h_nextn() != host.source ||
++        !target->embd_nextn.data ||
++        !mtp_device_hidden_layout(host.source, host.width, host.rows)) return -1;
++    ggml_backend_tensor_get_async(host.backend, host.source, target->embd_nextn.data,
++        0, size_t(host.rows) * host.width * sizeof(float));
++    target->synchronize();
++    host.deferred = false;
++    host.last_only = false;
++    host.saved_bytes = 0;
++    return 0;
++}
++
++uint64_t llama_mtp_device_prefill_host_saved_bytes(const llama_context * target) {
++    return target ? target->mtp_prefill_host.saved_bytes : 0;
++}
++
+ float * llama_get_embeddings_layer_inp(llama_context * ctx, uint32_t lid) {
+     ctx->synchronize();
+ 
+diff --git a/src/llama-context.h b/src/llama-context.h
+--- a/src/llama-context.h
++++ b/src/llama-context.h
+@@ -41,6 +41,14 @@
+ using llama_memory_buffers = std::map<ggml_backend_buffer_type_t, llama_memory_buffer>;
+ 
+ struct llama_context {
++    friend int llama_mtp_device_prefill_decode(llama_context * target, llama_context * draft,
++                                               llama_batch batch, uint32_t width);
++    friend void llama_mtp_device_prefill_reset(llama_context * draft);
++    friend void llama_mtp_device_prefill_host_arm(llama_context * target, uint32_t rows, uint32_t width);
++    friend void llama_mtp_device_prefill_host_disarm(llama_context * target);
++    friend int llama_mtp_device_prefill_host_restore(llama_context * target);
++    friend uint64_t llama_mtp_device_prefill_host_saved_bytes(const llama_context * target);
++
+     // init scheduler and compute buffers, reserve worst-case graphs
+     llama_context(
+             const llama_model & model,
+@@ -373,6 +381,38 @@
+ 
+     llm_graph_result * gf_res_prev_active = nullptr;
+ 
++    // Opt-in A3B MTP prefill bridge. The source tensor is valid only until
++    // the next target decode; all reads are enqueued on the target CUDA stream
++    // before that decode may reuse its graph arena.
++    struct mtp_device_prefill_state {
++        llama_context * target = nullptr;
++        ggml_tensor * source = nullptr;
++        ggml_backend_t source_backend = nullptr;
++        ggml_backend_t pending_backend = nullptr;
++        ggml_backend_dev_t source_device = nullptr;
++        ggml_backend_buffer_ptr pending;
++        uint32_t width = 0;
++        uint32_t total_rows = 0;
++        uint32_t copied_rows = 0;
++        bool pending_valid = false;
++        bool host_fallback = false;
++        uint64_t calls = 0;
++        uint64_t rows = 0;
++    } mtp_device_prefill;
++
++    // Only an explicitly armed prompt decode may defer its full NextN D2H.
++    // source remains live until the next target decode reuses its graph arena.
++    struct mtp_prefill_host_state {
++        bool armed = false;
++        bool deferred = false;
++        bool last_only = false;
++        uint32_t rows = 0;
++        uint32_t width = 0;
++        ggml_tensor * source = nullptr;
++        ggml_backend_t backend = nullptr;
++        uint64_t saved_bytes = 0;
++    } mtp_prefill_host;
++
+     // host buffer for the model output (logits and embeddings)
+     ggml_backend_buffer_ptr buf_output;
+ 
+diff --git a/src/llama-ext.h b/src/llama-ext.h
+--- a/src/llama-ext.h
++++ b/src/llama-ext.h
+@@ -107,6 +107,23 @@
+ // LLAMA_API float * llama_get_embeddings_ith(struct llama_context * ctx, int32_t i);
+ LLAMA_API float * llama_get_embeddings_nextn_ith(struct llama_context * ctx, int32_t i);
+ 
++// A3B experiment: transfer target NextN hidden rows directly into a same-GPU
++// MTP prefill decode. Return 1 after a completed CUDA bridge, 2 after a
++// completed host-input fallback (draft KV has advanced in either case), 0
++// when unavailable before changing draft state, and -1 on decode failure
++// (the request must then abort). This is not a multi-step draft graph.
++LLAMA_API int llama_mtp_device_prefill_decode(struct llama_context * target,
++        struct llama_context * draft, struct llama_batch batch, uint32_t width);
++LLAMA_API void llama_mtp_device_prefill_reset(struct llama_context * draft);
++// Arm immediately before an opt-in target prompt decode, then disarm even on
++// decode failure. If the device bridge declines, restore the full host hidden
++// block before using the legacy path. A successful bridge keeps only its final
++// host row; saved_bytes reports the D2H bytes actually avoided for that block.
++LLAMA_API void llama_mtp_device_prefill_host_arm(struct llama_context * target, uint32_t rows, uint32_t width);
++LLAMA_API void llama_mtp_device_prefill_host_disarm(struct llama_context * target);
++LLAMA_API int llama_mtp_device_prefill_host_restore(struct llama_context * target);
++LLAMA_API uint64_t llama_mtp_device_prefill_host_saved_bytes(const struct llama_context * target);
++
+ // Set whether the context outputs the input embeddings of a specific layer
+ LLAMA_API void llama_set_embeddings_layer_inp(struct llama_context * ctx, uint32_t lid, bool value);
+ 
+diff --git a/src/llama-graph.cpp b/src/llama-graph.cpp
+--- a/src/llama-graph.cpp
++++ b/src/llama-graph.cpp
+@@ -96,7 +96,7 @@
+ 
+     if (ubatch->token) {
+         ggml_backend_tensor_set(tokens, ubatch->token, 0, n_tokens*ggml_element_size(tokens));
+-    } else {
++    } else if (!device_hidden_input) {
+         // note: mtmd embedding input goes through here
+         GGML_ASSERT(ubatch->embd);
+         GGML_ASSERT(n_embd == embd->ne[0]);
+@@ -107,7 +107,7 @@
+     // TODO: extend llama_ubatch to differentiate between token embeddings and hidden states
+     //       for now, we assume that the hidden state is always provided as an embedding
+     //       ref: https://github.com/ggml-org/llama.cpp/pull/23643
+-    if (ubatch->embd) {
++    if (ubatch->embd && !device_hidden_input) {
+         GGML_ASSERT(n_embd == h->ne[0]);
+ 
+         ggml_backend_tensor_set(h, ubatch->embd, 0, n_tokens*n_embd*ggml_element_size(h));
+diff --git a/src/llama-graph.h b/src/llama-graph.h
+--- a/src/llama-graph.h
++++ b/src/llama-graph.h
+@@ -152,6 +152,10 @@
+     ggml_tensor * tokens = nullptr; // I32 [n_batch]
+     ggml_tensor * embd   = nullptr; // F32 [n_embd, n_batch]
+     ggml_tensor * h      = nullptr; // F32 [n_embd, n_batch]
++
++    // The opt-in same-GPU MTP prefill bridge fills h after set_inputs().
++    // Prompt token IDs still use the ordinary host input.
++    bool device_hidden_input = false;
+ 
+     const int64_t n_embd = 0;
+ };

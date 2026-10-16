@@ -1,0 +1,77 @@
+Local Strata concurrency comparison — 2026-10-13, Asia/Shanghai
+
+Status: experiment interrupted by a host blue screen during the tuned replicas'
+three simultaneous fresh 4K prompt requests. Default strata-iq3_s.json has been
+restored byte-for-byte from original-config.json. No Strata service is running.
+The replicas configuration is experimental and did not pass stability testing.
+
+Hardware: 3 x RTX 2080 Ti 22 GiB; Threadripper 3960X, 24 cores / 48 threads;
+127.9 GiB physical RAM; NVIDIA driver 591.44; Windows build 20348.
+Model: Qwen3.8-Flash-Next IQ3_S. Engine 0.1.43, same executable in every arm.
+Git HEAD: 7695859aa13afb248bdb4d36f9b2e95707db079d
+Engine SHA256: 223289044F377C97E982CDACDDB2E17B5726F63A0439765E3FB3E2BCFDF78656
+
+All comparison arms use 65,536 context, 32,768 resident KV cells, 6 CPU workers,
+the existing MTP and model files, temperature 0, thinking off and vision enabled.
+Single requests: three prompts repeated three times, up to 192 output tokens.
+Concurrent requests: three prompts started together, three rounds, up to 256
+output tokens each. Wall throughput includes prompt reading and request overhead;
+per-request decode rate is the engine timing, so these measures must not be added
+or equated. Each arm was started once; no repeated-restart statistical claim.
+
+Results (tok/s):
+Single GPU, full RAM expert arena: short decode median 51.0, range 41.2–55.2.
+Single GPU, --resident-experts: short decode median 50.0, range 48.6–53.2.
+Single fresh 4K prompt read: full arena 784.1; resident 715.2 (one request each).
+Resident single-arm expert file reads were zero during the measured requests.
+Thus this run showed little short-decode change, but cannot establish no cost
+for prompt reading or all workloads.
+
+Three resident replicas, default Windows CPU placement:
+  concurrent decode median 19.9 per request, range 18.4–25.5;
+  median burst wall throughput 50.74.
+  Minimum sampled available RAM while loading: 0.0126 GiB (about 13 MiB).
+  The third replica automatically reduced its RAM expert copy to 30.49 GiB;
+  expert file reads occurred. This was excessive memory pressure.
+
+Three-GPU layer split, parallel=3:
+  concurrent decode median 47.2 per request, range 31.5–51.4;
+  median burst wall throughput 111.60;
+  minimum sampled available RAM 64.64 GiB.
+  Three fresh 4K prompts completed without API errors, but were slower:
+  decode median 14.8 per request, aggregate wall throughput 18.45.
+  This is a successful short test, not a long-term stability certification.
+
+Tuned three replicas, --resident-budget-gib 34 and separate Windows CPU groups
+(logical CPUs 0–15, 16–31, 32–47; local launcher, no engine source changes):
+  burst wall throughput 105.56, 116.90, 101.05; median 105.56.
+  Three short concurrent bursts completed. Raw outputs/timings are in
+  tuned-results.json. The following three fresh 4K requests did NOT complete.
+
+Crash evidence:
+  At 19:48:02 NVIDIA nvlddmkm logged 92 error events, including:
+    GpuRcReset TDR occurred on GPUID:100
+  Two engines stalled waiting for GPU attention/router at layer 4 of prompt
+  reading. Their reports showed all CPU expert jobs complete and workers idle,
+  with about 7,786 MiB system RAM still available at that point.
+  Windows recorded bug check 0x133, arguments
+    1, 0x1e00, 0xfffff80685b0f328, 0.
+  Unexpected shutdown recorded at 19:49:47; OS boot time 19:51:40.
+  Crash dump: C:\Windows\MEMORY.DMP (about 5.24 GB).
+  Minidump: C:\Windows\Minidump\101326-32531-01.dmp.
+  crash-events.xml preserves the relevant system event records.
+  A prior 0x133 crash was also recorded at 17:26 today, before this comparison,
+  with different parameters (first parameter 0).
+
+Interpretation: the tuned run encountered a GPU timeout/reset followed by a
+kernel watchdog blue screen. This does not identify whether the underlying
+cause is a driver defect, engine/GPU workload interaction, PCIe/card instability,
+or memory/VRAM pressure. The dump has not been analyzed with a kernel debugger.
+Do not interpret the crash as simply high CPU utilization or confirmed hardware
+failure. No drivers, TDR registry settings, clocks or power limits were changed.
+
+Recommendation: do not deploy the three-replica configuration on these results.
+The layer-split parallel=3 arm is the better measured candidate on this PC: similar
+short-request throughput with much more RAM headroom. Diagnose the GPU timeout
+before further heavy concurrency tests. All arm configs and original config are
+preserved here; no service was automatically restarted after the blue screen.

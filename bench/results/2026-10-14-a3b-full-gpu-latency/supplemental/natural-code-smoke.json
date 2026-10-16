@@ -1,0 +1,13 @@
+{
+  "code_sha256": "de27b0b88d839387a25154787b154c9d0c28554fbdea71218c72aea5f3d4e606",
+  "status": "passed",
+  "stdout": "All assertions passed.\n",
+  "generated_assertions_passed": true,
+  "independent_checks": [
+    "capacity 0/-1 rejected",
+    "missing key",
+    "update promotes without increasing size",
+    "LRU eviction after update"
+  ],
+  "scope": "One reviewed, complete Python code block. API reply stopped at the 512-token length budget during the following prose explanation. This is not a scored model-quality benchmark."
+}

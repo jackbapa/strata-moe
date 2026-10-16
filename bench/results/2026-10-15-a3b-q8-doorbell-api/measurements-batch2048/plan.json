@@ -1,0 +1,139 @@
+{
+  "model": "qwen3.6-35b-a3b-q8_0",
+  "url": "http://127.0.0.1:8096",
+  "phase": "all",
+  "cases": [
+    {
+      "case_id": "heldout-python-bfs",
+      "description": "Natural task; prompt length is measured, not padded.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Write a complete Python function shortest_path(graph, start, goal) for an unweighted directed graph represented by a dictionary mapping each node to a list of neighbors.\nUse breadth-first search with collections.deque and a parent map. Return a list of nodes describing a shortest path, or None if no path exists. Nodes may be arbitrary hashable values. Treat a missing adjacency entry as a node with no outgoing edges. Handle start == goal, cycles, and nodes reached more than once.\nInclude runnable assertions for a shortest path, an unreachable goal, start == goal, and a cyclic graph. Put all code in one Python code block, followed by a brief explanation of time and space complexity. Keep the implementation concise enough to finish."
+        }
+      ],
+      "target_prompt_tokens": 160,
+      "count_endpoint_prompt_tokens": 160,
+      "temperature": 0.0,
+      "max_tokens": 512
+    },
+    {
+      "case_id": "heldout-chinese-transactions",
+      "description": "Natural task; prompt length is measured, not padded.",
+      "messages": [
+        {
+          "role": "user",
+          "content": "请用中文给初学者解释数据库事务隔离。先简要说明事务和提交，再分别解释脏读、不可重复读、幻读的区别。\n用两个并发事务操作银行账户余额及查询“余额大于100元的账户列表”的小例子，写清楚谁先读、谁更新或插入、谁提交，以及另一个事务观察到什么。\n最后概括读已提交、可重复读、可串行化通常要避免哪些现象，注明具体数据库的实现可能不同。约四百字，连贯说明，避免只列术语。"
+        }
+      ],
+      "target_prompt_tokens": 123,
+      "count_endpoint_prompt_tokens": 123,
+      "temperature": 0.0,
+      "max_tokens": 512
+    },
+    {
+      "target_prompt_tokens": 32,
+      "count_endpoint_prompt_tokens": 32,
+      "messages": [
+        {
+          "role": "user",
+          "content": "资料：模型由路由器、专家与共享网\n详细解释MoE，写满千字。"
+        }
+      ],
+      "count_source": "/v1/messages/count_tokens; actual OpenAI usage is authoritative",
+      "case_id": "prompt32-output256",
+      "max_tokens": 256
+    },
+    {
+      "target_prompt_tokens": 2048,
+      "count_endpoint_prompt_tokens": 2048,
+      "messages": [
+        {
+          "role": "user",
+          "content": "资料：模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网络组成。路由器根据输入选择专家，再合并专家的结果。模型由路由器、专家与共享网\n详细解释MoE，写满千字。"
+        }
+      ],
+      "count_source": "/v1/messages/count_tokens; actual OpenAI usage is authoritative",
+      "case_id": "prompt2048-output256",
+      "max_tokens": 256
+    }
+  ],
+  "repeats": 3,
+  "temperature": 0,
+  "seed": 12345,
+  "thinking": false,
+  "initial_health": {
+    "status": "ok",
+    "max_context": 4096,
+    "model": "qwen3.6-35b-a3b-q8_0",
+    "images": false,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  },
+  "engine_pid": 31924,
+  "engine_create_time": 1791994949.576326,
+  "engine_cmdline": [
+    "G:\\Strata-Moe\\build-a3b-doorbell-compatible\\bin\\strata-moe.exe",
+    "--serve",
+    "--model",
+    "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-Q8_0.gguf",
+    "--ctx",
+    "4096",
+    "--batch",
+    "2048",
+    "--device",
+    "0",
+    "--vram-mib",
+    "0",
+    "--mtp-model",
+    "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+    "--mtp-draft",
+    "2",
+    "--mtp-ubatch",
+    "512",
+    "--exact-verify",
+    "--expert-staging-slots",
+    "8",
+    "--gpu-embedding",
+    "--gpu-sampling",
+    "--share-mtp-weights",
+    "--defer-mtp-catchup",
+    "--native-attention-exact",
+    "--pageable-experts",
+    "--native-dense-exact",
+    "--async-expert-events",
+    "--expert-profile",
+    "G:\\Strata-Moe\\models\\a3b\\profiles\\qwen3.6-q8-broad-v1.profile",
+    "--cache-reserve-mib",
+    "384",
+    "--threads",
+    "8",
+    "--hybrid-doorbell"
+  ],
+  "actual_exe_sha256": "465345b125e6cd5907ebd0b544c0e57b4172a3a26ea28f48103c263907795891",
+  "config_sha256": "aeeef87363474ae34507ccbf273280928e55afbe033c77cf357b272f94e5cccb",
+  "expected_exe_sha256": "465345b125e6cd5907ebd0b544c0e57b4172a3a26ea28f48103c263907795891",
+  "engine_execution_env": {
+    "CUDA_VISIBLE_DEVICES": "0",
+    "STRATA_A3B_NATIVE_EXPERT_REUSE": "0",
+    "STRATA_A3B_EXPERT_Q8_REUSE": "0",
+    "STRATA_A3B_DENSE_Q8_REUSE": "1",
+    "STRATA_A3B_ARGMAX_MULTI": "1"
+  },
+  "runner_sha256": "5bcb7b3ec67ff8a85d6a927da9ffdacf1b2f2aab93a7bc327c0c50a1ecc855be",
+  "prompt_source_sha256": "44dcb5184f4527d161d088274227c158fbccf93af969ed62da80e697b61d3860",
+  "latency_helper_sha256": "835ee14c14cda813435c5659836f8aaf76060b9f00a2baf5c9f84e1600c3abb5",
+  "audit_helpers_sha256": "a74cdb5b9692cd6441aaf8c4cd8721f9e5d8a11e0761926d9e3504583b11ac00",
+  "server_source_sha256": "d03fd1e2dd116fec331195674d73871381736bf21bb82328e0f8b54a98a66990",
+  "timing_definitions": {
+    "TTFB": "first underlying socket response read; may contain only headers",
+    "TTFT": "first nonempty model content/reasoning SSE delta, excluding progress/role/comments",
+    "engine_rates": "engine DONE clock/counts exported in final SSE timings",
+    "client_output_rate": "(completion_tokens-1)/(last nonempty text delta-first nonempty text delta), subject to MTP bursts"
+  },
+  "completed_requests_in_process_before_run": 0,
+  "execution_mode": "hybrid-doorbell-fixed-profile-pcie0",
+  "cohort": "Separate hybrid-doorbell-fixed-profile-pcie0 process; do not pool with frozen GPU-only Q8 or the earlier host-planned hybrid process.",
+  "resource_scope": "Periodic sampling starts after model readiness; startup footprint/time read from engine log separately."
+}

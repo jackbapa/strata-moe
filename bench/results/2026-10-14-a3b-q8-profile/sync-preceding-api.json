@@ -1,0 +1,102 @@
+[
+  {
+    "previous": "('cudaEventRecord_v3020', None)",
+    "ms": 1355.962755,
+    "count": 1332
+  },
+  {
+    "previous": "('cudaGraphLaunch_v10000', None)",
+    "ms": 857.023367,
+    "count": 2334
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (2, 4, 17))",
+    "ms": 165.480519,
+    "count": 99
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (2, 4, 15))",
+    "ms": 124.645637,
+    "count": 52
+  },
+  {
+    "previous": "('cudaLaunchKernel_v7000', None)",
+    "ms": 118.35996,
+    "count": 544
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (1, 512, 14))",
+    "ms": 69.894445,
+    "count": 1746
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (1, 4, 14))",
+    "ms": 11.859185,
+    "count": 260
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (1, 8, 14))",
+    "ms": 9.623541,
+    "count": 229
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (1, 24, 14))",
+    "ms": 7.417969,
+    "count": 166
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (1, 16, 14))",
+    "ms": 5.909317,
+    "count": 129
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (1, 12, 14))",
+    "ms": 5.848559,
+    "count": 132
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (1, 8192, 14))",
+    "ms": 5.136951,
+    "count": 108
+  },
+  {
+    "previous": "('cudaStreamSynchronize_v3020', None)",
+    "ms": 5.11405,
+    "count": 5685
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (1, 48, 14))",
+    "ms": 3.803762,
+    "count": 83
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (2, 2080, 14))",
+    "ms": 2.605321,
+    "count": 2000
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (1, 24576, 14))",
+    "ms": 2.045475,
+    "count": 33
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (1, 16384, 14))",
+    "ms": 0.74346,
+    "count": 9
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (1, 32, 14))",
+    "ms": 0.473133,
+    "count": 10
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (2, 32, 14))",
+    "ms": 0.056196,
+    "count": 40
+  },
+  {
+    "previous": "('cudaMemcpyAsync_v3020', (2, 1056, 14))",
+    "ms": 0.051709,
+    "count": 40
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "interval_s": 1.0,
+  "samples": 87,
+  "errors": [],
+  "scope": "Periodic samples during the resident API test, including before/after. Sampled GPU maxima are not absolute instantaneous peaks. Windows peak_wset is OS process-lifetime physical working-set peak; private commitment is not RAM.",
+  "sampled_rss_max_bytes": 36670107648,
+  "os_lifetime_working_set_peak_bytes": 36708388864,
+  "sampled_system_used_max_bytes": 53955313664,
+  "sampled_gpu_used_max_mib": {
+    "0": 22057,
+    "1": 51,
+    "2": 0
+  }
+}

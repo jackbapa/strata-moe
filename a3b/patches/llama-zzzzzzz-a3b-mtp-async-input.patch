@@ -1,0 +1,625 @@
+--- a/src/llama-context.cpp
++++ b/src/llama-context.cpp
+@@ -13,8 +13,10 @@
+ #include "llama-sampler.h"
+ #include "llama.h"
+ 
++#include <atomic>
+ #include <cinttypes>
+ #include <cmath>
++#include <cstdlib>
+ #include <cstring>
+ #include <limits>
+ #include <stdexcept>
+@@ -59,6 +61,49 @@
+     return buffer && mtp_device_cuda_backend(backend) &&
+            ggml_backend_buffer_get_type(buffer) == ggml_backend_get_default_buffer_type(backend);
+ }
++
++static bool mtp_device_i32_input_layout(const ggml_tensor * t, int64_t count) {
++    return t && t->data && t->type == GGML_TYPE_I32 && t->ne[0] == count &&
++           t->ne[1] == 1 && t->ne[2] == 1 && t->ne[3] == 1 &&
++           t->nb[0] == sizeof(int32_t) && ggml_nbytes(t) == size_t(count) * sizeof(int32_t);
++}
++
++static bool mtp_device_i64_input_layout(const ggml_tensor * t) {
++    return t && t->data && t->type == GGML_TYPE_I64 && t->ne[0] == 1 &&
++           t->ne[1] == 1 && t->ne[2] == 1 && t->ne[3] == 1 &&
++           t->nb[0] == sizeof(int64_t) && ggml_nbytes(t) == sizeof(int64_t);
++}
++
++static bool mtp_device_mask_input_layout(const ggml_tensor * t, size_t capacity) {
++    if (!t || !t->data || (t->type != GGML_TYPE_F16 && t->type != GGML_TYPE_F32) ||
++        t->ne[0] < 1 || t->ne[1] != 1 || t->ne[2] != 1 || t->ne[3] != 1 ||
++        t->nb[0] != ggml_type_size(t->type)) return false;
++    const size_t bytes = ggml_nbytes(t);
++    return bytes > 0 && bytes <= capacity &&
++           bytes == size_t(t->ne[0]) * ggml_type_size(t->type);
++}
++
++// One padded record per proposal step. The mask's worst case is one F32 value
++// for every KV cell; the ordinary CUDA page-locked host buffer allocator owns
++// both records until the final draft synchronize. No per-step stack/vector
++// storage is ever passed to cudaMemcpyAsync.
++struct mtp_k2_input_layout {
++    const size_t token = 0;
++    const size_t pos = sizeof(llama_token);
++    const size_t hidden = pos + 4 * sizeof(llama_pos);
++    const size_t out_ids;
++    const size_t k_idxs;
++    const size_t v_idxs;
++    const size_t kq_mask;
++    const size_t slot_bytes;
++
++    mtp_k2_input_layout(uint32_t width, uint32_t n_ctx) :
++        out_ids(hidden + size_t(width) * sizeof(float)),
++        k_idxs((out_ids + sizeof(int32_t) + 7) & ~size_t(7)),
++        v_idxs(k_idxs + sizeof(int64_t)),
++        kq_mask(v_idxs + sizeof(int64_t)),
++        slot_bytes((kq_mask + size_t(n_ctx) * sizeof(float) + 7) & ~size_t(7)) {}
++};
+ 
+ static ggml_tensor mtp_device_hidden_slice(const ggml_tensor * base, uint32_t row, uint32_t rows) {
+     ggml_tensor slice = *base;
+@@ -1403,6 +1448,9 @@
+         return nullptr;
+     }
+ 
++    bool async_graph_retry = false;
++    bool reused_graph = false;
++retry_without_async_inputs:
+     auto * res = get_gf_res_prev();
+     auto * gf  = res->get_gf();
+ 
+@@ -1424,11 +1472,46 @@
+                 mtp_device_cuda_buffer(mtp_input->h, h_backend) &&
+                 ggml_backend_get_device(tok_backend) == mtp_device_chain.device &&
+                 ggml_backend_get_device(h_backend) == mtp_device_chain.device;
++            if (mtp_device_chain.async_host_inputs) {
++                chain_inputs_on_device = chain_inputs_on_device &&
++                    tok_backend == mtp_device_chain.compute_backend &&
++                    h_backend == mtp_device_chain.compute_backend;
++            }
+             break;
+         }
+-    }
+-
+-    if (!graph_reuse_disable && chain_inputs_on_device &&
++        if (chain_inputs_on_device && mtp_device_chain.async_host_inputs) {
++            bool pos_on_device = false;
++            for (const auto & input : res->inputs) {
++                auto * pos_input = dynamic_cast<llm_graph_input_pos *>(input.get());
++                if (!pos_input || !pos_input->pos) continue;
++                const auto backend = ggml_backend_sched_get_tensor_backend(sched.get(), pos_input->pos);
++                pos_on_device = mtp_device_cuda_buffer(pos_input->pos, backend) &&
++                    backend == mtp_device_chain.compute_backend;
++                break;
++            }
++            chain_inputs_on_device = pos_on_device;
++        }
++        if (chain_inputs_on_device && mtp_device_chain.async_host_inputs) {
++            auto on_compute = [&](ggml_tensor * t) {
++                if (!t) return false;
++                const auto backend = ggml_backend_sched_get_tensor_backend(sched.get(), t);
++                return mtp_device_cuda_buffer(t, backend) &&
++                    backend == mtp_device_chain.compute_backend;
++            };
++            bool out_on_device = false;
++            bool attn_on_device = false;
++            for (const auto & input : res->inputs) {
++                if (auto * out = dynamic_cast<llm_graph_input_out_ids *>(input.get()))
++                    out_on_device = on_compute(out->out_ids);
++                if (auto * attn = dynamic_cast<llm_graph_input_attn_kv *>(input.get()))
++                    attn_on_device = on_compute(attn->self_k_idxs) &&
++                        on_compute(attn->self_v_idxs) && on_compute(attn->self_kq_mask);
++            }
++            chain_inputs_on_device = out_on_device && attn_on_device;
++        }
++    }
++
++    if (!async_graph_retry && !graph_reuse_disable && chain_inputs_on_device &&
+         gf_res_prev_active == res && res->can_reuse(gparams)) {
+         //LLAMA_LOG_DEBUG("%s: reusing previous graph\n", __func__);
+ 
+@@ -1440,7 +1523,9 @@
+         }
+ 
+         n_reused++;
++        reused_graph = true;
+     } else {
++        reused_graph = false;
+         gf_res_prev_active = nullptr;
+         res->reset();
+ 
+@@ -1472,15 +1557,46 @@
+                 for (const auto & backend : backends) {
+                     if (mtp_device_cuda_backend(backend.get()) &&
+                         ggml_backend_get_device(backend.get()) == device) {
+-                        ggml_backend_sched_set_tensor_backend(sched.get(), mtp_input->h, backend.get());
++                        ggml_backend_t selected = mtp_device_chain.async_host_inputs ?
++                            mtp_device_chain.compute_backend : backend.get();
++                        ggml_backend_sched_set_tensor_backend(sched.get(), mtp_input->h, selected);
+                         if (mtp_device_chain.active && mtp_input->tokens)
+-                            ggml_backend_sched_set_tensor_backend(sched.get(), mtp_input->tokens, backend.get());
++                            ggml_backend_sched_set_tensor_backend(sched.get(), mtp_input->tokens, selected);
+                         break;
+                     }
+                 }
+                 break;
+             }
+         }
++        if (mtp_device_chain.active && mtp_device_chain.async_host_inputs) {
++            // The ordinary position input defaults to host placement. It must
++            // use the same CUDA backend/stream as the token and hidden inputs.
++            for (const auto & input : res->inputs) {
++                auto * pos_input = dynamic_cast<llm_graph_input_pos *>(input.get());
++                if (!pos_input || !pos_input->pos) continue;
++                ggml_backend_sched_set_tensor_backend(sched.get(), pos_input->pos,
++                    mtp_device_chain.compute_backend);
++                break;
++            }
++            for (const auto & input : res->inputs) {
++                if (auto * out = dynamic_cast<llm_graph_input_out_ids *>(input.get())) {
++                    if (out->out_ids)
++                        ggml_backend_sched_set_tensor_backend(sched.get(), out->out_ids,
++                            mtp_device_chain.compute_backend);
++                }
++                if (auto * attn = dynamic_cast<llm_graph_input_attn_kv *>(input.get())) {
++                    if (attn->self_k_idxs)
++                        ggml_backend_sched_set_tensor_backend(sched.get(), attn->self_k_idxs,
++                            mtp_device_chain.compute_backend);
++                    if (attn->self_v_idxs)
++                        ggml_backend_sched_set_tensor_backend(sched.get(), attn->self_v_idxs,
++                            mtp_device_chain.compute_backend);
++                    if (attn->self_kq_mask)
++                        ggml_backend_sched_set_tensor_backend(sched.get(), attn->self_kq_mask,
++                            mtp_device_chain.compute_backend);
++                }
++            }
++        }
+ 
+         if (!ggml_backend_sched_alloc_graph(sched.get(), gf)) {
+             LLAMA_LOG_ERROR("%s: failed to allocate graph\n", __func__);
+@@ -1499,11 +1615,144 @@
+         auto & bridge = mtp_device_prefill;
+         auto & chain = mtp_device_chain;
+         llm_graph_input_embd_h * mtp_input = nullptr;
+-        if (bridge.target || chain.input_pending) {
++        llm_graph_input_pos * mtp_pos_input = nullptr;
++        llm_graph_input_out_ids * mtp_out_input = nullptr;
++        llm_graph_input_attn_kv * mtp_attn_input = nullptr;
++        llm_graph_input_sampling * mtp_sampling_input = nullptr;
++        if (bridge.target || chain.input_pending || chain.async_host_inputs) {
+             for (auto & input : res->inputs) {
+-                mtp_input = dynamic_cast<llm_graph_input_embd_h *>(input.get());
+-                if (mtp_input) break;
+-            }
++                if (!mtp_input) mtp_input = dynamic_cast<llm_graph_input_embd_h *>(input.get());
++                if (chain.async_host_inputs) {
++                    if (!mtp_pos_input)
++                        mtp_pos_input = dynamic_cast<llm_graph_input_pos *>(input.get());
++                    if (!mtp_out_input)
++                        mtp_out_input = dynamic_cast<llm_graph_input_out_ids *>(input.get());
++                    if (!mtp_attn_input)
++                        mtp_attn_input = dynamic_cast<llm_graph_input_attn_kv *>(input.get());
++                    if (!mtp_sampling_input)
++                        mtp_sampling_input = dynamic_cast<llm_graph_input_sampling *>(input.get());
++                }
++            }
++        }
++        char * async_slot = nullptr;
++        uint32_t async_pos_count = 0;
++        size_t async_mask_bytes = 0;
++        if (chain.async_host_inputs) {
++            const bool first_step = chain.first_step_output;
++            const bool second_step = chain.input_pending;
++            // Diagnostic only: exercise a first-step pinned DMA followed by
++            // an ordinary second-step graph rebuild in strict state tests.
++            static const bool force_second_step_fallback = [] {
++                const char * value = std::getenv("STRATA_A3B_MTP_ASYNC_INPUT_FORCE_STEP2_FALLBACK");
++                return value && value[0] == '1' && value[1] == '\0';
++            }();
++            if (second_step && force_second_step_fallback) {
++                GGML_ASSERT(chain.input_host_pending);
++                chain.async_host_inputs = false;
++                async_graph_retry = true;
++                if (reused_graph) --n_reused;
++                static std::atomic<bool> forced_fallback_logged{false};
++                if (!forced_fallback_logged.exchange(true, std::memory_order_relaxed))
++                    LLAMA_LOG_INFO("A3B MTP K2 diagnostic: second step rebuilding with ordinary inputs after pinned DMA\n");
++                goto retry_without_async_inputs;
++            }
++            const mtp_k2_input_layout layout(chain.width, n_ctx());
++            if (!chain.active || first_step == second_step || !chain.input_host ||
++                !chain.compute_backend || res->inputs.size() != 5 ||
++                !mtp_input || !mtp_input->tokens || !mtp_input->h ||
++                !mtp_pos_input || !mtp_pos_input->pos ||
++                !mtp_out_input || !mtp_out_input->out_ids ||
++                !mtp_attn_input || !mtp_attn_input->self_k_idxs ||
++                !mtp_attn_input->self_v_idxs || !mtp_attn_input->self_kq_mask ||
++                !mtp_sampling_input || mtp_sampling_input->samplers.size() != 1 ||
++                !ubatch.token || !ubatch.embd || !ubatch.pos || ubatch.n_tokens != 1) {
++                chain.async_host_inputs = false;
++                async_graph_retry = true;
++                if (reused_graph) --n_reused;
++                static std::atomic<bool> graph_fallback_logged{false};
++                if (!graph_fallback_logged.exchange(true, std::memory_order_relaxed))
++                    LLAMA_LOG_WARN("A3B MTP K2 pinned input graph unsupported; rebuilding with ordinary inputs\n");
++                goto retry_without_async_inputs;
++            }
++            auto * sampler = mtp_sampling_input->samplers.begin()->second;
++            auto * sampler_child = llama_sampler_chain_get(sampler, 0);
++            if (mtp_sampling_input->samplers.begin()->first != 0 || !sampler_child ||
++                llama_sampler_chain_n(sampler) != 1 || !sampler_child->iface ||
++                sampler_child->iface->backend_set_input) {
++                chain.async_host_inputs = false;
++                async_graph_retry = true;
++                if (reused_graph) --n_reused;
++                static std::atomic<bool> sampler_fallback_logged{false};
++                if (!sampler_fallback_logged.exchange(true, std::memory_order_relaxed))
++                    LLAMA_LOG_WARN("A3B MTP K2 pinned sampler input unsupported; rebuilding with ordinary inputs\n");
++                goto retry_without_async_inputs;
++            }
++            async_pos_count = mtp_pos_input->n_pos_per_embd;
++            auto on_compute = [&](ggml_tensor * t) {
++                const auto backend = ggml_backend_sched_get_tensor_backend(sched.get(), t);
++                return backend == chain.compute_backend && mtp_device_cuda_buffer(t, backend);
++            };
++            async_mask_bytes = ggml_nbytes(mtp_attn_input->self_kq_mask);
++            if ((async_pos_count != 1 && async_pos_count != 4) ||
++                !mtp_device_i32_input_layout(mtp_input->tokens, 1) ||
++                !mtp_device_hidden_layout(mtp_input->h, chain.width, 1) ||
++                !mtp_device_i32_input_layout(mtp_pos_input->pos, async_pos_count) ||
++                !mtp_device_i32_input_layout(mtp_out_input->out_ids, 1) ||
++                !mtp_device_i64_input_layout(mtp_attn_input->self_k_idxs) ||
++                !mtp_device_i64_input_layout(mtp_attn_input->self_v_idxs) ||
++                !mtp_device_mask_input_layout(mtp_attn_input->self_kq_mask,
++                    layout.slot_bytes - layout.kq_mask) ||
++                mtp_attn_input->self_kq_mask_cnv != mtp_attn_input->self_kq_mask ||
++                (mtp_attn_input->self_k_rot && mtp_attn_input->self_k_rot->buffer) ||
++                (mtp_attn_input->self_v_rot && mtp_attn_input->self_v_rot->buffer) ||
++                !on_compute(mtp_input->tokens) || !on_compute(mtp_input->h) ||
++                !on_compute(mtp_pos_input->pos) || !on_compute(mtp_out_input->out_ids) ||
++                !on_compute(mtp_attn_input->self_k_idxs) ||
++                !on_compute(mtp_attn_input->self_v_idxs) ||
++                !on_compute(mtp_attn_input->self_kq_mask) ||
++                chain.input_host_slot_bytes != layout.slot_bytes) {
++                chain.async_host_inputs = false;
++                async_graph_retry = true;
++                if (reused_graph) --n_reused;
++                static std::atomic<bool> layout_fallback_logged{false};
++                if (!layout_fallback_logged.exchange(true, std::memory_order_relaxed))
++                    LLAMA_LOG_WARN("A3B MTP K2 pinned tensor layout/backend unsupported; rebuilding with ordinary inputs\n");
++                goto retry_without_async_inputs;
++            }
++            auto * host = static_cast<char *>(ggml_backend_buffer_get_base(chain.input_host.get()));
++            if (!host) {
++                chain.async_host_inputs = false;
++                async_graph_retry = true;
++                if (reused_graph) --n_reused;
++                goto retry_without_async_inputs;
++            }
++            async_slot = host + (second_step ? chain.input_host_slot_bytes : 0);
++            // These two records are never reused until the chain's final
++            // context synchronization. The 4D positions match
++            // llm_graph_input_pos::set_input for text M-RoPE exactly.
++            const llama_pos position = ubatch.pos[0];
++            std::memcpy(async_slot + layout.pos, &position, sizeof(position));
++            if (async_pos_count == 4) {
++                std::memcpy(async_slot + layout.pos + sizeof(position), &position, sizeof(position));
++                std::memcpy(async_slot + layout.pos + 2 * sizeof(position), &position, sizeof(position));
++                const llama_pos zero = 0;
++                std::memcpy(async_slot + layout.pos + 3 * sizeof(position), &zero, sizeof(zero));
++            }
++            if (first_step) {
++                std::memcpy(async_slot + layout.token, ubatch.token, sizeof(llama_token));
++                std::memcpy(async_slot + layout.hidden,
++                    ubatch.embd, size_t(chain.width) * sizeof(float));
++                mtp_input->async_host_input = true;
++            }
++            mtp_pos_input->async_host_input = true;
++            mtp_out_input->async_host_input = true;
++            mtp_out_input->async_host_buffer = chain.input_host.get();
++            mtp_out_input->async_host_data = reinterpret_cast<int32_t *>(async_slot + layout.out_ids);
++            mtp_attn_input->async_host_input = true;
++            mtp_attn_input->async_host_buffer = chain.input_host.get();
++            mtp_attn_input->async_k_idxs = async_slot + layout.k_idxs;
++            mtp_attn_input->async_v_idxs = async_slot + layout.v_idxs;
++            mtp_attn_input->async_kq_mask = async_slot + layout.kq_mask;
+         }
+         if (chain.input_pending) {
+             if (!mtp_input || !mtp_input->tokens || !mtp_input->h || !ubatch.token ||
+@@ -1558,12 +1807,66 @@
+             if (mtp_input) {
+                 mtp_input->device_hidden_input = false;
+                 mtp_input->device_token_input = false;
++                mtp_input->async_host_input = false;
++            }
++            if (mtp_pos_input) mtp_pos_input->async_host_input = false;
++            if (mtp_out_input) {
++                mtp_out_input->async_host_input = false;
++                mtp_out_input->async_host_buffer = nullptr;
++                mtp_out_input->async_host_data = nullptr;
++            }
++            if (mtp_attn_input) {
++                mtp_attn_input->async_host_input = false;
++                mtp_attn_input->async_host_buffer = nullptr;
++                mtp_attn_input->async_k_idxs = nullptr;
++                mtp_attn_input->async_v_idxs = nullptr;
++                mtp_attn_input->async_kq_mask = nullptr;
+             }
+             throw;
+         }
+         if (mtp_input) {
+             mtp_input->device_hidden_input = false;
+             mtp_input->device_token_input = false;
++            mtp_input->async_host_input = false;
++        }
++        if (mtp_pos_input) mtp_pos_input->async_host_input = false;
++        if (mtp_out_input) {
++            mtp_out_input->async_host_input = false;
++            mtp_out_input->async_host_buffer = nullptr;
++            mtp_out_input->async_host_data = nullptr;
++        }
++        if (mtp_attn_input) {
++            mtp_attn_input->async_host_input = false;
++            mtp_attn_input->async_host_buffer = nullptr;
++            mtp_attn_input->async_k_idxs = nullptr;
++            mtp_attn_input->async_v_idxs = nullptr;
++            mtp_attn_input->async_kq_mask = nullptr;
++        }
++        if (chain.async_host_inputs) {
++            const mtp_k2_input_layout layout(chain.width, n_ctx());
++            const auto backend = chain.compute_backend;
++            chain.input_host_pending = true;
++            if (chain.first_step_output) {
++                ggml_backend_tensor_set_async(backend, mtp_input->tokens,
++                    async_slot + layout.token, 0, sizeof(llama_token));
++                ggml_backend_tensor_set_async(backend, mtp_input->h,
++                    async_slot + layout.hidden,
++                    0, size_t(chain.width) * sizeof(float));
++            }
++            ggml_backend_tensor_set_async(backend, mtp_pos_input->pos,
++                async_slot + layout.pos, 0,
++                size_t(async_pos_count) * sizeof(llama_pos));
++            ggml_backend_tensor_set_async(backend, mtp_out_input->out_ids,
++                async_slot + layout.out_ids, 0, sizeof(int32_t));
++            ggml_backend_tensor_set_async(backend, mtp_attn_input->self_k_idxs,
++                async_slot + layout.k_idxs, 0, sizeof(int64_t));
++            ggml_backend_tensor_set_async(backend, mtp_attn_input->self_v_idxs,
++                async_slot + layout.v_idxs, 0, sizeof(int64_t));
++            ggml_backend_tensor_set_async(backend, mtp_attn_input->self_kq_mask,
++                async_slot + layout.kq_mask, 0, async_mask_bytes);
++            static std::atomic<bool> async_logged{false};
++            if (!async_logged.exchange(true, std::memory_order_relaxed))
++                LLAMA_LOG_INFO("A3B MTP K2 pinned CUDA token, hidden, position, output and KV input staging active\n");
+         }
+         if (chain.input_pending) {
+             auto * dst_token = mtp_input->tokens;
+@@ -4305,6 +4608,26 @@
+         mtp_layer.nextn.embed_tokens : draft->model.tok_embd;
+     if (!token_table || !mtp_device_cuda_buffer(token_table, cuda_backend)) return 0;
+     if (chain.device && (chain.device != device || chain.width != width)) return 0;
++    static const bool async_input_requested = [] {
++        const char * value = std::getenv("STRATA_A3B_MTP_ASYNC_INPUT");
++        return value && value[0] == '1' && value[1] == '\0';
++    }();
++    // Reject unsupported sampler/configuration cases before draft->decode()
++    // applies a KV cell. An ordinary K2 chain is still safe and available.
++    bool async_input_enabled = async_input_requested && draft->get_cparams().flash_attn &&
++        draft->n_ctx() % 256 == 0;
++    if (async_input_enabled) {
++        auto it = draft->sampling.samplers.find(0);
++        auto * sampler = it != draft->sampling.samplers.end() ? it->second : nullptr;
++        auto * child = llama_sampler_chain_get(sampler, 0);
++        async_input_enabled = child && llama_sampler_chain_n(sampler) == 1 &&
++            child->iface && !child->iface->backend_set_input;
++    }
++    if (async_input_requested && !async_input_enabled) {
++        static std::atomic<bool> fallback_logged{false};
++        if (!fallback_logged.exchange(true, std::memory_order_relaxed))
++            LLAMA_LOG_WARN("A3B MTP K2 pinned input staging unsupported by this config/sampler; using ordinary K2 inputs\n");
++    }
+     if (!chain.token || !chain.hidden || !chain.first_host) {
+         auto * buft = ggml_backend_get_default_buffer_type(cuda_backend);
+         auto * host_buft = ggml_backend_dev_host_buffer_type(device);
+@@ -4319,17 +4642,50 @@
+         chain.device = device;
+         chain.width = width;
+     }
++    if (async_input_enabled && !chain.input_host) {
++        auto * host_buft = ggml_backend_dev_host_buffer_type(device);
++        if (!host_buft) {
++            async_input_enabled = false;
++        } else {
++            const mtp_k2_input_layout layout(width, draft->n_ctx());
++            auto host = ggml_backend_buffer_ptr(ggml_backend_buft_alloc_buffer(host_buft, 2 * layout.slot_bytes));
++            // The CUDA host buffer allocator can fall back to pageable CPU RAM.
++            // In that case a nominally async upload can block and must not be
++            // presented as the pinned staging path.
++            if (!host || ggml_backend_buffer_get_type(host.get()) != host_buft ||
++                !ggml_backend_buffer_get_base(host.get())) {
++                async_input_enabled = false;
++            } else {
++                chain.input_host = std::move(host);
++                chain.input_host_slot_bytes = layout.slot_bytes;
++            }
++        }
++        if (!async_input_enabled) {
++            static std::atomic<bool> pin_fallback_logged{false};
++            if (!pin_fallback_logged.exchange(true, std::memory_order_relaxed))
++                LLAMA_LOG_WARN("A3B MTP K2 pinned input allocation unavailable; using ordinary K2 inputs\n");
++        }
++    }
+ 
+     // The first graph is already one CUDA submission. Queue stable D2D copies
+     // before llama_decode may recycle its graph arena, then let step two read
+     // those buffers. No sampled-token or hidden getter runs between steps.
++    chain.compute_backend = cuda_backend;
+     chain.active = true;
+     chain.first_step_output = true;
+-    auto finish = [&chain](int status) {
++    chain.async_host_inputs = async_input_enabled;
++    chain.input_host_pending = false;
++    auto finish = [&chain, cuda_backend](int status) {
++        // A failed chain must finish any queued reads of its pinned source
++        // before a later request can overwrite either slot.
++        if (status != 1 && chain.input_host_pending) ggml_backend_synchronize(cuda_backend);
+         chain.active = false;
+         chain.first_step_output = false;
+         chain.input_pending = false;
+         chain.between_steps = false;
++        chain.async_host_inputs = false;
++        chain.input_host_pending = false;
++        chain.compute_backend = nullptr;
+         return status;
+     };
+     int first_rc = -1;
+--- a/src/llama-context.h
++++ b/src/llama-context.h
+@@ -411,11 +411,18 @@
+         ggml_backend_buffer_ptr token;
+         ggml_backend_buffer_ptr hidden;
+         ggml_backend_buffer_ptr first_host;
++        // Two distinct pinned source records. The first graph may still read
++        // record 0 while the host prepares record 1 for the next step.
++        ggml_backend_buffer_ptr input_host;
++        size_t input_host_slot_bytes = 0;
+         ggml_backend_t token_backend = nullptr;
+         ggml_backend_t hidden_backend = nullptr;
++        ggml_backend_t compute_backend = nullptr;
+         ggml_backend_dev_t device = nullptr;
+         uint32_t width = 0;
+         uint32_t inter_step_syncs = 0;
++        bool async_host_inputs = false;
++        bool input_host_pending = false;
+         bool active = false;
+         bool first_step_output = false;
+         bool input_pending = false;
+--- a/src/llama-graph.cpp
++++ b/src/llama-graph.cpp
+@@ -95,9 +95,9 @@
+     const int64_t n_tokens = ubatch->n_tokens;
+ 
+     if (ubatch->token) {
+-        if (!device_token_input)
++        if (!device_token_input && !async_host_input)
+             ggml_backend_tensor_set(tokens, ubatch->token, 0, n_tokens*ggml_element_size(tokens));
+-    } else if (!device_hidden_input) {
++    } else if (!device_hidden_input && !async_host_input) {
+         // note: mtmd embedding input goes through here
+         GGML_ASSERT(ubatch->embd);
+         GGML_ASSERT(n_embd == embd->ne[0]);
+@@ -108,7 +108,7 @@
+     // TODO: extend llama_ubatch to differentiate between token embeddings and hidden states
+     //       for now, we assume that the hidden state is always provided as an embedding
+     //       ref: https://github.com/ggml-org/llama.cpp/pull/23643
+-    if (ubatch->embd && !device_hidden_input) {
++    if (ubatch->embd && !device_hidden_input && !async_host_input) {
+         GGML_ASSERT(n_embd == h->ne[0]);
+ 
+         ggml_backend_tensor_set(h, ubatch->embd, 0, n_tokens*n_embd*ggml_element_size(h));
+@@ -126,7 +126,7 @@
+ }
+ 
+ void llm_graph_input_pos::set_input(const llama_ubatch * ubatch) {
+-    if (ubatch->pos && pos) {
++    if (ubatch->pos && pos && !async_host_input) {
+         const int64_t n_tokens = ubatch->n_tokens;
+ 
+         if (ubatch->token && n_pos_per_embd == 4) {
+@@ -202,8 +202,10 @@
+ 
+     const int64_t n_tokens = ubatch->n_tokens;
+ 
+-    GGML_ASSERT(ggml_backend_buffer_is_host(out_ids->buffer));
+-    int32_t * data = (int32_t *) out_ids->data;
++    const auto host_buffer = async_host_input ? async_host_buffer : out_ids->buffer;
++    GGML_ASSERT(host_buffer && ggml_backend_buffer_is_host(host_buffer));
++    int32_t * data = async_host_input ? async_host_data : (int32_t *) out_ids->data;
++    GGML_ASSERT(data);
+ 
+     if (n_outputs == n_tokens) {
+         for (int i = 0; i < n_tokens; ++i) {
+@@ -469,6 +471,27 @@
+ }
+ 
+ void llm_graph_input_attn_kv::set_input(const llama_ubatch * ubatch) {
++    if (async_host_input) {
++        GGML_ASSERT(async_host_buffer && ggml_backend_buffer_is_host(async_host_buffer));
++        GGML_ASSERT(async_k_idxs && async_v_idxs && async_kq_mask);
++        GGML_ASSERT((!self_k_rot || !self_k_rot->buffer) &&
++                    (!self_v_rot || !self_v_rot->buffer));
++        auto shadow = [this](ggml_tensor * actual, void * host_data) {
++            ggml_tensor host = *actual;
++            host.data = host_data;
++            host.buffer = async_host_buffer;
++            host.view_src = nullptr;
++            host.view_offs = 0;
++            return host;
++        };
++        auto k_idxs = shadow(self_k_idxs, async_k_idxs);
++        auto v_idxs = shadow(self_v_idxs, async_v_idxs);
++        auto kq_mask = shadow(self_kq_mask, async_kq_mask);
++        mctx->set_input_k_idxs(&k_idxs, ubatch);
++        mctx->set_input_v_idxs(&v_idxs, ubatch);
++        mctx->set_input_kq_mask(&kq_mask, ubatch, cparams.causal_attn);
++        return;
++    }
+     mctx->set_input_k_idxs(self_k_idxs, ubatch);
+     mctx->set_input_v_idxs(self_v_idxs, ubatch);
+ 
+--- a/src/llama-graph.h
++++ b/src/llama-graph.h
+@@ -159,6 +159,9 @@
+     // The opt-in K2 proposal chain also supplies step two's sampled token
+     // from a persistent CUDA scalar, avoiding a redundant dummy host upload.
+     bool device_token_input = false;
++    // Both K2 steps can upload their host inputs asynchronously from stable,
++    // pinned storage on the CUDA backend's compute stream.
++    bool async_host_input = false;
+ 
+     const int64_t n_embd = 0;
+ };
+@@ -173,6 +176,11 @@
+     bool can_reuse(const llm_graph_params & params) override;
+ 
+     ggml_tensor * pos = nullptr; // I32 [n_batch]
++
++    // An opt-in K2 caller owns the pinned source and uploads on the same CUDA
++    // stream as graph_compute. Skipping only this setter avoids a temporary
++    // 4D M-RoPE vector becoming an asynchronous DMA source.
++    bool async_host_input = false;
+ 
+     const uint32_t n_pos_per_embd = 1;
+ };
+@@ -234,6 +242,13 @@
+     bool can_reuse(const llm_graph_params & params) override;
+ 
+     ggml_tensor * out_ids; // I32 [n_outputs]
++
++    // K2-only shadow of this normally host-resident graph input. The actual
++    // tensor is allocated on the CUDA compute backend and uploaded after all
++    // input setters have filled the pinned record.
++    bool async_host_input = false;
++    ggml_backend_buffer_t async_host_buffer = nullptr;
++    int32_t * async_host_data = nullptr;
+ 
+     const llama_hparams hparams;
+     const llama_cparams cparams;
+@@ -355,6 +370,15 @@
+     // note: assumes v_rot^2 == I
+     ggml_tensor * self_k_rot = nullptr;
+     ggml_tensor * self_v_rot = nullptr;
++
++    // K2-only pinned shadows for the three normally host-resident inputs.
++    // The owning llama_context keeps their storage alive through both graph
++    // submissions and the chain's final CUDA synchronization.
++    bool async_host_input = false;
++    ggml_backend_buffer_t async_host_buffer = nullptr;
++    void * async_k_idxs = nullptr;
++    void * async_v_idxs = nullptr;
++    void * async_kq_mask = nullptr;
+ 
+     // note: these have to be copies because in order to be able to reuse a graph, its inputs
+     //       need to carry these parameters with them. otherwise, they can point to freed

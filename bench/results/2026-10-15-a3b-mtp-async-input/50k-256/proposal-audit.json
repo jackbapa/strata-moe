@@ -1,0 +1,103 @@
+{
+  "source": "retained engine logs; split at window 1 after each service restart",
+  "runs": {
+    "selected": [
+      {
+        "trial": "run001",
+        "trace_windows": 119,
+        "trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+        "output_sha256": "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7",
+        "offered": 238,
+        "accepted": 136,
+        "k2_calls": null,
+        "k2_fallbacks": null
+      },
+      {
+        "trial": "run002",
+        "trace_windows": 119,
+        "trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+        "output_sha256": "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7",
+        "offered": 238,
+        "accepted": 136,
+        "k2_calls": null,
+        "k2_fallbacks": null
+      }
+    ],
+    "k2-sync": [
+      {
+        "trial": "run001",
+        "trace_windows": 121,
+        "trace_sha256": "6dd70baa79c98f1213378d1c48f94cbc1bda0fd40a653eb0c13c485a38565a81",
+        "output_sha256": "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7",
+        "offered": 242,
+        "accepted": 134,
+        "k2_calls": 121,
+        "k2_fallbacks": 0
+      },
+      {
+        "trial": "run002",
+        "trace_windows": 119,
+        "trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+        "output_sha256": "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7",
+        "offered": 238,
+        "accepted": 136,
+        "k2_calls": 119,
+        "k2_fallbacks": 0
+      }
+    ],
+    "k2-async": [
+      {
+        "trial": "run001",
+        "trace_windows": 119,
+        "trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+        "output_sha256": "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7",
+        "offered": 238,
+        "accepted": 136,
+        "k2_calls": 119,
+        "k2_fallbacks": 0
+      },
+      {
+        "trial": "run002",
+        "trace_windows": 119,
+        "trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+        "output_sha256": "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7",
+        "offered": 238,
+        "accepted": 136,
+        "k2_calls": 119,
+        "k2_fallbacks": 0
+      }
+    ]
+  },
+  "first_difference_vs_selected_run001": {
+    "selected/run001": {
+      "window": null,
+      "selected_run001": null,
+      "this_trial": null
+    },
+    "selected/run002": {
+      "window": null,
+      "selected_run001": null,
+      "this_trial": null
+    },
+    "k2-sync/run001": {
+      "window": 7,
+      "selected_run001": "A3B MTP proposal trace: window 7 pos 50013 input 95761 offered 2 108641 95779",
+      "this_trial": "A3B MTP proposal trace: window 7 pos 50013 input 95761 offered 2 0 24797"
+    },
+    "k2-sync/run002": {
+      "window": null,
+      "selected_run001": null,
+      "this_trial": null
+    },
+    "k2-async/run001": {
+      "window": null,
+      "selected_run001": null,
+      "this_trial": null
+    },
+    "k2-async/run002": {
+      "window": null,
+      "selected_run001": null,
+      "this_trial": null
+    }
+  }
+}

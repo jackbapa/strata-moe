@@ -1,0 +1,89 @@
+{
+  "device": "GPU0 RTX 2080 Ti SM75",
+  "driver": "617.42",
+  "fixture": "Q8_0 [2048,248320] generated weights",
+  "repeats": 100,
+  "timing": "synchronous graph API, not model throughput",
+  "paired_runs": [
+    {
+      "env": 0,
+      "tokens": 1,
+      "mean_us": 1087.122
+    },
+    {
+      "env": 0,
+      "tokens": 2,
+      "mean_us": 2158.22
+    },
+    {
+      "env": 0,
+      "tokens": 3,
+      "mean_us": 3207.746
+    },
+    {
+      "env": 0,
+      "tokens": 4,
+      "mean_us": 4218.036
+    },
+    {
+      "env": 0,
+      "tokens": 5,
+      "mean_us": 5257.517
+    },
+    {
+      "env": 0,
+      "tokens": 6,
+      "mean_us": 6297.067
+    },
+    {
+      "env": 0,
+      "tokens": 7,
+      "mean_us": 7374.238
+    },
+    {
+      "env": 0,
+      "tokens": 8,
+      "mean_us": 8363.788
+    },
+    {
+      "env": 1,
+      "tokens": 1,
+      "mean_us": 1086.774
+    },
+    {
+      "env": 1,
+      "tokens": 2,
+      "mean_us": 1351.37
+    },
+    {
+      "env": 1,
+      "tokens": 3,
+      "mean_us": 1677.943
+    },
+    {
+      "env": 1,
+      "tokens": 4,
+      "mean_us": 2002.038
+    },
+    {
+      "env": 1,
+      "tokens": 5,
+      "mean_us": 2339.116
+    },
+    {
+      "env": 1,
+      "tokens": 6,
+      "mean_us": 2676.756
+    },
+    {
+      "env": 1,
+      "tokens": 7,
+      "mean_us": 3031.337
+    },
+    {
+      "env": 1,
+      "tokens": 8,
+      "mean_us": 3262.909
+    }
+  ]
+}

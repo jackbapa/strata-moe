@@ -1,0 +1,7 @@
+{
+  "STRATA_A3B_ARGMAX_MULTI": "1",
+  "device": 0,
+  "vram_mib": 0,
+  "batch": 512,
+  "note": "Shared by every k2/k3/k4/k6 child process; K2 started before the environment field was added to the per-run collector."
+}

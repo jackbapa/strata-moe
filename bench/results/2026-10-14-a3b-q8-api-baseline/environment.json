@@ -1,0 +1,16 @@
+{
+  "label": "Initial Q8 GPU-only candidate baseline; not final optimized delivery",
+  "exe_sha256": "d806fc0a9a30d9718579b151f4a927e2073e86c9659dcebdd35385e7542e6c7a",
+  "model_provenance": {
+    "repo": "ggml-org/Qwen3.6-35B-A3B-GGUF",
+    "revision": "baec3ebee244827cda0f4557eafa8b28f7545fa6",
+    "file": "Qwen3.6-35B-A3B-Q8_0.gguf",
+    "bytes": 36903139328,
+    "sha256": "d8d7842cc657d720f39546878e431937c84473aa130c36371669ac17c80c7361"
+  },
+  "config": "server-config.json",
+  "requests_serial": true,
+  "reload_or_unload": false,
+  "thinking": false,
+  "sampling_temperature": 0
+}

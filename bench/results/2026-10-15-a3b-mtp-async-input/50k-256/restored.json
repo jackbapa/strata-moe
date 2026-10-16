@@ -1,0 +1,25 @@
+{
+  "server_pid": 39108,
+  "config_path": "G:\\Strata-Moe\\strata-a3b-iq3s-q6-kv-tier-f16-auto-native.json",
+  "config_sha256": "81467e45d11d366d9ff32af7a6b1043c877fa283e5b429eb93db12470929785e",
+  "binary_sha256": "a0a3deaec132200616e7db2c0a18e3cfd719575e660ce6a7d29af58f6c4d9c04",
+  "model": {
+    "id": "qwen3.6-35b-a3b-ud-iq3_s",
+    "object": "model",
+    "status": {
+      "value": "loaded"
+    },
+    "meta": {
+      "n_ctx": 262144
+    },
+    "architecture": {
+      "input_modalities": [
+        "text"
+      ],
+      "output_modalities": [
+        "text"
+      ]
+    }
+  },
+  "inherited_experiment_keys_removed": []
+}

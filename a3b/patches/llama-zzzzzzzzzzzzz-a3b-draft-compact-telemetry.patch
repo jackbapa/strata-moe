@@ -1,0 +1,68 @@
+--- a/src/models/qwen35moe.cpp
++++ b/src/models/qwen35moe.cpp
+@@ -30,7 +30,7 @@
+     for (uint32_t i = 0; i < ubatch.n_tokens; ++i) {
+         if (ubatch.output[i] && (!ubatch.seq_id || !ubatch.n_seq_id ||
+                                  ubatch.n_seq_id[i] != 1 || ubatch.seq_id[i][0] != 0))
+-            return false;
++            throw std::runtime_error("compact draft GPU sampler received an output outside sequence 0");
+     }
+     return true;
+ }
+--- a/src/llama-context.h
++++ b/src/llama-context.h
+@@ -48,6 +48,7 @@
+     friend void llama_mtp_device_prefill_host_disarm(llama_context * target);
+     friend int llama_mtp_device_prefill_host_restore(llama_context * target);
+     friend uint64_t llama_mtp_device_prefill_host_saved_bytes(const llama_context * target);
++    friend uint64_t llama_mtp_compact_gpu_sample_rows(const llama_context * draft);
+     friend int llama_mtp_device_chain_k2(llama_context * draft, llama_batch first,
+                                         llama_batch second, uint32_t width,
+                                         llama_token * tokens, float * guards,
+@@ -384,6 +385,9 @@
+     llm_graph_result_ptr gf_res_reserve;
+ 
+     llm_graph_result * gf_res_prev_active = nullptr;
++    // Count output rows whose successfully submitted graph actually used the
++    // compact I32 draft map. This is independent of the environment flag.
++    uint64_t mtp_compact_gpu_sample_rows = 0;
+ 
+     // Opt-in A3B MTP prefill bridge. The source tensor is valid only until
+     // the next target decode; all reads are enqueued on the target CUDA stream
+--- a/src/llama-context.cpp
++++ b/src/llama-context.cpp
+@@ -2522,6 +2522,11 @@
+                     ggml_backend_tensor_get_async(backend_h, t_h_nextn, embd_nextn_out, 0, n_rows*n_embd*sizeof(float));
+                 }
+             }
++        }
++
++        if (res->t_draft_to_token) {
++            for (const auto * sampled : res->t_sampled)
++                mtp_compact_gpu_sample_rows += sampled != nullptr;
+         }
+ 
+         if (has_samplers && !(mtp_device_chain.active && mtp_device_chain.first_step_output)) {
+@@ -4810,6 +4815,10 @@
+     return target ? target->mtp_prefill_host.saved_bytes : 0;
+ }
+ 
++uint64_t llama_mtp_compact_gpu_sample_rows(const llama_context * draft) {
++    return draft ? draft->mtp_compact_gpu_sample_rows : 0;
++}
++
+ float * llama_get_embeddings_layer_inp(llama_context * ctx, uint32_t lid) {
+     ctx->synchronize();
+ 
+--- a/src/llama-ext.h
++++ b/src/llama-ext.h
+@@ -123,6 +123,9 @@
+ LLAMA_API void llama_mtp_device_prefill_host_disarm(struct llama_context * target);
+ LLAMA_API int llama_mtp_device_prefill_host_restore(struct llama_context * target);
+ LLAMA_API uint64_t llama_mtp_device_prefill_host_saved_bytes(const struct llama_context * target);
++// Successfully submitted MTP sampling graph rows that retained compact logits
++// and used the I32 draft-to-full-ID GPU gather; zero on scatter/CPU paths.
++LLAMA_API uint64_t llama_mtp_compact_gpu_sample_rows(const struct llama_context * draft);
+ 
+ // Set whether the context outputs the input embeddings of a specific layer
+ LLAMA_API void llama_set_embeddings_layer_inp(struct llama_context * ctx, uint32_t lid, bool value);

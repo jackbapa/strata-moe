@@ -1,0 +1,27 @@
+{
+  "actual_exe_sha256": "2da62666608dc8c9005e654bb3d9c370d400b508e6ee5c4f509046ec4801ec62",
+  "config_sha256": "cc592e88bbc90a5f89c2ac968170857b0980da30fee3ac20d036e70ec7c8395f",
+  "engine_pid": 40412,
+  "engine_execution_env": {
+    "CUDA_VISIBLE_DEVICES": "0",
+    "STRATA_A3B_NATIVE_EXPERT_REUSE": "0",
+    "STRATA_A3B_EXPERT_Q8_REUSE": "0",
+    "STRATA_A3B_DENSE_Q8_REUSE": "1",
+    "STRATA_A3B_ARGMAX_MULTI": "1",
+    "STRATA_A3B_ATTENTION_MASK_REUSE": "1"
+  },
+  "optional_features": {
+    "prefill_cpu_share": true,
+    "mtp_fused_rounds": false
+  },
+  "service_cohort_plan": "G:\\Strata-Moe\\bench\\results\\2026-10-15-a3b-q8-tuned-api\\measurements-share\\plan.json",
+  "service_cohort_plan_sha256": "8131501da7fd6e8f0c77c4ea67ab13a165c3a30642af9d4a35ac09e6ecef5d8b",
+  "service_context_scope": "Previously recorded share-service identity; generic supplement did not re-query process identity or resource peaks.",
+  "sampling_defaults": {
+    "temperature": 0.7,
+    "top_p": 0.8,
+    "top_k": 20
+  },
+  "verified_request_seed": 12345,
+  "prior_requests": 12
+}

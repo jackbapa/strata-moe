@@ -1,0 +1,106 @@
+{
+  "pass": true,
+  "order": [
+    "all_on",
+    "no_gu",
+    "no_down",
+    "all_on",
+    "no_q6",
+    "no_kv",
+    "all_on",
+    "no_kv",
+    "no_q6",
+    "all_on",
+    "no_down",
+    "no_gu",
+    "all_on"
+  ],
+  "exact_output_and_proposals": true,
+  "output_sha256": "03fc938322f153aa7f2b93b062ffc6b820b034322ac86a5b8fceb7d7758a1bf7",
+  "mtp_proposal_trace_sha256": "caaeb4a554ee8a94241b8cf03db0d562b62706917635af1b344496a086b4ea8a",
+  "mtp_offered_tokens": 238,
+  "mtp_accepted_tokens": 136,
+  "gpu_memory_scope": "sampled whole GPU 0, not process-attributed",
+  "arms": {
+    "all_on": {
+      "runs": 5,
+      "http_response_first_byte_s_median": 0.018997500010300428,
+      "ttft_any_content_or_reasoning_s_median": 28.605599400005303,
+      "engine_prompt_tokens_per_s_median": 1755.8,
+      "engine_predicted_tokens_per_s_median": 83.0,
+      "gpu0_total_used_mib_observed_peak_median": 17103,
+      "strata_native_calls_request_decode_median": 4998
+    },
+    "no_gu": {
+      "runs": 2,
+      "http_response_first_byte_s_median": 0.009544799991999753,
+      "ttft_any_content_or_reasoning_s_median": 28.340599999995902,
+      "engine_prompt_tokens_per_s_median": 1776.85,
+      "engine_predicted_tokens_per_s_median": 82.15,
+      "gpu0_total_used_mib_observed_peak_median": 17103.0,
+      "strata_native_calls_request_decode_median": 4998.0
+    },
+    "no_down": {
+      "runs": 2,
+      "http_response_first_byte_s_median": 0.014598700014175847,
+      "ttft_any_content_or_reasoning_s_median": 28.514401700012968,
+      "engine_prompt_tokens_per_s_median": 1764.9499999999998,
+      "engine_predicted_tokens_per_s_median": 80.7,
+      "gpu0_total_used_mib_observed_peak_median": 17103.0,
+      "strata_native_calls_request_decode_median": 4998.0
+    },
+    "no_q6": {
+      "runs": 2,
+      "http_response_first_byte_s_median": 0.01416109999991022,
+      "ttft_any_content_or_reasoning_s_median": 28.65329185000155,
+      "engine_prompt_tokens_per_s_median": 1754.6,
+      "engine_predicted_tokens_per_s_median": 82.15,
+      "gpu0_total_used_mib_observed_peak_median": 17103.0,
+      "strata_native_calls_request_decode_median": 4998.0
+    },
+    "no_kv": {
+      "runs": 2,
+      "http_response_first_byte_s_median": 0.014394099998753518,
+      "ttft_any_content_or_reasoning_s_median": 29.63898685001186,
+      "engine_prompt_tokens_per_s_median": 1693.55,
+      "engine_predicted_tokens_per_s_median": 79.5,
+      "gpu0_total_used_mib_observed_peak_median": 17119.0,
+      "strata_native_calls_request_decode_median": 5116.0
+    }
+  },
+  "conditional_contrasts": {
+    "no_gu": {
+      "http_response_first_byte_s_all_on_minus_without": 0.009452700018300675,
+      "ttft_any_content_or_reasoning_s_all_on_minus_without": 0.26499940000940114,
+      "engine_prompt_tokens_per_s_all_on_minus_without": -21.049999999999955,
+      "engine_predicted_tokens_per_s_all_on_minus_without": 0.8499999999999943,
+      "gpu0_total_used_mib_observed_peak_all_on_minus_without": 0.0,
+      "strata_native_calls_request_decode_all_on_minus_without": 0.0
+    },
+    "no_down": {
+      "http_response_first_byte_s_all_on_minus_without": 0.0043987999961245805,
+      "ttft_any_content_or_reasoning_s_all_on_minus_without": 0.0911976999923354,
+      "engine_prompt_tokens_per_s_all_on_minus_without": -9.149999999999864,
+      "engine_predicted_tokens_per_s_all_on_minus_without": 2.299999999999997,
+      "gpu0_total_used_mib_observed_peak_all_on_minus_without": 0.0,
+      "strata_native_calls_request_decode_all_on_minus_without": 0.0
+    },
+    "no_q6": {
+      "http_response_first_byte_s_all_on_minus_without": 0.004836400010390207,
+      "ttft_any_content_or_reasoning_s_all_on_minus_without": -0.04769244999624789,
+      "engine_prompt_tokens_per_s_all_on_minus_without": 1.2000000000000455,
+      "engine_predicted_tokens_per_s_all_on_minus_without": 0.8499999999999943,
+      "gpu0_total_used_mib_observed_peak_all_on_minus_without": 0.0,
+      "strata_native_calls_request_decode_all_on_minus_without": 0.0
+    },
+    "no_kv": {
+      "http_response_first_byte_s_all_on_minus_without": 0.00460340001154691,
+      "ttft_any_content_or_reasoning_s_all_on_minus_without": -1.0333874500065576,
+      "engine_prompt_tokens_per_s_all_on_minus_without": 62.25,
+      "engine_predicted_tokens_per_s_all_on_minus_without": 3.5,
+      "gpu0_total_used_mib_observed_peak_all_on_minus_without": -16.0,
+      "strata_native_calls_request_decode_all_on_minus_without": -118.0
+    }
+  },
+  "interpretation": "Leave-one-out differences are conditional on the other three switches being on; interactions and run noise are not separated."
+}

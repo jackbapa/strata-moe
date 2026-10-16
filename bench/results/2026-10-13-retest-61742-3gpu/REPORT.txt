@@ -1,0 +1,52 @@
+2026-10-13，三卡并发复测（本机，Asia/Shanghai）
+
+结果：本轮未复现 GPU 超时或蓝屏。25 个请求全部完成，无 API 错误。
+包括单路 4K、两路 4K，以及连续四组三路 4K 新输入；每个三路长输入请求
+约 4046–4047 tokens，最多生成 128 tokens。三轮短输入各三路、每路最多
+256 输出 tokens。温度 0，thinking 关闭，输入首部添加不同标签避免缓存复用。
+含加载、预热、请求和最后空闲检查共约 160.4 秒，非长期稳定性测试。
+
+硬件：3 x RTX 2080 Ti 22GiB；Threadripper 3960X；128GB RAM；Windows Server 2022。
+当前驱动：617.42；Strata 引擎 0.1.43，模型 IQ3_S，原有模型文件。
+配置：三卡 layer_split=auto，固定 GPU 0,1,2；parallel=3；batch-groups=3；
+64K 上下文；prefill=2048；三卡显存预留均 1536MiB；6 个 CPU 工作线程；
+int8 KV，32768 resident KV cells；spec=4；vision 保持开启。
+没有启动三个模型副本，没有 resident-experts，也没有调整驱动、TDR、时钟或功耗。
+
+测量：
+  三路短请求，每路解码中位数 40.1 tok/s。
+  三轮短请求整体吞吐 90.0、100.4、102.7 tok/s，中位数 100.4 tok/s。
+  三路约 4K 新输入，四组每路解码总体中位数 17.8 tok/s。
+  四组长输入整体吞吐中位数 24.2 tok/s，包含输入读取和请求开销。
+  整体吞吐不是每路解码速度之和。
+
+监测：
+  API /metrics 实际观察到 running=3，parallel=3。
+  全程最少可用 RAM：58.07GiB。
+  nvidia-smi 采样中，各卡最少剩余显存：1989MiB。
+  nvidia-smi 采样最高温度：82 摄氏度。
+  测试时段新 nvlddmkm 事件：0；事件查询错误：0。
+  未触发 RAM/VRAM、温度、GPU 查询失败或无进展保护条件。
+  系统启动时间保持 19:51:40，未发生重启。
+  结束后 /health: status=ok, loaded=true, max_context=65536。
+
+与上次的关系：
+  原蓝屏发生在 591.44 驱动 + 三个单卡 resident 副本的长输入测试中。
+  原三卡层切分三并发短测本来就通过，本次改为 617.42 + 较小输入分块 +
+  较大显存预留，多个因素同时变化。因此本轮不能证明仅驱动升级就解决了问题，
+  也不能声称精确重跑了原蓝屏条件。本轮验证的是当前候选配置是否再次触发该故障。
+  上次层切分短请求整体吞吐为 111.6 tok/s，本轮为 100.4 tok/s，但不构成
+  单一参数的因果比较；提示词标签、驱动、分块、预留、时钟状态均可能影响结果。
+
+原因判断：
+  此前两份小转储均定位 NVIDIA 内核驱动 nvlddmkm.sys 的 ISR/DPC 超时。
+  本轮没有提供新的失败样本，底层驱动缺陷、GPU/PCIe 状态或引擎交互触发因素
+  仍未被单独隔离。可以确认旧故障经过 NVIDIA 驱动内核路径，不能确认显卡损坏，
+  也不能将旧故障简单等同于 CPU 算力不足或 RAM 耗尽。
+
+当前服务已保留运行：http://127.0.0.1:8080，三个并发槽位。
+运行配置为本目录 run-config.json，与主配置的计算参数相同，日志输出到本目录。
+后续用 G:\Strata\run-iq3_s.bat 启动时读取主配置 G:\Strata\strata-iq3_s.json。
+
+原始数据：results.json、summary.json、requests.jsonl、telemetry.jsonl。
+引擎日志：engine.log；服务日志：server.log；测试过程：progress.log。

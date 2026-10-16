@@ -1,0 +1,149 @@
+{
+  "audited_utc": "2026-10-14T16:32:26.675577+00:00",
+  "status": "PASS",
+  "requests": 12,
+  "actual_exe_sha256": "465345b125e6cd5907ebd0b544c0e57b4172a3a26ea28f48103c263907795891",
+  "execution_env": {
+    "CUDA_VISIBLE_DEVICES": "0",
+    "STRATA_A3B_NATIVE_EXPERT_REUSE": "0",
+    "STRATA_A3B_EXPERT_Q8_REUSE": "0",
+    "STRATA_A3B_DENSE_Q8_REUSE": "1",
+    "STRATA_A3B_ARGMAX_MULTI": "1"
+  },
+  "cases": [
+    {
+      "case_id": "heldout-python-bfs",
+      "trials": 3,
+      "actual_prompt_tokens": [
+        160
+      ],
+      "actual_completion_tokens": [
+        512,
+        512,
+        512
+      ],
+      "pooled_mtp_accepted": 1169,
+      "pooled_mtp_offered": 1385,
+      "pooled_mtp_acceptance": 0.844043321299639,
+      "distinct_output_files": 1,
+      "cpu_decode_projection_rows": 447909,
+      "gpu_decode_projection_rows": 1231131,
+      "runs": 3,
+      "http_response_first_byte_s_median": 0.010953899996820837,
+      "http_headers_received_s_median": 0.011094600005890243,
+      "body_first_bytes_s_median": 0.011332099995343015,
+      "ttft_any_content_or_reasoning_s_median": 1.3550872999912826,
+      "ttft_visible_content_s_median": 1.3550872999912826,
+      "engine_prompt_tokens_per_s_median": 120.8,
+      "engine_predicted_tokens_per_s_median": 61.0,
+      "client_usage_decode_tokens_per_s_median": 60.91384838785016,
+      "total_response_s_median": 9.791339499992318
+    },
+    {
+      "case_id": "heldout-chinese-transactions",
+      "trials": 3,
+      "actual_prompt_tokens": [
+        123
+      ],
+      "actual_completion_tokens": [
+        336,
+        336,
+        336
+      ],
+      "pooled_mtp_accepted": 488,
+      "pooled_mtp_offered": 757,
+      "pooled_mtp_acceptance": 0.6446499339498019,
+      "distinct_output_files": 1,
+      "cpu_decode_projection_rows": 169404,
+      "gpu_decode_projection_rows": 1055556,
+      "runs": 3,
+      "http_response_first_byte_s_median": 0.011458199995104223,
+      "http_headers_received_s_median": 0.011574299991480075,
+      "body_first_bytes_s_median": 0.011804399997345172,
+      "ttft_any_content_or_reasoning_s_median": 1.2503286999999546,
+      "ttft_visible_content_s_median": 1.2503286999999546,
+      "engine_prompt_tokens_per_s_median": 100.8,
+      "engine_predicted_tokens_per_s_median": 51.2,
+      "client_usage_decode_tokens_per_s_median": 51.51769911316866,
+      "total_response_s_median": 7.804939100009506
+    },
+    {
+      "case_id": "prompt32-output256",
+      "trials": 3,
+      "actual_prompt_tokens": [
+        32
+      ],
+      "actual_completion_tokens": [
+        256,
+        256,
+        256
+      ],
+      "pooled_mtp_accepted": 424,
+      "pooled_mtp_offered": 809,
+      "pooled_mtp_acceptance": 0.5241038318912238,
+      "distinct_output_files": 1,
+      "cpu_decode_projection_rows": 283902,
+      "gpu_decode_projection_rows": 820098,
+      "runs": 3,
+      "http_response_first_byte_s_median": 0.0013837000005878508,
+      "http_headers_received_s_median": 0.0014990000054240227,
+      "body_first_bytes_s_median": 0.0016801000019768253,
+      "ttft_any_content_or_reasoning_s_median": 0.8231436000060057,
+      "ttft_visible_content_s_median": 0.8231436000060057,
+      "engine_prompt_tokens_per_s_median": 39.7,
+      "engine_predicted_tokens_per_s_median": 45.5,
+      "client_usage_decode_tokens_per_s_median": 45.41140462006504,
+      "total_response_s_median": 6.445195899999817
+    },
+    {
+      "case_id": "prompt2048-output256",
+      "trials": 3,
+      "actual_prompt_tokens": [
+        2048
+      ],
+      "actual_completion_tokens": [
+        256,
+        256,
+        256
+      ],
+      "pooled_mtp_accepted": 403,
+      "pooled_mtp_offered": 731,
+      "pooled_mtp_acceptance": 0.5512995896032832,
+      "distinct_output_files": 1,
+      "cpu_decode_projection_rows": 280602,
+      "gpu_decode_projection_rows": 768678,
+      "runs": 3,
+      "http_response_first_byte_s_median": 0.011503299989271909,
+      "http_headers_received_s_median": 0.011628899999777786,
+      "body_first_bytes_s_median": 0.011863400010042824,
+      "ttft_any_content_or_reasoning_s_median": 3.803177299996605,
+      "ttft_visible_content_s_median": 3.803177299996605,
+      "engine_prompt_tokens_per_s_median": 543.1,
+      "engine_predicted_tokens_per_s_median": 46.3,
+      "client_usage_decode_tokens_per_s_median": 46.190573721179376,
+      "total_response_s_median": 9.318925599989598
+    }
+  ],
+  "resources": {
+    "interval_s": 1.0,
+    "samples": 96,
+    "errors": [],
+    "scope": "Periodic samples during the resident API test, including before/after. Sampled GPU maxima are not absolute instantaneous peaks. Windows peak_wset is OS process-lifetime physical working-set peak; private commitment is not RAM.",
+    "sampled_rss_max_bytes": 36670648320,
+    "os_lifetime_working_set_peak_bytes": 36706398208,
+    "sampled_system_used_max_bytes": 53614952448,
+    "sampled_gpu_used_max_mib": {
+      "0": 22025,
+      "1": 51,
+      "2": 0
+    }
+  },
+  "counter_assertions": "doorbell/static calls positive and equal; both actual CPU/GPU decode projection rows positive; pool jobs*3=CPU rows; decode route reads=0; decode expert weight upload=0.0MiB; counts/times/MTP match engine DONE-derived SSE; fixed-map hit/miss ownership; no decode decay",
+  "limitations": [
+    "SSE deltas can contain MTP bursts; output rate uses token usage and first/last nonempty-text times, not event count.",
+    "Resource sampling starts after model readiness; sampled GPU maximum is not a continuous instantaneous peak.",
+    "CPU pool phases are decode-only; doorbell callback/mailbox fields include the whole request.",
+    "Only two natural heldout tasks, and no broad model-quality evaluation.",
+    "An old/new executable comparison cannot isolate the native expert reuse environment setting."
+  ]
+}

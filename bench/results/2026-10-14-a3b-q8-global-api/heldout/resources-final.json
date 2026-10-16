@@ -1,0 +1,28 @@
+{
+  "pid": 32264,
+  "memory": {
+    "rss": 36490305536,
+    "vms": 60385853440,
+    "num_page_faults": 9209659,
+    "peak_wset": 36490383360,
+    "wset": 36490305536,
+    "peak_paged_pool": 2143920,
+    "paged_pool": 2143344,
+    "peak_nonpaged_pool": 91680,
+    "nonpaged_pool": 91272,
+    "pagefile": 60385853440,
+    "peak_pagefile": 60864016384,
+    "private": 60385853440
+  },
+  "system_memory": {
+    "total": 137300127744,
+    "available": 84033499136,
+    "percent": 38.8,
+    "used": 53266628608,
+    "free": 84033499136
+  },
+  "exe_sha256": "fb650108979dca5f6b5d9202409cf63ac73c2d1ea5498826dd213e4ada337456",
+  "config_sha256": "3474d3a417706748b8785536dce1c2c2e6cd28ea1c0058f2c4e4fc992f5c8609",
+  "gpu": "0, 21867 MiB, 22528 MiB\n1, 172 MiB, 22528 MiB\n2, 0 MiB, 22528 MiB\n",
+  "note": "Post-six-heldout resident snapshot; VRAM current, not continuous peak. Windows process peak_wset is lifetime physical working-set peak."
+}

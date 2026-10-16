@@ -1,0 +1,43 @@
+{
+  "captured_at": "2026-10-14T06:08:49.033815+00:00",
+  "files_sha256": {
+    "build-a3b/bin/strata-moe.exe": "5efc81275af3d150242c4c72342f0e52394c6e29c30a6bf8cb7df9b24dd92753",
+    "a3b/backend.cpp": "597e6abf13d5a5ecb3f99087389304a0a1c54bcc6b119e2250b3e21ba32d76e9",
+    "a3b/backend.hpp": "b4748f2ef1e796edd400fa7b030e91d6dd93c0d5a424c5702ba6e21cc6b0ebb3",
+    "a3b/CMakeLists.txt": "1ebf90c29f61fd1bd111418d112e719d95103c2a8da3750ffc46aab44c992aa4",
+    "a3b/main.cpp": "0f54710ac23db2309ad32e01d96bfed675089bf26a5a7269224d8582fb289d8f",
+    "a3b/parity.cpp": "6bd7493a2765ff29e6abe8d1be6faada9853325c5e0433cde77a4c97e0619b9b",
+    "a3b/speculative.cpp": "005f1739b6b1859a54316a4549377bbf3ac715d20ed5249573fe00febf88e1f0",
+    "a3b/speculative.hpp": "f446bed81304755a54740cea461051a0847b6b47ba99b0302862457d95ced870",
+    "a3b/speculative_test.cpp": "9e9ee6e52dfd72376b49718167ca82924128a5182e8f3b67a6ae96169ebf0dbc",
+    "tools/bench_a3b.py": "8bbed643d002853794687997d3e8f151d1658248ffd7d9ba1b4b2cbc383dd9eb",
+    "tools/a3b.py": "29f5b50ad09444075f20e16ed595637dfc9d904ae8f8c3d97bb9a015df16e642"
+  },
+  "source_note": "Source/executable hashes captured during the first final-candidate run; model/MTP hashes follow after all performance runs to avoid file-reading interference.",
+  "hardware": {
+    "cpu": "AMD Threadripper 3960X 24 physical cores / 48 logical",
+    "ram_GiB": 128,
+    "gpu": "GPU 0 RTX 2080 Ti reporting 22 GiB",
+    "os": "Windows, WDDM",
+    "other_service": "Unrelated WSL service on GPU 1 left running"
+  },
+  "model_files": {
+    "models/a3b/Qwen3.6-35B-A3B-UD-Q5_K_M.gguf": {
+      "bytes": 26456194016,
+      "sha256": "c13ce26253ea334df472bd8fbd2d6da66d8a41195c17f6fcbf44c4d20ece0932"
+    },
+    "models/a3b/mtp-Qwen3.6-35B-A3B-Q8_0.gguf": {
+      "bytes": 1990649632,
+      "sha256": "f6cb995fab78e7284097b2e13508e8daad4ffc6a747b433aef399f4e48524b5a"
+    }
+  },
+  "model_hashes_completed_at": "2026-10-14T06:10:56.601873+00:00",
+  "llama_cpp_revision": "3cf03257f219afbe7334045ff7c6a06ac68c627d",
+  "gpu_inventory": [
+    "0, NVIDIA GeForce RTX 2080 Ti, 617.42, 22528 MiB",
+    "1, NVIDIA GeForce RTX 2080 Ti, 617.42, 22528 MiB",
+    "2, NVIDIA GeForce RTX 2080 Ti, 617.42, 22528 MiB"
+  ],
+  "prompt_sha256": "22f016ed4590a69122b787a8fd497bf128b5da0abb753476b7ef4f39f92d6c46",
+  "benchmark_method": "3 sequential fresh processes per arm, baseline first then MTP; 23 prompt tokens and 256 generated tokens, greedy; decode counters exclude model load and prefill; host sampled every 0.1s plus Windows peak_wset, GPU polled every 0.5s plus nvidia-smi latency"
+}

@@ -1,0 +1,223 @@
+{
+  "status": "complete",
+  "stages": [],
+  "config": {
+    "exe": "G:\\Strata\\engine\\strata.exe",
+    "args": [
+      "--pack",
+      "G:\\Strata-data\\packs\\iq3_s",
+      "--native",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "--ple-gguf",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00002-of-00002.gguf",
+      "--expert-profile",
+      "G:\\Strata\\data\\expert-profile.bin",
+      "--expert-cache",
+      "auto",
+      "--prefill",
+      "8192",
+      "--spec",
+      "4",
+      "--mtp",
+      "G:\\Strata-data\\mtp\\rt",
+      "--max-context",
+      "262144",
+      "--kv",
+      "int8",
+      "--kv-resident",
+      "32768",
+      "--vision",
+      "--vram-reserve-mib",
+      "1536",
+      "--vram-reserve-later-mib",
+      "1536",
+      "--pcie-frac",
+      "0.75",
+      "--spec-min-p",
+      "0.70",
+      "--pool-workers",
+      "6",
+      "--batch-groups",
+      "3"
+    ],
+    "cwd": "G:\\Strata",
+    "tokenizer": "G:\\Strata-data\\packs\\iq3_s\\tokenizer",
+    "model_name": "qwen3.8-flash-next-iq3_s",
+    "log": "G:\\Strata\\strata-iq3_s.log",
+    "lib_dirs": [
+      "G:\\Strata\\.venv\\Lib\\site-packages\\nvidia\\cu13\\bin\\x86_64"
+    ],
+    "port": 8080,
+    "host": "127.0.0.1",
+    "parallel": 3,
+    "gpu": [
+      0,
+      1,
+      2
+    ],
+    "gpus_asked": true,
+    "gpu_order": "as_given",
+    "layer_split": "auto",
+    "vision": {
+      "exe": "G:\\Strata\\engine\\strata-vision.exe",
+      "mmproj": "G:\\Strata-data\\models\\mmproj-Qwen3.8-Flash-Next-BF16.gguf",
+      "model": "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "gpu": true,
+      "max_tokens": 1024
+    }
+  },
+  "health": {
+    "status": "ok",
+    "max_context": 262144,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "images": true,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  },
+  "slots": [
+    {
+      "id": 0,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 22
+    },
+    {
+      "id": 1,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 22
+    },
+    {
+      "id": 2,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 22
+    }
+  ],
+  "output_cap": 1024,
+  "input_target": 32768,
+  "context_limit": 262144,
+  "max_observed_running": 3,
+  "summary": {
+    "status": "complete",
+    "wall_s": 90.99085290000039,
+    "output_tokens": 3072,
+    "end_to_end_output_tok_s": 33.7616353962101,
+    "common_window_s": 27.636688649999996,
+    "common_start_since_submission_s": 62.13457565000135,
+    "common_end_since_submission_s": 89.77126430000135,
+    "common_start_tokens": {
+      "0": 76,
+      "1": 75,
+      "2": 73
+    },
+    "common_end_tokens": {
+      "0": 986,
+      "1": 985,
+      "2": 983
+    },
+    "common_per_slot_tok_s": {
+      "0": 32.92724434263944,
+      "1": 32.92724434263944,
+      "2": 32.92724434263944
+    },
+    "common_total_tok_s": 98.78173302791832,
+    "requests": [
+      {
+        "first": 39.70630380000148,
+        "total": 90.95419899999979,
+        "text": "1. The orbit of the copper planet is tracked by a signal that pulses through the canyon. This signal is often mistaken for the natural resonance of the stone formations nearby.\n2. A velvet curtain hangs over the entrance to the market, shielding the anchor from the wind. The anchor itself is made of iron and rests heavily on the cobblestones.\n3. The lantern flickers in the meadow, casting long shadows across the garden. These shadows dance in rhythm with the violet flowers that bloom in the spring.\n4. Stone walls enclose the garden, providing a stark contrast to the soft velvet of the cushions. The velvet is dyed a deep purple, reminiscent of the violet sky at dusk.\n5. The market is bustling with activity, as vendors sell their wares under the glow of lanterns. Each lantern is suspended from a hook attached to the stone archway.\n6. An ember glows in the fireplace, providing warmth to the room filled with velvet drapes. The velvet is thick and luxurious, absorbing the light from the ember.\n7. The signal from the tower is clear and strong, guiding ships to the harbor. The harbor is lined with stone docks that have weathered many storms.\n8. A violet flower grows in the crack of the stone wall, defying the harsh environment. Its petals are delicate, contrasting with the rough texture of the stone.\n9. The anchor is dropped into the water, creating ripples that disturb the reflection of the lantern. The lantern is mounted on a post at the edge of the dock.\n10. The meadow is covered in a blanket of frost, making the grass look like silver. The silver grass contrasts with the dark stone of the nearby ruins.\n11. The garden is meticulously maintained, with each plant placed in its designated spot. The soil is rich and dark, supporting the growth of the violet blooms.\n12. The market stalls are arranged in a circular pattern, with the anchor at the center. The anchor serves as a focal point for the gathering of merchants.\n13. The ember in the forge is hot enough to melt the copper ore being worked. The copper is shaped into intricate designs that adorn the market stalls.\n14. The signal is sent via a series of mirrors, reflecting the light of the sun. The mirrors are polished to a high shine, ensuring the signal is visible from afar.\n15. The stone bridge spans the river, connecting the two sides of the town. The bridge is old and sturdy, having stood for centuries without repair.\n16. The velvet robe is worn by the mayor, signifying his authority and status. The velvet is embroidered with gold thread, adding to its regal appearance.\n17. The lantern is lit at dusk, illuminating the path through the garden. The light is warm and inviting, encouraging visitors to explore the grounds.\n18. The violet dye is extracted from the petals of the flower, used to color the fabric. The process is labor-intensive, requiring careful handling of the delicate petals.\n19. The anchor is inspected regularly for signs of wear and tear. Any damage is repaired immediately to ensure the safety of the vessels.\n20. The meadow is home to a variety of wildlife, including deer and rabbits. The animals graze peacefully, undisturbed by the human presence nearby.\n21. The garden is a sanctuary for birds, providing them with food and shelter. The trees are planted in rows, creating a natural canopy for the birds to nest in.\n22. The market is open from dawn until dusk, allowing for maximum customer traffic. The vendors are friendly and eager to share their products with the public.\n23. The ember is carefully tended to, ensuring it remains at the optimal temperature. The blacksmith uses the ember to forge tools and weapons for the community.\n24. The signal is received by the watchtower, where it is decoded and acted upon. The watchtower is manned by guards who are trained to respond quickly to threats.\n25. The stone quarry is located on the edge of the town, providing raw materials for construction. The quarry is operated by skilled workers who extract the stone with precision.\n26. The velvet is used to upholster the furniture in the town hall, adding a touch of elegance. The furniture is designed to be both comfortable and durable.\n27. The lantern is carried by the night watchman, who patrols the streets to ensure safety. The lantern is fueled by oil, which is replenished each night.\n28. The violet is a symbol of royalty, often associated with power and prestige. The color is used in the banners and flags of the ruling family.\n29. The anchor is made of iron, which is resistant to corrosion and rust. The iron is sourced from local mines, ensuring a steady supply for the shipyards.\n30. The meadow is used for grazing livestock",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 19385.8,
+          "prompt_per_token_ms": 0.592,
+          "prompt_per_second": 1690.3,
+          "predicted_n": 1024,
+          "predicted_ms": 51008.8,
+          "predicted_per_token_ms": 49.813,
+          "predicted_per_second": 20.1,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 995,
+        "tag": "A",
+        "client_start": 8515.7313968,
+        "client_end": 8606.6864635
+      },
+      {
+        "first": 59.64829079999981,
+        "total": 90.98305209999853,
+        "text": "1. The orbit of the copper planet is tracked by a signal that pulses through the canyon. This celestial movement is recorded in a ledger that sits on a velvet cushion.\n2. A stone anchor rests at the bottom of the harbor, holding the market steady. The lantern above it flickers with a violet hue, casting long shadows.\n3. The garden is filled with quartz crystals that reflect the winter sun. A needle lies in the meadow, waiting for the next season to arrive.\n4. Ember lights the path through the velvet forest, guiding travelers. The signal from the tower warns of an approaching storm.\n5. The market stalls are covered in velvet cloth to protect the goods. A copper coin is exchanged for a stone carved with ancient symbols.\n6. The anchor is made of iron, but it is wrapped in velvet rope. The lantern hangs from a hook, swinging gently in the breeze.\n7. Violet flowers bloom in the garden, attracting bees and butterflies. The stone path winds through the meadow, leading to the harbor.\n8. The signal is a bright flash of light, visible from miles away. The ember glows softly in the darkness, providing warmth.\n9. The canyon walls are made of red stone, towering over the river. The market is located at the base of the canyon, bustling with activity.\n10. The anchor is heavy and rusted, having been in the water for years. The lantern is fueled by oil, burning steadily through the night.\n11. The garden is enclosed by a stone wall, keeping out intruders. The meadow is lush and green, perfect for grazing animals.\n12. The signal is a coded message, sent via a series of flashes. The ember is the last remnant of a large fire that burned out.\n13. The canyon is narrow and deep, with steep sides. The market is open only during the day, closing at sunset.\n14. The anchor is used to secure boats in the harbor. The lantern is a beacon for ships navigating the dark waters.\n15. The garden is a place of peace and tranquility. The meadow is a place of play and freedom.\n16. The signal is a warning of danger, urging people to take cover. The ember is a source of hope, promising a new beginning.\n17. The canyon is a natural wonder, formed by millions of years of erosion. The market is a hub of commerce, where goods are bought and sold.\n18. The anchor is a symbol of stability and security. The lantern is a symbol of guidance and illumination.\n19. The garden is a place of beauty and inspiration. The meadow is a place of rest and relaxation.\n20. The signal is a call to action, urging people to unite. The ember is a symbol of resilience and strength.\n21. The canyon is a place of mystery and adventure. The market is a place of exchange and interaction.\n22. The anchor is a tool for navigation and safety. The lantern is a tool for visibility and awareness.\n23. The garden is a place of growth and renewal. The meadow is a place of abundance and plenty.\n24. The signal is a message of peace and harmony. The ember is a message of warmth and comfort.\n25. The canyon is a place of solitude and reflection. The market is a place of community and connection.\n26. The anchor is a reminder of the power of the sea. The lantern is a reminder of the power of light.\n27. The garden is a reminder of the beauty of nature. The meadow is a reminder of the simplicity of life.\n28. The signal is a reminder of the importance of communication. The ember is a reminder of the importance of survival.\n29. The canyon is a reminder of the grandeur of the earth. The market is a reminder of the complexity of society.\n30. The anchor is a reminder of the need for stability. The lantern is a reminder of the need for direction.\n31. The garden is a reminder of the joy of creation. The meadow is a reminder of the joy of existence.\n32. The signal is a reminder of the power of information. The ember is a reminder of the power of energy.\n33. The canyon is a reminder of the scale of time. The market is a reminder of the pace of life.\n34. The anchor is a reminder of the weight of responsibility. The lantern is a reminder of the light of knowledge.\n35. The garden is a reminder of the cycle of seasons. The meadow is a reminder of the rhythm of nature.\n36. The signal is a reminder of the urgency of the moment. The ember is a reminder of the persistence of life.\n37. The canyon is a reminder of the depth of history",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 19532.9,
+          "prompt_per_token_ms": 0.596,
+          "prompt_per_second": 1677.6,
+          "predicted_n": 1024,
+          "predicted_ms": 31075.4,
+          "predicted_per_token_ms": 30.347,
+          "predicted_per_second": 33.0,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 988,
+        "tag": "B",
+        "client_start": 8515.732328,
+        "client_end": 8606.7161064
+      },
+      {
+        "first": 19.826308300000164,
+        "total": 90.91975470000034,
+        "text": "1. The orbit of the copper planet is tracked by a signal that pulses through the canyon. This celestial movement is recorded in a ledger that sits on the velvet cushion.\n2. A stone anchor rests at the bottom of the harbor, holding the lantern steady against the tide. The violet light from the lantern reflects off the water, creating a shimmering path.\n3. The market stalls are lined with velvet fabrics that flutter in the winter wind. Merchants shout their prices while holding copper scales to weigh the goods.\n4. An ember glows softly in the center of the garden, providing warmth to the surrounding stone walls. The violet flowers bloom despite the cold, defying the season's chill.\n5. The needle pierces through the thick wool, stitching together a patchwork of colors. Each stitch is a small act of creation, binding the fabric into a cohesive whole.\n6. A quartz crystal sits on the windowsill, catching the morning light and scattering it across the room. The facets of the stone reveal hidden depths within its clear structure.\n7. The river flows swiftly past the canyon walls, carrying sediment and secrets downstream. Its current is strong, shaping the landscape over centuries of relentless motion.\n8. A velvet curtain hangs heavy in the doorway, blocking out the harsh glare of the sun. The fabric absorbs sound, creating a quiet sanctuary within the room.\n9. The anchor chain rattles against the hull of the ship, a rhythmic sound of security. It holds the vessel firm against the pull of the ocean currents.\n10. Copper pipes run along the ceiling, carrying water to the various rooms of the house. Their metallic sheen contrasts with the rough texture of the stone walls.\n11. The signal tower stands tall on the hill, broadcasting messages to distant lands. Its antenna reaches toward the sky, capturing and transmitting invisible waves.\n12. A lantern swings gently from the branch of an old oak tree in the meadow. Its light flickers, casting long shadows across the grassy expanse.\n13. The violet hue of the twilight sky blends seamlessly with the darkening horizon. Stars begin to appear, one by one, as the day fades into night.\n14. Stone steps lead up to the entrance of the ancient temple, worn smooth by countless feet. Each step tells a story of those who came before, seeking wisdom.\n15. The market square is bustling with activity, vendors calling out to attract customers. The air is thick with the scent of spices and fresh bread.\n16. An ember from the campfire is carefully placed in a metal container for safe transport. It represents the warmth and safety of the group's journey.\n17. The garden is meticulously maintained, with rows of vegetables and herbs neatly arranged. The soil is rich and dark, nourishing the plants that grow within it.\n18. A needle is threaded with strong silk, ready to repair a tear in the sail. The sailor works quickly, knowing that the wind will soon return.\n19. Quartz formations glitter in the cave, illuminated by the beam of a flashlight. The crystals are millions of years old, formed under immense pressure.\n20. The river bends around a large boulder, creating a small eddy where fish gather. The water is clear, allowing one to see the stones on the bottom.\n21. Velvet upholstery covers the seats of the old theater, worn but still comfortable. The fabric has absorbed the sounds of applause and laughter over the years.\n22. The anchor is raised from the seabed, dripping with seaweed and small creatures. It is stowed away, ready for the next voyage across the sea.\n23. Copper coins are counted carefully by the merchant, ensuring the correct amount is paid. The weight of the metal signifies the value of the transaction.\n24. The signal is received clearly, despite the interference from the storm. The operator adjusts the dial, fine-tuning the frequency for better clarity.\n25. A lantern is lit in the window, signaling that the house is occupied and safe. The warm glow invites passersby to feel a sense of community.\n26. Violet dyes are mixed in a large vat, creating a rich color for the textiles. The process is labor-intensive, requiring patience and skill.\n27. Stone tools are used to carve intricate designs into the wooden beams. The craftsmanship is evident in the precision of the cuts and curves.\n28. The market closes for the night, with stalls being packed away and covered. The silence that follows is a stark contrast to the daytime chaos.\n29. An ember is blown upon gently, causing it to flare up into a small flame. This simple act can start a fire, providing heat and light.\n30. The garden is enclosed by a high wall, protecting it from wandering animals. Inside, the air is still and the plants grow undisturbed.",
+        "usage": {
+          "prompt_tokens": 32768,
+          "completion_tokens": 1024,
+          "total_tokens": 33792,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 32768,
+          "prompt_ms": 19559.2,
+          "prompt_per_token_ms": 0.597,
+          "prompt_per_second": 1675.3,
+          "predicted_n": 1024,
+          "predicted_ms": 70835.2,
+          "predicted_per_token_ms": 69.175,
+          "predicted_per_second": 14.5,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 995,
+        "tag": "C",
+        "client_start": 8515.7305736,
+        "client_end": 8606.6509434
+      }
+    ],
+    "method": "actual engine generated-token counter differences over one shared interval; excludes all prompt processing"
+  }
+}

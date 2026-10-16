@@ -1,0 +1,18 @@
+{
+  "started_at_utc": "2026-10-14T10:48:53.121515+00:00",
+  "exe_sha256": "0ef75ed69ee5fdbde27a0c8f5f2d49a426d7154d56962a7bfa20b426c3f9d2ec",
+  "model_sha256": "9a91f467e1dc65f40487cc8f495b29a294a8afdbde7eb22dc4bf746ad350161e",
+  "model_bytes": 21016181728,
+  "cpu": "AMD Ryzen Threadripper 3960X, 24 physical / 48 logical cores",
+  "system_ram_gib": 128,
+  "gpu": "NVIDIA GeForce RTX 2080 Ti, driver reports 22528 MiB",
+  "gpu_index": 0,
+  "cuda_toolkit": "12.6",
+  "requests_serial": true,
+  "model_load_included": false,
+  "idle_unload_s": 0,
+  "model_reload_or_unload_during_measurement": false,
+  "configuration": "server-config.json",
+  "engine_log": "G:\\Strata-Moe\\a3b-engine-full-gpu.log",
+  "report_note": "Resource samples will be collected after the requests and are resident snapshots, not peaks."
+}

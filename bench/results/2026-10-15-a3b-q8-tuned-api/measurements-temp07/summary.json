@@ -1,0 +1,50 @@
+{
+  "prompt32-output256-resident-first-unknown": {
+    "runs": 1,
+    "http_response_first_byte_s_median": 0.0009915999980876222,
+    "http_headers_received_s_median": 0.0010685000015655532,
+    "body_first_bytes_s_median": 0.001211499999044463,
+    "ttft_any_content_or_reasoning_s_median": 0.5922309000015957,
+    "ttft_visible_content_s_median": 0.5922309000015957,
+    "engine_prompt_tokens_per_s_median": 62.9,
+    "engine_predicted_tokens_per_s_median": 46.8,
+    "client_usage_decode_tokens_per_s_median": 46.73622005922037,
+    "total_response_s_median": 6.0569307999976445
+  },
+  "prompt32-output256-resident-repeat": {
+    "runs": 2,
+    "http_response_first_byte_s_median": 0.005990000005112961,
+    "http_headers_received_s_median": 0.006093300005886704,
+    "body_first_bytes_s_median": 0.006311550008831546,
+    "ttft_any_content_or_reasoning_s_median": 0.3280498500025715,
+    "ttft_visible_content_s_median": 0.3280498500025715,
+    "engine_prompt_tokens_per_s_median": 104.85,
+    "engine_predicted_tokens_per_s_median": 47.0,
+    "client_usage_decode_tokens_per_s_median": 46.9118613683787,
+    "total_response_s_median": 5.771916300000157
+  },
+  "prompt2048-output256-resident-first-unknown": {
+    "runs": 1,
+    "http_response_first_byte_s_median": 0.01095579999673646,
+    "http_headers_received_s_median": 0.01106600000639446,
+    "body_first_bytes_s_median": 0.011247100002947263,
+    "ttft_any_content_or_reasoning_s_median": 3.7687949999963166,
+    "ttft_visible_content_s_median": 3.7687949999963166,
+    "engine_prompt_tokens_per_s_median": 548.1,
+    "engine_predicted_tokens_per_s_median": 47.6,
+    "client_usage_decode_tokens_per_s_median": 47.495697169227846,
+    "total_response_s_median": 9.14619970000058
+  },
+  "prompt2048-output256-resident-repeat": {
+    "runs": 2,
+    "http_response_first_byte_s_median": 0.01147684999887133,
+    "http_headers_received_s_median": 0.011604150000493973,
+    "body_first_bytes_s_median": 0.011824300003354438,
+    "ttft_any_content_or_reasoning_s_median": 3.784416599999531,
+    "ttft_visible_content_s_median": 3.784416599999531,
+    "engine_prompt_tokens_per_s_median": 546.3,
+    "engine_predicted_tokens_per_s_median": 47.349999999999994,
+    "client_usage_decode_tokens_per_s_median": 47.31968723601827,
+    "total_response_s_median": 9.180637800003751
+  }
+}

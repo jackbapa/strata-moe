@@ -1,0 +1,8 @@
+STRATA_A3B_FUSED_GU=0
+layer 0 IQ2_S/IQ3_S: 0/49152 differing floats
+layer 0 split expert: 98.08 us/call (200 iterations, CUDA events)
+layer 19 IQ2_S/IQ3_S: 0/49152 differing floats
+layer 19 split expert: 112.45 us/call (200 iterations, CUDA events)
+layer 39 IQ2_S/IQ4_XS: 0/49152 differing floats
+layer 39 split expert: 100.97 us/call (200 iterations, CUDA events)
+PASS: packed original and separate-tensor original experts match bitwise

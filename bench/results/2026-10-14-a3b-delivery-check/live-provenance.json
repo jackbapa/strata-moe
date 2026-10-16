@@ -1,0 +1,56 @@
+{
+  "sha256": {
+    "a3b\\backend.cpp": "b8b008731fee8512856be9022e8d89129fdf901388e1199893cf85c374e79712",
+    "a3b\\backend.hpp": "f62ff3b8f7e71cd87e79f47f829bf2a1f4cd638b8667ebf8354d639e75c014ec",
+    "a3b\\CMakeLists.txt": "1ebf90c29f61fd1bd111418d112e719d95103c2a8da3750ffc46aab44c992aa4",
+    "a3b\\main.cpp": "21c19f53b426ec6c1340e11dc9c05468b588a06759fafafdc117cab909af17d7",
+    "a3b\\parity.cpp": "7cb1777fba1b46311a7bdebb3ee80caaaa239a94bb1f2a3ae1c26ad384f5a72d",
+    "a3b\\speculative.cpp": "005f1739b6b1859a54316a4549377bbf3ac715d20ed5249573fe00febf88e1f0",
+    "a3b\\speculative.hpp": "f446bed81304755a54740cea461051a0847b6b47ba99b0302862457d95ced870",
+    "a3b\\speculative_test.cpp": "8b53bbe995ca67369bda6e3f0fb2b4644fc1001111b126727069c2020c8070d4",
+    "tools\\a3b.py": "d945600baeb392daacc47bd635ea71e0507b4c880509b31c471d0dc390baef3c",
+    "tools\\bench_a3b.py": "8bbed643d002853794687997d3e8f151d1658248ffd7d9ba1b4b2cbc383dd9eb",
+    "tools\\test_a3b_http.py": "d029e25ea15f62f19587971dedf958e3661b97f67597554b54394edb65e088cb",
+    "tools\\inspect_a3b_memory.py": "42102fcc8cb25c0da185cb5b0517a841e069d9caa656b3cf57fa321077afec38",
+    "strata-a3b.json": "e531f2c08ba343cba92d7371fb78d72e2a09a02d79350acb3b17d0b411b7a5d8",
+    "build-a3b\\bin\\strata-moe.exe": "12eb4fd1fba161de94a05487696a937ce91485b791d0899c2e0ddd1a647ffb6a"
+  },
+  "health": {
+    "status": "ok",
+    "max_context": 4096,
+    "model": "qwen3.6-35b-a3b-ud-q5_k_m",
+    "images": false,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  },
+  "engines": [
+    {
+      "pid": 21340,
+      "args": [
+        "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe",
+        "--serve",
+        "--model",
+        "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-Q5_K_M.gguf",
+        "--ctx",
+        "4096",
+        "--device",
+        "0",
+        "--vram-mib",
+        "16384",
+        "--mtp-model",
+        "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+        "--mtp-draft",
+        "3",
+        "--stable-expert-graphs",
+        "--preserve-verify-layout",
+        "--cache-graph-routes",
+        "--exact-verify"
+      ],
+      "rss_bytes": 25652228096,
+      "private_commit_bytes": 43322499072
+    }
+  ],
+  "system_available_bytes": 28619808768,
+  "vram_mib": "0, 16300\n1, 21586\n2, 0"
+}

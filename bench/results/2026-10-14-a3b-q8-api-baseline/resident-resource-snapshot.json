@@ -1,0 +1,70 @@
+{
+  "at_utc": "2026-10-14T12:40:18.114764+00:00",
+  "phase": "After nine baseline requests; resident snapshot, not a peak",
+  "engines": [
+    {
+      "pid": 33500,
+      "command": [
+        "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe",
+        "--serve",
+        "--model",
+        "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-Q8_0.gguf",
+        "--ctx",
+        "4096",
+        "--batch",
+        "512",
+        "--device",
+        "0",
+        "--vram-mib",
+        "0",
+        "--mtp-model",
+        "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+        "--mtp-draft",
+        "2",
+        "--mtp-ubatch",
+        "512",
+        "--exact-verify",
+        "--gpu-only-experts",
+        "--expert-staging-slots",
+        "8",
+        "--gpu-embedding",
+        "--gpu-sampling",
+        "--share-mtp-weights",
+        "--defer-mtp-catchup",
+        "--native-attention-exact",
+        "--pageable-experts",
+        "--native-dense-exact"
+      ],
+      "rss_bytes": 36199206912,
+      "private_commit_bytes": 59403665408
+    }
+  ],
+  "gpus": [
+    {
+      "index": 0,
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "used_mib": 21227,
+      "total_mib": 22528,
+      "util_pct": 9
+    },
+    {
+      "index": 1,
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "used_mib": 171,
+      "total_mib": 22528,
+      "util_pct": 11
+    },
+    {
+      "index": 2,
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "used_mib": 0,
+      "total_mib": 22528,
+      "util_pct": 0
+    }
+  ],
+  "system_ram": {
+    "total_bytes": 137300127744,
+    "used_bytes": 52701274112,
+    "available_bytes": 84598853632
+  }
+}

@@ -1,0 +1,303 @@
+{
+  "started": "2026-10-13T20:41:51.950046+08:00",
+  "driver": "617.42",
+  "stages": [
+    {
+      "name": "single16k",
+      "requests": [
+        {
+          "tag": "baseline16k",
+          "calibrated_input_tokens": 16383,
+          "first": 10.338236400000369,
+          "total": 12.269881000000169,
+          "text": "The list is dominated by words related to nature and geography, with frequent mentions of \"canyon,\" \"stone,\" \"meadow,\" \"garden,\" \"river,\" and \"winter.\"\n\nA significant portion of the vocabulary consists of abstract or man-made objects, including \"market,\" \"anchor,\" \"lantern,\" \"signal,\" \"ledger,\" and \"needle.\"\n\nColor and material descriptors appear regularly, specifically \"violet,\" \"velvet,\" \"copper,\" \"quartz,\" and \"ember,\" which often accompany the natural or object-based terms.\n\nThe text also includes celestial and atmospheric concepts, such as \"orbit,\"",
+          "usage": {
+            "prompt_tokens": 16383,
+            "completion_tokens": 128,
+            "total_tokens": 16511,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 16383,
+            "prompt_ms": 10289.0,
+            "prompt_per_token_ms": 0.628,
+            "prompt_per_second": 1592.3,
+            "predicted_n": 128,
+            "predicted_ms": 1950.7,
+            "predicted_per_token_ms": 15.24,
+            "predicted_per_second": 65.6,
+            "draft_n": 94,
+            "draft_n_accepted": 71
+          },
+          "err": null,
+          "pieces": 125
+        }
+      ],
+      "wall_s": 12.274992099999963
+    },
+    {
+      "name": "single64k",
+      "requests": [
+        {
+          "tag": "baseline64k",
+          "calibrated_input_tokens": 65399,
+          "first": 35.18019869999989,
+          "total": 37.47401159999981,
+          "text": "The list is composed entirely of common English nouns that evoke a rustic, outdoor, or nautical theme, with no verbs, adjectives, or other parts of speech present. Frequent terms include natural elements like \"stone,\" \"canyon,\" \"river,\" \"meadow,\" and \"garden,\" alongside celestial or atmospheric words such as \"orbit,\" \"winter,\" \"thunder,\" and \"signal.\" Man-made objects and materials are also prominent, featuring items like \"lantern,\" \"anchor,\" \"needle,\" \"copper,\" \"quartz,\" and \"velvet.\" Commercial and structural concepts appear regularly through words like \"market",
+          "usage": {
+            "prompt_tokens": 65399,
+            "completion_tokens": 128,
+            "total_tokens": 65527,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 65399,
+            "prompt_ms": 35088.3,
+            "prompt_per_token_ms": 0.537,
+            "prompt_per_second": 1863.8,
+            "predicted_n": 128,
+            "predicted_ms": 2317.6,
+            "predicted_per_token_ms": 18.106,
+            "predicted_per_second": 55.2,
+            "draft_n": 82,
+            "draft_n_accepted": 63
+          },
+          "err": null,
+          "pieces": 128
+        }
+      ],
+      "wall_s": 37.47691970000005
+    },
+    {
+      "name": "triple64k",
+      "requests": [
+        {
+          "tag": "triple64k-A",
+          "calibrated_input_tokens": 65400,
+          "first": 36.1251186999998,
+          "total": 116.85049449999997,
+          "text": "The list is composed entirely of single-word nouns that evoke a mix of natural landscapes, celestial phenomena, and man-made objects. Frequent references to outdoor settings include terms like \"canyon,\" \"meadow,\" \"garden,\" \"river,\" and \"harbor,\" alongside weather-related words such as \"winter,\" \"thunder,\" and \"signal.\" A significant portion of the vocabulary consists of materials and minerals, specifically \"copper,\" \"quartz,\" \"stone,\" \"velvet,\" and \"ledger.\" Abstract or functional items also appear regularly, including \"market,\" \"anchor,\" \"lantern,\" \"needle,\" and \"orbit",
+          "usage": {
+            "prompt_tokens": 65400,
+            "completion_tokens": 128,
+            "total_tokens": 65528,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 65400,
+            "prompt_ms": 35711.2,
+            "prompt_per_token_ms": 0.546,
+            "prompt_per_second": 1831.4,
+            "predicted_n": 128,
+            "predicted_ms": 80297.7,
+            "predicted_per_token_ms": 627.326,
+            "predicted_per_second": 1.6,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "err": null,
+          "pieces": 128
+        },
+        {
+          "tag": "triple64k-B",
+          "calibrated_input_tokens": 65400,
+          "first": 113.38518969999996,
+          "total": 116.90613930000018,
+          "text": "The list is composed entirely of single-word nouns that evoke a mix of natural landscapes, celestial phenomena, and man-made objects. Frequent references to outdoor settings include terms like \"canyon,\" \"meadow,\" \"garden,\" \"river,\" and \"harbor,\" alongside seasonal markers such as \"winter.\" Celestial and scientific concepts are represented by words like \"orbit,\" \"quartz,\" \"signal,\" and \"ledger,\" suggesting a blend of astronomical and record-keeping themes. Everyday items and materials appear regularly, including \"lantern,\" \"needle,\" \"velvet,\" \"copper,\" \"stone,\" and \"market.\" The",
+          "usage": {
+            "prompt_tokens": 65400,
+            "completion_tokens": 128,
+            "total_tokens": 65528,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 65400,
+            "prompt_ms": 38836.2,
+            "prompt_per_token_ms": 0.594,
+            "prompt_per_second": 1684.0,
+            "predicted_n": 128,
+            "predicted_ms": 3141.6,
+            "predicted_per_token_ms": 24.544,
+            "predicted_per_second": 40.7,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "err": null,
+          "pieces": 128
+        },
+        {
+          "tag": "triple64k-C",
+          "calibrated_input_tokens": 65400,
+          "first": 74.08128459999989,
+          "total": 116.88126620000003,
+          "text": "The list is composed entirely of single-word nouns that evoke a mix of natural landscapes, celestial phenomena, and man-made objects. Frequent references to outdoor settings include terms like \"canyon,\" \"meadow,\" \"garden,\" \"river,\" and \"harbor,\" alongside seasonal markers such as \"winter.\" Celestial and scientific concepts are represented by words like \"orbit,\" \"quartz,\" \"signal,\" and \"ledger,\" suggesting a blend of astronomical and record-keeping themes. Everyday items and materials appear regularly, including \"lantern,\" \"needle,\" \"velvet,\" \"copper,\" \"stone,\" and \"market.\" The",
+          "usage": {
+            "prompt_tokens": 65400,
+            "completion_tokens": 128,
+            "total_tokens": 65528,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 65400,
+            "prompt_ms": 37406.5,
+            "prompt_per_token_ms": 0.572,
+            "prompt_per_second": 1748.4,
+            "predicted_n": 128,
+            "predicted_ms": 42438.5,
+            "predicted_per_token_ms": 331.551,
+            "predicted_per_second": 3.0,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "err": null,
+          "pieces": 128
+        }
+      ],
+      "wall_s": 116.91286119999995
+    }
+  ],
+  "status": "passed",
+  "input_target": 65400,
+  "output_cap": 128,
+  "context_limit": 65536,
+  "context_slack": 8,
+  "synthetic_word_list": true,
+  "server_pid": 4384,
+  "health_start": {
+    "status": "ok",
+    "max_context": 65536,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "images": true,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  },
+  "status_start": {
+    "service": "strata",
+    "model": "qwen3.8-flash-next-iq3_s",
+    "loaded": true,
+    "auto_load": true,
+    "structured_output": {
+      "formats": [
+        "json_object",
+        "json_schema"
+      ],
+      "method": "prompt_and_validate",
+      "constrained_decoding": false,
+      "stream_buffered": true
+    },
+    "engine": "0.1.43",
+    "started": 1791894447,
+    "uptime_s": 864,
+    "cache_max_tokens": 65536,
+    "context": {
+      "native": 65536,
+      "max_positions": 65536
+    },
+    "concurrency": {
+      "serving": 3,
+      "requested": 3
+    },
+    "dialects": [
+      "/v1/chat/completions",
+      "/v1/messages",
+      "/v1/responses"
+    ],
+    "vision": {
+      "enabled": true,
+      "available": true,
+      "error": null
+    },
+    "activity": {
+      "requests": 25,
+      "in_flight": 0,
+      "last_request_at": 1791894553
+    },
+    "last_timings": {
+      "cache_n": 0,
+      "prompt_n": 4047,
+      "prompt_ms": 4331.3,
+      "prompt_per_token_ms": 1.07,
+      "prompt_per_second": 934.4,
+      "predicted_n": 128,
+      "predicted_ms": 2767.6,
+      "predicted_per_token_ms": 21.622,
+      "predicted_per_second": 46.2,
+      "draft_n": 0,
+      "draft_n_accepted": 0,
+      "at": 1791894553
+    },
+    "vram": {
+      "elastic": false
+    },
+    "machine": {
+      "at": 1791895311,
+      "gpu": {
+        "name": "NVIDIA GeForce RTX 2080 Ti + NVIDIA GeForce RTX 2080 Ti + NVIDIA GeForce RTX 2080 Ti",
+        "used_mib": 62160.0,
+        "total_mib": 67584.0,
+        "util_pct": 3.3333333333333335,
+        "temp_c": 44,
+        "power_w": 52.479
+      },
+      "ram": {
+        "used_gib": 69.5,
+        "total_gib": 127.9
+      }
+    }
+  },
+  "max_observed_running": 3,
+  "calibrated": [
+    {
+      "tag": "baseline16k",
+      "input_tokens": 16383,
+      "words": 15493
+    },
+    {
+      "tag": "baseline64k",
+      "input_tokens": 65399,
+      "words": 62124
+    },
+    {
+      "tag": "triple64k-A",
+      "input_tokens": 65400,
+      "words": 62124
+    },
+    {
+      "tag": "triple64k-B",
+      "input_tokens": 65400,
+      "words": 62124
+    },
+    {
+      "tag": "triple64k-C",
+      "input_tokens": 65400,
+      "words": 62124
+    }
+  ],
+  "health_end": {
+    "status": "ok",
+    "max_context": 65536,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "images": true,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  },
+  "service_left_running": true,
+  "finished": "2026-10-13T20:44:49.159819+08:00"
+}

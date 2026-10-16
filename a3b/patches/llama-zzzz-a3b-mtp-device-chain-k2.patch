@@ -1,0 +1,368 @@
+diff --git a/src/llama-context.cpp b/src/llama-context.cpp
+--- a/src/llama-context.cpp
++++ b/src/llama-context.cpp
+@@ -766,6 +766,8 @@
+     if (!sched) {
+         return;
+     }
++
++    if (mtp_device_chain.between_steps) ++mtp_device_chain.inter_step_syncs;
+ 
+     ggml_backend_sched_synchronize(sched.get());
+ 
+@@ -1408,7 +1410,26 @@
+     // in order to correctly reuse a graph, it's full topology has to be uniquely determined by these parameters
+     const auto gparams = graph_params(res, ubatch, mctx, gtype);
+ 
+-    if (!graph_reuse_disable && gf_res_prev_active == res && res->can_reuse(gparams)) {
++    // The first K2 proposal must already have CUDA token/hidden input tensors.
++    // An older one-token graph may have been allocated with host inputs; do
++    // not reuse it when it would make the second step's D2D copy impossible.
++    bool chain_inputs_on_device = !mtp_device_chain.active;
++    if (mtp_device_chain.active) {
++        for (const auto & input : res->inputs) {
++            auto * mtp_input = dynamic_cast<llm_graph_input_embd_h *>(input.get());
++            if (!mtp_input || !mtp_input->tokens || !mtp_input->h) continue;
++            const auto tok_backend = ggml_backend_sched_get_tensor_backend(sched.get(), mtp_input->tokens);
++            const auto h_backend = ggml_backend_sched_get_tensor_backend(sched.get(), mtp_input->h);
++            chain_inputs_on_device = mtp_device_cuda_buffer(mtp_input->tokens, tok_backend) &&
++                mtp_device_cuda_buffer(mtp_input->h, h_backend) &&
++                ggml_backend_get_device(tok_backend) == mtp_device_chain.device &&
++                ggml_backend_get_device(h_backend) == mtp_device_chain.device;
++            break;
++        }
++    }
++
++    if (!graph_reuse_disable && chain_inputs_on_device &&
++        gf_res_prev_active == res && res->can_reuse(gparams)) {
+         //LLAMA_LOG_DEBUG("%s: reusing previous graph\n", __func__);
+ 
+         // with pipeline parallelism, the previous graph_compute_async may still be running
+@@ -1442,14 +1463,18 @@
+         // The opt-in MTP bridge needs h on the same CUDA device as NextN;
+         // assign it before scheduler allocation, while user assignments can
+         // still override GGML's default input placement.
+-        if (mtp_device_prefill.target) {
++        if (mtp_device_prefill.target || mtp_device_chain.active) {
+             for (const auto & input : res->inputs) {
+                 auto * mtp_input = dynamic_cast<llm_graph_input_embd_h *>(input.get());
+                 if (!mtp_input || !mtp_input->h) continue;
++                const auto device = mtp_device_chain.active ? mtp_device_chain.device :
++                    mtp_device_prefill.source_device;
+                 for (const auto & backend : backends) {
+                     if (mtp_device_cuda_backend(backend.get()) &&
+-                        ggml_backend_get_device(backend.get()) == mtp_device_prefill.source_device) {
++                        ggml_backend_get_device(backend.get()) == device) {
+                         ggml_backend_sched_set_tensor_backend(sched.get(), mtp_input->h, backend.get());
++                        if (mtp_device_chain.active && mtp_input->tokens)
++                            ggml_backend_sched_set_tensor_backend(sched.get(), mtp_input->tokens, backend.get());
+                         break;
+                     }
+                 }
+@@ -1472,12 +1497,23 @@
+ 
+         // FIXME this call causes a crash if any model inputs were not used in the graph and were therefore not allocated
+         auto & bridge = mtp_device_prefill;
++        auto & chain = mtp_device_chain;
+         llm_graph_input_embd_h * mtp_input = nullptr;
+-        if (bridge.target) {
++        if (bridge.target || chain.input_pending) {
+             for (auto & input : res->inputs) {
+                 mtp_input = dynamic_cast<llm_graph_input_embd_h *>(input.get());
+                 if (mtp_input) break;
+             }
++        }
++        if (chain.input_pending) {
++            if (!mtp_input || !mtp_input->tokens || !mtp_input->h || !ubatch.token ||
++                !ubatch.embd || ubatch.n_tokens != 1 ||
++                !mtp_device_hidden_layout(mtp_input->h, chain.width, 1))
++                throw std::runtime_error("MTP K2 device chain lost its second-step inputs");
++            mtp_input->device_hidden_input = true;
++            mtp_input->device_token_input = true;
++        }
++        if (bridge.target) {
+             if (!mtp_input || !mtp_input->h || !ubatch.token || !ubatch.embd ||
+                 bridge.copied_rows + ubatch.n_tokens > bridge.total_rows ||
+                 !mtp_host_hidden_layout(mtp_input->h, bridge.width, ubatch.n_tokens))
+@@ -1519,11 +1555,35 @@
+         try {
+             res->set_inputs(&ubatch);
+         } catch (...) {
+-            if (mtp_input) mtp_input->device_hidden_input = false;
++            if (mtp_input) {
++                mtp_input->device_hidden_input = false;
++                mtp_input->device_token_input = false;
++            }
+             throw;
+         }
+         if (mtp_input) {
+             mtp_input->device_hidden_input = false;
++            mtp_input->device_token_input = false;
++        }
++        if (chain.input_pending) {
++            auto * dst_token = mtp_input->tokens;
++            auto * dst_hidden = mtp_input->h;
++            const auto token_backend = ggml_backend_sched_get_tensor_backend(sched.get(), dst_token);
++            const auto hidden_backend = ggml_backend_sched_get_tensor_backend(sched.get(), dst_hidden);
++            if (!mtp_device_cuda_buffer(dst_token, token_backend) ||
++                !mtp_device_cuda_buffer(dst_hidden, hidden_backend) ||
++                ggml_backend_get_device(token_backend) != chain.device ||
++                ggml_backend_get_device(hidden_backend) != chain.device ||
++                dst_token->type != GGML_TYPE_I32 || dst_token->ne[0] != 1 ||
++                dst_hidden->ne[0] != chain.width)
++                throw std::runtime_error("MTP K2 device chain second step moved off its CUDA device");
++            auto pending_token = mtp_device_pending_tensor(dst_token, chain.token.get());
++            auto pending_hidden = mtp_device_pending_tensor(dst_hidden, chain.hidden.get());
++            ggml_backend_tensor_copy_async(chain.token_backend, token_backend, &pending_token, dst_token);
++            ggml_backend_tensor_copy_async(chain.hidden_backend, hidden_backend, &pending_hidden, dst_hidden);
++            chain.input_pending = false;
++        }
++        if (bridge.target) {
+             const uint32_t off = bridge.copied_rows;
+             const uint32_t n = ubatch.n_tokens;
+             if (!bridge.host_fallback) {
+@@ -2139,7 +2199,10 @@
+                     ubatch.n_tokens == n_tokens_all && host.rows == n_tokens_all &&
+                     host.width == n_embd && mtp_device_hidden_layout(t_h_nextn, host.width, host.rows) &&
+                     mtp_device_cuda_buffer(t_h_nextn, backend_h);
+-                if (defer_host) {
++                if (mtp_device_chain.active && mtp_device_chain.first_step_output) {
++                    // K2 copies this row to its persistent CUDA buffer after
++                    // decode. A host copy would be discarded by step two.
++                } else if (defer_host) {
+                     host.deferred = true;
+                     host.source = t_h_nextn;
+                     host.backend = backend_h;
+@@ -2149,7 +2212,7 @@
+             }
+         }
+ 
+-        if (has_samplers) {
++        if (has_samplers && !(mtp_device_chain.active && mtp_device_chain.first_step_output)) {
+             const auto stride = n_vocab;
+ 
+             // async copy the sampling data from the backend to the host
+@@ -4199,6 +4262,137 @@
+     return 1;
+ }
+ 
++int llama_mtp_device_chain_k2(llama_context * draft, llama_batch first,
++                              llama_batch second, uint32_t width,
++                              llama_token * tokens, float * guards,
++                              uint32_t * inter_step_syncs) {
++    if (!draft || !tokens || !guards || !inter_step_syncs || !first.token || !first.embd ||
++        !second.token || !second.embd || !first.pos || !second.pos ||
++        !first.n_seq_id || !second.n_seq_id || !first.seq_id || !second.seq_id ||
++        !first.logits || !second.logits || first.n_tokens != 1 || second.n_tokens != 1 ||
++        first.pos[0] < 0 || int64_t(second.pos[0]) != int64_t(first.pos[0]) + 1 ||
++        first.n_seq_id[0] != 1 || second.n_seq_id[0] != 1 ||
++        !first.seq_id[0] || !second.seq_id[0] ||
++        first.seq_id[0][0] != 0 || second.seq_id[0][0] != 0 ||
++        !first.logits[0] || !second.logits[0] ||
++        draft->model.arch != LLM_ARCH_QWEN35MOE ||
++        draft->get_cparams().ctx_type != LLAMA_CONTEXT_TYPE_MTP ||
++        draft->get_cparams().n_seq_max != 1 ||
++        draft->get_cparams().n_ubatch < 1 ||
++        draft->model.hparams.n_layer_nextn != 1 ||
++        width != draft->model.hparams.n_embd_out() ||
++        draft->sampling.samplers.size() != 1 ||
++        draft->mtp_device_prefill.target ||
++        draft->mtp_device_chain.active ||
++        draft->mtp_device_chain.input_pending) return 0;
++
++    auto & chain = draft->mtp_device_chain;
++    ggml_backend_t cuda_backend = nullptr;
++    for (const auto & backend : draft->backends) {
++        if (mtp_device_cuda_backend(backend.get())) {
++            cuda_backend = backend.get();
++            break;
++        }
++    }
++    if (!cuda_backend) return 0;
++    const auto device = ggml_backend_get_device(cuda_backend);
++    // A host token table makes GET_ROWS a CPU split. Feeding the sampled
++    // scalar through a CUDA input in that graph can race its CPU-side index
++    // copy. Only chain when the draft embedding lookup itself runs on CUDA;
++    // otherwise return before touching the draft KV and use the old path.
++    const auto & mtp_layer = draft->model.layers.at(draft->model.hparams.n_layer());
++    const ggml_tensor * token_table = mtp_layer.nextn.embed_tokens ?
++        mtp_layer.nextn.embed_tokens : draft->model.tok_embd;
++    if (!token_table || !mtp_device_cuda_buffer(token_table, cuda_backend)) return 0;
++    if (chain.device && (chain.device != device || chain.width != width)) return 0;
++    if (!chain.token || !chain.hidden || !chain.first_host) {
++        auto * buft = ggml_backend_get_default_buffer_type(cuda_backend);
++        auto * host_buft = ggml_backend_dev_host_buffer_type(device);
++        if (!buft || !host_buft) return 0;
++        auto token = ggml_backend_buffer_ptr(ggml_backend_buft_alloc_buffer(buft, sizeof(llama_token)));
++        auto hidden = ggml_backend_buffer_ptr(ggml_backend_buft_alloc_buffer(buft, size_t(width) * sizeof(float)));
++        auto host = ggml_backend_buffer_ptr(ggml_backend_buft_alloc_buffer(host_buft, 16));
++        if (!token || !hidden || !host || !ggml_backend_buffer_is_host(host.get())) return 0;
++        chain.token = std::move(token);
++        chain.hidden = std::move(hidden);
++        chain.first_host = std::move(host);
++        chain.device = device;
++        chain.width = width;
++    }
++
++    // The first graph is already one CUDA submission. Queue stable D2D copies
++    // before llama_decode may recycle its graph arena, then let step two read
++    // those buffers. No sampled-token or hidden getter runs between steps.
++    chain.active = true;
++    chain.first_step_output = true;
++    auto finish = [&chain](int status) {
++        chain.active = false;
++        chain.first_step_output = false;
++        chain.input_pending = false;
++        chain.between_steps = false;
++        return status;
++    };
++    int first_rc = -1;
++    try {
++        first_rc = draft->decode(first);
++    } catch (...) {
++        finish(-1);
++        throw;
++    }
++    chain.first_step_output = false;
++    if (first_rc != 0) return finish(-1);
++    auto * result = draft->gf_res_prev_active;
++    auto * h = result ? result->get_h_nextn() : nullptr;
++    auto * sampled = result && result->t_sampled.size() == 1 ? result->t_sampled[0] : nullptr;
++    auto * guard = result && result->t_sampled_probs.size() == 1 ? result->t_sampled_probs[0] : nullptr;
++    if (!mtp_device_hidden_layout(h, width, 1) || !sampled || !guard ||
++        sampled->type != GGML_TYPE_I32 || ggml_nelements(sampled) != 1 ||
++        guard->type != GGML_TYPE_F32 || ggml_nelements(guard) != 1) return finish(-1);
++    const auto h_backend = ggml_backend_sched_get_tensor_backend(draft->sched.get(), h);
++    const auto sampled_backend = ggml_backend_sched_get_tensor_backend(draft->sched.get(), sampled);
++    const auto guard_backend = ggml_backend_sched_get_tensor_backend(draft->sched.get(), guard);
++    if (!mtp_device_cuda_buffer(h, h_backend) ||
++        !mtp_device_cuda_buffer(sampled, sampled_backend) ||
++        !mtp_device_cuda_buffer(guard, guard_backend) ||
++        ggml_backend_get_device(h_backend) != device ||
++        ggml_backend_get_device(sampled_backend) != device ||
++        ggml_backend_get_device(guard_backend) != device) return finish(-1);
++
++    chain.token_backend = sampled_backend;
++    chain.hidden_backend = h_backend;
++    auto pending_token = mtp_device_pending_tensor(sampled, chain.token.get());
++    auto pending_hidden = mtp_device_pending_tensor(h, chain.hidden.get());
++    ggml_backend_tensor_copy_async(sampled_backend, sampled_backend, sampled, &pending_token);
++    ggml_backend_tensor_copy_async(h_backend, h_backend, h, &pending_hidden);
++    auto * first_host = static_cast<char *>(ggml_backend_buffer_get_base(chain.first_host.get()));
++    ggml_backend_tensor_get_async(sampled_backend, sampled, first_host, 0, sizeof(llama_token));
++    ggml_backend_tensor_get_async(guard_backend, guard, first_host + 8, 0, sizeof(float));
++
++    chain.inter_step_syncs = 0;
++    chain.input_pending = true;
++    chain.between_steps = true;
++    int rc = -1;
++    try {
++        rc = draft->decode(second);
++    } catch (...) {
++        finish(-1);
++        throw;
++    }
++    chain.between_steps = false;
++    if (rc != 0 || chain.input_pending) {
++        return finish(-1);
++    }
++    // Exactly one explicit context synchronization after both proposal graphs.
++    draft->synchronize();
++    std::memcpy(&tokens[0], first_host, sizeof(llama_token));
++    std::memcpy(&guards[0], first_host + 8, sizeof(float));
++    tokens[1] = draft->get_sampled_token_ith(-1);
++    const float * second_guard = draft->get_sampled_probs_ith(-1);
++    guards[1] = second_guard ? second_guard[0] : NAN;
++    *inter_step_syncs = chain.inter_step_syncs;
++    return finish(1);
++}
++
+ void llama_mtp_device_prefill_reset(llama_context * draft) {
+     if (!draft) return;
+     auto & bridge = draft->mtp_device_prefill;
+diff --git a/src/llama-context.h b/src/llama-context.h
+--- a/src/llama-context.h
++++ b/src/llama-context.h
+@@ -48,6 +48,10 @@
+     friend void llama_mtp_device_prefill_host_disarm(llama_context * target);
+     friend int llama_mtp_device_prefill_host_restore(llama_context * target);
+     friend uint64_t llama_mtp_device_prefill_host_saved_bytes(const llama_context * target);
++    friend int llama_mtp_device_chain_k2(llama_context * draft, llama_batch first,
++                                        llama_batch second, uint32_t width,
++                                        llama_token * tokens, float * guards,
++                                        uint32_t * inter_step_syncs);
+ 
+     // init scheduler and compute buffers, reserve worst-case graphs
+     llama_context(
+@@ -400,6 +404,24 @@
+         uint64_t rows = 0;
+     } mtp_device_prefill;
+ 
++    // Opt-in two-step NextN device chain. The first step's sampled token and
++    // hidden row are copied to stable CUDA buffers before the scheduler can
++    // reuse its graph arena. Only the second step consumes these buffers.
++    struct mtp_device_chain_state {
++        ggml_backend_buffer_ptr token;
++        ggml_backend_buffer_ptr hidden;
++        ggml_backend_buffer_ptr first_host;
++        ggml_backend_t token_backend = nullptr;
++        ggml_backend_t hidden_backend = nullptr;
++        ggml_backend_dev_t device = nullptr;
++        uint32_t width = 0;
++        uint32_t inter_step_syncs = 0;
++        bool active = false;
++        bool first_step_output = false;
++        bool input_pending = false;
++        bool between_steps = false;
++    } mtp_device_chain;
++
+     // Only an explicitly armed prompt decode may defer its full NextN D2H.
+     // source remains live until the next target decode reuses its graph arena.
+     struct mtp_prefill_host_state {
+diff --git a/src/llama-graph.cpp b/src/llama-graph.cpp
+--- a/src/llama-graph.cpp
++++ b/src/llama-graph.cpp
+@@ -95,7 +95,8 @@
+     const int64_t n_tokens = ubatch->n_tokens;
+ 
+     if (ubatch->token) {
+-        ggml_backend_tensor_set(tokens, ubatch->token, 0, n_tokens*ggml_element_size(tokens));
++        if (!device_token_input)
++            ggml_backend_tensor_set(tokens, ubatch->token, 0, n_tokens*ggml_element_size(tokens));
+     } else if (!device_hidden_input) {
+         // note: mtmd embedding input goes through here
+         GGML_ASSERT(ubatch->embd);
+diff --git a/src/llama-graph.h b/src/llama-graph.h
+--- a/src/llama-graph.h
++++ b/src/llama-graph.h
+@@ -156,6 +156,9 @@
+     // The opt-in same-GPU MTP prefill bridge fills h after set_inputs().
+     // Prompt token IDs still use the ordinary host input.
+     bool device_hidden_input = false;
++    // The opt-in K2 proposal chain also supplies step two's sampled token
++    // from a persistent CUDA scalar, avoiding a redundant dummy host upload.
++    bool device_token_input = false;
+ 
+     const int64_t n_embd = 0;
+ };
+diff --git a/include/llama.h b/include/llama.h
+--- a/include/llama.h
++++ b/include/llama.h
+@@ -1082,6 +1082,17 @@
+     // Returns LLAMA_TOKEN_NULL if no token was sampled.
+     LLAMA_API llama_token llama_get_sampled_token_ith(struct llama_context * ctx, int32_t i);
+ 
++    // A3B NextN opt-in: execute two greedy proposal steps, feeding the first
++    // sampled token and hidden row to the second on one CUDA device. Returns
++    // 1 on success, 0 if unsupported before any decode, or -1 if the draft KV
++    // may have changed and the caller must abort/reset the request. This is a
++    // device chain of two graph submissions, not a captured K2 CUDA graph.
++    // inter_step_syncs counts explicit context synchronizations only; GGML
++    // input setup and backend synchronization may still wait between steps.
++    LLAMA_API int llama_mtp_device_chain_k2(struct llama_context * draft,
++            struct llama_batch first, struct llama_batch second, uint32_t width,
++            llama_token * tokens, float * finite_guards, uint32_t * inter_step_syncs);
++
+     // Get the backend sampled probabilities for the ith token
+     // The index matches llama_get_sampled_token_ith().
+     // Returns NULL if no probabilities were generated.

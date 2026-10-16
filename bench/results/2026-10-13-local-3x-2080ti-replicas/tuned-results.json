@@ -1,0 +1,660 @@
+{
+  "date_local": "2026-10-13",
+  "context": 65536,
+  "arms": {
+    "replicas3-budget34-affinity": {
+      "config": "G:\\Strata\\bench\\results\\2026-10-13-local-3x-2080ti-replicas\\replicas3-budget34-affinity.json",
+      "pid": 18248,
+      "health": {
+        "status": "ok",
+        "max_context": 65536,
+        "model": "qwen3.8-flash-next-iq3_s",
+        "images": true,
+        "api_key": false,
+        "loaded": true,
+        "service": "strata"
+      },
+      "warmup": {
+        "wall_s": 1.8338113000008889,
+        "output_tokens": 96,
+        "aggregate_wall_tok_s": 52.349988245766326,
+        "requests": [
+          {
+            "first": 0.8147989999997662,
+            "total": 1.5727829999996175,
+            "text": "```python\ndef merge_sorted_lists(list1: list, list2: list) -> list:\n    \"\"\"\n    Merge two sorted lists into one sorted",
+            "usage": {
+              "prompt_tokens": 37,
+              "completion_tokens": 32,
+              "total_tokens": 69,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 37,
+              "prompt_ms": 770.7,
+              "prompt_per_token_ms": 20.83,
+              "prompt_per_second": 48.0,
+              "predicted_n": 32,
+              "predicted_ms": 796.2,
+              "predicted_per_token_ms": 24.881,
+              "predicted_per_second": 40.2,
+              "draft_n": 24,
+              "draft_n_accepted": 23
+            },
+            "err": null,
+            "pieces": 29
+          },
+          {
+            "first": 0.7861580999997386,
+            "total": 1.8283826999995654,
+            "text": "A refrigerator operates by utilizing a closed-loop system of refrigerant fluid that undergoes phase changes to transport thermal energy against its natural gradient. Inside the refrigerator compartment,",
+            "usage": {
+              "prompt_tokens": 29,
+              "completion_tokens": 32,
+              "total_tokens": 61,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 29,
+              "prompt_ms": 743.4,
+              "prompt_per_token_ms": 25.634,
+              "prompt_per_second": 39.0,
+              "predicted_n": 32,
+              "predicted_ms": 1078.7,
+              "predicted_per_token_ms": 33.709,
+              "predicted_per_second": 29.7,
+              "draft_n": 18,
+              "draft_n_accepted": 11
+            },
+            "err": null,
+            "pieces": 32
+          },
+          {
+            "first": 0.7563460000001214,
+            "total": 1.7492803999994067,
+            "text": "1. Set specific, achievable daily goals to build consistent habits rather than relying on sporadic bursts of motivation.\n2. Immerse yourself in the target language",
+            "usage": {
+              "prompt_tokens": 32,
+              "completion_tokens": 32,
+              "total_tokens": 64,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 32,
+              "prompt_ms": 721.5,
+              "prompt_per_token_ms": 22.547,
+              "prompt_per_second": 44.4,
+              "predicted_n": 32,
+              "predicted_ms": 1014.3,
+              "predicted_per_token_ms": 31.697,
+              "predicted_per_second": 31.5,
+              "draft_n": 23,
+              "draft_n_accepted": 16
+            },
+            "err": null,
+            "pieces": 31
+          }
+        ]
+      },
+      "solo": [
+        {
+          "first": 0.49781499999880907,
+          "total": 4.241123399999196,
+          "text": "```python\ndef merge_sorted_lists(list1: list, list2: list) -> list:\n    \"\"\"\n    Merge two sorted lists into one sorted list.\n    \n    Args:\n        list1: A sorted list of comparable elements.\n        list2: A sorted list of comparable elements.\n    \n    Returns:\n        A new sorted list containing all elements from both input lists.\n    \"\"\"\n    merged = []\n    i, j = 0, 0\n    \n    while i < len(list1) and j < len(list2):\n        if list1[i] <= list2[j]:\n            merged.append(list1[i])\n            i += 1\n        else:\n            merged.append(list2[j])\n            j += 1\n    \n    # Append remaining elements\n    while i < len(list1):\n        merged.append(list1[i])\n        i += 1\n    \n   ",
+          "usage": {
+            "prompt_tokens": 41,
+            "completion_tokens": 192,
+            "total_tokens": 233,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 41,
+            "prompt_ms": 475.8,
+            "prompt_per_token_ms": 11.605,
+            "prompt_per_second": 86.2,
+            "predicted_n": 192,
+            "predicted_ms": 3761.2,
+            "predicted_per_token_ms": 19.59,
+            "predicted_per_second": 51.0,
+            "draft_n": 151,
+            "draft_n_accepted": 138
+          },
+          "err": null,
+          "pieces": 172
+        },
+        {
+          "first": 0.6255166999999346,
+          "total": 4.549928500000533,
+          "text": "A refrigerator operates by utilizing a closed-loop system of refrigerant fluid that undergoes phase changes to transfer thermal energy against its natural gradient. Inside the refrigerator, the refrigerant flows through evaporator coils where it absorbs heat from the interior air, causing the liquid refrigerant to boil and turn into a low-pressure gas. This process cools the interior space as the heat energy is captured by the refrigerant. The low-pressure gas is then drawn into a compressor, which mechanically increases its pressure and temperature, turning it into a high-pressure, high-temperature gas. This compression step is crucial because it raises the refrigerant's temperature above that of the surrounding room air, enabling heat to flow outwards.\n\nOnce compressed, the hot refrigerant gas travels to the condenser coils located on the exterior of the unit, typically at the back or bottom. Here, the refrigerant releases the absorbed heat, along with the heat generated by the compression process, into the",
+          "usage": {
+            "prompt_tokens": 34,
+            "completion_tokens": 192,
+            "total_tokens": 226,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 34,
+            "prompt_ms": 593.8,
+            "prompt_per_token_ms": 17.465,
+            "prompt_per_second": 57.3,
+            "predicted_n": 192,
+            "predicted_ms": 3942.6,
+            "predicted_per_token_ms": 20.534,
+            "predicted_per_second": 48.7,
+            "draft_n": 143,
+            "draft_n_accepted": 92
+          },
+          "err": null,
+          "pieces": 191
+        },
+        {
+          "first": 0.6950188000009803,
+          "total": 5.384793100000024,
+          "text": "1. Set specific, achievable daily goals to build consistent habits rather than relying on sporadic bursts of motivation.\n2. Immerse yourself in the target language through media like podcasts, movies, and music to train your ear to natural rhythms.\n3. Practice speaking from day one, even if you make mistakes, to overcome the fear of judgment and improve fluency faster.\n4. Use spaced repetition systems (SRS) for vocabulary retention to ensure long-term memory rather than short-term cramming.\n5. Find a language exchange partner or tutor to receive real-time feedback and practice conversational skills in a low-pressure environment.\n6. Focus on high-frequency words and phrases first, as mastering the most common 1,000 words allows for basic communication quickly.\n7. Change the language settings on your phone and social media accounts to force passive exposure and active engagement throughout the day.\n8. Embrace mistakes as essential learning",
+          "usage": {
+            "prompt_tokens": 36,
+            "completion_tokens": 192,
+            "total_tokens": 228,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 36,
+            "prompt_ms": 663.1,
+            "prompt_per_token_ms": 18.419,
+            "prompt_per_second": 54.3,
+            "predicted_n": 192,
+            "predicted_ms": 4707.8,
+            "predicted_per_token_ms": 24.52,
+            "predicted_per_second": 40.8,
+            "draft_n": 139,
+            "draft_n_accepted": 96
+          },
+          "err": null,
+          "pieces": 185
+        },
+        {
+          "first": 0.7215691000001243,
+          "total": 3.7784141000011005,
+          "text": "```python\ndef merge_sorted_lists(list1: list, list2: list) -> list:\n    \"\"\"\n    Merge two sorted lists into one sorted list.\n    \n    Args:\n        list1: A sorted list of comparable elements.\n        list2: A sorted list of comparable elements.\n    \n    Returns:\n        A new sorted list containing all elements from both input lists.\n    \"\"\"\n    merged = []\n    i, j = 0, 0\n    \n    while i < len(list1) and j < len(list2):\n        if list1[i] <= list2[j]:\n            merged.append(list1[i])\n            i += 1\n        else:\n            merged.append(list2[j])\n            j += 1\n    \n    # Append remaining elements\n    while i < len(list1):\n        merged.append(list1[i])\n        i += 1\n    \n   ",
+          "usage": {
+            "prompt_tokens": 41,
+            "completion_tokens": 192,
+            "total_tokens": 233,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 41,
+            "prompt_ms": 700.3,
+            "prompt_per_token_ms": 17.08,
+            "prompt_per_second": 58.5,
+            "predicted_n": 192,
+            "predicted_ms": 3074.8,
+            "predicted_per_token_ms": 16.015,
+            "predicted_per_second": 62.4,
+            "draft_n": 151,
+            "draft_n_accepted": 138
+          },
+          "err": null,
+          "pieces": 172
+        },
+        {
+          "first": 0.5804494000003615,
+          "total": 3.7190073999991,
+          "text": "A refrigerator operates by utilizing a closed-loop system of refrigerant fluid that undergoes phase changes to transfer thermal energy against its natural flow. Inside the refrigerator, the refrigerant circulates through evaporator coils where it absorbs heat from the air and contents, causing the liquid refrigerant to boil and turn into a low-pressure gas. This process lowers the temperature inside the compartment, effectively removing heat from the interior. The now gaseous refrigerant is then drawn into a compressor, which mechanically increases its pressure and temperature, turning it into a high-pressure, high-temperature gas. This compression step is crucial because it adds energy to the system, allowing the refrigerant to hold more heat than it would at ambient temperatures.\n\nOnce compressed, the hot, high-pressure gas flows through condenser coils located on the exterior of the refrigerator, typically at the back or bottom. Here, the refrigerant releases the absorbed heat, along with the heat generated by the compression process",
+          "usage": {
+            "prompt_tokens": 34,
+            "completion_tokens": 192,
+            "total_tokens": 226,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 34,
+            "prompt_ms": 549.6,
+            "prompt_per_token_ms": 16.165,
+            "prompt_per_second": 61.9,
+            "predicted_n": 192,
+            "predicted_ms": 3156.4,
+            "predicted_per_token_ms": 16.44,
+            "predicted_per_second": 60.8,
+            "draft_n": 130,
+            "draft_n_accepted": 93
+          },
+          "err": null,
+          "pieces": 191
+        },
+        {
+          "first": 0.6086210000012215,
+          "total": 4.3211119000006875,
+          "text": "1. Set specific, achievable daily goals to maintain consistency and track progress.\n2. Immerse yourself in the target language through movies, music, and podcasts to improve listening skills.\n3. Practice speaking from day one, even if you make mistakes, to build confidence and fluency.\n4. Use spaced repetition systems like Anki to efficiently memorize vocabulary and retain it long-term.\n5. Find a language exchange partner or tutor to practice real-life conversations and receive feedback.\n6. Label objects in your home with their names in the target language to reinforce vocabulary in context.\n7. Focus on learning high-frequency words and phrases first to communicate basic needs quickly.\n8. Change the language settings on your phone and social media accounts to increase daily exposure.\n9. Embrace mistakes as learning opportunities rather than failures to reduce anxiety and hesitation.\n10. Review grammar rules in small, manageable chunks rather than trying to master",
+          "usage": {
+            "prompt_tokens": 36,
+            "completion_tokens": 192,
+            "total_tokens": 228,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 36,
+            "prompt_ms": 578.2,
+            "prompt_per_token_ms": 16.061,
+            "prompt_per_second": 62.3,
+            "predicted_n": 192,
+            "predicted_ms": 3729.6,
+            "predicted_per_token_ms": 19.425,
+            "predicted_per_second": 51.5,
+            "draft_n": 140,
+            "draft_n_accepted": 102
+          },
+          "err": null,
+          "pieces": 183
+        },
+        {
+          "first": 0.7535934000006819,
+          "total": 3.451712199999747,
+          "text": "```python\ndef merge_sorted_lists(list1: list, list2: list) -> list:\n    \"\"\"\n    Merge two sorted lists into one sorted list.\n    \n    Args:\n        list1: A sorted list of comparable elements.\n        list2: A sorted list of comparable elements.\n    \n    Returns:\n        A new sorted list containing all elements from both input lists.\n    \"\"\"\n    merged = []\n    i, j = 0, 0\n    \n    while i < len(list1) and j < len(list2):\n        if list1[i] <= list2[j]:\n            merged.append(list1[i])\n            i += 1\n        else:\n            merged.append(list2[j])\n            j += 1\n    \n    # Append remaining elements\n    while i < len(list1):\n        merged.append(list1[i])\n        i += 1\n    \n   ",
+          "usage": {
+            "prompt_tokens": 41,
+            "completion_tokens": 192,
+            "total_tokens": 233,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 41,
+            "prompt_ms": 722.9,
+            "prompt_per_token_ms": 17.632,
+            "prompt_per_second": 56.7,
+            "predicted_n": 192,
+            "predicted_ms": 2714.6,
+            "predicted_per_token_ms": 14.139,
+            "predicted_per_second": 70.7,
+            "draft_n": 147,
+            "draft_n_accepted": 138
+          },
+          "err": null,
+          "pieces": 172
+        },
+        {
+          "first": 0.7031624999999622,
+          "total": 3.5507661000010557,
+          "text": "A refrigerator operates by utilizing a closed-loop system of refrigerant fluid that undergoes phase changes to transfer thermal energy against its natural gradient. Inside the refrigerator, the refrigerant flows through evaporator coils where it absorbs heat from the air and contents, causing the liquid refrigerant to boil and turn into a low-pressure gas. This process cools the interior of the appliance. The gaseous refrigerant is then drawn into a compressor, which mechanically increases its pressure and temperature, turning it into a high-pressure, high-temperature gas. This compression step is crucial because it adds energy to the system, allowing the refrigerant to hold more heat than it absorbed from the interior.\n\nOnce compressed, the hot, high-pressure gas flows through condenser coils located on the exterior of the refrigerator, typically at the back or bottom. Here, the refrigerant releases the accumulated heat—including both the heat absorbed from inside and the heat generated by the compressor—into the surrounding",
+          "usage": {
+            "prompt_tokens": 34,
+            "completion_tokens": 192,
+            "total_tokens": 226,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 34,
+            "prompt_ms": 680.3,
+            "prompt_per_token_ms": 20.009,
+            "prompt_per_second": 50.0,
+            "predicted_n": 192,
+            "predicted_ms": 2864.2,
+            "predicted_per_token_ms": 14.918,
+            "predicted_per_second": 67.0,
+            "draft_n": 128,
+            "draft_n_accepted": 97
+          },
+          "err": null,
+          "pieces": 191
+        },
+        {
+          "first": 0.5479555999991135,
+          "total": 4.03921470000023,
+          "text": "1. Set specific, achievable daily goals to maintain consistency and build momentum.\n2. Immerse yourself in the target language through movies, music, and podcasts to improve listening skills.\n3. Practice speaking from day one, even if you make mistakes, to overcome fear and build confidence.\n4. Use spaced repetition systems to efficiently memorize vocabulary and retain information long-term.\n5. Find a language exchange partner or tutor to practice real-life conversations and receive feedback.\n6. Label objects in your home with their names in the target language to reinforce vocabulary in context.\n7. Focus on learning high-frequency words and phrases first to achieve basic communication quickly.\n8. Change the language settings on your phone and social media accounts to increase daily exposure.\n9. Embrace mistakes as valuable learning opportunities rather than failures to stay motivated.\n10. Review and reflect on your progress regularly to adjust your study methods and stay engaged.",
+          "usage": {
+            "prompt_tokens": 36,
+            "completion_tokens": 192,
+            "total_tokens": 228,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 36,
+            "prompt_ms": 526.4,
+            "prompt_per_token_ms": 14.622,
+            "prompt_per_second": 68.4,
+            "predicted_n": 192,
+            "predicted_ms": 3509.2,
+            "predicted_per_token_ms": 18.277,
+            "predicted_per_second": 54.7,
+            "draft_n": 139,
+            "draft_n_accepted": 98
+          },
+          "err": null,
+          "pieces": 182
+        }
+      ],
+      "solo_summary": {
+        "decode_median": 54.7,
+        "decode_range": [
+          40.8,
+          70.7
+        ],
+        "ttft_median_s": 0.6255166999999346,
+        "errors": [],
+        "requests": 9
+      },
+      "bursts": [
+        {
+          "wall_s": 7.029201699999248,
+          "output_tokens": 742,
+          "aggregate_wall_tok_s": 105.5596398663705,
+          "requests": [
+            {
+              "first": 0.6444420000007085,
+              "total": 6.684279700000843,
+              "text": "```python\ndef merge_sorted_lists(list1: list, list2: list) -> list:\n    \"\"\"\n    Merge two sorted lists into one sorted list.\n    \n    Args:\n        list1: A sorted list of comparable elements.\n        list2: A sorted list of comparable elements.\n    \n    Returns:\n        A new sorted list containing all elements from both input lists.\n    \"\"\"\n    merged = []\n    i, j = 0, 0\n    while i < len(list1) and j < len(list2):\n        if list1[i] <= list2[j]:\n            merged.append(list1[i])\n            i += 1\n        else:\n            merged.append(list2[j])\n            j += 1\n    # Append remaining elements\n    while i < len(list1):\n        merged.append(list1[i])\n        i += 1\n    while j < len(list2):\n        merged.append(list2[j])\n        j += 1\n    return merged\n\n\n# Test 1: Basic merge of two sorted lists\nassert merge_sorted_lists([1, 3, 5], [2, 4, 6]) == [1,",
+              "usage": {
+                "prompt_tokens": 45,
+                "completion_tokens": 256,
+                "total_tokens": 301,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 45,
+                "prompt_ms": 620.0,
+                "prompt_per_token_ms": 13.778,
+                "prompt_per_second": 72.6,
+                "predicted_n": 256,
+                "predicted_ms": 6058.8,
+                "predicted_per_token_ms": 23.667,
+                "predicted_per_second": 42.3,
+                "draft_n": 194,
+                "draft_n_accepted": 179
+              },
+              "err": null,
+              "pieces": 228
+            },
+            {
+              "first": 0.6750520999994478,
+              "total": 4.516484600000695,
+              "text": "A refrigerator operates by utilizing a closed-loop system of refrigerant fluid that undergoes phase changes to transfer thermal energy. Inside the refrigerator, the refrigerant flows through evaporator coils where it absorbs heat from the air and contents, causing the liquid refrigerant to boil and turn into a low-pressure gas. This process lowers the temperature inside the compartment, effectively removing heat from the interior. The now gaseous refrigerant is then drawn into a compressor, which mechanically increases its pressure and temperature, turning it into a high-pressure, high-temperature gas.\n\nOnce compressed, the hot gas travels to condenser coils located on the exterior of the refrigerator, typically at the back or bottom. Here, the refrigerant releases the absorbed heat, along with the heat generated by the compression process, into the surrounding room air. As it loses this thermal energy, the refrigerant condenses back into a high-pressure liquid. This liquid then passes through an expansion valve or capillary tube, which rapidly reduces its pressure and temperature, preparing it to re-enter the evaporator coils and repeat the cycle. This continuous process ensures that heat is consistently pumped from the cooler interior to the warmer exterior environment.",
+              "usage": {
+                "prompt_tokens": 38,
+                "completion_tokens": 237,
+                "total_tokens": 275,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 38,
+                "prompt_ms": 652.5,
+                "prompt_per_token_ms": 17.171,
+                "prompt_per_second": 58.2,
+                "predicted_n": 237,
+                "predicted_ms": 3858.3,
+                "predicted_per_token_ms": 16.28,
+                "predicted_per_second": 61.4,
+                "draft_n": 179,
+                "draft_n_accepted": 123
+              },
+              "err": null,
+              "pieces": 235
+            },
+            {
+              "first": 0.7407440999995742,
+              "total": 7.0280679000006785,
+              "text": "1. Set specific, achievable daily goals to build consistent habits rather than relying on sporadic bursts of motivation.\n2. Immerse yourself in the target language through media like podcasts, movies, or music to train your ear to natural rhythms and slang.\n3. Practice speaking from day one, even if you only talk to yourself, to overcome the fear of making mistakes.\n4. Use spaced repetition systems (SRS) for vocabulary retention to ensure long-term memory rather than short-term cramming.\n5. Find a language exchange partner or tutor to get real-time feedback and practice conversational fluency in a low-pressure environment.\n6. Focus on learning high-frequency words and phrases first, as they make up the majority of everyday communication.\n7. Change the language settings on your phone and social media accounts to force passive exposure and practical usage in daily life.\n8. Embrace mistakes as essential learning tools, understanding that errors are a natural and necessary part of the acquisition process.\n9. Study grammar in context rather than in isolation, using example sentences to understand how rules apply in real conversations.\n10. Schedule regular review sessions to reinforce previously learned material and prevent forgetting what you have already mastered.",
+              "usage": {
+                "prompt_tokens": 40,
+                "completion_tokens": 249,
+                "total_tokens": 289,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 40,
+                "prompt_ms": 717.2,
+                "prompt_per_token_ms": 17.93,
+                "prompt_per_second": 55.8,
+                "predicted_n": 249,
+                "predicted_ms": 6305.6,
+                "predicted_per_token_ms": 25.324,
+                "predicted_per_second": 39.5,
+                "draft_n": 175,
+                "draft_n_accepted": 118
+              },
+              "err": null,
+              "pieces": 239
+            }
+          ]
+        },
+        {
+          "wall_s": 6.5353147000005265,
+          "output_tokens": 764,
+          "aggregate_wall_tok_s": 116.90332219195787,
+          "requests": [
+            {
+              "first": 0.5123031999992236,
+              "total": 5.2699016999995365,
+              "text": "```python\ndef merge_sorted_lists(list1: list, list2: list) -> list:\n    \"\"\"\n    Merge two sorted lists into one sorted list.\n    \n    Args:\n        list1: A sorted list of comparable elements.\n        list2: A sorted list of comparable elements.\n    \n    Returns:\n        A new sorted list containing all elements from both input lists.\n    \"\"\"\n    merged = []\n    i, j = 0, 0\n    \n    while i < len(list1) and j < len(list2):\n        if list1[i] <= list2[j]:\n            merged.append(list1[i])\n            i += 1\n        else:\n            merged.append(list2[j])\n            j += 1\n    \n    # Append remaining elements\n    while i < len(list1):\n        merged.append(list1[i])\n        i += 1\n    \n    while j < len(list2):\n        merged.append(list2[j])\n        j += 1\n    \n    return merged\n\n\n# Tests\ndef test_merge_sorted_lists_basic():\n    \"\"\"Test merging two simple sorted lists.\"\"\"\n    assert merge_sorted_lists([1, 3, 5], [2,",
+              "usage": {
+                "prompt_tokens": 45,
+                "completion_tokens": 256,
+                "total_tokens": 301,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 45,
+                "prompt_ms": 486.2,
+                "prompt_per_token_ms": 10.804,
+                "prompt_per_second": 92.6,
+                "predicted_n": 256,
+                "predicted_ms": 4776.2,
+                "predicted_per_token_ms": 18.657,
+                "predicted_per_second": 53.6,
+                "draft_n": 200,
+                "draft_n_accepted": 179
+              },
+              "err": null,
+              "pieces": 230
+            },
+            {
+              "first": 0.5365902999983518,
+              "total": 5.576286799998343,
+              "text": "A refrigerator operates by utilizing a closed-loop system of refrigerant fluid that undergoes phase changes to transfer thermal energy against its natural gradient. Inside the refrigerator compartment, the refrigerant flows through evaporator coils where it absorbs heat from the air and contents, causing the liquid refrigerant to boil and turn into a low-pressure gas. This process cools the interior air, which is then circulated by a fan to maintain a consistent low temperature. The now-warm, low-pressure gas is drawn into a compressor, which mechanically increases its pressure and temperature, turning it into a high-pressure, high-temperature vapor.\n\nThis high-energy vapor then travels to the condenser coils, typically located on the back or bottom of the appliance, where it releases the absorbed heat into the surrounding room air. As the refrigerant loses heat to the environment, it condenses back into a high-pressure liquid. This liquid then passes through an expansion valve or capillary tube, which rapidly reduces its pressure and temperature, preparing it to re-enter the evaporator coils and repeat the cycle. By continuously cycling the refrigerant through compression, condensation, expansion, and evaporation, the refrigerator effectively pumps heat from the cold interior to the warmer exterior, maintaining the desired low temperature inside.",
+              "usage": {
+                "prompt_tokens": 38,
+                "completion_tokens": 252,
+                "total_tokens": 290,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 38,
+                "prompt_ms": 507.3,
+                "prompt_per_token_ms": 13.35,
+                "prompt_per_second": 74.9,
+                "predicted_n": 252,
+                "predicted_ms": 5062.1,
+                "predicted_per_token_ms": 20.088,
+                "predicted_per_second": 49.8,
+                "draft_n": 184,
+                "draft_n_accepted": 124
+              },
+              "err": null,
+              "pieces": 250
+            },
+            {
+              "first": 0.7450902000000497,
+              "total": 6.534269399999175,
+              "text": "1. Set specific, achievable daily goals to build consistent habits rather than relying on sporadic bursts of motivation.\n2. Immerse yourself in the target language through media like podcasts, movies, and news to train your ear to natural rhythms and slang.\n3. Practice speaking from day one, even if you make mistakes, to overcome the fear of judgment and improve fluency faster.\n4. Use spaced repetition systems (SRS) for vocabulary retention to ensure long-term memory rather than short-term cramming.\n5. Find a language exchange partner or tutor to receive real-time feedback and practice conversational skills in a low-pressure environment.\n6. Focus on high-frequency words and phrases first, as mastering the most common 1,000 words allows for basic communication quickly.\n7. Change the language settings on your phone and social media accounts to force passive exposure and reinforce learning in daily life.\n8. Embrace mistakes as essential learning tools, analyzing errors to understand grammatical patterns rather than avoiding them out of perfectionism.\n9. Incorporate the language into your existing hobbies, such as cooking recipes or gaming, to make learning feel relevant and enjoyable.\n10. Review your progress regularly and adjust your methods based on what works best",
+              "usage": {
+                "prompt_tokens": 40,
+                "completion_tokens": 256,
+                "total_tokens": 296,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 40,
+                "prompt_ms": 716.5,
+                "prompt_per_token_ms": 17.913,
+                "prompt_per_second": 55.8,
+                "predicted_n": 256,
+                "predicted_ms": 5809.6,
+                "predicted_per_token_ms": 22.694,
+                "predicted_per_second": 44.1,
+                "draft_n": 181,
+                "draft_n_accepted": 122
+              },
+              "err": null,
+              "pieces": 247
+            }
+          ]
+        },
+        {
+          "wall_s": 7.600509699999748,
+          "output_tokens": 768,
+          "aggregate_wall_tok_s": 101.04585485892157,
+          "requests": [
+            {
+              "first": 0.5868396999994729,
+              "total": 5.86209240000062,
+              "text": "```python\ndef merge_sorted_lists(list1: list, list2: list) -> list:\n    \"\"\"\n    Merge two sorted lists into one sorted list.\n    \n    Args:\n        list1: A sorted list of comparable elements.\n        list2: A sorted list of comparable elements.\n    \n    Returns:\n        A new sorted list containing all elements from both input lists.\n    \"\"\"\n    merged = []\n    i, j = 0, 0\n    while i < len(list1) and j < len(list2):\n        if list1[i] <= list2[j]:\n            merged.append(list1[i])\n            i += 1\n        else:\n            merged.append(list2[j])\n            j += 1\n    # Append remaining elements\n    while i < len(list1):\n        merged.append(list1[i])\n        i += 1\n    while j < len(list2):\n        merged.append(list2[j])\n        j += 1\n    return merged\n\n\n# Test 1: Basic merge of two sorted lists\nassert merge_sorted_lists([1, 3, 5], [2, 4, 6]) == [1,",
+              "usage": {
+                "prompt_tokens": 45,
+                "completion_tokens": 256,
+                "total_tokens": 301,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 45,
+                "prompt_ms": 563.7,
+                "prompt_per_token_ms": 12.527,
+                "prompt_per_second": 79.8,
+                "predicted_n": 256,
+                "predicted_ms": 5293.8,
+                "predicted_per_token_ms": 20.679,
+                "predicted_per_second": 48.4,
+                "draft_n": 190,
+                "draft_n_accepted": 180
+              },
+              "err": null,
+              "pieces": 228
+            },
+            {
+              "first": 0.6323330000013812,
+              "total": 5.674434000000474,
+              "text": "A refrigerator operates by utilizing a closed-loop system of refrigerant fluid that undergoes phase changes to transport thermal energy against its natural gradient. Inside the refrigerator, the refrigerant flows through evaporator coils where it absorbs heat from the air and contents, causing the liquid refrigerant to boil and turn into a low-pressure gas. This process cools the interior space as the latent heat of vaporization is drawn from the surrounding environment. The low-pressure gas is then drawn into a compressor, which mechanically increases its pressure and temperature, turning it into a high-pressure, high-temperature gas.\n\nThis hot, high-pressure gas then travels to the condenser coils, typically located on the back or bottom of the unit, where it releases the absorbed heat into the surrounding room air. As the gas loses heat to the cooler ambient environment, it condenses back into a high-pressure liquid. This liquid then passes through an expansion valve or capillary tube, which rapidly reduces its pressure and temperature, causing it to cool significantly before re-entering the evaporator coils. By continuously cycling the refrigerant through these stages of compression, condensation, expansion, and evaporation, the refrigerator effectively pumps heat from the cold interior to the warmer exterior, maintaining a low temperature inside while dissipating waste heat outside",
+              "usage": {
+                "prompt_tokens": 38,
+                "completion_tokens": 256,
+                "total_tokens": 294,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 38,
+                "prompt_ms": 604.0,
+                "prompt_per_token_ms": 15.895,
+                "prompt_per_second": 62.9,
+                "predicted_n": 256,
+                "predicted_ms": 5065.2,
+                "predicted_per_token_ms": 19.786,
+                "predicted_per_second": 50.5,
+                "draft_n": 189,
+                "draft_n_accepted": 126
+              },
+              "err": null,
+              "pieces": 255
+            },
+            {
+              "first": 0.5875889999988431,
+              "total": 7.599372099999528,
+              "text": "1. Set specific, achievable daily goals to build consistent habits rather than relying on sporadic bursts of motivation.\n2. Immerse yourself in the target language through media like podcasts, movies, and music to train your ear to natural rhythms and slang.\n3. Practice speaking from day one, even if you make mistakes, to overcome the fear of judgment and improve fluency faster.\n4. Use spaced repetition systems (SRS) for vocabulary retention to ensure long-term memory rather than short-term cramming.\n5. Find a language exchange partner or tutor to get real-time feedback and practice conversational skills in a low-pressure environment.\n6. Focus on high-frequency words and phrases first, as mastering the most common 1,000 words covers the majority of daily communication.\n7. Change the language settings on your phone and social media accounts to force passive exposure and active engagement throughout the day.\n8. Embrace mistakes as essential learning tools, analyzing errors to understand grammatical patterns rather than avoiding them out of perfectionism.\n9. Incorporate the language into your existing hobbies, such as cooking recipes or reading news in the target language, to make learning relevant and enjoyable.\n10. Schedule regular review sessions to consolidate what you",
+              "usage": {
+                "prompt_tokens": 40,
+                "completion_tokens": 256,
+                "total_tokens": 296,
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "timings": {
+                "cache_n": 0,
+                "prompt_n": 40,
+                "prompt_ms": 553.8,
+                "prompt_per_token_ms": 13.845,
+                "prompt_per_second": 72.2,
+                "predicted_n": 256,
+                "predicted_ms": 7030.0,
+                "predicted_per_token_ms": 27.461,
+                "predicted_per_second": 36.4,
+                "draft_n": 180,
+                "draft_n_accepted": 124
+              },
+              "err": null,
+              "pieces": 247
+            }
+          ]
+        }
+      ],
+      "burst_summary": {
+        "decode_median": 48.4,
+        "decode_range": [
+          36.4,
+          61.4
+        ]
+      },
+      "burst_wall_median": 105.5596398663705,
+      "completion_status": "INTERRUPTED: host blue screen 0x133 during three simultaneous 4K prompt requests; long-prompt test failed"
+    }
+  },
+  "default_config_restored": true,
+  "service_running": false
+}

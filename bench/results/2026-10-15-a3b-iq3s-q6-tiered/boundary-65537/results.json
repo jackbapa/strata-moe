@@ -1,0 +1,58 @@
+[
+  {
+    "http_response_first_byte_s": 0.021751699998276308,
+    "http_headers_received_s": 0.021909500006586313,
+    "body_first_bytes_s": 0.02226249998784624,
+    "first_sse_event_s": 0.02226249998784624,
+    "ttft_any_content_or_reasoning_s": 39.35324210001272,
+    "ttft_visible_content_s": 39.35324210001272,
+    "ttft_reasoning_s": null,
+    "last_any_content_or_reasoning_s": 39.35324210001272,
+    "last_visible_content_s": 39.35324210001272,
+    "total_response_s": 39.35518710000906,
+    "client_usage_decode_tokens_per_s": null,
+    "client_visible_usage_decode_tokens_per_s": null,
+    "client_completion_tokens_per_total_second": 0.02540961112594405,
+    "engine_predicted_tokens_per_s": null,
+    "engine_prompt_tokens_per_s": 1681.3,
+    "usage": {
+      "prompt_tokens": 65537,
+      "completion_tokens": 1,
+      "total_tokens": 65538,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 65537,
+      "prompt_ms": 38980.4,
+      "prompt_per_token_ms": 0.595,
+      "prompt_per_second": 1681.3,
+      "predicted_n": 1,
+      "predicted_ms": 0.0,
+      "predicted_per_token_ms": 0.0,
+      "predicted_per_second": null,
+      "draft_n": 0,
+      "draft_n_accepted": 0
+    },
+    "finish_reason": "length",
+    "received_done": true,
+    "sse_frames": 37,
+    "data_events": 3,
+    "nonempty_text_events": 1,
+    "visible_characters": 2,
+    "reasoning_characters": 0,
+    "request_sha256": "50db76f86943efb28c76299f2833f67610c90bff827e4bd8026a9cd915165105",
+    "rate_note": "Client rate is (API completion_tokens - 1)/(last nonempty delta - first nonempty delta). SSE deltas need not equal single model tokens; MTP can emit bursts, and usage may include hidden/stop tokens. Visible-only rate is null if reasoning was emitted.",
+    "trial": "prompt65537-output1-repeat01-resident-first-unknown",
+    "repeat": 1,
+    "cache_state": "resident-first-unknown",
+    "target_prompt_tokens": 65537,
+    "count_endpoint_prompt_tokens": 65537,
+    "requested_max_tokens": 1,
+    "model_reset": null,
+    "resident_process": true,
+    "count_endpoint_matches_actual_usage": true
+  }
+]

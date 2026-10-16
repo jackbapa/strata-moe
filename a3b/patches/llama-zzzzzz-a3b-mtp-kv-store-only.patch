@@ -1,0 +1,61 @@
+diff --git a/src/llama-graph.h b/src/llama-graph.h
+--- a/src/llama-graph.h
++++ b/src/llama-graph.h
+@@ -1226,7 +1226,8 @@
+             ggml_tensor * sinks, // [n_head_q]
+             ggml_tensor * v_mla, // [n_embd_head_v_mla, n_embd_head_v, n_head_v] // TODO: remove
+                   float   kq_scale,
+-                    int   il) const;
++                    int   il,
++                   bool   store_only = false) const;
+ 
+     llm_graph_input_attn_k  * build_attn_inp_k() const;
+ 
+diff --git a/src/llama-graph.cpp b/src/llama-graph.cpp
+--- a/src/llama-graph.cpp
++++ b/src/llama-graph.cpp
+@@ -2896,7 +2896,8 @@
+         ggml_tensor * sinks,
+         ggml_tensor * v_mla, // TODO: remove
+             float     kq_scale,
+-            int       il) const {
++            int       il,
++            bool      store_only) const {
+     GGML_ASSERT(v_mla == nullptr);
+ 
+     if (inp->self_k_rot) {
+@@ -2924,6 +2925,12 @@
+ 
+         ggml_build_forward_expand(gf, mctx_cur->cpy_k(ctx0, k_cur, k_idxs, il));
+         ggml_build_forward_expand(gf, mctx_cur->cpy_v(ctx0, v_cur, v_idxs, il));
++    }
++
++    // MTP catch-up consumes only the exact same K/V cache writes above.
++    // Return before build_attn_mha expands attention into the execution graph.
++    if (store_only) {
++        return nullptr;
+     }
+ 
+     ggml_tensor * kq_mask = inp->get_kq_mask();
+diff --git a/src/models/qwen35moe.cpp b/src/models/qwen35moe.cpp
+--- a/src/models/qwen35moe.cpp
++++ b/src/models/qwen35moe.cpp
+@@ -686,13 +686,12 @@
+ 
+     cur = build_attn(inp_attn,
+             nullptr, nullptr, nullptr,
+-            Qcur, Kcur, Vcur, nullptr, nullptr, nullptr, kq_scale, il);
+-
+-    // build_attn has already expanded Q/K/V and both cache-copy operations.
+-    // Its attention result is not a graph root yet. Omitting that root skips
+-    // attention, FFN and head work without changing the stored K/V arithmetic.
+-    // The masked n_outputs == 0 contract requests no draft hidden rows/logits.
++            Qcur, Kcur, Vcur, nullptr, nullptr, nullptr, kq_scale, il, kv_only);
++
++    // store_only returns after both cache writes, before attention can be
++    // expanded. Masked zero-output catch-up requests no draft hidden/logit rows.
+     if (kv_only) {
++        GGML_ASSERT(cur == nullptr);
+         static const bool diagnostic = [] {
+             const char * value = std::getenv("STRATA_A3B_MTP_KV_ONLY_DIAGNOSTIC");
+             return value && value[0] == '1' && value[1] == '\0';

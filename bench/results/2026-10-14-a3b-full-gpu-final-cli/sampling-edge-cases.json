@@ -1,0 +1,96 @@
+{
+  "request": {
+    "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+    "messages": [
+      {
+        "role": "user",
+        "content": "请写一段关于雨天城市的描写，至少五句话。"
+      }
+    ],
+    "max_tokens": 32,
+    "temperature": 0.7,
+    "top_p": 1.0,
+    "top_k": 0,
+    "seed": 0,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "responses": [
+    {
+      "id": "chatcmpl-200b90c1fe384ab4b69ce84a",
+      "object": "chat.completion",
+      "created": 1791975233,
+      "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "细雨如丝般悄然落下，将整座城市笼罩在一片朦胧的水雾之中。灰色的天空低垂，与远处高楼模糊的轮廓交织在一起，仿佛"
+          },
+          "finish_reason": "length"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 24,
+        "completion_tokens": 32,
+        "total_tokens": 56,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 24,
+        "prompt_ms": 369.2,
+        "prompt_per_token_ms": 15.383,
+        "prompt_per_second": 65.0,
+        "predicted_n": 32,
+        "predicted_ms": 514.1,
+        "predicted_per_token_ms": 16.066,
+        "predicted_per_second": 62.2,
+        "draft_n": 30,
+        "draft_n_accepted": 16
+      }
+    },
+    {
+      "id": "chatcmpl-492ddcedd0b04b32804e5ded",
+      "object": "chat.completion",
+      "created": 1791975234,
+      "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "细雨如丝般悄然落下，将整座城市笼罩在一片朦胧的水雾之中。灰色的天空低垂，与远处高楼模糊的轮廓交织在一起，仿佛"
+          },
+          "finish_reason": "length"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 24,
+        "completion_tokens": 32,
+        "total_tokens": 56,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 24,
+        "prompt_ms": 65.9,
+        "prompt_per_token_ms": 2.746,
+        "prompt_per_second": 364.2,
+        "predicted_n": 32,
+        "predicted_ms": 509.2,
+        "predicted_per_token_ms": 15.912,
+        "predicted_per_second": 62.8,
+        "draft_n": 30,
+        "draft_n_accepted": 16
+      }
+    }
+  ],
+  "seed_zero_choices_equal": true
+}

@@ -1,0 +1,37 @@
+{"at_s": 0.02226249998784624, "sse": "data: {\"id\": \"chatcmpl-521731245cd6497abe468930\", \"object\": \"chat.completion.chunk\", \"created\": 1792066099, \"model\": \"qwen3.6-35b-a3b-ud-iq3_s\", \"choices\": [{\"index\": 0, \"delta\": {\"role\": \"assistant\", \"content\": \"\"}, \"finish_reason\": null}]}", "kind": "data"}
+{"at_s": 1.4304267000115942, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 2.2323305000027176, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 3.059198400005698, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 3.9068948999920394, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 4.784373900009086, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 5.685777999984566, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 6.61773379999795, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 7.574790999991819, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 8.565145000000484, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 9.58078459999524, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 10.62924040001235, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 11.688902900001267, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 12.789164499990875, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 13.911542999994708, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 15.070786099997349, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 16.256695399992168, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 17.47367189999204, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 18.719096799992258, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 19.993351699988125, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 21.29569349999656, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 22.628684800001793, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 23.991456999996444, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 25.380654300010065, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 26.80373270000564, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 28.24949379998725, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 29.7274638999952, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 31.241153200011468, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 32.798274100001436, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 34.37404779999633, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 35.98828610000783, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 37.62145010000677, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 39.30636280000908, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 39.352867400011746, "sse": ": keep-alive", "kind": "comment_or_empty"}
+{"at_s": 39.35324210001272, "sse": "data: {\"id\": \"chatcmpl-521731245cd6497abe468930\", \"object\": \"chat.completion.chunk\", \"created\": 1792066099, \"model\": \"qwen3.6-35b-a3b-ud-iq3_s\", \"choices\": [{\"index\": 0, \"delta\": {\"content\": \"混合\"}, \"finish_reason\": null}]}", "kind": "data"}
+{"at_s": 39.354818299994804, "sse": "data: {\"id\": \"chatcmpl-521731245cd6497abe468930\", \"object\": \"chat.completion.chunk\", \"created\": 1792066099, \"model\": \"qwen3.6-35b-a3b-ud-iq3_s\", \"choices\": [{\"index\": 0, \"delta\": {}, \"finish_reason\": \"length\"}], \"usage\": {\"prompt_tokens\": 65537, \"completion_tokens\": 1, \"total_tokens\": 65538, \"prompt_tokens_details\": {\"cached_tokens\": 0}}, \"timings\": {\"cache_n\": 0, \"prompt_n\": 65537, \"prompt_ms\": 38980.4, \"prompt_per_token_ms\": 0.595, \"prompt_per_second\": 1681.3, \"predicted_n\": 1, \"predicted_ms\": 0.0, \"predicted_per_token_ms\": 0.0, \"predicted_per_second\": null, \"draft_n\": 0, \"draft_n_accepted\": 0}}", "kind": "data"}
+{"at_s": 39.354818299994804, "sse": "data: [DONE]", "kind": "done"}

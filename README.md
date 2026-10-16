@@ -1,214 +1,81 @@
-<h1 align="center">Strata</h1>
+# strata-moe
 
-**English** · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Português](README.pt-BR.md)
+**在普通电脑上运行 Qwen3.6-35B-A3B MoE。** 本项目从 [Strata](https://github.com/Niko1221/Strata) 的内存与专家调度思路出发，为 Qwen3.5/3.6 A3B 增加了独立的 C++/CUDA/CPU 推理引擎、MTP 验证路径，以及本地网页和 OpenAI/Anthropic 兼容 API。当前一键安装选择已实测的 **Qwen3.6-35B-A3B UD-IQ3_S**；模型由原发布者提供，我们没有重新量化或把权重放进 Git。可[手动下载 IQ3_S 主模型](https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF/resolve/a483e9e6cbd595906af30beda3187c2663a1118c/Qwen3.6-35B-A3B-UD-IQ3_S.gguf?download=true)；全 GPU + MTP 另需[匹配的 Q8_0 草稿模型](https://huggingface.co/ggml-org/Qwen3.6-35B-A3B-GGUF/resolve/baec3ebee244827cda0f4557eafa8b28f7545fa6/mtp-Qwen3.6-35B-A3B-Q8_0.gguf?download=true)，保存位置和校验值见下文。
 
-<p align="center"><b>Run a 125-billion-parameter AI model on your own gaming PC</b><br>
-NVIDIA or AMD graphics card (12 GB or more) · Windows or Linux · free and open source</p>
+> **English:** Strata-Moe runs the Qwen3.6-35B-A3B MoE model locally. `SETUP.bat` installs the selected engine and downloads only the pinned IQ3_S model and, for full-GPU mode, its matching MTP draft. Windows/NVIDIA and CPU paths have been tested. See [Install and start](#安装与启动) and [measured results](#实测速度与资源占用).
 
-<p align="center"><a href="https://github.com/Niko1221/Strata/releases/download/v0.1.10/Pagoda.mp4"><img src="docs/media/pagoda-preview.webp" width="720" alt="A voxel pagoda garden that Strata's model wrote, running in the browser"></a><br>
-<sub>A voxel pagoda garden, 1 shot prompt running on an RTX 5070 with Strata (IQ3_S, 128K context) ·
-<a href="https://github.com/Niko1221/Strata/releases/download/v0.1.10/Pagoda.mp4">full video (49 s)</a></sub></p>
+## 实测速度与资源占用
 
-Strata runs **[Qwen3.8-Flash-Next](https://huggingface.co/Qwen/Qwen3.8-Flash-Next)** on a normal PC. This is a
-large, smart AI model that usually needs a server. It chats, writes code, reads pictures and works with your apps
-and coding agents. Nothing leaves your PC.
+测试机：Windows、AMD Ryzen Threadripper 3960X（24 核）、128 GiB RAM、NVIDIA RTX 2080 Ti。GPU 0/1 的驱动各报告 **22,528 MiB** 显存；这是本机的容量，不能当作标准 11 GiB 2080 Ti 的成绩。各行用同一个 13.68 GB IQ3_S 主模型；全 GPU 行另用 Q8_0 MTP K2。**配置上下文上限统一为 262,144 token**，实际输入长度单列。各行都是未缓存、贪心采样、128 输出的单次完整请求；输入为重复同一段 token ID 的合成压力测试，因此数字应结合输入长度和内容阅读，不能当成自然文本的通用速度。
 
-## How fast is it?
+| 资源 | 上下文上限 (token) | 实际输入 (token) | 首字节 (s) | 预填充 (token/s) | 输出 (token/s) | 资源采样峰值 |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| 2080 Ti 22 GiB（GPU 0，全驻留 + MTP K2） | 262,144 | 1,024 | 0.598 | 1,722.75 | **137.68** | 整卡 17,084 MiB；引擎 RSS 1,636 MiB |
+| 2080 Ti 22 GiB（GPU 0，全驻留 + MTP K2） | 262,144 | 8,192 | 3.319 | 2,471.49 | 137.19 | 整卡 17,102 MiB；引擎 RSS 1,646 MiB |
+| 2080 Ti 22 GiB（GPU 0，全驻留 + MTP K2） | 262,144 | 32,768 | 14.941 | 2,194.36 | 126.72 | 整卡 17,102 MiB；引擎 RSS 1,651 MiB |
+| 6 GiB 显存模拟（GPU 1，无 MTP） | 262,144 | 1,024 | 6.788 | 150.99 | 14.44 | 整卡 5,639 MiB；引擎 RSS 12,131 MiB |
+| 6 GiB 显存模拟（GPU 1，无 MTP） | 262,144 | 8,192 | 44.482 | 184.19 | 27.29 | 整卡 5,639 MiB；引擎 RSS 12,132 MiB |
+| 6 GiB 显存模拟（GPU 1，无 MTP） | 262,144 | 32,768 | 160.041 | 204.76 | 27.41 | 整卡 5,639 MiB；引擎 RSS 12,136 MiB |
+| 纯 CPU（16 线程，无 MTP） | 262,144 | 1,024 | 12.439 | 82.76 | 12.21 | 引擎 RSS 14,523 MiB |
+| 纯 CPU（16 线程，无 MTP） | 262,144 | 8,192 | 106.789 | 76.75 | 10.36 | 引擎 RSS 14,523 MiB |
+| 纯 CPU（16 线程，无 MTP） | 262,144 | 32,768 | 605.979 | 54.08 | 8.22 | 引擎 RSS 14,526 MiB |
 
-We measured it on two ordinary gaming PCs. A token is about ¾ of a word.
+表中的“首字节”指从向驻留引擎发送请求，到收到首个模型 token 响应行的时间；**它不是 HTTP 响应首字节时间**。预填充、输出速度根据引擎内部计时，模型加载时间不计入。每行只测一次，**没有可报告的中位数**。[统一 256K 测试方法与逐行 JSON](bench/results/2026-10-16-256k-context-matrix/README.md)保留全部原始测量。另测得全 GPU 的 50K/128 合成重复输入：首 token 25.677 秒、预填充 1,947.98 token/s、输出 121.62 token/s，MTP 草稿 84/84 全部被接受；这不能拿来证明相对旧测试的引擎提速。之前另一种合成内容的 API 请求，50K 输入、256 输出、三轮测试：全 GPU 最快首 token **28.094 s**、最快输出 **86.7 token/s**，输出速度中位数 **83.2 token/s**，HTTP 响应首字节中位数 **19.89 ms**；HTTP 首字节只是流式响应开始，不是模型产生 token。[原始报告与逐轮 JSON](bench/results/2026-10-16-a3b-iq3s-combined-exact-r3/README.md)。
 
-- **Writes answers:** how fast the reply appears in a short chat. 60 tokens per second is faster than you can read.
-- **Reads your prompt:** how fast it takes in what you send (here a 32K-token document, code or chat history).
+6 GiB 是**引擎显存规划预算**，测试用的仍是本机 22 GiB 卡；整卡采样包含空闲基线和驱动分配，**尚未在物理 6 GiB 显卡上验证**。该档位将 GPU 主干与部分常用专家放进显存，其余专家在系统内存，未命中专家由 CPU 计算；它不是所有专家都在 GPU 计算的流水线。≤64K 物理 KV 档留在 GPU，更长的档位转到系统内存。纯 CPU 档位所有模型计算都在 CPU。RSS 为引擎进程采样峰值，不能与整卡显存或整机已用内存相加。此前 2 GiB 预算、8,192 输入的单次测试仍保留：首 token 159.261 秒、预填充 51.47 token/s、输出 7.01 token/s，见[原始 JSON](bench/results/2026-10-16-256k-context-matrix/2g.json)；它与 6 GiB 行不能混算。
 
-<table>
-<tr><th>NVIDIA: RTX 5070 (12 GB), Ryzen 5 7600, 64 GB RAM</th><th>AMD: RX 9070 XT (16 GB), Ryzen 9 3900X, 47 GB RAM</th></tr>
-<tr><td>
+## 安装与启动
 
-| Size | Writes answers | Reads your prompt |
-| --- | ---: | ---: |
-| **Q2_0** | 94 tokens/s | 2,650 tokens/s |
-| **IQ2_XS** | 79 tokens/s | 2,090 tokens/s |
-| **IQ3_XXS** | 62 tokens/s | 1,750 tokens/s |
-| **IQ3_S** | 53 tokens/s | 1,620 tokens/s |
-| **Coder** | 55 tokens/s | 2,180 tokens/s |
+**Windows（已测）**：下载或克隆仓库后，在项目目录双击 [`SETUP.bat`](SETUP.bat)。它会找 64 位 Python 3.10+；若没有，会先尝试用 winget 安装 Python 3.12。随后创建本目录的 `.venv`，安装 `requirements.txt` 锁定的 Python 包、CMake 和 Ninja；检查 NVIDIA 驱动与 CUDA `nvcc`、Visual Studio C++ 构建工具，缺少开发工具时沿用原 Strata 的安装引导通过 winget 安装；获取固定版本的 llama.cpp/ggml 源码并打上本项目的 A3B 补丁，构建 `build-a3b/bin/strata-moe.exe`，只下载所选模型，导出 tokenizer，写入本机 `strata-moe.json`，最后启动网页/API。首次下载约 13.68 GB；全 GPU 档位还需 1.99 GB MTP 模型，预留至少 25 GB 磁盘空间。下载支持续传和 SHA-256 校验；失败后重新运行同一脚本即可。
 
-</td><td>
+CUDA 构建需要 [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit)（含 `nvcc`）和 [Visual Studio 2022 Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/) 的 **Desktop development with C++**；安装器会先检查，缺少时提示安装（约 8–10 GB，可能需要管理员确认）。只有 NVIDIA 驱动、没有 CUDA 编译工具时可选纯 CPU 安装；CPU 构建仍需 C++ 构建工具。建议至少 32 GiB 系统 RAM；16 GiB 内存机器尚未验证。当前一键 GPU 安装只针对 NVIDIA；AMD/HIP 和 Linux 尚未做本项目安装实测，不在此承诺可用范围内。
 
-| Size | Writes answers | Reads your prompt |
-| --- | ---: | ---: |
-| **Q2_0** | 60 tokens/s | 1,160 tokens/s |
-| **IQ2_XS** | 52 tokens/s | 1,110 tokens/s |
-| **Coder** | 44 tokens/s | 1,420 tokens/s |
+```powershell
+# 在项目目录执行；安装完即启动，浏览器打开 http://127.0.0.1:8096/
+.\SETUP.bat
 
-</td></tr>
-</table>
+# 只安装、编译并下载，不启动服务
+.\SETUP.bat --no-start
 
-NVIDIA: Q2_0 with engine 0.1.36, the other rows with 0.1.26 (4K answers, 32K prompts). The full tables are in
-[DETAILS.md](docs/DETAILS.md#speed-measured). A card with more VRAM is faster: an RTX 3090 (24 GB) should write
-about 100-140 tokens per second. Long chats and other cards: [speed of each model](docs/MODELS.md#how-fast-is-each-size),
-[community results](docs/COMMUNITY_BENCHMARKS.md).
-
-<p align="center"><a href="https://buymeacoffee.com/strataengine"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="50"></a><br>
-<sub>Strata is free. If it runs well on your PC, a coffee keeps the work on it going.</sub></p>
-
-## What you need
-
-| | |
-| --- | --- |
-| **Graphics card** | **NVIDIA** GeForce RTX 20, 30, 40 or 50 series, or **AMD** Radeon RX 7900 XT / XTX, RX 7800 XT / 7700 XT, RX 9060 XT, RX 9070 / 9070 XT, Radeon AI PRO R9700 or RX 6800 / 6900 series. It needs **12 GB of VRAM or more**. |
-| **RAM** | 32 GB or more. Your RAM decides [which model](#which-model-should-i-pick) fits. 64 GB runs every size. |
-| **Disk** | About 80 GB free. Use an SSD if you can: the first start is much faster. |
-| **System** | Windows 10 / 11 or Linux, and a current graphics driver from NVIDIA or AMD. |
-
-The installer sets up everything else. Two or three cards can share the model ([multi-GPU](docs/MULTI_GPU.md)).
-
-Experimental, written and tested by community members on their own machines:
-
-- **Older graphics cards** (Tesla P40 / V100, GTX 10, Radeon VII / MI50, RX 6700 XT, RX 5500 XT): [Older GPUs](docs/OLDER_GPUS.md).
-- **Intel Arc**, built from source on Linux: [Intel Arc](docs/INTEL_ARC.md).
-- **AMD Ryzen AI Max (Strix Halo)**, built from source on Linux: [Strix Halo](docs/STRIX_HALO.md).
-- **Older processors without AVX2**: they work, but slowly. [Older CPUs](docs/INSTALL.md#older-cpus-experimental).
-
-The full list: [docs/INSTALL.md](docs/INSTALL.md#what-you-need).
-
-## Install
-
-### Let your AI set it up
-
-Do you use an AI coding assistant (Claude Code, Cursor, Codex, GitHub Copilot, ...)? Paste this into it:
-
-```text
-Set up Strata on this PC for me: https://github.com/Niko1221/Strata - follow docs/AI_SETUP.md in that repository.
+# 后续启动：复用已有 .venv、编译产物、模型和配置，不重新下载
+.\START-HERE.bat
 ```
 
-It checks your graphics card, RAM and disk and picks the model that fits. Then it installs and starts it and tells
-you how to connect your apps. AI tools can also install, start and stop Strata through its
-[MCP server](docs/MCP_SERVER.md).
+安装器根据所选卡报告的显存自动选档：至少 20 GiB 用全 GPU + MTP、4–20 GiB 用 RAM 专家缓存/调度档位、低于 4 GiB 或没有 NVIDIA 卡用纯 CPU。**6 GiB 预算、256K 上限**的测试档位需要显式选择，因为尚未在物理 6 GiB 显卡上验证。适配的 Strata 分组 IQ CUDA 专家核当前只在 GPU 0 的全驻留档位启用；选择其他 GPU 时回退到 GGML 专家路径。标准 11 GiB RTX 2080 Ti 的实际速度尚未测量，安装不等于性能已验证。你也可以明确选择：
 
-### Or do it yourself
+```powershell
+.\SETUP.bat --mode 6g --device 0 --no-start
+.\SETUP.bat --mode cpu --no-start
+.\SETUP.bat --mode full --device 0 --no-start
+.\SETUP.bat --mode hybrid --device 0 --no-start
+```
 
-[Download Strata](https://github.com/Niko1221/Strata/archive/refs/heads/main.zip) and unzip it (or `git clone` it).
-**Windows:** double-click **`START-HERE.bat`**. **Linux:** run **`./setup.sh`** in the Strata folder.
+切换档位时，先停止当前服务，再加 `--reconfigure` 重新生成 `strata-moe.json`（它不会默默覆盖用户已有配置）。例如切换到 CPU：`.\SETUP.bat --mode cpu --reconfigure --no-start`，然后 `.\START-HERE.bat`。如果想强制重编译，用 `--rebuild`。想预览选档和下载清单，用 `--dry-run`。
 
-The steps are the same for NVIDIA and AMD. The installer finds your card and sets up the right engine for it. It
-asks you a few questions:
+服务只监听 `127.0.0.1:8096`。网页地址为 <http://127.0.0.1:8096/>，OpenAI 兼容 API 根地址为 <http://127.0.0.1:8096/v1>；关闭启动脚本窗口或按 `Ctrl+C` 停止。命令行手动启动与一键脚本一致：
 
-- which model and which size,
-- how much context (how much text the model keeps in mind),
-- whether it should read pictures.
+```powershell
+.\.venv\Scripts\python.exe -m serve.server --engine strata --config strata-moe.json --port 8096 --open
+```
 
-Press Enter each time for the recommended answer. Then it downloads the model (about 70 GB) and starts it. If the
-download stops, run it again: it continues where it left off. Your browser opens the Strata app at
-`http://127.0.0.1:8080`.
+若 8096 端口已被占用，请先关闭已有服务；如要改端口，运行 `.\SETUP.bat --port 8097 --reconfigure --no-start`，再运行 `.\START-HERE.bat --port 8097`。把服务绑定到非本机地址前，必须设置 API key；本项目默认只提供本机访问。
 
-> **While the model starts, your PC can be slow or stop responding for 1-3 minutes** (longest the first time).
-> Strata loads 35-55 GB into your RAM and locks part of it for the graphics card. This is normal. Wait, and don't
-> close the window. The window shows what Strata is doing.
+## 模型文件与来源
 
-**Next time**, run `START-HERE.bat` (or `./setup.sh`) again. It starts right away and downloads nothing twice. Close
-its window to stop the model. `UPDATE.bat` (`./update.sh`) updates Strata without starting it. Updating, Docker,
-several cards, where the files go and every option: [docs/INSTALL.md](docs/INSTALL.md).
+安装器只会从以下固定版本下载所选档位真正需要的文件，下载到被 Git 忽略的 `models/a3b/`。若手动下载，也把文件按表中原名放到该目录，再运行 `SETUP.bat`；安装器会校验已有文件的大小和 SHA-256，正确时直接复用。6 GiB、RAM 专家和 CPU 档位只需第一行；全 GPU 档位再下载第二行。tokenizer 从主 GGUF 自带的元数据导出，不另下载一个模型。
 
-**Is it fast on your PC?** Run `BENCH.bat` (`./bench.sh`): about 5-10 minutes, it measures chat, 4K/16K prompts and an agent-style session with your own settings and writes a report to share ([how](docs/COMMUNITY_BENCHMARKS.md#run-the-benchmark)).
-
-## Which model should I pick?
-
-The installer recommends one for your RAM. The same model comes in several sizes, compressed more or less. Smaller
-sizes are faster. Larger sizes are a bit smarter.
-
-| Your RAM | Take | Why |
+| 用途 | 上游文件 | SHA-256 |
 | --- | --- | --- |
-| **32 GB** | **Coder** | it fits 32 GB, and it is made for code (with a 24 GB card, Q2_0 and IQ2_XS run too) |
-| **48 GB** | **IQ2_XS** (or Q2_0, the fastest) | the larger sizes do not fit |
-| **64 GB** | **IQ2_XS** (recommended), or IQ3_XXS / IQ3_S | every size fits; IQ3_S is the best and the slowest |
-| **96 GB or more** | **IQ3_S**, or Unsloth's UD-IQ4_XS (~4-bit) | room for the largest sizes with everything else open |
+| 推理主模型，所有档位 | [Unsloth Qwen3.6-35B-A3B UD-IQ3_S](https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF/resolve/a483e9e6cbd595906af30beda3187c2663a1118c/Qwen3.6-35B-A3B-UD-IQ3_S.gguf?download=true) | `66a3ca888ce13482b40c333db2432c0ebde3a7b13754fc29f0c6f5e89703ec66` |
+| MTP 草稿，仅全 GPU 档位 | [ggml-org 匹配的 Q8_0 MTP](https://huggingface.co/ggml-org/Qwen3.6-35B-A3B-GGUF/resolve/baec3ebee244827cda0f4557eafa8b28f7545fa6/mtp-Qwen3.6-35B-A3B-Q8_0.gguf?download=true) | `f6cb995fab78e7284097b2e13508e8daad4ffc6a747b433aef399f4e48524b5a` |
 
-- **[Coder](docs/MODELS.md#coder):** a coding version with half of the experts removed. It reaches 91% of the full
-  model's SWE-bench Verified score (measured by its authors) and fits 32 GB of RAM. It is weaker outside code,
-  including Chinese and other CJK text (#438). For those, take Q2_0, IQ2_XS or IQ3_S, which keep every expert.
-- **[Swift 1.5](docs/MODELS.md#swift-15):** a fine-tune that thinks for a much shorter time before it answers. You
-  get the answer sooner, at about the same quality.
-- **[Unsloth UD-IQ4_XS](docs/MODELS.md#unsloth-ud-iq4_xs):** Unsloth's ~4-bit version, between IQ3_S and
-  UD-Q4_K_XL in quality. A 94 GB download. With less than ~80 GB of RAM, Strata reads part of it from the SSD
-  while it answers, so it is slower there (an NVMe SSD helps).
-- **[Unsloth UD-Q4_K_XL](docs/MODELS.md#unsloth-ud-q4_k_xl-experimental)** (experimental): the closest to the full
-  model. But Strata reads most of it from the SSD while it answers, so it writes only 7-8.5 tokens/s on a 64 GB PC.
-- **[OrcaRouter's Uncensored IQ3_XXS](docs/MODELS.md#orcarouter-uncensored-iq3_xxs):** you set it up by hand. It is
-  not in the installer's menu.
+下载实现与固定版本见 [`tools/a3b.py`](tools/a3b.py)。需要 HTTPS 镜像时可在启动前设置环境变量 `HF_ENDPOINT`；下载后的文件仍按固定 SHA-256 校验。主文件内部有不同 GGUF 张量类型，包括 IQ3_S 专家和 Q6_K 密集张量；Q6_K **不是另一个需要下载的主模型**。不要把 `models/`、`.venv/`、`build*/` 或本机 `strata-moe.json` 提交到 Git。
 
-Sizes, downloads and what fits where: [docs/MODELS.md](docs/MODELS.md). To add another model later, run
-`SETUP.bat` (Linux: `./setup.sh --setup`).
+## 项目结构与范围
 
-## Using it
+- `a3b/`：Qwen A3B 引擎、专家缓存/调度、Strata CUDA 适配核和 MTP 验证。
+- `serve/`：本地网页和 API；界面名称与标志已更新为 Strata-Moe。
+- `tools/setup_moe.py`：独立安装流程；`tools/a3b.py`：固定版本下载、校验与构建。
+- `bench/results/`：测量条件、原始结果和限制；[A3B 交接记录](A3B-IQ3S-HANDOFF-2026-10-16.md)列出已实现与未完成的架构工作。
 
-<p align="center"><img src="docs/media/runpagoda.png" width="900" alt="The Strata app's Monitor tab next to a coding agent"><br>
-<sub>The Strata app's <b>Monitor</b> (left) while a coding agent writes the pagoda garden from the video (right)</sub></p>
-
-- **In the browser:** open `http://127.0.0.1:8080`. It has **Chat**, a live **Monitor** of the model and your
-  GPU/CPU/RAM, and **About** with the settings and addresses.
-- **Your apps and coding agents:** add an "OpenAI-compatible" provider with the base URL
-  **`http://127.0.0.1:8080/v1`**. Any API key and any model name work.
-  - Apps that use Anthropic's API: `http://127.0.0.1:8080/v1/messages` (Claude Code:
-    `ANTHROPIC_BASE_URL=http://127.0.0.1:8080`).
-  - Codex CLI and other apps that use the OpenAI Responses API: `/v1/responses`
-    ([setup](docs/DETAILS.md#the-responses-api-and-codex-cli)).
-- **Thinking:** choose **off, low, medium or high** in the chat menu or in your app's "reasoning effort". Off is the
-  fastest. High is best for hard questions.
-- **Pictures:** say yes to "Images?" in setup. Then click **Picture** in the chat, or attach pictures in your app.
-  AMD cards read pictures on Linux through the processor; on Windows they can't yet.
-- **From your phone or another PC:** `START-HERE.bat --setup --host 0.0.0.0 --api-key <secret>`. Always set a key.
-- **One request at a time:** by default Strata answers one request, and the others wait. To answer several at once,
-  set `"parallel": 2` ([BATCHING.md](docs/BATCHING.md)). On a 12 GB card this makes each answer slower.
-- **Long prompts:** Strata reads the first message of a chat in full, about 1 minute per 30,000 tokens. Follow-up
-  messages start in seconds.
-
-More: [where your chats are stored](docs/INSTALL.md#where-things-are-stored), [the API](docs/DETAILS.md#using-it).
-
-## Something went wrong?
-
-- **My PC froze the first time Strata started.** This is normal while it loads the model. Wait, and don't close the
-  window. Still frozen after 10 minutes? Restart the PC, close other programs and try again, or pick a smaller size.
-- **It stopped while downloading or installing.** Run `START-HERE.bat` (or `./setup.sh`) again. It continues where
-  it stopped.
-- **It's very slow and the disk light keeps blinking, or it says "the engine stopped unexpectedly".** Your PC does
-  not have enough free RAM. Close other programs (browsers use a lot), or pick a smaller size (Q2_0 or IQ2_XS).
-- **It says port 8080 is already in use.** Strata is already running. Look for its window.
-
-More problems and their fixes: [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md). Still stuck? Open an
-[issue](https://github.com/Niko1221/Strata/issues) and attach `strata-<model>.log` from the Strata folder. Found a
-security problem? Report it privately: [SECURITY.md](SECURITY.md).
-
-## How does it work?
-
-Models like this one usually run on servers with hundreds of gigabytes of graphics memory. Your graphics card has
-12-24 GB. Strata makes the model fit by **sharing the work across your whole PC**. Think of a kitchen: the things
-you use all the time stay on the counter, and the rest waits in the pantry.
-
-<p align="center"><img src="docs/media/how-it-works.svg" width="860" alt="The model's 24,576 experts: the busiest on the graphics card, all of them in RAM, a lookup table on the SSD"></p>
-
-- **The model is a team of 24,576 small specialists ("experts").** Each word needs only 10 of them.
-- **Your graphics card** keeps the few thousand experts that are used most often. **Your RAM** holds all of them,
-  and **your processor** works on the rest at the same time. **Your SSD** holds a big lookup table.
-
-<p align="center"><img src="docs/media/guess-and-check.svg" width="860" alt="A small helper guesses the next words; the big model checks them all at once and keeps the right ones"></p>
-
-- **Guess, then check:** a small helper guesses the next few words. The big model checks them all at once. You get
-  the same answer, 1.6-1.8x sooner.
-- **Long texts are read in big pieces** (up to 8,192 tokens at a time), at over 1,000 tokens per second.
-
-The longer explanation: [docs/HOW_IT_WORKS.md](docs/HOW_IT_WORKS.md). Every part and its numbers:
-[the details](docs/DETAILS.md#how-it-works) and the [paper](docs/paper/Strata-Paper.pdf).
-
-## Credits and license
-
-The model is [Qwen3.8-Flash-Next](https://huggingface.co/Qwen/Qwen3.8-Flash-Next) by the Qwen team. It was
-compressed by [ISTA-DASLab](https://huggingface.co/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF), UkisAI (Swift 1.5)
-and Unsloth. Strata uses parts of [llama.cpp / ggml](https://github.com/ggml-org/llama.cpp). All credits:
-[docs/HOW_IT_WORKS.md](docs/HOW_IT_WORKS.md#credits). Strata is open source under the [MIT License](LICENSE). A few
-parts and every model have their own licenses ([which ones](docs/HOW_IT_WORKS.md#license)).
-
-## Support Strata
-
-Strata is free and open source. If it is useful to you, you can support its development:
-
-<p align="center"><a href="https://buymeacoffee.com/strataengine"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="50"></a></p>
+本项目沿用原 [Strata](https://github.com/Niko1221/Strata) 的 MIT 许可证与版权声明，并使用固定版本的 [llama.cpp/ggml](https://github.com/ggml-org/llama.cpp) 源码作为 A3B 构建依赖。现有默认全 GPU 路径在解码调用了适配的原 Strata 分组 IQ 专家核；预填充及其余算子并非全部由 Strata 内核执行。若要做性能比较，请使用相同模型、请求长度、上下文、采样、显存预算，并分别报告 HTTP 首字节、首个模型 token、预填充、输出速度和资源峰值。

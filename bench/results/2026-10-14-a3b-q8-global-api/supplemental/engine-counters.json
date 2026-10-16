@@ -1,0 +1,521 @@
+{
+  "source": "first 12 sequential completed request records of ../engine.log, matched prompt/output counts against results.json",
+  "requests": [
+    {
+      "trial": "natural-code-repeat01",
+      "case_id": "natural-code",
+      "prefill_upload_mib": 5565.4,
+      "decode_upload_mib": 41749.9,
+      "decode_gpu_rows": 522240,
+      "decode_cpu_rows": 0,
+      "decode_hits": 478101,
+      "decode_misses": 44139,
+      "decode_hit_fraction": 0.9154813878676471,
+      "prefill_decay_sweeps": 0,
+      "decode_decay_sweeps": 1400,
+      "adaptive_k": {
+        "0": {
+          "windows": 4,
+          "round_ms": 230.9
+        },
+        "1": {
+          "windows": 5,
+          "round_ms": 532.6
+        },
+        "2": {
+          "windows": 5,
+          "round_ms": 496.9
+        },
+        "3": {
+          "windows": 111,
+          "round_ms": 11396.3
+        },
+        "4": {
+          "windows": 9,
+          "round_ms": 1262.8
+        },
+        "5": {
+          "windows": 2,
+          "round_ms": 435.5
+        },
+        "6": {
+          "windows": 2,
+          "round_ms": 424.9
+        }
+      }
+    },
+    {
+      "trial": "natural-code-repeat02",
+      "case_id": "natural-code",
+      "prefill_upload_mib": 6053.1,
+      "decode_upload_mib": 41265.4,
+      "decode_gpu_rows": 524160,
+      "decode_cpu_rows": 0,
+      "decode_hits": 480435,
+      "decode_misses": 43725,
+      "decode_hit_fraction": 0.916580815018315,
+      "prefill_decay_sweeps": 0,
+      "decode_decay_sweeps": 1360,
+      "adaptive_k": {
+        "0": {
+          "windows": 3,
+          "round_ms": 133.5
+        },
+        "1": {
+          "windows": 5,
+          "round_ms": 525.0
+        },
+        "2": {
+          "windows": 6,
+          "round_ms": 676.0
+        },
+        "3": {
+          "windows": 111,
+          "round_ms": 11390.2
+        },
+        "4": {
+          "windows": 9,
+          "round_ms": 1233.0
+        },
+        "5": {
+          "windows": 2,
+          "round_ms": 401.5
+        },
+        "6": {
+          "windows": 2,
+          "round_ms": 413.5
+        }
+      }
+    },
+    {
+      "trial": "natural-code-repeat03",
+      "case_id": "natural-code",
+      "prefill_upload_mib": 5979.8,
+      "decode_upload_mib": 43458.4,
+      "decode_gpu_rows": 547200,
+      "decode_cpu_rows": 0,
+      "decode_hits": 500862,
+      "decode_misses": 46338,
+      "decode_hit_fraction": 0.9153179824561404,
+      "prefill_decay_sweeps": 40,
+      "decode_decay_sweeps": 1440,
+      "adaptive_k": {
+        "0": {
+          "windows": 3,
+          "round_ms": 122.6
+        },
+        "1": {
+          "windows": 10,
+          "round_ms": 826.1
+        },
+        "2": {
+          "windows": 6,
+          "round_ms": 618.5
+        },
+        "3": {
+          "windows": 103,
+          "round_ms": 10603.2
+        },
+        "4": {
+          "windows": 17,
+          "round_ms": 2360.5
+        },
+        "5": {
+          "windows": 3,
+          "round_ms": 518.4
+        },
+        "6": {
+          "windows": 2,
+          "round_ms": 415.2
+        }
+      }
+    },
+    {
+      "trial": "natural-chinese-repeat01",
+      "case_id": "natural-chinese",
+      "prefill_upload_mib": 6747.9,
+      "decode_upload_mib": 14911.1,
+      "decode_gpu_rows": 440640,
+      "decode_cpu_rows": 0,
+      "decode_hits": 424884,
+      "decode_misses": 15756,
+      "decode_hit_fraction": 0.9642429193899782,
+      "prefill_decay_sweeps": 0,
+      "decode_decay_sweeps": 1480,
+      "adaptive_k": {
+        "0": {
+          "windows": 2,
+          "round_ms": 84.0
+        },
+        "1": {
+          "windows": 6,
+          "round_ms": 324.2
+        },
+        "2": {
+          "windows": 123,
+          "round_ms": 7040.0
+        },
+        "3": {
+          "windows": 10,
+          "round_ms": 783.7
+        },
+        "4": {
+          "windows": 2,
+          "round_ms": 212.1
+        },
+        "5": {
+          "windows": 2,
+          "round_ms": 221.4
+        },
+        "6": {
+          "windows": 2,
+          "round_ms": 242.6
+        }
+      }
+    },
+    {
+      "trial": "natural-chinese-repeat02",
+      "case_id": "natural-chinese",
+      "prefill_upload_mib": 3589.1,
+      "decode_upload_mib": 11628.0,
+      "decode_gpu_rows": 417600,
+      "decode_cpu_rows": 0,
+      "decode_hits": 404973,
+      "decode_misses": 12627,
+      "decode_hit_fraction": 0.9697629310344827,
+      "prefill_decay_sweeps": 0,
+      "decode_decay_sweeps": 1200,
+      "adaptive_k": {
+        "0": {
+          "windows": 2,
+          "round_ms": 75.7
+        },
+        "1": {
+          "windows": 4,
+          "round_ms": 213.8
+        },
+        "2": {
+          "windows": 50,
+          "round_ms": 2770.2
+        },
+        "3": {
+          "windows": 56,
+          "round_ms": 3714.2
+        },
+        "4": {
+          "windows": 5,
+          "round_ms": 432.6
+        },
+        "5": {
+          "windows": 2,
+          "round_ms": 215.2
+        },
+        "6": {
+          "windows": 2,
+          "round_ms": 212.1
+        }
+      }
+    },
+    {
+      "trial": "natural-chinese-repeat03",
+      "case_id": "natural-chinese",
+      "prefill_upload_mib": 3643.3,
+      "decode_upload_mib": 9103.5,
+      "decode_gpu_rows": 336960,
+      "decode_cpu_rows": 0,
+      "decode_hits": 327792,
+      "decode_misses": 9168,
+      "decode_hit_fraction": 0.9727920227920228,
+      "prefill_decay_sweeps": 0,
+      "decode_decay_sweeps": 1560,
+      "adaptive_k": {
+        "0": {
+          "windows": 6,
+          "round_ms": 202.2
+        },
+        "1": {
+          "windows": 119,
+          "round_ms": 4877.7
+        },
+        "2": {
+          "windows": 21,
+          "round_ms": 1362.4
+        },
+        "3": {
+          "windows": 2,
+          "round_ms": 148.5
+        },
+        "4": {
+          "windows": 2,
+          "round_ms": 185.4
+        },
+        "5": {
+          "windows": 2,
+          "round_ms": 202.8
+        },
+        "6": {
+          "windows": 2,
+          "round_ms": 199.8
+        }
+      }
+    },
+    {
+      "trial": "sampling07-prompt32-repeat01",
+      "case_id": "sampling07-prompt32",
+      "prefill_upload_mib": 2897.4,
+      "decode_upload_mib": 10799.2,
+      "decode_gpu_rows": 318720,
+      "decode_cpu_rows": 0,
+      "decode_hits": 307557,
+      "decode_misses": 11163,
+      "decode_hit_fraction": 0.9649755271084337,
+      "prefill_decay_sweeps": 0,
+      "decode_decay_sweeps": 1480,
+      "adaptive_k": {
+        "0": {
+          "windows": 5,
+          "round_ms": 204.7
+        },
+        "1": {
+          "windows": 125,
+          "round_ms": 5706.2
+        },
+        "2": {
+          "windows": 9,
+          "round_ms": 640.3
+        },
+        "3": {
+          "windows": 2,
+          "round_ms": 218.4
+        },
+        "4": {
+          "windows": 2,
+          "round_ms": 234.3
+        },
+        "5": {
+          "windows": 3,
+          "round_ms": 358.8
+        },
+        "6": {
+          "windows": 2,
+          "round_ms": 245.6
+        }
+      }
+    },
+    {
+      "trial": "sampling07-prompt32-repeat02",
+      "case_id": "sampling07-prompt32",
+      "prefill_upload_mib": 1797.8,
+      "decode_upload_mib": 10152.2,
+      "decode_gpu_rows": 322560,
+      "decode_cpu_rows": 0,
+      "decode_hits": 312192,
+      "decode_misses": 10368,
+      "decode_hit_fraction": 0.9678571428571429,
+      "prefill_decay_sweeps": 0,
+      "decode_decay_sweeps": 1560,
+      "adaptive_k": {
+        "0": {
+          "windows": 9,
+          "round_ms": 334.8
+        },
+        "1": {
+          "windows": 125,
+          "round_ms": 5667.0
+        },
+        "2": {
+          "windows": 11,
+          "round_ms": 740.7
+        },
+        "3": {
+          "windows": 2,
+          "round_ms": 162.2
+        },
+        "4": {
+          "windows": 2,
+          "round_ms": 203.3
+        },
+        "5": {
+          "windows": 2,
+          "round_ms": 205.6
+        },
+        "6": {
+          "windows": 2,
+          "round_ms": 263.4
+        }
+      }
+    },
+    {
+      "trial": "sampling07-prompt32-repeat03",
+      "case_id": "sampling07-prompt32",
+      "prefill_upload_mib": 1992.2,
+      "decode_upload_mib": 9030.2,
+      "decode_gpu_rows": 323520,
+      "decode_cpu_rows": 0,
+      "decode_hits": 314220,
+      "decode_misses": 9300,
+      "decode_hit_fraction": 0.971253709198813,
+      "prefill_decay_sweeps": 0,
+      "decode_decay_sweeps": 1440,
+      "adaptive_k": {
+        "0": {
+          "windows": 6,
+          "round_ms": 231.2
+        },
+        "1": {
+          "windows": 110,
+          "round_ms": 4909.0
+        },
+        "2": {
+          "windows": 21,
+          "round_ms": 1267.4
+        },
+        "3": {
+          "windows": 3,
+          "round_ms": 229.4
+        },
+        "4": {
+          "windows": 2,
+          "round_ms": 202.1
+        },
+        "5": {
+          "windows": 2,
+          "round_ms": 208.2
+        },
+        "6": {
+          "windows": 2,
+          "round_ms": 223.6
+        }
+      }
+    },
+    {
+      "trial": "sampling07-prompt2048-repeat01",
+      "case_id": "sampling07-prompt2048",
+      "prefill_upload_mib": 23294.2,
+      "decode_upload_mib": 25385.2,
+      "decode_gpu_rows": 369600,
+      "decode_cpu_rows": 0,
+      "decode_hits": 340554,
+      "decode_misses": 29046,
+      "decode_hit_fraction": 0.9214123376623377,
+      "prefill_decay_sweeps": 40,
+      "decode_decay_sweeps": 1240,
+      "adaptive_k": {
+        "0": {
+          "windows": 2,
+          "round_ms": 182.7
+        },
+        "1": {
+          "windows": 6,
+          "round_ms": 448.0
+        },
+        "2": {
+          "windows": 102,
+          "round_ms": 7988.7
+        },
+        "3": {
+          "windows": 9,
+          "round_ms": 986.9
+        },
+        "4": {
+          "windows": 2,
+          "round_ms": 293.2
+        },
+        "5": {
+          "windows": 2,
+          "round_ms": 313.9
+        },
+        "6": {
+          "windows": 1,
+          "round_ms": 253.0
+        }
+      }
+    },
+    {
+      "trial": "sampling07-prompt2048-repeat02",
+      "case_id": "sampling07-prompt2048",
+      "prefill_upload_mib": 22051.1,
+      "decode_upload_mib": 24508.7,
+      "decode_gpu_rows": 321600,
+      "decode_cpu_rows": 0,
+      "decode_hits": 294168,
+      "decode_misses": 27432,
+      "decode_hit_fraction": 0.9147014925373135,
+      "prefill_decay_sweeps": 40,
+      "decode_decay_sweeps": 1480,
+      "adaptive_k": {
+        "0": {
+          "windows": 7,
+          "round_ms": 333.3
+        },
+        "1": {
+          "windows": 119,
+          "round_ms": 6982.0
+        },
+        "2": {
+          "windows": 9,
+          "round_ms": 852.0
+        },
+        "3": {
+          "windows": 2,
+          "round_ms": 301.8
+        },
+        "4": {
+          "windows": 2,
+          "round_ms": 335.6
+        },
+        "5": {
+          "windows": 4,
+          "round_ms": 830.0
+        },
+        "6": {
+          "windows": 3,
+          "round_ms": 646.2
+        }
+      }
+    },
+    {
+      "trial": "sampling07-prompt2048-repeat03",
+      "case_id": "sampling07-prompt2048",
+      "prefill_upload_mib": 21608.1,
+      "decode_upload_mib": 24652.1,
+      "decode_gpu_rows": 352320,
+      "decode_cpu_rows": 0,
+      "decode_hits": 323886,
+      "decode_misses": 28434,
+      "decode_hit_fraction": 0.9192949591280654,
+      "prefill_decay_sweeps": 40,
+      "decode_decay_sweeps": 1200,
+      "adaptive_k": {
+        "0": {
+          "windows": 3,
+          "round_ms": 173.6
+        },
+        "1": {
+          "windows": 6,
+          "round_ms": 467.4
+        },
+        "2": {
+          "windows": 97,
+          "round_ms": 7548.2
+        },
+        "3": {
+          "windows": 8,
+          "round_ms": 938.0
+        },
+        "4": {
+          "windows": 2,
+          "round_ms": 316.8
+        },
+        "5": {
+          "windows": 2,
+          "round_ms": 358.7
+        },
+        "6": {
+          "windows": 1,
+          "round_ms": 250.0
+        }
+      }
+    }
+  ]
+}

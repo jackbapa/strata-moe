@@ -1,0 +1,43 @@
+{
+  "captured_at": "2026-10-14T06:19:03.049591+00:00",
+  "files_sha256": {
+    "build-a3b/bin/strata-moe.exe": "12eb4fd1fba161de94a05487696a937ce91485b791d0899c2e0ddd1a647ffb6a",
+    "a3b/backend.cpp": "b8b008731fee8512856be9022e8d89129fdf901388e1199893cf85c374e79712",
+    "a3b/backend.hpp": "f62ff3b8f7e71cd87e79f47f829bf2a1f4cd638b8667ebf8354d639e75c014ec",
+    "a3b/CMakeLists.txt": "1ebf90c29f61fd1bd111418d112e719d95103c2a8da3750ffc46aab44c992aa4",
+    "a3b/main.cpp": "21c19f53b426ec6c1340e11dc9c05468b588a06759fafafdc117cab909af17d7",
+    "a3b/parity.cpp": "7cb1777fba1b46311a7bdebb3ee80caaaa239a94bb1f2a3ae1c26ad384f5a72d",
+    "a3b/speculative.cpp": "005f1739b6b1859a54316a4549377bbf3ac715d20ed5249573fe00febf88e1f0",
+    "a3b/speculative.hpp": "f446bed81304755a54740cea461051a0847b6b47ba99b0302862457d95ced870",
+    "a3b/speculative_test.cpp": "8b53bbe995ca67369bda6e3f0fb2b4644fc1001111b126727069c2020c8070d4",
+    "tools/bench_a3b.py": "8bbed643d002853794687997d3e8f151d1658248ffd7d9ba1b4b2cbc383dd9eb",
+    "tools/a3b.py": "d945600baeb392daacc47bd635ea71e0507b4c880509b31c471d0dc390baef3c"
+  },
+  "model_files": {
+    "models/a3b/Qwen3.6-35B-A3B-UD-Q5_K_M.gguf": {
+      "bytes": 26456194016,
+      "sha256": "c13ce26253ea334df472bd8fbd2d6da66d8a41195c17f6fcbf44c4d20ece0932"
+    },
+    "models/a3b/mtp-Qwen3.6-35B-A3B-Q8_0.gguf": {
+      "bytes": 1990649632,
+      "sha256": "f6cb995fab78e7284097b2e13508e8daad4ffc6a747b433aef399f4e48524b5a"
+    }
+  },
+  "model_hashes_note": "Reuses full-file hashes computed immediately after optimized-final six-run benchmark; no model files changed afterward. No extra multi-GB reads during this delivery check.",
+  "model_hashes_completed_at": "2026-10-14T06:10:56.601873+00:00",
+  "hardware": {
+    "cpu": "AMD Threadripper 3960X 24 physical cores / 48 logical",
+    "ram_GiB": 128,
+    "gpu": "GPU 0 RTX 2080 Ti reporting 22 GiB",
+    "os": "Windows, WDDM",
+    "other_service": "Unrelated WSL service on GPU 1 left running"
+  },
+  "gpu_inventory": [
+    "0, NVIDIA GeForce RTX 2080 Ti, 617.42, 22528 MiB",
+    "1, NVIDIA GeForce RTX 2080 Ti, 617.42, 22528 MiB",
+    "2, NVIDIA GeForce RTX 2080 Ti, 617.42, 22528 MiB"
+  ],
+  "llama_cpp_revision": "3cf03257f219afbe7334045ff7c6a06ac68c627d",
+  "benchmark_method": "One fresh process per arm, same fixed 23-token prompt / 256 output tokens / 4096 context / 16 GiB allocation budget / all four tuning flags. Final metadata and test-hook edits do not change compute arithmetic.",
+  "prompt_sha256": "22f016ed4590a69122b787a8fd497bf128b5da0abb753476b7ef4f39f92d6c46"
+}

@@ -1,0 +1,93 @@
+{
+  "audited_utc": "2026-10-14T17:22:53.581983+00:00",
+  "scope": "File-only validation evidence; no GPU/HTTP/benchmark run by this audit. Closed list excludes running API data.",
+  "observations": {
+    "prefill_shapes": 18,
+    "gpu_task_bitwise_differences": 0,
+    "rollback_snapshot_keeps": 7,
+    "max_abs": 0,
+    "KL": 0,
+    "MTP_limits": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      8,
+      16,
+      32
+    ]
+  },
+  "files": {
+    "bench\\results\\2026-10-14-a3b-q8-validation\\cpu-expert-prefill-54-cases.log": {
+      "status": "PASS",
+      "bytes": 195,
+      "sha256": "89716e5d211c3dbd5d090f7a61b0a9353391450c8a4385caa3c760629d4bb778"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\prefill-share-fused-18-cases-v4.log": {
+      "status": "PASS",
+      "bytes": 22363,
+      "sha256": "69a908d2ea8796503dbe1fab63b9ef061471ac0a37b774a99265cb76b89300d8"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\prefill-share-cache4-memcheck-v4.log": {
+      "status": "PASS",
+      "bytes": 7724,
+      "sha256": "3c81fe2c9b1042ed91f807d21bc8f4e7514f2074365c31b5230ccd2331467fb8"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\q8-doorbell-prefill-share-prefix16-mtp-k6-strict-v2.log": {
+      "status": "PASS",
+      "bytes": 258067,
+      "sha256": "681899707a18f556e65bdbec27382a351af3d4bbd83c15281cdd06662abc0b32"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\build-prefill-share-mask-reuse.log": {
+      "status": "PASS",
+      "bytes": 3123,
+      "sha256": "a0fed8e1aadfbc7e35e58cf24a2a18858662a74fc557e1860c7bab7eb9171914"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\build-prefill-reference-v4-retry.log": {
+      "status": "PASS",
+      "bytes": 1315,
+      "sha256": "54b18492c50e10d16f68ee904ab5c55e6dfdaa39c2a71742bcc46f5bf9c595dd"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\build-cpu-prefill-share-mask.log": {
+      "status": "PASS",
+      "bytes": 3253,
+      "sha256": "eae4867c9f1f08635032fb383e85217c4c5f786ea9aff16ca2acaf42af77f5a4"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\ctest-cpu-prefill-share-mask.log": {
+      "status": "7 PASS / 6 GPU SKIP / 0 FAIL",
+      "bytes": 1940,
+      "sha256": "64f86cfa85e16c3c83f43f77edd1af57785adfda5011e240fa5026e0129e863d"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\tools-options-final.log": {
+      "status": "33 PASS",
+      "bytes": 5316,
+      "sha256": "4499955515c59b8c8d07b58ec2ee10b9f358ead7212008c481e624d80e306dd6"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\prefill-share-fused-18-cases-v2.log": {
+      "status": "retained FAIL",
+      "bytes": 528,
+      "sha256": "8d1abf3fd986c180b254c7a5ddb6fd157076150bb3003c633d881dfd08e52b39"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\prefill-share-fused-18-cases-v3.log": {
+      "status": "retained FAIL",
+      "bytes": 1016,
+      "sha256": "6956ae4ad182cd5d0deab630c6d7904990273c489aeaac8dc84bea1b2f4b7119"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\prefill-share-cache4-memcheck.log": {
+      "status": "retained earlier diagnostic",
+      "bytes": 25499,
+      "sha256": "26ebc2b445aa885bfd69e5b3043683dc343b0819e81e6daf2b84b58dcef0f852"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\build-hip-unavailable.log": {
+      "status": "toolchain unavailable",
+      "bytes": 2017,
+      "sha256": "79cabc542d9148db64b5a9bb5efc1b0de9f83b5d11fa09dd8c4d842960be20f3"
+    },
+    "bench\\results\\2026-10-14-a3b-q8-validation\\build-sycl-unavailable.log": {
+      "status": "toolchain unavailable",
+      "bytes": 1528,
+      "sha256": "6126b8254a1a599e87a8f6b378294b5e47905665ff997cdf0af71db1542e09b1"
+    }
+  }
+}

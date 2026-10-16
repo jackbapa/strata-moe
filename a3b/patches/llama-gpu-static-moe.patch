@@ -1,0 +1,1153 @@
+--- a/ggml/src/ggml-cuda/ggml-cuda.cu
++++ b/ggml/src/ggml-cuda/ggml-cuda.cu
+@@ -4,6 +4,7 @@
+ 
+ #include "ggml-cuda/allreduce.cuh"
+ #include "ggml-cuda/common.cuh"
++#include "ggml-cuda/strata-moe.cuh"
+ #include "ggml-cuda/acc.cuh"
+ #include "ggml-cuda/add-id.cuh"
+ #include "ggml-cuda/arange.cuh"
+@@ -2067,6 +2068,10 @@
+ 
+ static bool ggml_cuda_compute_forward(ggml_backend_cuda_context & ctx, struct ggml_tensor * dst) {
+     switch (dst->op) {
++        case GGML_OP_CUSTOM:
++            if (!ggml_cuda_strata_moe_is_op(dst)) return false;
++            ggml_cuda_strata_moe_compute(ctx, dst);
++            break;
+         case GGML_OP_ARGMAX:
+             ggml_cuda_argmax(ctx, dst);
+             break;
+@@ -4423,6 +4428,21 @@
+ 
+     ggml_cuda_set_device(cuda_ctx->device);
+ 
++    // The optional static-expert provider may allocate/fill caches and map its
++    // RAM complement. Finish that preparation before entering stream capture;
++    // the custom op itself only enqueues GPU kernels on the ordinary stream.
++    if (ggml_cuda_strata_moe_any_handles()) {
++        for (int i = 0; i < ggml_graph_n_nodes(cgraph); ++i) {
++            const auto * node = ggml_graph_node(cgraph, i);
++            if (!ggml_cuda_strata_moe_is_op(node)) continue;
++            char error[512] = {};
++            if (!ggml_cuda_strata_moe_prepare_op(*cuda_ctx, node, error, sizeof(error))) {
++                GGML_LOG_ERROR("static Q8 MoE preparation failed: %s\n", error);
++                return GGML_STATUS_FAILED;
++            }
++        }
++    }
++
+     bool use_cuda_graph             = false;
+     bool cuda_graph_update_required = false;
+     const void * graph_key = nullptr;
+@@ -5076,6 +5096,9 @@
+     }
+ 
+     switch (op->op) {
++        case GGML_OP_CUSTOM:
++            return ggml_cuda_info().devices[dev_ctx->device].cc == GGML_CUDA_CC_TURING &&
++                   ggml_cuda_strata_moe_is_op(op);
+         case GGML_OP_UNARY:
+             switch (ggml_get_unary_op(op)) {
+                 case GGML_UNARY_OP_ABS:
+@@ -5677,6 +5700,13 @@
+ 
+ static void * ggml_backend_cuda_reg_get_proc_address(ggml_backend_reg_t reg, const char * name) {
+     GGML_UNUSED(reg);
++    if (strcmp(name, "ggml_backend_cuda_strata_moe_v1") == 0) {
++#if !defined(GGML_USE_HIP) && !defined(GGML_USE_MUSA)
++        return (void *)ggml_cuda_strata_moe_get_api;
++#else
++        return nullptr;
++#endif
++    }
+     if (strcmp(name, "ggml_backend_comm_init") == 0) {
+         return (void *)ggml_backend_cuda_comm_init;
+     }
+--- /dev/null
++++ b/ggml/include/ggml-cuda-strata-moe.h
+@@ -0,0 +1,92 @@
++#pragma once
++#include "ggml.h"
++#include <stdint.h>
++#include <stddef.h>
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++// Optional CUDA registry entry "ggml_backend_cuda_strata_moe_v1" returns a
++// function with this get-api signature. No direct CUDA linkage is required by
++// callers. The API exists only on native NVIDIA CUDA builds.
++// STRATA_A3B_NATIVE_EXPERT_REUSE=2 or 4 optionally shares Q8 weight loads
++// across bounded same-expert channel groups for T>1. Default 0 keeps the
++// singleton kernels; grouping changes no per-channel arithmetic or routing.
++#define GGML_CUDA_STRATA_MOE_ABI_V1 1
++// Optional original-Strata style CPU expert service. Called by one persistent
++// host service thread per CUDA device, never by a CUDA host callback. The
++// payload is contiguous [tokens,input_lanes,2048], IDs [tokens,8], and output
++// [tokens,8,2048]. Only valid IDs whose slot is -1 need an output row. No CUDA
++// calls are permitted from this callback. Return 0 with an error on failure.
++typedef int (*ggml_cuda_strata_moe_cpu_v1)(void * user,
++    const float * input, int input_lanes, int tokens, const int32_t * logical_ids,
++    const int32_t * slot_of_expert, float * output, char * error, size_t error_size);
++struct ggml_cuda_strata_moe_layer_v1 {
++    // gate, up, down: original immutable host Q8_0 tensors, never graph inputs.
++    // Geometry is [2048,512,256], [2048,512,256], [512,2048,256].
++    const struct ggml_tensor * host_weights[3];
++    // Same projection order. Each cache tensor has ne[2]=cache_slots. A null
++    // cache is valid only for cache_slots=0. All slots are shared by the roles.
++    const struct ggml_tensor * cached_weights[3];
++    int32_t cache_slots;
++    int32_t slot_of_expert[256]; // -1 for a miss, otherwise [0,cache_slots)
++    // Opt-in GPU admission/eviction. The immutable host arena still owns all
++    // 256 experts. Dynamic mode maps an additional complete host copy so an
++    // evicted initial cache expert can be loaded again without a CPU route.
++    int32_t dynamic_cache; // 0 fixed profile (default), 1 device LFU/recency
++    // Non-null selects a fixed-cache hybrid mailbox. Large host expert weights
++    // remain ordinary RAM and are not copied/mapped by the CUDA operator.
++    ggml_cuda_strata_moe_cpu_v1 cpu_callback;
++    void * cpu_user;
++};
++// Called once, on the host, immediately before graph execution/capture, never
++// from inside stream capture. Return 0 and an explanatory error on failure.
++// The provider materializes the initial cache only after the real engine
++// budget/profile exists. Returned weight tensors remain alive until destroy.
++typedef int (*ggml_cuda_strata_moe_prepare_v1)(void * user,
++    struct ggml_cuda_strata_moe_layer_v1 * layer, char * error, size_t error_size);
++
++struct ggml_cuda_strata_moe_stats_v1 {
++    uint64_t calls, rows, miss_rows, unique_misses, upload_bytes, miss_calls;
++    uint64_t routes[256];
++    uint64_t mapped_host_bytes; // extra RAM: complement fixed, all experts dynamic
++    uint64_t shared_gpu_scratch_bytes; // shared across all handles on GPU 0
++    double prepare_ms;
++    uint32_t device_error; // 0 success; 1 invalid routed expert id
++    // Current GPU cache contents. Collect at request boundaries before using
++    // the same cache tensors from a host-planned long-prefill path. Resetting
++    // counters never resets slots, LFU history, or the dynamic policy.
++    int32_t cache_slots;
++    int32_t dynamic_cache;
++    int32_t slot_of_expert[256];
++    uint64_t cache_admissions, cache_decays;
++    uint64_t cpu_rows, gpu_rows;
++    uint64_t host_callback_requests;
++    double host_callback_ms;
++    // Small mapped activation/ID and CPU-output traffic, separate from expert
++    // weight upload_bytes (which remains zero in CPU mailbox mode).
++    uint64_t mailbox_to_host_bytes, mailbox_to_device_bytes;
++};
++struct ggml_cuda_strata_moe_api_v1 {
++    uint32_t abi_version;
++    // create/build perform no large allocation and invoke no provider.
++    void * (*create)(int device, ggml_cuda_strata_moe_prepare_v1 prepare,
++                     void * user, char * error, size_t error_size);
++    struct ggml_tensor * (*build)(void * handle, struct ggml_context * ctx,
++                                 struct ggml_tensor * input, struct ggml_tensor * ids);
++    // Request-boundary operation: joins the last execution stream once, copies
++    // counters/histogram and the current slot map, and optionally resets
++    // counters. Mapping/scratch sizes, cache slots, policy history and
++    // preparation time are never reset. Returns 0 on
++    // runtime/device error, but fills stats so callers can diagnose the cause.
++    int (*get_stats)(void * handle, int reset,
++                     struct ggml_cuda_strata_moe_stats_v1 * stats,
++                     char * error, size_t error_size);
++    void (*destroy)(void * handle);
++    uint64_t (*scratch_bytes)(void); // budget before cache materialization
++};
++typedef const struct ggml_cuda_strata_moe_api_v1 *
++    (*ggml_cuda_strata_moe_get_api_v1)(void);
++#ifdef __cplusplus
++}
++#endif
+--- /dev/null
++++ b/ggml/src/ggml-cuda/strata-moe.cuh
+@@ -0,0 +1,9 @@
++#pragma once
++#include "common.cuh"
++#include "ggml-cuda-strata-moe.h"
++bool ggml_cuda_strata_moe_is_op(const ggml_tensor * op);
++bool ggml_cuda_strata_moe_any_handles();
++bool ggml_cuda_strata_moe_prepare_op(ggml_backend_cuda_context & ctx, const ggml_tensor * op,
++                                   char * error, size_t error_size);
++void ggml_cuda_strata_moe_compute(ggml_backend_cuda_context & ctx, ggml_tensor * op);
++const ggml_cuda_strata_moe_api_v1 * ggml_cuda_strata_moe_get_api();
+--- /dev/null
++++ b/ggml/src/ggml-cuda/strata-moe.cu
+@@ -0,0 +1,976 @@
++#include "strata-moe.cuh"
++#if !defined(GGML_USE_HIP) && !defined(GGML_USE_MUSA)
++#include "quantize.cuh"
++#include "unary.cuh"
++#include "vecdotq.cuh"
++#include "ggml-impl.h"
++#include <algorithm>
++#include <array>
++#include <atomic>
++#include <chrono>
++#include <condition_variable>
++#include <cstdlib>
++#include <cstdio>
++#include <cstring>
++#include <map>
++#include <memory>
++#include <mutex>
++#include <stdexcept>
++#include <thread>
++#include <vector>
++#if defined(_MSC_VER) || defined(__i386__) || defined(__x86_64__)
++#include <immintrin.h>
++#endif
++
++namespace {
++constexpr int H = 2048, F = 512, E = 256, K = 8, C = 64;
++static_assert(QK8_0 == 32 && QK8_1 == 32 && VDR_Q8_0_Q8_1_MMVQ == 2 &&
++              ggml_cuda_type_traits<GGML_TYPE_Q8_0>::qi == 8,
++              "canonical SM75 Q8 lane mapping changed");
++constexpr size_t role_bytes = size_t(H) * F / QK8_0 * sizeof(block_q8_0);
++constexpr size_t input_bytes = size_t(C) * H / QK8_1 * sizeof(block_q8_1);
++constexpr size_t hidden_bytes = size_t(C) * F * sizeof(float);
++constexpr size_t hidden_q_bytes = size_t(C) * F / QK8_1 * sizeof(block_q8_1);
++struct DeviceLayer {
++    uint8_t * cache[3];
++    const uint8_t * host[3][E];
++    int slot[E];
++    int owner[E];
++    uint32_t frequency[E];
++    uint64_t recent[E];
++    uint64_t clock;
++    int capacity, dynamic_cache, decay_calls;
++};
++struct DevicePlan {
++    const uint8_t * ptr[3][C];
++    int misses[C];
++    int miss_slot[C]; // cache slot, or -1 for the miss-index staging slot
++    int nmiss;
++    int cpu_owned[C];
++    // Optional native multi-column kernel plan. Channel order inside each
++    // same-expert chunk is stable, and chunks never exceed reuse_cap (2/4).
++    int group_count, group_offset[C + 1], group_channel[C];
++};
++struct DeviceStats {
++    unsigned long long calls, rows, miss_rows, unique_misses, upload_bytes, miss_calls;
++    unsigned long long routes[E];
++    unsigned long long cache_admissions, cache_decays;
++    uint32_t error;
++    unsigned long long cpu_rows, gpu_rows;
++    unsigned long long mailbox_to_host_bytes, mailbox_to_device_bytes;
++};
++void error_text(char * dst, size_t n, const char * text);
++// The flags have one writer each: seq is GPU-owned, done is CPU-owned. They
++// are naturally aligned mapped-memory stores, not cross-device atomic RMWs.
++// Keep them on separate CPU cache lines. The model graph serializes layers.
++struct Mailbox {
++    alignas(128) volatile uint32_t seq;
++    alignas(128) volatile uint32_t done;
++    alignas(128) volatile uint32_t abort;
++    int input_lanes, tokens;
++    alignas(16) int32_t ids[C];
++    alignas(16) float input[C * H];
++    alignas(16) float output[C * H];
++};
++void host_publish_fence() {
++    std::atomic_thread_fence(std::memory_order_seq_cst);
++#if defined(_MSC_VER) || defined(__i386__) || defined(__x86_64__)
++    _mm_sfence();
++#endif
++}
++void host_spin_pause() {
++#if defined(_MSC_VER) || defined(__i386__) || defined(__x86_64__)
++    _mm_pause();
++#else
++    std::this_thread::yield();
++#endif
++}
++struct MailboxEntry {
++    Mailbox * host = nullptr;
++    Mailbox * device = nullptr;
++    ggml_cuda_strata_moe_cpu_v1 callback = nullptr;
++    void * user = nullptr;
++    std::array<int32_t, E> slots{};
++    uint32_t seen = 0;
++    uint64_t requests = 0;
++    double callback_ms = 0;
++    std::string failure;
++};
++struct MailboxService {
++    std::mutex mutex;
++    std::condition_variable changed;
++    std::vector<MailboxEntry *> entries;
++    std::atomic<bool> active{false}, stopping{false};
++    std::thread worker;
++    MailboxService() : worker([this] { run(); }) {}
++    ~MailboxService() {
++        {
++            std::lock_guard<std::mutex> lock(mutex);
++            stopping.store(true, std::memory_order_release);
++        }
++        changed.notify_all();
++        if (worker.joinable()) worker.join();
++    }
++    void add(MailboxEntry * entry) {
++        std::lock_guard<std::mutex> lock(mutex);
++        entries.push_back(entry);
++    }
++    void activate() {
++        // Every graph prepass visits all forty providers. Once the single
++        // device service is active, avoid forty mutex handoffs with its poll
++        // loop. Stats collection and graph submission are caller-serialized.
++        if (active.load(std::memory_order_acquire)) return;
++        std::lock_guard<std::mutex> lock(mutex);
++        active.store(true, std::memory_order_release);
++        changed.notify_one();
++    }
++    // Called under mutex, including on callback failure. Release every layer
++    // already captured on this device, rather than only the failed layer.
++    void release_all(const char * reason) noexcept {
++        // Release GPU waits before doing anything that might allocate. Even
++        // an allocation failure while reporting a CPU error must not strand
++        // the captured graph in a device spin kernel.
++        for (auto * entry : entries) entry->host->abort = 1;
++        host_publish_fence();
++        for (auto * entry : entries) entry->host->done = UINT32_MAX;
++        host_publish_fence();
++        for (auto * entry : entries) {
++            try { if (entry->failure.empty()) entry->failure = reason; }
++            catch (...) { /* device error=2 still reports failure at the boundary */ }
++        }
++    }
++    void release(MailboxEntry * entry) {
++        std::lock_guard<std::mutex> lock(mutex);
++        entry->host->abort = 1;
++        host_publish_fence();
++        entry->host->done = UINT32_MAX;
++        host_publish_fence();
++        // A context may be destroyed before its stats collector runs. Keep
++        // serving the other layers until the device has been drained.
++        active.store(true, std::memory_order_release);
++        changed.notify_one();
++    }
++    void remove(MailboxEntry * entry) {
++        std::lock_guard<std::mutex> lock(mutex);
++        entries.erase(std::remove(entries.begin(), entries.end(), entry), entries.end());
++        // Holding the mutex also joins any callback that used this userdata.
++    }
++    std::string collect(MailboxEntry * entry, int reset, ggml_cuda_strata_moe_stats_v1 & out) {
++        // The caller has joined the entire CUDA stream, so no request can be
++        // unpublished or in flight. A subsequent graph's prepass activates us.
++        active.store(false, std::memory_order_release);
++        std::lock_guard<std::mutex> lock(mutex);
++        out.host_callback_requests = entry->requests;
++        out.host_callback_ms = entry->callback_ms;
++        const std::string failure = entry->failure;
++        if (reset) {
++            entry->requests = 0; entry->callback_ms = 0; entry->failure.clear();
++            // seq has exactly one writer: the publishing GPU kernel. Never
++            // restart its epoch at a stats boundary. Reusing seq=1/done=1
++            // across capture/replay permits an old completion to satisfy a
++            // new request before its CPU rows have been produced (ABA).
++            if (entry->host->abort || !failure.empty()) {
++                const uint32_t published = entry->host->seq;
++                std::atomic_thread_fence(std::memory_order_acquire);
++                entry->seen = published;
++                // Abort released waits with UINT32_MAX. The stream is now
++                // drained and the service parked, so retire that release at
++                // the current GPU epoch before making this mailbox usable.
++                entry->host->done = published;
++                host_publish_fence();
++                entry->host->abort = 0;
++                host_publish_fence();
++            }
++        }
++        return failure;
++    }
++    void run() {
++        std::unique_lock<std::mutex> lock(mutex);
++        while (!stopping.load(std::memory_order_acquire)) {
++            if (!active.load(std::memory_order_acquire)) {
++                changed.wait(lock, [this] { return stopping.load(std::memory_order_acquire) || active.load(std::memory_order_acquire); });
++                continue;
++            }
++            bool worked = false;
++            for (auto * entry : entries) {
++                auto * box = entry->host;
++                const uint32_t seq = box->seq;
++                if (seq == entry->seen || box->abort) continue;
++                std::atomic_thread_fence(std::memory_order_acquire);
++                entry->seen = seq;
++                const auto start = std::chrono::steady_clock::now();
++                char error[512] = {};
++                bool ok = false;
++                try {
++                    ok = box->tokens >= 1 && box->tokens <= 8 && (box->input_lanes == 1 || box->input_lanes == K);
++                    if (ok) ok = entry->callback(entry->user, box->input, box->input_lanes, box->tokens,
++                        box->ids, entry->slots.data(), box->output, error, sizeof(error)) != 0;
++                    else error_text(error, sizeof(error), "hybrid MoE mailbox geometry is invalid");
++                } catch (const std::exception & e) { ok = false; error_text(error, sizeof(error), e.what()); }
++                catch (...) { ok = false; error_text(error, sizeof(error), "hybrid MoE CPU callback threw an unknown exception"); }
++                ++entry->requests;
++                entry->callback_ms += std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - start).count();
++                if (!ok) release_all(error[0] ? error : "hybrid MoE CPU callback failed");
++                else {
++                    host_publish_fence();
++                    box->done = seq;
++                }
++                worked = true;
++            }
++            lock.unlock();
++            if (!worked) host_spin_pause();
++            lock.lock();
++        }
++    }
++};
++std::mutex service_mutex;
++std::map<int, std::weak_ptr<MailboxService>> service_by_device;
++std::shared_ptr<MailboxService> get_service(int device) {
++    std::lock_guard<std::mutex> lock(service_mutex);
++    auto service = service_by_device[device].lock();
++    if (!service) { service = std::make_shared<MailboxService>(); service_by_device[device] = service; }
++    return service;
++}
++void check(cudaError_t e, const char * what) {
++    if (e == cudaSuccess) return;
++    const std::string reason = std::string(what) + ": " + cudaGetErrorString(e);
++    (void) cudaGetLastError();
++    throw std::runtime_error(reason);
++}
++void error_text(char * dst, size_t n, const char * text) {
++    if (dst && n) std::snprintf(dst, n, "%s", text ? text : "unknown static MoE error");
++}
++struct Scratch {
++    int device;
++    cudaStream_t stream = nullptr;
++    uint8_t * stage[3] = {};
++    block_q8_1 * input = nullptr, * hq = nullptr;
++    float * hidden = nullptr;
++    DevicePlan * plan = nullptr;
++    explicit Scratch(int d) : device(d) {}
++    void allocate() {
++        for (auto & p : stage) check(cudaMalloc((void **) &p, role_bytes * C), "static MoE stage allocation");
++        check(cudaMalloc((void **) &input, input_bytes), "static MoE activation allocation");
++        check(cudaMalloc((void **) &hidden, hidden_bytes), "static MoE hidden allocation");
++        check(cudaMalloc((void **) &hq, hidden_q_bytes), "static MoE hidden quant allocation");
++        check(cudaMalloc((void **) &plan, sizeof(DevicePlan)), "static MoE route plan allocation");
++    }
++    ~Scratch() {
++        // The final owning State drains the device before releasing its
++        // shared_ptr. A failed allocation has not submitted any kernels.
++        (void) cudaSetDevice(device);
++        for (auto p : stage) if (p) (void) cudaFree(p);
++        if (input) (void) cudaFree(input);
++        if (hidden) (void) cudaFree(hidden);
++        if (hq) (void) cudaFree(hq);
++        if (plan) (void) cudaFree(plan);
++    }
++};
++std::mutex scratch_mutex;
++std::atomic<unsigned> live_handles{0};
++std::map<int, std::weak_ptr<Scratch>> scratch_by_device;
++std::shared_ptr<Scratch> get_scratch(int device) {
++    std::lock_guard<std::mutex> lock(scratch_mutex);
++    auto result = scratch_by_device[device].lock();
++    if (!result) {
++        result = std::make_shared<Scratch>(device);
++        result->allocate();
++        scratch_by_device[device] = result;
++    }
++    return result;
++}
++uint64_t scratch_size() {
++    return 3 * role_bytes * C + input_bytes + hidden_bytes + hidden_q_bytes + sizeof(DevicePlan);
++}
++int native_expert_reuse_cap() {
++    static const int cap = [] {
++        const char * value = std::getenv("STRATA_A3B_NATIVE_EXPERT_REUSE");
++        if (value && std::strcmp(value, "2") == 0) return 2;
++        if (value && std::strcmp(value, "4") == 0) return 4;
++        return 0;
++    }();
++    return cap;
++}
++struct State {
++    int device;
++    ggml_cuda_strata_moe_prepare_v1 provider;
++    void * user;
++    bool prepared = false;
++    bool dynamic_cache = false;
++    bool hybrid_mailbox = false;
++    std::string failure;
++    double prepare_ms = 0;
++    uint64_t mapped_bytes = 0;
++    void * mapped[3] = {};
++    DeviceLayer * layer = nullptr;
++    DeviceStats * counters = nullptr;
++    std::shared_ptr<Scratch> scratch;
++    std::unique_ptr<MailboxEntry> mailbox;
++    std::shared_ptr<MailboxService> service;
++    cudaStream_t last_stream = nullptr;
++    State(int d, ggml_cuda_strata_moe_prepare_v1 p, void * u) : device(d), provider(p), user(u) {}
++    ~State() {
++        (void) cudaSetDevice(device);
++        if (mailbox && service) service->release(mailbox.get());
++        // The backend/context that owned last_stream may already be gone.
++        // Drain independently of that stream handle before freeing mapped
++        // host data, per-layer state and the last owner's shared scratch.
++        (void) cudaDeviceSynchronize();
++        if (mailbox && service) service->remove(mailbox.get());
++        if (mailbox && mailbox->host) (void) cudaFreeHost(mailbox->host);
++        if (layer) (void) cudaFree(layer);
++        if (counters) (void) cudaFree(counters);
++        for (auto p : mapped) if (p) (void) cudaFreeHost(p);
++    }
++};
++void marker(ggml_tensor *, int, int, void *) {
++    GGML_ABORT("static Q8 MoE requires its native CUDA backend");
++}
++State * state_of(const ggml_tensor * op) {
++    if (!op || op->op != GGML_OP_CUSTOM) return nullptr;
++    ggml_custom_op_params params;
++    std::memcpy(&params, op->op_params, sizeof(params));
++    return params.fun == marker ? static_cast<State *>(params.userdata) : nullptr;
++}
++bool input_geometry(const ggml_tensor * x, const ggml_tensor * ids) {
++    return x && ids && x->type == GGML_TYPE_F32 && ids->type == GGML_TYPE_I32 &&
++        x->ne[0] == H && (x->ne[1] == 1 || x->ne[1] == K) &&
++        x->ne[2] >= 1 && x->ne[2] <= 8 && x->ne[3] == 1 && x->nb[0] == sizeof(float) &&
++        ids->ne[0] == K && ids->ne[1] == x->ne[2] && ids->ne[2] == 1 && ids->ne[3] == 1 &&
++        ids->nb[0] == sizeof(int32_t);
++}
++void validate_role(const ggml_tensor * t, int role, int experts, bool host) {
++    const int ni = role == 2 ? F : H, no = role == 2 ? H : F;
++    if (!t || !t->buffer || t->type != GGML_TYPE_Q8_0 || t->ne[0] != ni || t->ne[1] != no ||
++        t->ne[2] != experts || t->ne[3] != 1 || !ggml_is_contiguous(t) || t->nb[2] != role_bytes ||
++        ggml_backend_buffer_is_host(t->buffer) != host)
++        throw std::runtime_error("static MoE requires complete canonical host/cache Q8 tensors");
++}
++void prepare_state(State & s, cudaStream_t stream) {
++    if (s.prepared) return;
++    if (!s.failure.empty()) throw std::runtime_error(s.failure);
++    const auto start = std::chrono::steady_clock::now();
++    try {
++        check(cudaSetDevice(s.device), "static MoE set device");
++        ggml_cuda_strata_moe_layer_v1 info{};
++        char error[512] = {};
++        if (!s.provider(s.user, &info, error, sizeof(error)))
++            throw std::runtime_error(error[0] ? error : "static MoE cache provider failed");
++        if (info.cache_slots < 0 || info.cache_slots > E)
++            throw std::runtime_error("static MoE invalid cache capacity");
++        if (info.dynamic_cache != 0 && info.dynamic_cache != 1)
++            throw std::runtime_error("static MoE invalid dynamic cache policy");
++        if (info.cpu_callback && info.dynamic_cache)
++            throw std::runtime_error("hybrid MoE mailbox requires a fixed cache");
++        s.hybrid_mailbox = info.cpu_callback != nullptr;
++        std::array<bool, E> used{};
++        int misses = 0;
++        DeviceLayer descriptor{};
++        descriptor.capacity = info.cache_slots;
++        descriptor.dynamic_cache = info.dynamic_cache;
++        for (int slot = 0; slot < E; ++slot) descriptor.owner[slot] = -1;
++        for (int e = 0; e < E; ++e) {
++            const int slot = info.slot_of_expert[e];
++            if (slot < -1 || slot >= info.cache_slots || (slot >= 0 && used[slot]))
++                throw std::runtime_error("static MoE invalid/duplicate cache slot");
++            if (slot >= 0) {
++                used[slot] = true; descriptor.owner[slot] = e;
++                descriptor.frequency[e] = 256;
++            } else ++misses;
++            descriptor.slot[e] = slot;
++        }
++        if (E - misses != info.cache_slots)
++            throw std::runtime_error("static MoE cache must be completely materialized");
++        for (int role = 0; role < 3; ++role) {
++            validate_role(info.host_weights[role], role, E, true);
++            if (info.cache_slots) {
++                validate_role(info.cached_weights[role], role, info.cache_slots, false);
++                cudaPointerAttributes attrs{};
++                check(cudaPointerGetAttributes(&attrs, info.cached_weights[role]->data), "static MoE cache pointer");
++                if (attrs.type != cudaMemoryTypeDevice || attrs.device != s.device)
++                    throw std::runtime_error("static MoE cache is on another device");
++                descriptor.cache[role] = static_cast<uint8_t *>(info.cached_weights[role]->data);
++            }
++            const int mapped_experts = s.hybrid_mailbox ? 0 : info.dynamic_cache ? E : misses;
++            if (!mapped_experts) continue;
++            const size_t bytes = size_t(mapped_experts) * role_bytes;
++            check(cudaHostAlloc(&s.mapped[role], bytes, cudaHostAllocMapped), "static MoE mapped source allocation");
++            void * alias = nullptr;
++            check(cudaHostGetDevicePointer(&alias, s.mapped[role], 0), "static MoE mapped source device alias");
++            if (!alias) throw std::runtime_error("static MoE mapped source alias is null");
++            int next = 0;
++            for (int e = 0; e < E; ++e) if (info.dynamic_cache || descriptor.slot[e] < 0) {
++                const size_t off = size_t(next++) * role_bytes;
++                std::memcpy(static_cast<uint8_t *>(s.mapped[role]) + off,
++                    static_cast<const uint8_t *>(info.host_weights[role]->data) + size_t(e) * role_bytes, role_bytes);
++                descriptor.host[role][e] = static_cast<const uint8_t *>(alias) + off;
++            }
++            s.mapped_bytes += bytes;
++        }
++        if (s.hybrid_mailbox) {
++            s.mailbox = std::make_unique<MailboxEntry>();
++            auto & entry = *s.mailbox;
++            check(cudaHostAlloc((void **) &entry.host, sizeof(Mailbox), cudaHostAllocMapped), "hybrid MoE mailbox allocation");
++            std::memset(entry.host, 0, sizeof(Mailbox));
++            check(cudaHostGetDevicePointer((void **) &entry.device, entry.host, 0), "hybrid MoE mailbox device alias");
++            if (!entry.device) throw std::runtime_error("hybrid MoE mailbox alias is null");
++            entry.callback = info.cpu_callback; entry.user = info.cpu_user;
++            std::copy(std::begin(info.slot_of_expert), std::end(info.slot_of_expert), entry.slots.begin());
++            s.mapped_bytes += sizeof(Mailbox);
++            s.service = get_service(s.device);
++            s.service->add(&entry);
++            s.service->activate();
++        }
++        s.scratch = get_scratch(s.device);
++        check(cudaMalloc((void **) &s.layer, sizeof(DeviceLayer)), "static MoE descriptor allocation");
++        check(cudaMalloc((void **) &s.counters, sizeof(DeviceStats)), "static MoE counter allocation");
++        s.last_stream = stream;
++        check(cudaMemcpyAsync(s.layer, &descriptor, sizeof(descriptor), cudaMemcpyHostToDevice, stream), "static MoE descriptor upload");
++        check(cudaMemsetAsync(s.counters, 0, sizeof(DeviceStats), stream), "static MoE counter clear");
++        check(cudaStreamSynchronize(stream), "static MoE prepare completion");
++        s.prepared = true;
++        s.dynamic_cache = info.dynamic_cache != 0;
++        s.prepare_ms = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - start).count();
++        GGML_LOG_INFO("static Q8 MoE prepared: cache %d/256; dynamic %d; CPU mailbox %d; extra mapped RAM %.1f MiB; %.1f ms\n",
++                      info.cache_slots, info.dynamic_cache, s.hybrid_mailbox, s.mapped_bytes / (1024.0 * 1024.0), s.prepare_ms);
++    } catch (const std::exception & e) {
++        s.failure = e.what();
++        // No partial state may be submitted. Retain the error and release all
++        // resources acquired so far; ordinary engine mode remains untouched.
++        if (s.last_stream) (void) cudaStreamSynchronize(s.last_stream);
++        if (s.layer) { (void) cudaFree(s.layer); s.layer = nullptr; }
++        if (s.counters) { (void) cudaFree(s.counters); s.counters = nullptr; }
++        if (s.mailbox && s.service) s.service->remove(s.mailbox.get());
++        if (s.mailbox && s.mailbox->host) (void) cudaFreeHost(s.mailbox->host);
++        s.mailbox.reset(); s.service.reset();
++        for (auto & p : s.mapped) if (p) { (void) cudaFreeHost(p); p = nullptr; }
++        s.mapped_bytes = 0; s.scratch.reset();
++        throw;
++    }
++}
++
++// One block builds the whole bounded plan. Expert groups exist only to avoid
++// copying the same miss twice; GEMV keeps every original channel independent.
++__device__ void plan_reuse_groups(DevicePlan * plan, const int * expert, int channels, int cap) {
++    bool assigned[C] = {};
++    int groups = 0, next = 0;
++    for (int c = 0; c < channels; ++c) {
++        if (assigned[c]) continue;
++        plan->group_offset[groups] = next;
++        int count = 0;
++        for (int j = c; j < channels && count < cap; ++j) {
++            if (assigned[j] || expert[j] != expert[c]) continue;
++            assigned[j] = true;
++            plan->group_channel[next++] = j;
++            ++count;
++        }
++        ++groups;
++    }
++    plan->group_offset[groups] = next;
++    plan->group_count = groups;
++}
++__global__ void route_plan(const int32_t * ids, int token_stride, int channels,
++        const DeviceLayer * layer, DevicePlan * plan, DeviceStats * counters,
++        uint8_t * stage0, uint8_t * stage1, uint8_t * stage2, bool cpu_mode, int reuse_cap) {
++    __shared__ int eid[C], first[C], staging[C];
++    const int c = threadIdx.x;
++    if (c == 0) { plan->nmiss = 0; atomicAdd(&counters->calls, 1ull); atomicAdd(&counters->rows, (unsigned long long) channels); }
++    const int e = c < channels ? ids[(c / K) * token_stride + c % K] : -1;
++    eid[c] = e; staging[c] = -1;
++    plan->cpu_owned[c] = 0;
++    __syncthreads();
++    int f = c;
++    if (c < channels) {
++        if (e < 0 || e >= E) atomicExch(&counters->error, 1u);
++        else {
++            atomicAdd(&counters->routes[e], 1ull);
++            for (int j = 0; j < c; ++j) if (eid[j] == e) { f = j; break; }
++            if (layer->slot[e] < 0) {
++                atomicAdd(&counters->miss_rows, 1ull);
++                if (cpu_mode) { plan->cpu_owned[c] = 1; atomicAdd(&counters->cpu_rows, 1ull); }
++                else atomicAdd(&counters->gpu_rows, 1ull);
++                if (f == c) {
++                    const int index = atomicAdd(&plan->nmiss, 1);
++                    plan->misses[index] = e; plan->miss_slot[index] = -1; staging[c] = index;
++                }
++            } else atomicAdd(&counters->gpu_rows, 1ull);
++        }
++    }
++    first[c] = f;
++    __syncthreads();
++    if (c < channels) for (int role = 0; role < 3; ++role) {
++        if (e < 0 || e >= E) { plan->ptr[role][c] = nullptr; continue; }
++        const int slot = layer->slot[e];
++        const uint8_t * stage = role == 0 ? stage0 : role == 1 ? stage1 : stage2;
++        if (cpu_mode && slot < 0) { plan->ptr[role][c] = nullptr; continue; }
++        plan->ptr[role][c] = slot >= 0 ? layer->cache[role] + size_t(slot) * role_bytes :
++            stage + size_t(staging[first[c]]) * role_bytes;
++    }
++    if (c == 0) {
++        atomicAdd(&counters->unique_misses, (unsigned long long) plan->nmiss);
++        if (!cpu_mode) atomicAdd(&counters->upload_bytes, (unsigned long long) plan->nmiss * (3 * role_bytes));
++        if (plan->nmiss) atomicAdd(&counters->miss_calls, 1ull);
++        if (reuse_cap) plan_reuse_groups(plan, eid, channels, reuse_cap);
++    }
++}
++// This publication is deliberately a kernel node, rather than a copy-engine
++// node or host callback. It remains inside the captured whole-model graph.
++__global__ void mailbox_publish(const float * input, size_t lane_stride, size_t token_stride,
++        const int32_t * ids, int id_stride, int input_lanes, int tokens,
++        const DevicePlan * plan, DeviceStats * counters, Mailbox * box) {
++    __shared__ int publish;
++    if (threadIdx.x == 0) publish = plan->nmiss && !box->abort;
++    __syncthreads();
++    if (!publish) return;
++    const int ninput = tokens * input_lanes * H;
++    for (int i = threadIdx.x; i < ninput; i += blockDim.x) {
++        const int row = i / H;
++        box->input[i] = input[size_t(row / input_lanes) * token_stride + size_t(row % input_lanes) * lane_stride + i % H];
++    }
++    for (int i = threadIdx.x; i < tokens * K; i += blockDim.x)
++        box->ids[i] = ids[(i / K) * id_stride + i % K];
++    if (threadIdx.x == 0) { box->input_lanes = input_lanes; box->tokens = tokens; }
++    // Every publishing thread flushes its own writes before thread zero rings.
++    __threadfence_system();
++    __syncthreads();
++    if (threadIdx.x == 0) {
++        atomicAdd(&counters->mailbox_to_host_bytes, (unsigned long long) ninput * sizeof(float) + tokens * K * sizeof(int32_t));
++        box->seq = box->seq + 1u;
++    }
++}
++__global__ void mailbox_wait(const DevicePlan * plan, const Mailbox * box) {
++    if (!plan->nmiss) return;
++    const uint32_t want = box->seq;
++    while (box->done < want && !box->abort) {
++#if __CUDA_ARCH__ >= 700
++        __nanosleep(64);
++#endif
++    }
++    __threadfence_system();
++}
++__global__ void mailbox_merge(const DevicePlan * plan, DeviceStats * counters,
++        const Mailbox * box, float * output) {
++    const int c = blockIdx.x;
++    if (box->abort) {
++        for (int i = threadIdx.x; i < H; i += blockDim.x) output[c * H + i] = __int_as_float(0x7fc00000);
++        if (c == 0 && threadIdx.x == 0) atomicExch(&counters->error, 2u);
++        return;
++    }
++    if (!plan->cpu_owned[c]) return;
++    // The preceding wait node establishes visibility for every copy block.
++    const volatile float4 * source = reinterpret_cast<const volatile float4 *>(box->output) + c * (H / 4);
++    float4 * target = reinterpret_cast<float4 *>(output) + c * (H / 4);
++    for (int i = threadIdx.x; i < H / 4; i += blockDim.x)
++        target[i] = const_cast<const float4 *>(source)[i];
++    if (threadIdx.x == 0) atomicAdd(&counters->mailbox_to_device_bytes, (unsigned long long) H * sizeof(float));
++}
++// One bounded device-side planner owns mutation of this layer. It protects all
++// current experts before choosing any victims, including active misses that
++// have not yet been admitted. Stream ordering makes the plan, copy and GEMVs
++// atomic relative to the next use of this cache; no host routing is involved.
++__global__ void dynamic_route_plan(const int32_t * ids, int token_stride, int channels,
++        DeviceLayer * layer, DevicePlan * plan, DeviceStats * counters,
++        uint8_t * stage0, uint8_t * stage1, uint8_t * stage2, int reuse_cap) {
++    if (threadIdx.x != 0) return;
++    int expert[C], first[C], staging[C];
++    bool active[E] = {};
++    const uint64_t now = ++layer->clock;
++    plan->nmiss = 0;
++    ++counters->calls; counters->rows += channels;
++    for (int c = 0; c < channels; ++c) {
++        plan->cpu_owned[c] = 0;
++        const int e = ids[(c / K) * token_stride + c % K];
++        expert[c] = e; first[c] = c; staging[c] = -1;
++        if (e < 0 || e >= E) { counters->error = 1; continue; }
++        ++counters->gpu_rows;
++        active[e] = true;
++        ++counters->routes[e];
++        const uint32_t old = layer->frequency[e];
++        layer->frequency[e] = old > UINT32_MAX - 256u ? UINT32_MAX : old + 256u;
++        layer->recent[e] = now;
++        if (layer->slot[e] < 0) ++counters->miss_rows;
++        for (int j = 0; j < c; ++j) if (expert[j] == e) { first[c] = j; break; }
++    }
++    for (int c = 0; c < channels; ++c) {
++        const int e = expert[c];
++        if (e < 0 || e >= E || first[c] != c || layer->slot[e] >= 0) continue;
++        int victim = -1;
++        for (int slot = 0; slot < layer->capacity; ++slot) {
++            const int old = layer->owner[slot];
++            if (old < 0) { victim = slot; break; }
++            if (active[old]) continue;
++            if (victim < 0) { victim = slot; continue; }
++            const int incumbent = layer->owner[victim];
++            if (layer->frequency[old] < layer->frequency[incumbent] ||
++                (layer->frequency[old] == layer->frequency[incumbent] &&
++                 layer->recent[old] < layer->recent[incumbent])) victim = slot;
++        }
++        if (victim >= 0 && layer->owner[victim] >= 0) {
++            const uint32_t challenger = layer->frequency[e];
++            const uint32_t incumbent = layer->frequency[layer->owner[victim]];
++            // Match the opt-in host LFU's one-route admission hysteresis.
++            // A cold one-off miss is staged instead of displacing a hot slot.
++            if (challenger <= incumbent || challenger - incumbent <= 256u) victim = -1;
++        }
++        const int index = plan->nmiss++;
++        plan->misses[index] = e; plan->miss_slot[index] = victim; staging[c] = index;
++        if (victim >= 0) {
++            const int old = layer->owner[victim];
++            if (old >= 0) layer->slot[old] = -1;
++            layer->owner[victim] = e; layer->slot[e] = victim;
++            ++counters->cache_admissions;
++        }
++    }
++    for (int c = 0; c < channels; ++c) for (int role = 0; role < 3; ++role) {
++        const int e = expert[c];
++        if (e < 0 || e >= E) { plan->ptr[role][c] = nullptr; continue; }
++        const int slot = layer->slot[e];
++        const uint8_t * stage = role == 0 ? stage0 : role == 1 ? stage1 : stage2;
++        plan->ptr[role][c] = slot >= 0 ? layer->cache[role] + size_t(slot) * role_bytes :
++            stage + size_t(staging[first[c]]) * role_bytes;
++    }
++    counters->unique_misses += plan->nmiss;
++    counters->upload_bytes += (unsigned long long) plan->nmiss * (3 * role_bytes);
++    if (plan->nmiss) ++counters->miss_calls;
++    if (++layer->decay_calls >= 4) {
++        for (int e = 0; e < E; ++e) {
++            const uint32_t f = layer->frequency[e];
++            layer->frequency[e] = (f / 10) * 7 + ((f % 10) * 7) / 10;
++        }
++        layer->decay_calls = 0; ++counters->cache_decays;
++    }
++    if (reuse_cap) plan_reuse_groups(plan, expert, channels, reuse_cap);
++}
++__global__ void fetch_misses(const DeviceLayer * layer, const DevicePlan * plan,
++        uint8_t * stage0, uint8_t * stage1, uint8_t * stage2) {
++    constexpr size_t per = role_bytes / sizeof(uint4);
++    const size_t total = size_t(plan->nmiss) * 3 * per;
++    for (size_t i = size_t(blockIdx.x) * blockDim.x + threadIdx.x; i < total; i += size_t(gridDim.x) * blockDim.x) {
++        const int role = int((i / per) % 3), miss = int(i / (3 * per));
++        const int e = plan->misses[miss];
++        const uint4 * src = reinterpret_cast<const uint4 *>(layer->host[role][e]);
++        const int slot = plan->miss_slot[miss];
++        uint8_t * base = slot >= 0 ? layer->cache[role] : role == 0 ? stage0 : role == 1 ? stage1 : stage2;
++        uint4 * dst = reinterpret_cast<uint4 *>(base);
++        dst[size_t(slot >= 0 ? slot : miss) * per + i % per] = src[i % per];
++    }
++}
++__global__ __launch_bounds__(128, 1) void gate_up(const DevicePlan * plan,
++        const block_q8_1 * input, float * hidden, int input_lanes) {
++    constexpr int warp_size = 32, nwarps = 4, qi = 8, vdr = 2;
++    constexpr int step = vdr * nwarps * warp_size / qi;
++    const int row = blockIdx.x, c = blockIdx.y;
++    const void * w = plan->ptr[1][c], * g = plan->ptr[0][c];
++    if (!w || !g) { if (threadIdx.x == 0 && threadIdx.y == 0) hidden[c * F + row] = 0.0f; return; }
++    const int tid = threadIdx.y * warp_size + threadIdx.x, iqs = vdr * (tid % (qi / vdr));
++    const int input_row = (c / K) * input_lanes + (c % K) % input_lanes;
++    const block_q8_1 * y = input + input_row * (H / QK8_1);
++    float up = 0.0f, gate = 0.0f;
++    for (int kbx = tid / (qi / vdr); kbx < H / QK8_0; kbx += step) {
++        up += vec_dot_q8_0_q8_1(w, y + kbx, row * (H / QK8_0) + kbx, iqs);
++        gate += vec_dot_q8_0_q8_1(g, y + kbx, row * (H / QK8_0) + kbx, iqs);
++    }
++    __shared__ float pu[nwarps - 1][warp_size], pg[nwarps - 1][warp_size];
++    if (threadIdx.y > 0) { pu[threadIdx.y - 1][threadIdx.x] = up; pg[threadIdx.y - 1][threadIdx.x] = gate; }
++    __syncthreads();
++    if (threadIdx.y > 0) return;
++#pragma unroll
++    for (int j = 0; j < nwarps - 1; ++j) { up += pu[j][threadIdx.x]; gate += pg[j][threadIdx.x]; }
++    up = warp_reduce_sum<warp_size>(up); gate = warp_reduce_sum<warp_size>(gate);
++    if (threadIdx.x == 0) {
++        up += 0.0f; gate += 0.0f; // canonical fused MMVQ bias-free additions
++        hidden[c * F + row] = up * ggml_cuda_op_silu_single(gate);
++    }
++}
++__global__ __launch_bounds__(128, 1) void down(const DevicePlan * plan, const block_q8_1 * hidden, float * output) {
++    constexpr int warp_size = 32, nwarps = 4, rows = 4, qi = 8, vdr = 2;
++    constexpr int step = vdr * nwarps * warp_size / qi;
++    const int row0 = rows * blockIdx.x, c = blockIdx.y;
++    const void * w = plan->ptr[2][c];
++    if (!w) {
++        // Make a corrupt route fail the existing finite-logit/sample guard
++        // before a token can be emitted, in addition to the boundary error.
++        if (threadIdx.y == 0 && threadIdx.x < rows)
++            output[c * H + row0 + threadIdx.x] = plan->cpu_owned[c] ? 0.0f : __int_as_float(0x7fc00000);
++        return;
++    }
++    const int tid = threadIdx.y * warp_size + threadIdx.x, iqs = vdr * (tid % (qi / vdr));
++    const block_q8_1 * y = hidden + c * (F / QK8_1);
++    float sums[rows] = {};
++    for (int kbx = tid / (qi / vdr); kbx < F / QK8_0; kbx += step) {
++#pragma unroll
++        for (int r = 0; r < rows; ++r)
++            sums[r] += vec_dot_q8_0_q8_1(w, y + kbx, (row0 + r) * (F / QK8_0) + kbx, iqs);
++    }
++    __shared__ float p[nwarps - 1][rows][warp_size];
++    if (threadIdx.y > 0) {
++#pragma unroll
++        for (int r = 0; r < rows; ++r) p[threadIdx.y - 1][r][threadIdx.x] = sums[r];
++    }
++    __syncthreads();
++    if (threadIdx.y > 0) return;
++#pragma unroll
++    for (int r = 0; r < rows; ++r) {
++#pragma unroll
++        for (int j = 0; j < nwarps - 1; ++j) sums[r] += p[j][r][threadIdx.x];
++        sums[r] = warp_reduce_sum<warp_size>(sums[r]);
++        if (threadIdx.x == r) output[c * H + row0 + r] = sums[r];
++    }
++}
++// Original Strata's native_mmvq_multi separates a Q8 block's load from its
++// application to each activation column. Preserve the canonical GGML dot
++// expression and four-warp arithmetic, while loading each weight payload once
++// for a bounded group of channels that routed to this same expert.
++struct Q8Weight {
++    int v[VDR_Q8_0_Q8_1_MMVQ];
++    float d;
++    __device__ __forceinline__ static Q8Weight load(const void * weights, int block, int iqs) {
++        const auto * source = static_cast<const block_q8_0 *>(weights) + block;
++        Q8Weight result;
++#pragma unroll
++        for (int i = 0; i < VDR_Q8_0_Q8_1_MMVQ; ++i) result.v[i] = get_int_b2(source->qs, iqs + i);
++        result.d = source->d;
++        return result;
++    }
++    __device__ __forceinline__ float apply(const block_q8_1 * activation, int iqs) const {
++        int u[VDR_Q8_0_Q8_1_MMVQ];
++#pragma unroll
++        for (int i = 0; i < VDR_Q8_0_Q8_1_MMVQ; ++i) u[i] = get_int_b4(activation->qs, iqs + i);
++        return vec_dot_q8_0_q8_1_impl<float, VDR_Q8_0_Q8_1_MMVQ>(v, u, d, __low2half(activation->ds));
++    }
++};
++template<int CAP>
++__global__ __launch_bounds__(128, 1) void gate_up_reuse(const DevicePlan * plan,
++        const block_q8_1 * input, float * hidden, int input_lanes) {
++    constexpr int warp_size = 32, nwarps = 4, qi = 8, vdr = 2;
++    constexpr int step = vdr * nwarps * warp_size / qi;
++    const int group = blockIdx.y, row = blockIdx.x;
++    if (group >= plan->group_count) return;
++    const int begin = plan->group_offset[group], count = plan->group_offset[group + 1] - begin;
++    int channel[CAP], input_row[CAP];
++#pragma unroll
++    for (int m = 0; m < CAP; ++m) {
++        channel[m] = m < count ? plan->group_channel[begin + m] : 0;
++        input_row[m] = (channel[m] / K) * input_lanes + (channel[m] % K) % input_lanes;
++    }
++    const void * up_weights = plan->ptr[1][channel[0]], * gate_weights = plan->ptr[0][channel[0]];
++    if (!up_weights || !gate_weights) {
++        if (threadIdx.x == 0 && threadIdx.y == 0) {
++#pragma unroll
++            for (int m = 0; m < CAP; ++m) if (m < count) hidden[channel[m] * F + row] = 0.0f;
++        }
++        return;
++    }
++    const int tid = threadIdx.y * warp_size + threadIdx.x, iqs = vdr * (tid % (qi / vdr));
++    float up[CAP] = {}, gate[CAP] = {};
++    for (int kbx = tid / (qi / vdr); kbx < H / QK8_0; kbx += step) {
++        const auto uw = Q8Weight::load(up_weights, row * (H / QK8_0) + kbx, iqs);
++        const auto gw = Q8Weight::load(gate_weights, row * (H / QK8_0) + kbx, iqs);
++#pragma unroll
++        for (int m = 0; m < CAP; ++m) if (m < count) {
++            const block_q8_1 * y = input + input_row[m] * (H / QK8_1) + kbx;
++            up[m] += uw.apply(y, iqs);
++            gate[m] += gw.apply(y, iqs);
++        }
++    }
++    __shared__ float pu[nwarps - 1][CAP][warp_size], pg[nwarps - 1][CAP][warp_size];
++    if (threadIdx.y > 0) {
++#pragma unroll
++        for (int m = 0; m < CAP; ++m) {
++            pu[threadIdx.y - 1][m][threadIdx.x] = up[m];
++            pg[threadIdx.y - 1][m][threadIdx.x] = gate[m];
++        }
++    }
++    __syncthreads();
++    if (threadIdx.y > 0) return;
++#pragma unroll
++    for (int m = 0; m < CAP; ++m) if (m < count) {
++#pragma unroll
++        for (int j = 0; j < nwarps - 1; ++j) { up[m] += pu[j][m][threadIdx.x]; gate[m] += pg[j][m][threadIdx.x]; }
++        up[m] = warp_reduce_sum<warp_size>(up[m]); gate[m] = warp_reduce_sum<warp_size>(gate[m]);
++        if (threadIdx.x == 0) {
++            up[m] += 0.0f; gate[m] += 0.0f;
++            hidden[channel[m] * F + row] = up[m] * ggml_cuda_op_silu_single(gate[m]);
++        }
++    }
++}
++template<int CAP>
++__global__ __launch_bounds__(128, 1) void down_reuse(const DevicePlan * plan,
++        const block_q8_1 * hidden, float * output) {
++    constexpr int warp_size = 32, nwarps = 4, rows = 4, qi = 8, vdr = 2;
++    constexpr int step = vdr * nwarps * warp_size / qi;
++    const int group = blockIdx.y, row0 = rows * blockIdx.x;
++    if (group >= plan->group_count) return;
++    const int begin = plan->group_offset[group], count = plan->group_offset[group + 1] - begin;
++    int channel[CAP];
++#pragma unroll
++    for (int m = 0; m < CAP; ++m) channel[m] = m < count ? plan->group_channel[begin + m] : 0;
++    const void * weights = plan->ptr[2][channel[0]];
++    if (!weights) {
++        if (threadIdx.y == 0 && threadIdx.x < rows) {
++#pragma unroll
++            for (int m = 0; m < CAP; ++m) if (m < count)
++                output[channel[m] * H + row0 + threadIdx.x] = plan->cpu_owned[channel[m]] ? 0.0f : __int_as_float(0x7fc00000);
++        }
++        return;
++    }
++    const int tid = threadIdx.y * warp_size + threadIdx.x, iqs = vdr * (tid % (qi / vdr));
++    float sums[CAP][rows] = {};
++    for (int kbx = tid / (qi / vdr); kbx < F / QK8_0; kbx += step) {
++#pragma unroll
++        for (int r = 0; r < rows; ++r) {
++            const auto weight = Q8Weight::load(weights, (row0 + r) * (F / QK8_0) + kbx, iqs);
++#pragma unroll
++            for (int m = 0; m < CAP; ++m) if (m < count)
++                sums[m][r] += weight.apply(hidden + channel[m] * (F / QK8_1) + kbx, iqs);
++        }
++    }
++    __shared__ float partial[nwarps - 1][CAP][rows][warp_size];
++    if (threadIdx.y > 0) {
++#pragma unroll
++        for (int m = 0; m < CAP; ++m)
++#pragma unroll
++            for (int r = 0; r < rows; ++r) partial[threadIdx.y - 1][m][r][threadIdx.x] = sums[m][r];
++    }
++    __syncthreads();
++    if (threadIdx.y > 0) return;
++#pragma unroll
++    for (int m = 0; m < CAP; ++m) if (m < count) {
++#pragma unroll
++        for (int r = 0; r < rows; ++r) {
++#pragma unroll
++            for (int j = 0; j < nwarps - 1; ++j) sums[m][r] += partial[j][m][r][threadIdx.x];
++            sums[m][r] = warp_reduce_sum<warp_size>(sums[m][r]);
++            if (threadIdx.x == r) output[channel[m] * H + row0 + r] = sums[m][r];
++        }
++    }
++}
++void * create(int device, ggml_cuda_strata_moe_prepare_v1 provider, void * user, char * error, size_t n) {
++    try {
++        if (!provider || device < 0 || device >= ggml_cuda_info().device_count)
++            throw std::runtime_error("static MoE requires a valid CUDA device and cache provider");
++        if (ggml_cuda_info().devices[device].cc != GGML_CUDA_CC_TURING)
++            throw std::runtime_error("static Q8 MoE currently supports only SM75 (RTX 20 series)");
++        auto * result = new State(device, provider, user);
++        live_handles.fetch_add(1, std::memory_order_relaxed);
++        return result;
++    } catch (const std::exception & e) { error_text(error, n, e.what()); return nullptr; }
++}
++ggml_tensor * build(void * handle, ggml_context * ctx, ggml_tensor * x, ggml_tensor * ids) {
++    if (!handle || !ctx || !input_geometry(x, ids)) return nullptr;
++    ggml_tensor * args[] = {x, ids};
++    auto * result = ggml_custom_4d(ctx, GGML_TYPE_F32, H, K, x->ne[2], 1, args, 2, marker, 1, handle);
++    ggml_set_name(result, "strata_static_q8_moe");
++    return result;
++}
++int get_stats(void * handle, int reset, ggml_cuda_strata_moe_stats_v1 * out, char * error, size_t n) {
++    try {
++        if (!handle || !out) throw std::runtime_error("static MoE stats invalid arguments");
++        auto & s = *static_cast<State *>(handle);
++        *out = {}; out->mapped_host_bytes = s.mapped_bytes; out->prepare_ms = s.prepare_ms;
++        for (int e = 0; e < E; ++e) out->slot_of_expert[e] = -1;
++        out->shared_gpu_scratch_bytes = s.scratch ? scratch_size() : 0;
++        if (!s.failure.empty()) throw std::runtime_error(s.failure);
++        if (!s.prepared) return 1;
++        check(cudaSetDevice(s.device), "static MoE stats set device");
++        if (s.last_stream) check(cudaStreamSynchronize(s.last_stream), "static MoE stats join");
++        DeviceStats values{};
++        check(cudaMemcpy(&values, s.counters, sizeof(values), cudaMemcpyDeviceToHost), "static MoE stats download");
++        DeviceLayer current{};
++        check(cudaMemcpy(&current, s.layer, sizeof(current), cudaMemcpyDeviceToHost), "static MoE cache map download");
++        if (reset) check(cudaMemsetAsync(s.counters, 0, sizeof(DeviceStats), s.last_stream), "static MoE stats reset");
++        out->calls = values.calls; out->rows = values.rows; out->miss_rows = values.miss_rows;
++        out->unique_misses = values.unique_misses; out->upload_bytes = values.upload_bytes;
++        out->miss_calls = values.miss_calls;
++        for (int e = 0; e < E; ++e) out->routes[e] = values.routes[e];
++        out->device_error = values.error;
++        out->cache_slots = current.capacity; out->dynamic_cache = current.dynamic_cache;
++        for (int e = 0; e < E; ++e) out->slot_of_expert[e] = current.slot[e];
++        out->cache_admissions = values.cache_admissions; out->cache_decays = values.cache_decays;
++        out->cpu_rows = values.cpu_rows; out->gpu_rows = values.gpu_rows;
++        out->mailbox_to_host_bytes = values.mailbox_to_host_bytes;
++        out->mailbox_to_device_bytes = values.mailbox_to_device_bytes;
++        std::string callback_failure;
++        if (s.mailbox && s.service) callback_failure = s.service->collect(s.mailbox.get(), reset, *out);
++        if (!callback_failure.empty()) throw std::runtime_error(callback_failure);
++        if (values.error) throw std::runtime_error(values.error == 2 ?
++            "hybrid MoE CPU service failed" : "static MoE received an invalid routed expert id");
++        return 1;
++    } catch (const std::exception & e) { error_text(error, n, e.what()); return 0; }
++}
++void destroy(void * handle) {
++    if (!handle) return;
++    delete static_cast<State *>(handle);
++    live_handles.fetch_sub(1, std::memory_order_relaxed);
++}
++const ggml_cuda_strata_moe_api_v1 api = {GGML_CUDA_STRATA_MOE_ABI_V1, create, build, get_stats, destroy, scratch_size};
++} // namespace
++
++bool ggml_cuda_strata_moe_is_op(const ggml_tensor * op) {
++    return state_of(op) && input_geometry(op->src[0], op->src[1]);
++}
++bool ggml_cuda_strata_moe_any_handles() {
++    return live_handles.load(std::memory_order_relaxed) != 0;
++}
++bool ggml_cuda_strata_moe_prepare_op(ggml_backend_cuda_context & ctx, const ggml_tensor * op, char * error, size_t n) {
++    try {
++        auto * s = state_of(op);
++        if (!s || !input_geometry(op->src[0], op->src[1]) || s->device != ctx.device ||
++            ggml_cuda_info().devices[ctx.device].cc != GGML_CUDA_CC_TURING)
++            throw std::runtime_error("static MoE requires matching SM75 CUDA device and Qwen A3B geometry");
++        prepare_state(*s, ctx.stream());
++        if (s->service) s->service->activate();
++        if (s->scratch->stream && s->scratch->stream != ctx.stream())
++            throw std::runtime_error("static MoE shared scratch supports one CUDA execution stream per device");
++        s->scratch->stream = ctx.stream(); s->last_stream = ctx.stream();
++        return true;
++    } catch (const std::exception & e) { error_text(error, n, e.what()); return false; }
++}
++void ggml_cuda_strata_moe_compute(ggml_backend_cuda_context & ctx, ggml_tensor * op) {
++    auto & s = *state_of(op); auto & temp = *s.scratch;
++    GGML_ASSERT(s.prepared && ctx.device == s.device && temp.stream == ctx.stream());
++    const auto * x = op->src[0]; const auto * ids = op->src[1];
++    const int channels = int(K * x->ne[2]);
++    // A normal T=1 top-k contains distinct experts. Keep its singleton kernel
++    // path and omit grouping even when multi-token reuse is explicitly enabled.
++    const int reuse_cap = x->ne[2] > 1 ? native_expert_reuse_cap() : 0;
++    const auto stream = ctx.stream();
++    if (s.dynamic_cache) {
++        dynamic_route_plan<<<1, 1, 0, stream>>>((const int32_t *) ids->data, int(ids->nb[1] / sizeof(int32_t)),
++            channels, s.layer, temp.plan, s.counters, temp.stage[0], temp.stage[1], temp.stage[2], reuse_cap);
++    } else {
++        route_plan<<<1, C, 0, stream>>>((const int32_t *) ids->data, int(ids->nb[1] / sizeof(int32_t)),
++            channels, s.layer, temp.plan, s.counters, temp.stage[0], temp.stage[1], temp.stage[2], s.hybrid_mailbox, reuse_cap);
++    }
++    if (s.hybrid_mailbox) {
++        mailbox_publish<<<1, 256, 0, stream>>>((const float *) x->data,
++            x->nb[1] / sizeof(float), x->nb[2] / sizeof(float), (const int32_t *) ids->data,
++            int(ids->nb[1] / sizeof(int32_t)), int(x->ne[1]), int(x->ne[2]), temp.plan, s.counters, s.mailbox->device);
++    } else {
++        fetch_misses<<<384, 256, 0, stream>>>(s.layer, temp.plan, temp.stage[0], temp.stage[1], temp.stage[2]);
++    }
++    quantize_row_q8_1_cuda((const float *) x->data, nullptr, temp.input, GGML_TYPE_Q8_0, H,
++        x->nb[1] / sizeof(float), x->nb[2] / sizeof(float), x->nb[3] / sizeof(float),
++        H, x->ne[1], x->ne[2], 1, stream);
++    if (reuse_cap == 2) gate_up_reuse<2><<<dim3(F, channels), dim3(32, 4), 0, stream>>>(temp.plan, temp.input, temp.hidden, int(x->ne[1]));
++    else if (reuse_cap == 4) gate_up_reuse<4><<<dim3(F, channels), dim3(32, 4), 0, stream>>>(temp.plan, temp.input, temp.hidden, int(x->ne[1]));
++    else gate_up<<<dim3(F, channels), dim3(32, 4), 0, stream>>>(temp.plan, temp.input, temp.hidden, int(x->ne[1]));
++    quantize_row_q8_1_cuda(temp.hidden, nullptr, temp.hq, GGML_TYPE_Q8_0, F, F, F * channels, F * channels,
++        F, channels, 1, 1, stream);
++    if (reuse_cap == 2) down_reuse<2><<<dim3(H / 4, channels), dim3(32, 4), 0, stream>>>(temp.plan, temp.hq, (float *) op->data);
++    else if (reuse_cap == 4) down_reuse<4><<<dim3(H / 4, channels), dim3(32, 4), 0, stream>>>(temp.plan, temp.hq, (float *) op->data);
++    else down<<<dim3(H / 4, channels), dim3(32, 4), 0, stream>>>(temp.plan, temp.hq, (float *) op->data);
++    if (s.hybrid_mailbox) {
++        mailbox_wait<<<1, 1, 0, stream>>>(temp.plan, s.mailbox->device);
++        mailbox_merge<<<channels, 128, 0, stream>>>(temp.plan, s.counters, s.mailbox->device, (float *) op->data);
++    }
++    CUDA_CHECK(cudaGetLastError());
++}
++const ggml_cuda_strata_moe_api_v1 * ggml_cuda_strata_moe_get_api() { return &api; }
++#else
++bool ggml_cuda_strata_moe_is_op(const ggml_tensor *) { return false; }
++bool ggml_cuda_strata_moe_any_handles() { return false; }
++bool ggml_cuda_strata_moe_prepare_op(ggml_backend_cuda_context &, const ggml_tensor *, char *, size_t) { return false; }
++void ggml_cuda_strata_moe_compute(ggml_backend_cuda_context &, ggml_tensor *) { GGML_ABORT("static MoE requires native CUDA"); }
++const ggml_cuda_strata_moe_api_v1 * ggml_cuda_strata_moe_get_api() { return nullptr; }
++#endif

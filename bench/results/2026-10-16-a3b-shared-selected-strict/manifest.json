@@ -1,0 +1,1073 @@
+{
+  "completed": false,
+  "profile": "selected",
+  "fingerprint_before": {
+    "isolated_cmake_cache": {
+      "path": "G:\\Strata-Moe\\build-a3b-shared-candidate\\CMakeCache.txt",
+      "bytes": 49310,
+      "sha256": "d545561e02bf5929bb4d7f512dad3f0d2d979fc82cea734190b530bbc29e12f5"
+    },
+    "isolated_engine": {
+      "path": "G:\\Strata-Moe\\build-a3b-shared-candidate\\bin\\strata-moe.exe",
+      "bytes": 200543232,
+      "sha256": "851971b05547d527e1413cbdb384db3da5ab5b4490699295d202ce4d5a12997b"
+    },
+    "isolated_fixture": {
+      "path": "G:\\Strata-Moe\\build-a3b-shared-candidate\\bin\\strata-moe-speculative-test.exe",
+      "bytes": 200512000,
+      "sha256": "c2579a59856fbbc24e77ae06120e29b2e10887c14195cc1afd8ec51ebf65a419"
+    },
+    "production_engine": {
+      "path": "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe.exe",
+      "bytes": 200498176,
+      "sha256": "a0a3deaec132200616e7db2c0a18e3cfd719575e660ce6a7d29af58f6c4d9c04"
+    },
+    "production_fixture": {
+      "path": "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe-speculative-test.exe",
+      "bytes": 200465920,
+      "sha256": "02d535824cc05233f459179d97dafc7a96d57d3f154a380986ba965cb8cdb046"
+    },
+    "isolated_common": {
+      "path": "G:\\Strata-Moe\\build-a3b-shared-source\\vendor\\ggml\\src\\ggml-cuda\\common.cuh",
+      "bytes": 67557,
+      "sha256": "60b42a142612ba7e3fdcd4fa76551b3c5df9508dc887ad415a47c184bc06d7c7"
+    },
+    "isolated_cuda": {
+      "path": "G:\\Strata-Moe\\build-a3b-shared-source\\vendor\\ggml\\src\\ggml-cuda\\ggml-cuda.cu",
+      "bytes": 267734,
+      "sha256": "842c2919742f49501ed4f0383bf0ee32af8739843652a2aecde697fa334b5feb"
+    },
+    "production_common": {
+      "path": "G:\\Strata-Moe\\third_party\\llama.cpp\\ggml\\src\\ggml-cuda\\common.cuh",
+      "bytes": 67002,
+      "sha256": "0f43c7466cd069cf5d5cb6adddade85c8cbe7eeb7ba465133a265aa2117f933b"
+    },
+    "production_cuda": {
+      "path": "G:\\Strata-Moe\\third_party\\llama.cpp\\ggml\\src\\ggml-cuda\\ggml-cuda.cu",
+      "bytes": 251780,
+      "sha256": "5094c8a0d36a7e8db5bb4265434bd15b2799e94b08356dd728be71ed1f6d0988"
+    },
+    "target": {
+      "path": "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-IQ3_S.gguf",
+      "bytes": 13676723168,
+      "sha256": "66a3ca888ce13482b40c333db2432c0ebde3a7b13754fc29f0c6f5e89703ec66"
+    },
+    "draft": {
+      "path": "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+      "bytes": 1990649632,
+      "sha256": "f6cb995fab78e7284097b2e13508e8daad4ffc6a747b433aef399f4e48524b5a"
+    },
+    "patch_1": {
+      "path": "G:\\Strata-Moe\\a3b\\research\\shared-stream\\llama-zzzzzzz-a3b-shared-stream.patch",
+      "bytes": 8908,
+      "sha256": "f8532df38fb166fdc52a1ff0045ce03052fc21a3d206e17b4bb29dc3a5bbeab6"
+    },
+    "patch_2": {
+      "path": "G:\\Strata-Moe\\a3b\\research\\shared-stream\\llama-zzzzzzzz-a3b-shared-stream-fusion-guard.patch",
+      "bytes": 1752,
+      "sha256": "90bfdc986445fbf4eeb7c12736efbb95ed9a870ed45eed90c742243fe744055b"
+    },
+    "patch_3": {
+      "path": "G:\\Strata-Moe\\a3b\\research\\shared-stream\\llama-zzzzzzzzz-a3b-shared-stream-fusion-boundary.patch",
+      "bytes": 2908,
+      "sha256": "8e477116942ad7237b228ba8ab7e55b28bb318addfff74aa23bf012728819615"
+    },
+    "patch_4": {
+      "path": "G:\\Strata-Moe\\a3b\\research\\shared-stream\\llama-zzzzzzzzzz-a3b-shared-stream-branch-fusion.patch",
+      "bytes": 2914,
+      "sha256": "4c87e420017fb9c791a8b34e81067195e5463b6c457c396826c529f4ab0d9ecb"
+    },
+    "patch_5": {
+      "path": "G:\\Strata-Moe\\a3b\\research\\shared-stream\\llama-zzzzzzzzzzz-a3b-shared-stream-original-order.patch",
+      "bytes": 1438,
+      "sha256": "3df5499aa3f7e37f42a45a43e4679cfde4ec6656896be38d7615304a2a14ddee"
+    },
+    "patch_6": {
+      "path": "G:\\Strata-Moe\\a3b\\research\\shared-stream\\a3b-shared-alloc-safety-diagnostic.patch",
+      "bytes": 8440,
+      "sha256": "ef53f112aab9662ab738d77d8dcecdbd11dbf0277e74fbcb0ce84a66d4f946dd"
+    },
+    "patch_7": {
+      "path": "G:\\Strata-Moe\\a3b\\research\\shared-stream\\a3b-shared-fusion-parity-candidate.patch",
+      "bytes": 5459,
+      "sha256": "4da21b48a0ef50365a17eabe00fd8521b988798f04d24d2ae48e1a4bd828bd84"
+    },
+    "compact_patch_1": {
+      "path": "G:\\Strata-Moe\\a3b\\patches\\llama-zzzzzzzzzz-a3b-draft-compact-gpu.patch",
+      "bytes": 4520,
+      "sha256": "3eba9b6ff4c4698645f6414c5b015aa3e61e5afcd9f9f7c91c0df38c0bd383b3"
+    },
+    "compact_patch_2": {
+      "path": "G:\\Strata-Moe\\a3b\\patches\\llama-zzzzzzzzzzz-a3b-draft-compact-safety.patch",
+      "bytes": 1094,
+      "sha256": "9b198804f1065bc014fd1a737bfa6e284779d7fc6753bc2efb61c88136115254"
+    },
+    "compact_patch_3": {
+      "path": "G:\\Strata-Moe\\a3b\\patches\\llama-zzzzzzzzzzzz-a3b-draft-compact-i32-fallback.patch",
+      "bytes": 692,
+      "sha256": "f456ce64083142e1f7bdf85caa895f1ed7c5bed43f7c062d27368c5e4004dcfd"
+    },
+    "source_diff_report": {
+      "path": "G:\\Strata-Moe\\build-a3b-shared-candidate\\source-diff-report.json",
+      "bytes": 622,
+      "sha256": "7b4582b36b49c549c9ae9d129bb419cad89b8bd9d5df9f1685b2b50ca7f1046e"
+    },
+    "input_a3b/backend.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\backend.cpp",
+      "bytes": 126441,
+      "sha256": "17ac388bb10fea8e038a0c2178d91c9c0f1d906005583e84ab87ba6bd54ca2ff"
+    },
+    "input_a3b/backend.hpp": {
+      "path": "G:\\Strata-Moe\\a3b\\backend.hpp",
+      "bytes": 10454,
+      "sha256": "4d3c9884ef32645530bcc68c246af5d327b94e56691c0da25f17e71b58b5c6ef"
+    },
+    "input_a3b/cache_profile.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\cache_profile.cpp",
+      "bytes": 14472,
+      "sha256": "ffa30ba62314729d6cd57b7269e72a238958e4d1c6ab9a3f8521c0bfe02289f1"
+    },
+    "input_a3b/cache_profile.hpp": {
+      "path": "G:\\Strata-Moe\\a3b\\cache_profile.hpp",
+      "bytes": 1675,
+      "sha256": "ded2e6c8c3c3b9395defaeb3ff422ec5d1aa4ad01bec6163e1c22f87b95b1366"
+    },
+    "input_a3b/cache_profile_test.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\cache_profile_test.cpp",
+      "bytes": 8227,
+      "sha256": "680352738ca6bbba5f0fee6509f3b8868d15b29dbf3fed1e9b2ee1f3a255bb06"
+    },
+    "input_a3b/CMakeLists.txt": {
+      "path": "G:\\Strata-Moe\\a3b\\CMakeLists.txt",
+      "bytes": 10893,
+      "sha256": "ca37358338a19c133068669fca957d97e184fa8430beeb88a4ff4d1e707b94e5"
+    },
+    "input_a3b/cpu_experts.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\cpu_experts.cpp",
+      "bytes": 19075,
+      "sha256": "d7aeaaaf5cfa219b3975b719458eea57720e9f05d246d98b9b50a386b8ec6c2e"
+    },
+    "input_a3b/cpu_experts.hpp": {
+      "path": "G:\\Strata-Moe\\a3b\\cpu_experts.hpp",
+      "bytes": 2805,
+      "sha256": "66241a0c27c9530e8cf40d711e09c32ebb62b24760cd847e9ba90dea128cae2b"
+    },
+    "input_a3b/cpu_experts_test.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\cpu_experts_test.cpp",
+      "bytes": 21047,
+      "sha256": "6f4f7a9ced379c1a02316cfad793bf6adf272fd46848dad16e46837f9b78e555"
+    },
+    "input_a3b/device_sampler_test.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\device_sampler_test.cpp",
+      "bytes": 11289,
+      "sha256": "0faddf69d014cecd7cdabe733750be8ebda043aa499f016900bf779418492f57"
+    },
+    "input_a3b/draft_policy.hpp": {
+      "path": "G:\\Strata-Moe\\a3b\\draft_policy.hpp",
+      "bytes": 5877,
+      "sha256": "b6342a1d0d5bba81b9ad07a13cc0f3e038138d3b1317fbba567a057c296c289e"
+    },
+    "input_a3b/draft_policy_test.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\draft_policy_test.cpp",
+      "bytes": 3779,
+      "sha256": "e7eb86382ad75a9b2418212cb5e694b58124d5dd5b25b1dd6d1cf0c18a266b52"
+    },
+    "input_a3b/draft_vocab_map.hpp": {
+      "path": "G:\\Strata-Moe\\a3b\\draft_vocab_map.hpp",
+      "bytes": 1092,
+      "sha256": "8a641dcf7f606319c3387373b30d0ecd1328866c0e8f00855e1c4b7e846e3b64"
+    },
+    "input_a3b/draft_vocab_map_test.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\draft_vocab_map_test.cpp",
+      "bytes": 7110,
+      "sha256": "577cc9be31872c745e396de3532cf48639ff1f7a77b2df1323bc317b8c507a14"
+    },
+    "input_a3b/expert_plan_parallel_test.cu": {
+      "path": "G:\\Strata-Moe\\a3b\\expert_plan_parallel_test.cu",
+      "bytes": 7221,
+      "sha256": "91d777f8c9ef028e8d24327c4713e828437de6b779c1ba6bafd366823aa7c191"
+    },
+    "input_a3b/expert_q8_reuse_test.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\expert_q8_reuse_test.cpp",
+      "bytes": 9301,
+      "sha256": "46f174d18c28f5edc52fe7a96ec7d07b8c7b97eb4e43a84f3b432b48b6b9e901"
+    },
+    "input_a3b/fused_parity.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\fused_parity.cpp",
+      "bytes": 46851,
+      "sha256": "a44b7519b3498e768758302c0dc430f2cb8175762a2768d1f9a023a497106e40"
+    },
+    "input_a3b/gdn_a3b_parity.cu": {
+      "path": "G:\\Strata-Moe\\a3b\\gdn_a3b_parity.cu",
+      "bytes": 10860,
+      "sha256": "8cf9ecd8d7d7dcf2924a7e1bdce5bba86b1993549130eff4fe29c48fb4521278"
+    },
+    "input_a3b/gpu_expert_parity.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\gpu_expert_parity.cpp",
+      "bytes": 28201,
+      "sha256": "b65bc0d9dc4c66b8eb22c613fb7bce00399516e7fbe27851172dee6464bf9488"
+    },
+    "input_a3b/gpu_static_parity.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\gpu_static_parity.cpp",
+      "bytes": 41442,
+      "sha256": "ef99f4dcc0d886d2baed96d09511e99a28fb5e41792cdbd8dcc1e7059c885cc2"
+    },
+    "input_a3b/iq3s_fused_gu_parity.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\iq3s_fused_gu_parity.cpp",
+      "bytes": 9188,
+      "sha256": "86e2cb90b988701c375d4862a1c427be52a85f7945e2a3c546fca3954d9bb64e"
+    },
+    "input_a3b/kv_tier.hpp": {
+      "path": "G:\\Strata-Moe\\a3b\\kv_tier.hpp",
+      "bytes": 1680,
+      "sha256": "4d5604124a461727558070414344db57384ce1d7d0123f00d4c6ee92cfbb51dd"
+    },
+    "input_a3b/kv_tier_test.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\kv_tier_test.cpp",
+      "bytes": 1482,
+      "sha256": "2d78cf15c74caaad3a7d27c7fd8f6e5b852055d731ef699077e99045e2f9375a"
+    },
+    "input_a3b/main.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\main.cpp",
+      "bytes": 62715,
+      "sha256": "22fe0e0955c4bcbebefdaf159a35a176668f53a8cfe20e33ab1747b2c1ab016a"
+    },
+    "input_a3b/mtp_round_test.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\mtp_round_test.cpp",
+      "bytes": 7267,
+      "sha256": "1e3b61ad5054c4be62ff91bf1d9dbed20c437d43d4dfd11f9697f522c2166aa4"
+    },
+    "input_a3b/native_attention_parity.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\native_attention_parity.cpp",
+      "bytes": 13772,
+      "sha256": "bb8be3aa8fbc6095f52e35358ca8c1c6d75ff17299a8bd513c56accb0fe3bc5f"
+    },
+    "input_a3b/native_dense_parity.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\native_dense_parity.cpp",
+      "bytes": 13235,
+      "sha256": "2601a92194e0ac442880e4a744b1599dabb6b75bfd38e0f28ec1534dd253ccf3"
+    },
+    "input_a3b/native_parity.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\native_parity.cpp",
+      "bytes": 12137,
+      "sha256": "c4c0bf443c2f85d99462b1c3f624afb12bf6a899017dc13a17f09a7e75c63378"
+    },
+    "input_a3b/parity.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\parity.cpp",
+      "bytes": 22234,
+      "sha256": "7cb1777fba1b46311a7bdebb3ee80caaaa239a94bb1f2a3ae1c26ad384f5a72d"
+    },
+    "input_a3b/probe_pinned_uva.cu": {
+      "path": "G:\\Strata-Moe\\a3b\\probe_pinned_uva.cu",
+      "bytes": 10590,
+      "sha256": "dc6874e1f642433ed945ca3edc875a40a8af4237f304c2fa86fde904b170411b"
+    },
+    "input_a3b/profile_ranges.hpp": {
+      "path": "G:\\Strata-Moe\\a3b\\profile_ranges.hpp",
+      "bytes": 1614,
+      "sha256": "97e3989723dcea2fe41e56d9c49e813347e6f52ca73bddd01f0f760d08fafd1b"
+    },
+    "input_a3b/shared_weights.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\shared_weights.cpp",
+      "bytes": 6180,
+      "sha256": "d11963379168af6a1a420100e711663346f1c478c4ea1c70a1a05af93a4a9064"
+    },
+    "input_a3b/shared_weights.hpp": {
+      "path": "G:\\Strata-Moe\\a3b\\shared_weights.hpp",
+      "bytes": 1185,
+      "sha256": "32cd0c47c08af4f11257a207ed87221dc689f4c722d714f2e01d195b852b11e6"
+    },
+    "input_a3b/speculative.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\speculative.cpp",
+      "bytes": 38958,
+      "sha256": "af9421a72c349caf3b7f9cc773d3bed8cff1d1d32b1c5a49294359f5d8563124"
+    },
+    "input_a3b/speculative.hpp": {
+      "path": "G:\\Strata-Moe\\a3b\\speculative.hpp",
+      "bytes": 9087,
+      "sha256": "53d108365b8d31c7dc482b76f5a7ad91cfe028c8bcd148ef92721fe4fe801c60"
+    },
+    "input_a3b/speculative_test.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\speculative_test.cpp",
+      "bytes": 51688,
+      "sha256": "d216ca191aa22ff5e340fe5348fb322a9cffc671ca3ebf849eb903051db696c6"
+    },
+    "input_a3b/strata_expert_plan_parallel.cuh": {
+      "path": "G:\\Strata-Moe\\a3b\\strata_expert_plan_parallel.cuh",
+      "bytes": 2789,
+      "sha256": "f3e3e4140f94b16aeb14fd2b75d4bacb2e497de9db0f16f784e7ea83285bfacf"
+    },
+    "input_a3b/strata_native_experts.cu": {
+      "path": "G:\\Strata-Moe\\a3b\\strata_native_experts.cu",
+      "bytes": 7307,
+      "sha256": "e59cc1d6b14b9db400f6db9db836f6026e70a3e282612823eee2adf470a3d0a5"
+    },
+    "input_a3b/strata_native_experts.hpp": {
+      "path": "G:\\Strata-Moe\\a3b\\strata_native_experts.hpp",
+      "bytes": 745,
+      "sha256": "b4551fb2592dd53729311364e225a0bdc2701f33c7340de9f9c5ecf604c206cc"
+    },
+    "input_a3b/strata_prefill_mmq_adapter.cu": {
+      "path": "G:\\Strata-Moe\\a3b\\strata_prefill_mmq_adapter.cu",
+      "bytes": 9868,
+      "sha256": "f9014257c6c97e64a1a326636a9173018a0934026e0b31ff7c98a8cf9d96a01f"
+    },
+    "input_a3b/strata_prefill_mmq_adapter.hpp": {
+      "path": "G:\\Strata-Moe\\a3b\\strata_prefill_mmq_adapter.hpp",
+      "bytes": 1307,
+      "sha256": "b81c2c4b133e277ac5373eb3a79f8957e62958372fbed8f4b30710b8406180e3"
+    },
+    "input_a3b/strata_prefill_mmq_adapter_parity.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\strata_prefill_mmq_adapter_parity.cpp",
+      "bytes": 9412,
+      "sha256": "ac2d1f45e93c1e63996ce99ba42ca6ac67bed78a350c07e6016cdff85f728659"
+    },
+    "input_a3b/strata_prefill_mmq_probe.cpp": {
+      "path": "G:\\Strata-Moe\\a3b\\strata_prefill_mmq_probe.cpp",
+      "bytes": 8423,
+      "sha256": "96ed4f79414286c991783f17047062298daeaf9c2564bf942f89712a3dc2e53c"
+    },
+    "input_include/strata/artifact/dequant.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\artifact\\dequant.hpp",
+      "bytes": 14757,
+      "sha256": "e904a075ee9e7dd4f1e5d38c9c7f9ac33d96b7d754078355a94d03c411cb90d5"
+    },
+    "input_include/strata/artifact/gguf_reader.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\artifact\\gguf_reader.hpp",
+      "bytes": 22552,
+      "sha256": "684ac805af3ad743f1c150776e80a8174acf3e592eb39b0da2ad9c78e8c5d725"
+    },
+    "input_include/strata/artifact/gguf_split.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\artifact\\gguf_split.hpp",
+      "bytes": 2477,
+      "sha256": "2f66d12f231c840fcd0177d9b2552aa98759252e95c6b5740e670cf0afa9e1b1"
+    },
+    "input_include/strata/core/arch_defaults.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\arch_defaults.hpp",
+      "bytes": 1696,
+      "sha256": "d6e41477fb393617072f7c68cfb95ae9b27196b1070621425cf666b956e4a6e5"
+    },
+    "input_include/strata/core/batch_rows.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\batch_rows.hpp",
+      "bytes": 1810,
+      "sha256": "d44f38911d09ff94775eede69b631f650c2d7184345b1392357b0af2a464ba0c"
+    },
+    "input_include/strata/core/conversation_buffer.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\conversation_buffer.hpp",
+      "bytes": 6895,
+      "sha256": "4de2b7efe4b78bfc75ff438cfe44f2393f2c2597fa274b73f9fe4e39b20f5586"
+    },
+    "input_include/strata/core/conversation_cache.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\conversation_cache.hpp",
+      "bytes": 17647,
+      "sha256": "1cfc894282615d427e876c11662319b6cc7bd4f702824e0f03d6abf3a5ebf9dd"
+    },
+    "input_include/strata/core/conversation_file.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\conversation_file.hpp",
+      "bytes": 16119,
+      "sha256": "ac40835c3fa9bb507d905f5e589f0f4a60d566edc345ef93e86d3c2cee15869b"
+    },
+    "input_include/strata/core/conversation_memory.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\conversation_memory.hpp",
+      "bytes": 4020,
+      "sha256": "cda1171ca8bba62e7e3f813e24ccfead8bd4e00b7326f895aaae1888e8a24392"
+    },
+    "input_include/strata/core/conversation_snapshot.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\conversation_snapshot.hpp",
+      "bytes": 9261,
+      "sha256": "b4836c88a5bf80c1b8fd489db1cd183182c69599b7bf302add6aa0557da4937d"
+    },
+    "input_include/strata/core/coupled_draft.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\coupled_draft.hpp",
+      "bytes": 6216,
+      "sha256": "787ffbe0f1fbbba1ec20e5865ecfc1582826e5a05b0c2b1078f6e03196c5509d"
+    },
+    "input_include/strata/core/device.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\device.hpp",
+      "bytes": 4742,
+      "sha256": "ace7312a045bab6770ef8c2e55cd57f5b9d8a822bb85012df22ec43410242ede"
+    },
+    "input_include/strata/core/dma_batch.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\dma_batch.hpp",
+      "bytes": 5986,
+      "sha256": "da42b32773554b9136809ed5103ab3ccb133fada73b985b7124f7951f826c850"
+    },
+    "input_include/strata/core/emulate.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\emulate.hpp",
+      "bytes": 1675,
+      "sha256": "dd632d490f914e8a473384d6d571b5a9b6cc1280f38339e7555db2d5c9b0b557"
+    },
+    "input_include/strata/core/exchange_storage.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\exchange_storage.hpp",
+      "bytes": 5459,
+      "sha256": "42d926710bcb9c3a09a5b059f7054aa69b2db7aa168342758faffaaeae3abfde"
+    },
+    "input_include/strata/core/expert_cache.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\expert_cache.hpp",
+      "bytes": 17682,
+      "sha256": "43eead1f92ff5eb5e146a91833213a75fd5f47f0232401616496e343aab851f8"
+    },
+    "input_include/strata/core/expert_source.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\expert_source.hpp",
+      "bytes": 69757,
+      "sha256": "71d8a9073af8bce3b9d7ef2d048f5a784f883d69e2c7ecd2376a1c6dc7eeabf0"
+    },
+    "input_include/strata/core/foresight_swap.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\foresight_swap.hpp",
+      "bytes": 5884,
+      "sha256": "dde746870619553d08e85e53afccb6a56f9e0e95913eaea1a6bf68826c45d895"
+    },
+    "input_include/strata/core/graph.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\graph.hpp",
+      "bytes": 5866,
+      "sha256": "590f2daf7221eba25c1720503abdfe4c8b71f85dd21627bb25aec49f87f68b2c"
+    },
+    "input_include/strata/core/hit_hook.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\hit_hook.hpp",
+      "bytes": 2572,
+      "sha256": "b1bc19af4edf12f0a8c821e1989d675917aa569fc9969adb5e9a1cd0d9041daf"
+    },
+    "input_include/strata/core/layer.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\layer.hpp",
+      "bytes": 43922,
+      "sha256": "d0050dee1d59fd1ff779b0859eda261ba0bfe020314dab49234017b5831f1c85"
+    },
+    "input_include/strata/core/layout.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\layout.hpp",
+      "bytes": 4489,
+      "sha256": "8948848dadfbb22c5f9928399f4072637b3514e8cb8123c0c95cdcdb0dc5c05e"
+    },
+    "input_include/strata/core/logit_bias.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\logit_bias.hpp",
+      "bytes": 1658,
+      "sha256": "e43231d0d90286d201cdafe18a2b2bd0db169f1b053e1c5770ff168753521912"
+    },
+    "input_include/strata/core/mtp.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\mtp.hpp",
+      "bytes": 19028,
+      "sha256": "e2dd8bca79c340f259d4c890b8cb9ed0912f890fe32905773f2a6415ccc08d8d"
+    },
+    "input_include/strata/core/native_dense.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\native_dense.hpp",
+      "bytes": 3408,
+      "sha256": "7352750c7d433deb77a418f51dee6225bc555d4b1e3a37321ac592a71d1e3530"
+    },
+    "input_include/strata/core/native_head.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\native_head.hpp",
+      "bytes": 2763,
+      "sha256": "e2434da9d68e3f3dc5b1ff7f9d47f08d49c3b34d8ecf4920390321a7ca5ec0f4"
+    },
+    "input_include/strata/core/on_device.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\on_device.hpp",
+      "bytes": 865,
+      "sha256": "32778f8c7d75108ff9ed53a730732759108f43b17eb3cac389b26f05c6ef8c6f"
+    },
+    "input_include/strata/core/peer_experts.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\peer_experts.hpp",
+      "bytes": 5977,
+      "sha256": "bb2cecc7a1786e2f2c76c7c0fb8b1d4a894bc0a1910fb5079ec9d435186670e9"
+    },
+    "input_include/strata/core/pinned.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\pinned.hpp",
+      "bytes": 11799,
+      "sha256": "f180ecb2b7325aee015007e118cb065d466b890ce36399ef0ecb7d278c1111f8"
+    },
+    "input_include/strata/core/progress.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\progress.hpp",
+      "bytes": 3774,
+      "sha256": "ff8151a46b5f9768a6f3fddb4ed57edd15af096f619ffa1859b0721b5a83b054"
+    },
+    "input_include/strata/core/remote_experts.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\remote_experts.hpp",
+      "bytes": 9015,
+      "sha256": "48567c60002d88a50f259a7db7b1e37a4a102ead07bc3c314c736d8fc183ebe9"
+    },
+    "input_include/strata/core/remote_expert_opt.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\remote_expert_opt.hpp",
+      "bytes": 2112,
+      "sha256": "9c60daabc4c03005f4a8dd04949abf9203f624a954c99310ff0e3fec9b36265b"
+    },
+    "input_include/strata/core/session.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\session.hpp",
+      "bytes": 30780,
+      "sha256": "bbcfddb9197ee9c8f3353a75f65c2085148567404736fce6517aad83ba59d490"
+    },
+    "input_include/strata/core/session_save_reclaim.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\session_save_reclaim.hpp",
+      "bytes": 2325,
+      "sha256": "70204c3deda00111dba1d8ee03aa962e6aff5bed5e45d554086408998e0e1221"
+    },
+    "input_include/strata/core/spec_prob.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\spec_prob.hpp",
+      "bytes": 7763,
+      "sha256": "e63b3bc22ba80c2f4c09e67fb86b2f46fc98f5ccdc15fe477727b32221783a96"
+    },
+    "input_include/strata/core/verify.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\verify.hpp",
+      "bytes": 37322,
+      "sha256": "11574987f23b52b13961a7f00710b90e16579035c953b9613df02f427a57c2f5"
+    },
+    "input_include/strata/core/vmm.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\vmm.hpp",
+      "bytes": 3290,
+      "sha256": "efbde35652d3ff7e364111da6fdb4ad24b25ad514d430b94d75174ad6b7d0221"
+    },
+    "input_include/strata/core/weights.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\core\\weights.hpp",
+      "bytes": 8283,
+      "sha256": "3bb3ddb35483968658bae9ffd6a1050a99ef6404cf68c94c926dccd28d8913df"
+    },
+    "input_include/strata/hip_compat/cublas_v2.h": {
+      "path": "G:\\Strata-Moe\\include\\strata\\hip_compat\\cublas_v2.h",
+      "bytes": 2690,
+      "sha256": "ff33522cfaf7a5cdc9098d5e593060bb92c37778ab6eff9f7b93314b4ddfe05a"
+    },
+    "input_include/strata/hip_compat/cuda_fp16.h": {
+      "path": "G:\\Strata-Moe\\include\\strata\\hip_compat\\cuda_fp16.h",
+      "bytes": 41,
+      "sha256": "e1e1063b38b8936d004df8a71d5ee8ed6a1dadea1631c4817d3b39027760ea91"
+    },
+    "input_include/strata/hip_compat/cuda_runtime.h": {
+      "path": "G:\\Strata-Moe\\include\\strata\\hip_compat\\cuda_runtime.h",
+      "bytes": 6817,
+      "sha256": "c94d612c94cd8e6a79347d1b1f8dc53b26356a3e72277000e579848444df02ff"
+    },
+    "input_include/strata/hip_compat/cuda_runtime_api.h": {
+      "path": "G:\\Strata-Moe\\include\\strata\\hip_compat\\cuda_runtime_api.h",
+      "bytes": 41,
+      "sha256": "a3ab3be0fb321e6c80c54d8df97364ee6587323d0a7496b8f99068552bdb1dcb"
+    },
+    "input_include/strata/hip_compat/intrinsics.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\hip_compat\\intrinsics.hpp",
+      "bytes": 8526,
+      "sha256": "ea95990138e852b8313f4f1f90ddd14c69cfacd26c3036abffc1051769c0fd3f"
+    },
+    "input_include/strata/hip_compat/math_constants.h": {
+      "path": "G:\\Strata-Moe\\include\\strata\\hip_compat\\math_constants.h",
+      "bytes": 161,
+      "sha256": "a99166c19e9cb9ab162b238c9b510e2314aec68811d0d870fa01ba8e701bbf93"
+    },
+    "input_include/strata/kernels/bf16_bits.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\bf16_bits.hpp",
+      "bytes": 2721,
+      "sha256": "641cad7a2a95a5a7e452e0f859fa99e0a99c05cb7c3a8f87f49164310e6d6b63"
+    },
+    "input_include/strata/kernels/bf16_gemv.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\bf16_gemv.hpp",
+      "bytes": 4522,
+      "sha256": "8eda92bb5bccb8186f83efb071352cdd70789e78bc538597af56ccc8246e679e"
+    },
+    "input_include/strata/kernels/cvec.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\cvec.hpp",
+      "bytes": 4062,
+      "sha256": "d35c8fb25eeed1cc6ff710e70dbf43c55958baeb18affd10f5427aa0b7a5f183"
+    },
+    "input_include/strata/kernels/dequant_bf16.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\dequant_bf16.hpp",
+      "bytes": 1765,
+      "sha256": "0ce7d86c9a474f863d17e58e56756e1192bb7fe1c5a52f9a64082cca2c4c8246"
+    },
+    "input_include/strata/kernels/dequant_s2.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\dequant_s2.hpp",
+      "bytes": 955,
+      "sha256": "ecdeb8eb3d82f059e2ea06db011a70dfcda6b4b260b811be48fd99354ff00bee"
+    },
+    "input_include/strata/kernels/dp4a.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\dp4a.hpp",
+      "bytes": 3054,
+      "sha256": "65730a72d545071e7439bdb1261e3e044ca6dda63e2ced3f38e1d987bb1c57f8"
+    },
+    "input_include/strata/kernels/elementwise.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\elementwise.hpp",
+      "bytes": 12095,
+      "sha256": "42f80d43a97ac66ad9e4fc98947f2a0d8e8d4ec0e674fd11142a0603f902ca56"
+    },
+    "input_include/strata/kernels/f16_bits.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\f16_bits.hpp",
+      "bytes": 5438,
+      "sha256": "d68d3a559eff673d9a1a033e1bd4712547f550dcb7f3ac367ce537732b278dd9"
+    },
+    "input_include/strata/kernels/fused_gdn.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\fused_gdn.hpp",
+      "bytes": 3453,
+      "sha256": "3ad19abe1b0b3feab064dcae0066e3e74bdd13a5c1d4bea93cd5db0ad7ac3743"
+    },
+    "input_include/strata/kernels/fused_gr.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\fused_gr.hpp",
+      "bytes": 5147,
+      "sha256": "b4db0815fc254d11dd2ff8210b9139924ebc30f2f1ac6c09646acb7a26b8f465"
+    },
+    "input_include/strata/kernels/gdn.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\gdn.hpp",
+      "bytes": 5655,
+      "sha256": "b540225582bd59f513c60cd84955a6b33925b6b2a7fda9393b3d2c7d09d147c2"
+    },
+    "input_include/strata/kernels/gfx_arch.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\gfx_arch.hpp",
+      "bytes": 2192,
+      "sha256": "1309438391bea10bef9fd2b9b8cb95f668aac9745860deb060ea9f31f8b542b2"
+    },
+    "input_include/strata/kernels/gr.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\gr.hpp",
+      "bytes": 8757,
+      "sha256": "a9dcd4f01a09ea98fa6bea37ff59625e0c7c0b477f5366b92c3c50531a3750d1"
+    },
+    "input_include/strata/kernels/iq_kernels.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\iq_kernels.hpp",
+      "bytes": 6417,
+      "sha256": "0441641a99152414132ccdd3912b44b43dafa8e87593393eb39be3b1e55b4d76"
+    },
+    "input_include/strata/kernels/kv_q4.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\kv_q4.hpp",
+      "bytes": 3770,
+      "sha256": "aae15d84b6c5ed0798890a3cd6b96d981326f7eb8ba526e0031428bc8b49c051"
+    },
+    "input_include/strata/kernels/kv_q8.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\kv_q8.hpp",
+      "bytes": 3139,
+      "sha256": "a387ad25fe13c95d5195fd4d3bb7db22dc68e1370c84ccc2d342ddadeef976ee"
+    },
+    "input_include/strata/kernels/kv_stream.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\kv_stream.hpp",
+      "bytes": 7328,
+      "sha256": "42a7a62c4fb33a56c49e898cbd9d35f001fd7af16f9307c93337c3922e00373e"
+    },
+    "input_include/strata/kernels/mrope.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\mrope.hpp",
+      "bytes": 3884,
+      "sha256": "3702ab05f3a6d8f41b04c43feef1159f6631e231f5e23ccaa93752c4bf12143b"
+    },
+    "input_include/strata/kernels/native_flash_attn.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_flash_attn.hpp",
+      "bytes": 2026,
+      "sha256": "45c9224b670b833c1a86ceb4a0328c66c1658d0916334da1ee37f98fa7eaf47e"
+    },
+    "input_include/strata/kernels/native_gdn.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_gdn.hpp",
+      "bytes": 1131,
+      "sha256": "2b2da52bd5e0f8ce42477d315af676dec11a4de4a8419abe8b2a437a727b0956"
+    },
+    "input_include/strata/kernels/native_gdn_preprocess.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_gdn_preprocess.hpp",
+      "bytes": 2041,
+      "sha256": "65702c36beb74b89befb27603ec3c532de18c3c68dc012ad456738b44b7d07ff"
+    },
+    "input_include/strata/kernels/native_gr_norm.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_gr_norm.hpp",
+      "bytes": 1277,
+      "sha256": "6bd6917ffd3e2827f64590f82fb9e665ce4969183bc2d4cfae6fbffe6e89fe9a"
+    },
+    "input_include/strata/kernels/native_gr_postops.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_gr_postops.hpp",
+      "bytes": 2342,
+      "sha256": "1df3b3db594307c1c0538fb0a77e91e9c218d1b78125eefda497e7742dd85041"
+    },
+    "input_include/strata/kernels/native_mmvq.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_mmvq.hpp",
+      "bytes": 9796,
+      "sha256": "dfbcce6bf13d8f99a278661883aeecf5c568a5ac9644fbe2b74f0200733a853a"
+    },
+    "input_include/strata/kernels/native_moe.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_moe.hpp",
+      "bytes": 3003,
+      "sha256": "405e03e3e50658552b7ea4bcbb40040960080d2e629a493bed0db2e447af4ae5"
+    },
+    "input_include/strata/kernels/native_ple_postops.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_ple_postops.hpp",
+      "bytes": 2864,
+      "sha256": "5f4dca820c04ce627ac538cd040b90ba3b2552d5594f3c44f2f798360fa3d0f3"
+    },
+    "input_include/strata/kernels/native_qsa.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_qsa.hpp",
+      "bytes": 2048,
+      "sha256": "76a1940510ed4f86ee55788bc4823ace9f8ac8f613168eddecc32abc0686d7cf"
+    },
+    "input_include/strata/kernels/native_qsa_indexer.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_qsa_indexer.hpp",
+      "bytes": 3377,
+      "sha256": "27b4bac7ffd4756787be27883d89c480eaa699915fa84630a10131ffba701fde"
+    },
+    "input_include/strata/kernels/native_qsa_score.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_qsa_score.hpp",
+      "bytes": 1679,
+      "sha256": "17d5b45cbafaa28337aea98c1fb83a373a97a6d1d9b9c8596074e103e6a776f1"
+    },
+    "input_include/strata/kernels/native_rope.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_rope.hpp",
+      "bytes": 2079,
+      "sha256": "eeddd405d4ed267b59adef30a370ba226a7cbf44ff74e2c92c09a45204bbc9b9"
+    },
+    "input_include/strata/kernels/native_router.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\native_router.hpp",
+      "bytes": 1529,
+      "sha256": "11be4764ebc4278d7e89926396b5122c5454f8212ea7b34426a54f7d4d8d80a0"
+    },
+    "input_include/strata/kernels/ngram.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\ngram.hpp",
+      "bytes": 16203,
+      "sha256": "e5187d47d3f74b2ce5c9ecb5ad2104ad31db98e7207f00bdbdea2cc11c33b0b1"
+    },
+    "input_include/strata/kernels/pdl.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\pdl.hpp",
+      "bytes": 5371,
+      "sha256": "d46e0477417db9362d2185ac9bbc764b3f4f047cc6d98371a5e84dbcff148fc6"
+    },
+    "input_include/strata/kernels/ple.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\ple.hpp",
+      "bytes": 8281,
+      "sha256": "2d5fd14f8451ca1527def0233d0a630e597287bc4929641fb28479675d0227d4"
+    },
+    "input_include/strata/kernels/q8_1_finite.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\q8_1_finite.hpp",
+      "bytes": 1685,
+      "sha256": "5bba67b0566b5f2a24e43c23a830ab0e4d9061b42e47d9331995f9ed0e1c0035"
+    },
+    "input_include/strata/kernels/qsa.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\qsa.hpp",
+      "bytes": 25916,
+      "sha256": "a1b012ccbd62295688302aa5554324e9d72777f6179d675fb9a0f597e6a921b5"
+    },
+    "input_include/strata/kernels/qsa_decode_attn.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\qsa_decode_attn.hpp",
+      "bytes": 2697,
+      "sha256": "964fc5d7a7d7235592898bdd770e1e9efbe2a27005db6f40df4dbd05896cc490"
+    },
+    "input_include/strata/kernels/qsa_prompt_attn.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\qsa_prompt_attn.hpp",
+      "bytes": 2258,
+      "sha256": "ce88a17993cc241939372df7d7fb7e33da4a949a8e8dfdf465a19107658abf7c"
+    },
+    "input_include/strata/kernels/qsa_select.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\qsa_select.hpp",
+      "bytes": 4773,
+      "sha256": "57ed3bbcc5066af33a9b7979d06db6dca1071f2d6d9e1720cd4da3fa6108d328"
+    },
+    "input_include/strata/kernels/quantize_act.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\quantize_act.hpp",
+      "bytes": 3871,
+      "sha256": "1562053f15ca5222bbbd932a3e7d0a4fdd37bc0e8e824fff3fa9727cd4897d2f"
+    },
+    "input_include/strata/kernels/rope.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\rope.hpp",
+      "bytes": 3771,
+      "sha256": "1aa8d0eefdd327dabccc6f57546f0d22ff858a4f42bf2cbf8e222311a5652a54"
+    },
+    "input_include/strata/kernels/rope_scaling.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\rope_scaling.hpp",
+      "bytes": 11957,
+      "sha256": "30021d34209741a33fecab8ab8e0d047440ff646112406e8b619f23f0a642073"
+    },
+    "input_include/strata/kernels/router_top10.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\router_top10.hpp",
+      "bytes": 1460,
+      "sha256": "3e540fc521de3beb999e4c086b3a4cff0bf70763e6d42f7292cf9505a591f140"
+    },
+    "input_include/strata/kernels/route_prior.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\route_prior.hpp",
+      "bytes": 790,
+      "sha256": "caf43f2ad98f73703bf2df95ac24c70b69720058fc4f952d0a7c00f7e372c5ff"
+    },
+    "input_include/strata/kernels/s2_expert_grouped.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\s2_expert_grouped.hpp",
+      "bytes": 11002,
+      "sha256": "735d5abe03d064bbf5da3f0727812321b9bb03860bba14e4c20e4ced5fe95f09"
+    },
+    "input_include/strata/kernels/s2_gemv.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\s2_gemv.hpp",
+      "bytes": 1485,
+      "sha256": "6edef4943809f67d63d60993962505af974001363d46bd72b97b121b364827a7"
+    },
+    "input_include/strata/kernels/s2_gemv_q8.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\s2_gemv_q8.hpp",
+      "bytes": 1081,
+      "sha256": "a4f947ef7cf24f132c013a6f06ac14485d807eb8fbb334c8677fc514313f17e8"
+    },
+    "input_include/strata/kernels/sampler.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\sampler.hpp",
+      "bytes": 7741,
+      "sha256": "e9dc6be15db29e7eddbe35ab6e6c0b502a858f29a68445d8c024529b2a59794f"
+    },
+    "input_include/strata/kernels/shared_expert.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\shared_expert.hpp",
+      "bytes": 7254,
+      "sha256": "e74db12dbc6c7b174ae1842521fcc01f12379d4c2a5c4729afac490d4e66baa3"
+    },
+    "input_include/strata/kernels/s_gemv.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\s_gemv.hpp",
+      "bytes": 9219,
+      "sha256": "6d19b92be6f95f09dbd8a3ab4fc3c9bdf856f7959bcd864d8190971e8769cff7"
+    },
+    "input_include/strata/kernels/verify_kernels.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\verify_kernels.hpp",
+      "bytes": 12681,
+      "sha256": "91f44fe0db486eeb0471d53c2d4c0ce1498ff2768ea0a78e0b4ff324f180bc94"
+    },
+    "input_include/strata/kernels/cpu/expert.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\cpu\\expert.hpp",
+      "bytes": 13156,
+      "sha256": "6d1fc203bac0a2656d1a4830d73407ec23d916b4f366b0e97e2adee401f38b80"
+    },
+    "input_include/strata/kernels/cpu/expert_layout.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\cpu\\expert_layout.hpp",
+      "bytes": 6943,
+      "sha256": "93a6736f83aad3f2c4b812137bd64184764f3328790f6ce1cb1ac47405438ac3"
+    },
+    "input_include/strata/kernels/cpu/iq_avx1.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\cpu\\iq_avx1.hpp",
+      "bytes": 2347,
+      "sha256": "a98ecfa386ad56b57719b1b06c7c57f271d2444eeb425d64033c7892877ca74f"
+    },
+    "input_include/strata/kernels/cpu/iq_avx2.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\cpu\\iq_avx2.hpp",
+      "bytes": 2997,
+      "sha256": "dd596f7ee740be765eb9635fb3de13533f590b3f0517dd66355b13c9720c1a10"
+    },
+    "input_include/strata/kernels/cpu/iq_avx512.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\cpu\\iq_avx512.hpp",
+      "bytes": 894,
+      "sha256": "bed355390929a1bc2668ff098f9ef48fecfc60f8fc05922a9c41ef3aac3a2080"
+    },
+    "input_include/strata/kernels/cpu/kq_avx1.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\cpu\\kq_avx1.hpp",
+      "bytes": 1029,
+      "sha256": "4409d297e2c25beedf38ad6105e83cc79e62c3a22f2f86b127a2527948c1e3ee"
+    },
+    "input_include/strata/kernels/cpu/kq_avx2.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\cpu\\kq_avx2.hpp",
+      "bytes": 1411,
+      "sha256": "810cecff725f1cf64d92658409ef1995c1d4473b305bcf0edd2803e1d1fedf0f"
+    },
+    "input_include/strata/kernels/cpu/native_expert.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\cpu\\native_expert.hpp",
+      "bytes": 2923,
+      "sha256": "269ab8daef96fc6e14471430ef5c44475af7f166d127d812fb447c4062131b7e"
+    },
+    "input_include/strata/kernels/cpu/pool.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\kernels\\cpu\\pool.hpp",
+      "bytes": 18504,
+      "sha256": "4255fd01ae6e55a650b2e81316202c5b9206e0ae2271cd9fa81edc3b27d33c1a"
+    },
+    "input_include/strata/ngram/ple_reader.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\ngram\\ple_reader.hpp",
+      "bytes": 5438,
+      "sha256": "41182d36990688b9c2aca737c9f7c05120e0bf1677f9435e9bc08a2603fea9be"
+    },
+    "input_include/strata/plan/plan.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\plan\\plan.hpp",
+      "bytes": 9564,
+      "sha256": "d321e6b56bd50671eba8f0af90792c7800154b166578297ca608f2b4f2a1799c"
+    },
+    "input_include/strata/platform/aux_cpus.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\platform\\aux_cpus.hpp",
+      "bytes": 15228,
+      "sha256": "528e5a44ba9e1ea81f6aff6864a6936b4d467c9bfb3b324e31bbcd931e18212d"
+    },
+    "input_include/strata/platform/direct_file.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\platform\\direct_file.hpp",
+      "bytes": 2451,
+      "sha256": "dab7672210ce090411ab9fe6757438cddf059769ff8f35a8f15bc146bb938223"
+    },
+    "input_include/strata/platform/host_limits.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\platform\\host_limits.hpp",
+      "bytes": 3027,
+      "sha256": "900c55e142822ee2e1599a2bfe108894f36f2bacb8d5b1844f54d25443da98ea"
+    },
+    "input_include/strata/platform/memory.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\platform\\memory.hpp",
+      "bytes": 4521,
+      "sha256": "44022144b8035a81fd224e1594575f7465e378587d849a575dbd9402c9431950"
+    },
+    "input_include/strata/platform/hip_compat/cublas_v2.h": {
+      "path": "G:\\Strata-Moe\\include\\strata\\platform\\hip_compat\\cublas_v2.h",
+      "bytes": 1024,
+      "sha256": "1a6eb0eebbeda23502d4c3b6e4e36e3515a27102e8383bec14ebf97060d21717"
+    },
+    "input_include/strata/platform/hip_compat/cuda_fp16.h": {
+      "path": "G:\\Strata-Moe\\include\\strata\\platform\\hip_compat\\cuda_fp16.h",
+      "bytes": 39,
+      "sha256": "a44c84a2194a223f7d62004818dfd8bda0f085bb009654a68c40ef8fa63315e6"
+    },
+    "input_include/strata/platform/hip_compat/cuda_runtime.h": {
+      "path": "G:\\Strata-Moe\\include\\strata\\platform\\hip_compat\\cuda_runtime.h",
+      "bytes": 39,
+      "sha256": "a44c84a2194a223f7d62004818dfd8bda0f085bb009654a68c40ef8fa63315e6"
+    },
+    "input_include/strata/platform/hip_compat/math_constants.h": {
+      "path": "G:\\Strata-Moe\\include\\strata\\platform\\hip_compat\\math_constants.h",
+      "bytes": 189,
+      "sha256": "2938ed247129b9a0748fc73bba9734243284cdaa0af9a9efb4adc4033cc5ff03"
+    },
+    "input_include/strata/platform/hip_compat/strata_hip.h": {
+      "path": "G:\\Strata-Moe\\include\\strata\\platform\\hip_compat\\strata_hip.h",
+      "bytes": 16940,
+      "sha256": "641121267b7c2427b56254c081afc077086d870e879bc7b51dd2e71a480951c9"
+    },
+    "input_include/strata/prefill/gemm.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\prefill\\gemm.hpp",
+      "bytes": 5695,
+      "sha256": "9f2f3e63f4b138baa1699d06d829290e13e0e8c2a1deffba968cd448b822c95c"
+    },
+    "input_include/strata/prefill/kernels.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\prefill\\kernels.hpp",
+      "bytes": 11810,
+      "sha256": "1c531bd5e728ab65373b642c8e8f41fd3219e2486762dbb11188d326eb629ee2"
+    },
+    "input_include/strata/prefill/moe_fused.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\prefill\\moe_fused.hpp",
+      "bytes": 4283,
+      "sha256": "76443b401ace958314cd7a2b09eda8b0e30a49418de384657b47116068e9064c"
+    },
+    "input_include/strata/prefill/moe_fused_iq.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\prefill\\moe_fused_iq.hpp",
+      "bytes": 2682,
+      "sha256": "d2b856025601aaa9dc19f62a78d83c02f314735a3efaa586c3a0bcc6f2596276"
+    },
+    "input_include/strata/prefill/moe_mmq.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\prefill\\moe_mmq.hpp",
+      "bytes": 5363,
+      "sha256": "898bf0d870fb85de54b031a417b9ad4a4284f44b19e8158b0522477142e29158"
+    },
+    "input_include/strata/prefill/prefill.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\prefill\\prefill.hpp",
+      "bytes": 14694,
+      "sha256": "77237a6b0a9444ad058311589d5debd92dd31c976592a47ba0331a4f8fda9aa2"
+    },
+    "input_include/strata/prefill/share_rules.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\prefill\\share_rules.hpp",
+      "bytes": 3653,
+      "sha256": "8bfeca72f693a4d6700227a8f4ef3b59792a52db86553c7b429d9370a442a61b"
+    },
+    "input_include/strata/prefill/xmx_moe.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\prefill\\xmx_moe.hpp",
+      "bytes": 1075,
+      "sha256": "72b04cb7a48da6a0876322e284a83bfbc6f79d886a82fd93ed73d19efd34e054"
+    },
+    "input_include/strata/program/batch_groups.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\program\\batch_groups.hpp",
+      "bytes": 3128,
+      "sha256": "315e65a5c6b761bfc9d7291b204a013108f92020059b0bab7042b94f7bb787d4"
+    },
+    "input_include/strata/program/batch_read.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\program\\batch_read.hpp",
+      "bytes": 1746,
+      "sha256": "1f2c51840e4169bf610ae796b9e19fff83e19c783c14fd426bfc12f9d1956a58"
+    },
+    "input_include/strata/program/conv_cache.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\program\\conv_cache.hpp",
+      "bytes": 4831,
+      "sha256": "9dd06a676b9ea03906bd2030a1145ac673defe21a93ea1617e8a517b98c74c43"
+    },
+    "input_include/strata/program/draft_kv_plan.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\program\\draft_kv_plan.hpp",
+      "bytes": 2109,
+      "sha256": "340850454225019b5617d3597ff810e553f87c9b5fd7ea7acc687bcba4d94c6a"
+    },
+    "input_include/strata/program/logits_selection.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\program\\logits_selection.hpp",
+      "bytes": 1225,
+      "sha256": "43d890895c451e321db696df818719f65b7f0b32a87ff7ad76ea915d205408ce"
+    },
+    "input_include/strata/program/message_boundary.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\program\\message_boundary.hpp",
+      "bytes": 736,
+      "sha256": "130ec944349a40f3ad912193cc47e8cbefb93f806ea9ad4801343b02a2a98f12"
+    },
+    "input_include/strata/program/split_ring.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\program\\split_ring.hpp",
+      "bytes": 2075,
+      "sha256": "c1442f7f53491f140f119b9aa719d8da45e94324b39f379a8aea0ba16b6505a4"
+    },
+    "input_include/strata/program/split_rules.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\program\\split_rules.hpp",
+      "bytes": 1626,
+      "sha256": "1cfa48517585f3e8b568023774de0847559abe63cc107183fd6ce50cccd97bc0"
+    },
+    "input_include/strata/spec/controller.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\spec\\controller.hpp",
+      "bytes": 3519,
+      "sha256": "4429d18b63d3d4120e93000c45aa9fc2433ac1bc0f80896e07c6b3ecc75c5cac"
+    },
+    "input_include/strata/spec/draft_policy.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\spec\\draft_policy.hpp",
+      "bytes": 3917,
+      "sha256": "b1fa1b2a66d0b52c99b598d5ae0b4f25de18c0a6b995a67219e06140e028d325"
+    },
+    "input_include/strata/spec/draft_source.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\spec\\draft_source.hpp",
+      "bytes": 3337,
+      "sha256": "684810c155b18582f2cbf1444d43b7b3109a6cb79ff66c5ed295b8fdc92e478a"
+    },
+    "input_include/strata/spec/suffix_drafter.hpp": {
+      "path": "G:\\Strata-Moe\\include\\strata\\spec\\suffix_drafter.hpp",
+      "bytes": 2616,
+      "sha256": "d7aa1e28ddee88670f825f02bd129e2e8063cd4934dff8aa4f57613f0181c48b"
+    },
+    "input_third_party/ggml/ggml-common.h": {
+      "path": "G:\\Strata-Moe\\third_party\\ggml\\ggml-common.h",
+      "bytes": 137072,
+      "sha256": "3ac6eed12695ceea1acd18f556845023a45f92f6ce0530c18c70bb10450207ea"
+    },
+    "input_src/kernels/cuda/iq_kernels.cu": {
+      "path": "G:\\Strata-Moe\\src\\kernels\\cuda\\iq_kernels.cu",
+      "bytes": 201492,
+      "sha256": "23d6bb64457e1d885937912a0a66e7a69bcdec816fad29b0b2658132909f0c4b"
+    },
+    "input_src/kernels/cuda/fused_gdn.cu": {
+      "path": "G:\\Strata-Moe\\src\\kernels\\cuda\\fused_gdn.cu",
+      "bytes": 15288,
+      "sha256": "f7cef15bfb0dbece6b159e71d21a8c2041cded17288552579bf0b5a35f96cba0"
+    },
+    "input_src/prefill/moe_mmq.cu": {
+      "path": "G:\\Strata-Moe\\src\\prefill\\moe_mmq.cu",
+      "bytes": 14256,
+      "sha256": "3e7cd5947e7b1195a2c9e605c5d78c086cb95448c9abe860dfbe4bff73dafb04"
+    },
+    "selected_service_config": {
+      "path": "G:\\Strata-Moe\\strata-a3b-iq3s-strata-optimized.json",
+      "bytes": 1221,
+      "sha256": "94bb567296d56ebbf5225fb0533f7dd30422f40d0f85e02284e24e551417ac0f"
+    }
+  },
+  "arms": {
+    "off": {
+      "command": [
+        "G:\\Strata-Moe\\build-a3b-shared-candidate\\bin\\strata-moe-speculative-test.exe",
+        "--model",
+        "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-IQ3_S.gguf",
+        "--mtp-model",
+        "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+        "--device",
+        "0",
+        "--native-gpu",
+        "--fused-moe",
+        "--native-dense-exact",
+        "--gpu-embedding",
+        "--nextn-hidden",
+        "--gpu-sampling",
+        "--defer-mtp-catchup",
+        "--assert-sequential",
+        "--draft-count",
+        "2",
+        "--draft-ubatch",
+        "2",
+        "--draft-state-dir",
+        "G:\\Strata-Moe\\bench\\results\\2026-10-16-a3b-shared-selected-strict\\off\\state",
+        "--strata-native-experts",
+        "--exact-verify"
+      ],
+      "env": {
+        "STRATA_A3B_Q6_GROUPED_EXACT": "1",
+        "STRATA_A3B_MTP_KV_ONLY_DIAGNOSTIC": "0",
+        "STRATA_A3B_MTP_PROPOSAL_TRACE": "1",
+        "STRATA_A3B_FUSED_GU": "1",
+        "STRATA_A3B_DOWN_MODE": "1",
+        "STRATA_A3B_Q6_REUSE_EXACT": "1",
+        "STRATA_A3B_MTP_KV_ONLY": "1",
+        "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+        "CUDA_VISIBLE_DEVICES": "0",
+        "STRATA_A3B_SHARED_STREAM": "0"
+      },
+      "exit_code": 1
+    }
+  }
+}

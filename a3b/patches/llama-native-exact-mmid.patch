@@ -1,0 +1,21 @@
+--- a/src/llama-graph.cpp
++++ b/src/llama-graph.cpp
+@@ -1547,7 +1547,17 @@
+           ggml_tensor * cur, // ggml_tensor * b
+           ggml_tensor * ids,
+           ggml_tensor * w_s) const {
+-    ggml_tensor * res = ggml_mul_mat_id(ctx0, w, cur, ids);
++    // Optional runtime graph hook. Unregistered/disabled backends return the
++    // original MMID graph; adapters retain their existing construction.
++    ggml_tensor * res = nullptr;
++    if (loras->empty()) {
++        if (auto * reg = ggml_backend_reg_by_name("StrataMoE")) {
++            using mmid_hook = ggml_tensor * (*)(ggml_context *, ggml_tensor *, ggml_tensor *, ggml_tensor *);
++            auto hook = reinterpret_cast<mmid_hook>(ggml_backend_reg_get_proc_address(reg, "strata_a3b_build_mmid_v1"));
++            if (hook) res = hook(ctx0, w, cur, ids);
++        }
++    }
++    if (!res) res = ggml_mul_mat_id(ctx0, w, cur, ids);
+ 
+     if (w_s) {
+         const int64_t n_expert = w_s->ne[0];

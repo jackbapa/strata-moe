@@ -1,0 +1,4 @@
+{
+  "content": "HTTPS（HyperText Transfer Protocol Secure）的核心在于**TLS/SSL 协议**。它通过“握手”过程建立加密连接，确保数据在传输过程中不被窃听或篡改。\n\n下面我将分步骤解释 **TLS 1.2/1.3 中最常见的握手流程**（以 TLS 1.2 为例，因为步骤更清晰，便于理解），并给出一个具体例子。\n\n---\n\n## 🔐 HTTPS 握手流程（逐步解释）\n\n### 📌 前提\n- 客户端（如浏览器）想访问服务器（如 `https://www.example.com`）。\n- 服务器拥有由可信证书颁发机构（CA）签发的**数字证书**，其中包含服务器的**公钥**。\n\n---\n\n### ✅ 步骤 1：Client Hello（客户端问候）\n客户端向服务器发送以下信息：\n- 支持的 TLS 版本（如 TLS 1.2、TLS 1.3）\n- 支持的加密套件列表（如 RSA、ECDHE 等密钥交换算法 + AES、ChaCha20 等对称加密算法）\n- 一个随机数（Client Random），用于后续生成会话密钥\n- （可选）SNI（Server Name Indication",
+  "reasoning": ""
+}

@@ -1,0 +1,23 @@
+{
+  "metadata_test_hook_check": true,
+  "all_runs_same_exe_sha256": true,
+  "runs": [
+    {
+      "name": "gpu-cache-16g-budget",
+      "decode_tok_s": 26.5,
+      "host_rss_peak_GiB": 23.202289581298828,
+      "gpu_peak_mib": 16034,
+      "exact_verify_calls": 0,
+      "output_matches_optimized_final": true
+    },
+    {
+      "name": "gpu-cache-16g-mtp",
+      "decode_tok_s": 31.84,
+      "host_rss_peak_GiB": 23.840290069580078,
+      "gpu_peak_mib": 16258,
+      "exact_verify_calls": 11760,
+      "output_matches_optimized_final": true
+    }
+  ],
+  "decode_speedup_fraction": 0.20150943396226406
+}

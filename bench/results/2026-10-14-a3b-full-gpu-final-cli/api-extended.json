@@ -1,0 +1,623 @@
+{
+  "health": {
+    "status": "ok",
+    "max_context": 4096,
+    "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+    "images": false,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  },
+  "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+  "requests": [
+    {
+      "kind": "openai",
+      "repeat": 0,
+      "elapsed_s": 0.40600000000267755,
+      "response": {
+        "id": "chatcmpl-78add377e72f4cd6af628495",
+        "object": "chat.completion",
+        "created": 1791975191,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "391"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 24,
+          "completion_tokens": 4,
+          "total_tokens": 28,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 24,
+          "prompt_ms": 346.8,
+          "prompt_per_token_ms": 14.45,
+          "prompt_per_second": 69.2,
+          "predicted_n": 4,
+          "predicted_ms": 40.0,
+          "predicted_per_token_ms": 10.0,
+          "predicted_per_second": 100.0,
+          "draft_n": 2,
+          "draft_n_accepted": 2
+        }
+      }
+    },
+    {
+      "kind": "openai",
+      "repeat": 1,
+      "elapsed_s": 0.15699999999196734,
+      "response": {
+        "id": "chatcmpl-ba29fb11849548ffb173c3ef",
+        "object": "chat.completion",
+        "created": 1791975191,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "391"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 24,
+          "completion_tokens": 4,
+          "total_tokens": 28,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 24,
+          "prompt_ms": 92.2,
+          "prompt_per_token_ms": 3.842,
+          "prompt_per_second": 260.3,
+          "predicted_n": 4,
+          "predicted_ms": 37.3,
+          "predicted_per_token_ms": 9.325,
+          "predicted_per_second": 107.2,
+          "draft_n": 2,
+          "draft_n_accepted": 2
+        }
+      }
+    }
+  ],
+  "stream": [
+    {
+      "id": "chatcmpl-f062aa53d9c946528df61aba",
+      "object": "chat.completion.chunk",
+      "created": 1791975191,
+      "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+      "choices": [
+        {
+          "index": 0,
+          "delta": {
+            "role": "assistant",
+            "content": ""
+          },
+          "finish_reason": null
+        }
+      ]
+    },
+    {
+      "id": "chatcmpl-f062aa53d9c946528df61aba",
+      "object": "chat.completion.chunk",
+      "created": 1791975191,
+      "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+      "choices": [
+        {
+          "index": 0,
+          "delta": {
+            "content": "3"
+          },
+          "finish_reason": null
+        }
+      ]
+    },
+    {
+      "id": "chatcmpl-f062aa53d9c946528df61aba",
+      "object": "chat.completion.chunk",
+      "created": 1791975191,
+      "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+      "choices": [
+        {
+          "index": 0,
+          "delta": {
+            "content": "9"
+          },
+          "finish_reason": null
+        }
+      ]
+    },
+    {
+      "id": "chatcmpl-f062aa53d9c946528df61aba",
+      "object": "chat.completion.chunk",
+      "created": 1791975191,
+      "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+      "choices": [
+        {
+          "index": 0,
+          "delta": {
+            "content": "1"
+          },
+          "finish_reason": null
+        }
+      ]
+    },
+    {
+      "id": "chatcmpl-f062aa53d9c946528df61aba",
+      "object": "chat.completion.chunk",
+      "created": 1791975191,
+      "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+      "choices": [
+        {
+          "index": 0,
+          "delta": {},
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 24,
+        "completion_tokens": 4,
+        "total_tokens": 28,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 24,
+        "prompt_ms": 87.8,
+        "prompt_per_token_ms": 3.658,
+        "prompt_per_second": 273.3,
+        "predicted_n": 4,
+        "predicted_ms": 38.4,
+        "predicted_per_token_ms": 9.6,
+        "predicted_per_second": 104.2,
+        "draft_n": 2,
+        "draft_n_accepted": 2
+      }
+    }
+  ],
+  "anthropic": {
+    "id": "msg_99fbdb53883f4dcb9e7f7f60",
+    "type": "message",
+    "role": "assistant",
+    "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+    "content": [
+      {
+        "type": "text",
+        "text": "你好。"
+      }
+    ],
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "usage": {
+      "input_tokens": 18,
+      "output_tokens": 3,
+      "cache_read_input_tokens": 0
+    }
+  },
+  "warm_seeded_choices_equal": true,
+  "extended": [
+    {
+      "kind": "output-boundary",
+      "limit": 1,
+      "response": {
+        "id": "chatcmpl-a0447fc9895d4605a63ce7c8",
+        "object": "chat.completion",
+        "created": 1791975192,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "混合"
+            },
+            "finish_reason": "length"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 25,
+          "completion_tokens": 1,
+          "total_tokens": 26,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 25,
+          "prompt_ms": 95.7,
+          "prompt_per_token_ms": 3.828,
+          "prompt_per_second": 261.2,
+          "predicted_n": 1,
+          "predicted_ms": 0.0,
+          "predicted_per_token_ms": 0.0,
+          "predicted_per_second": null,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        }
+      }
+    },
+    {
+      "kind": "output-boundary",
+      "limit": 2,
+      "response": {
+        "id": "chatcmpl-bad58de5d3604cdab23c7735",
+        "object": "chat.completion",
+        "created": 1791975192,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "混合专家"
+            },
+            "finish_reason": "length"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 25,
+          "completion_tokens": 2,
+          "total_tokens": 27,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 25,
+          "prompt_ms": 93.8,
+          "prompt_per_token_ms": 3.752,
+          "prompt_per_second": 266.5,
+          "predicted_n": 2,
+          "predicted_ms": 22.9,
+          "predicted_per_token_ms": 11.45,
+          "predicted_per_second": 87.3,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        }
+      }
+    },
+    {
+      "kind": "output-boundary",
+      "limit": 3,
+      "response": {
+        "id": "chatcmpl-cdcdb400bd514356ba6d1f81",
+        "object": "chat.completion",
+        "created": 1791975192,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "混合专家模型"
+            },
+            "finish_reason": "length"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 25,
+          "completion_tokens": 3,
+          "total_tokens": 28,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 25,
+          "prompt_ms": 94.4,
+          "prompt_per_token_ms": 3.776,
+          "prompt_per_second": 264.8,
+          "predicted_n": 3,
+          "predicted_ms": 35.7,
+          "predicted_per_token_ms": 11.9,
+          "predicted_per_second": 84.0,
+          "draft_n": 1,
+          "draft_n_accepted": 1
+        }
+      }
+    },
+    {
+      "kind": "output-boundary",
+      "limit": 4,
+      "response": {
+        "id": "chatcmpl-cf3b1bc123604b84b43c3190",
+        "object": "chat.completion",
+        "created": 1791975192,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "混合专家模型（"
+            },
+            "finish_reason": "length"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 25,
+          "completion_tokens": 4,
+          "total_tokens": 29,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 25,
+          "prompt_ms": 94.2,
+          "prompt_per_token_ms": 3.768,
+          "prompt_per_second": 265.4,
+          "predicted_n": 4,
+          "predicted_ms": 38.6,
+          "predicted_per_token_ms": 9.65,
+          "predicted_per_second": 103.6,
+          "draft_n": 2,
+          "draft_n_accepted": 2
+        }
+      }
+    },
+    {
+      "kind": "output-boundary",
+      "limit": 5,
+      "response": {
+        "id": "chatcmpl-208e3edb254e4c61acb7957d",
+        "object": "chat.completion",
+        "created": 1791975192,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "混合专家模型（M"
+            },
+            "finish_reason": "length"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 25,
+          "completion_tokens": 5,
+          "total_tokens": 30,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 25,
+          "prompt_ms": 93.4,
+          "prompt_per_token_ms": 3.736,
+          "prompt_per_second": 267.7,
+          "predicted_n": 5,
+          "predicted_ms": 62.9,
+          "predicted_per_token_ms": 12.58,
+          "predicted_per_second": 79.5,
+          "draft_n": 2,
+          "draft_n_accepted": 2
+        }
+      }
+    },
+    {
+      "kind": "output-boundary",
+      "limit": 8,
+      "response": {
+        "id": "chatcmpl-f29c2ba0796144759e60320b",
+        "object": "chat.completion",
+        "created": 1791975192,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "混合专家模型（Mixture of Experts"
+            },
+            "finish_reason": "length"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 25,
+          "completion_tokens": 8,
+          "total_tokens": 33,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 25,
+          "prompt_ms": 94.0,
+          "prompt_per_token_ms": 3.76,
+          "prompt_per_second": 266.0,
+          "predicted_n": 8,
+          "predicted_ms": 105.1,
+          "predicted_per_token_ms": 13.137,
+          "predicted_per_second": 76.1,
+          "draft_n": 6,
+          "draft_n_accepted": 4
+        }
+      }
+    },
+    {
+      "kind": "prefill-block-carry",
+      "response": {
+        "id": "chatcmpl-860dd0a626ad4896b37049ad",
+        "object": "chat.completion",
+        "created": 1791975192,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "391"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 1233,
+          "completion_tokens": 4,
+          "total_tokens": 1237,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 1233,
+          "prompt_ms": 780.1,
+          "prompt_per_token_ms": 0.633,
+          "prompt_per_second": 1580.6,
+          "predicted_n": 4,
+          "predicted_ms": 42.7,
+          "predicted_per_token_ms": 10.675,
+          "predicted_per_second": 93.7,
+          "draft_n": 2,
+          "draft_n_accepted": 2
+        }
+      }
+    },
+    {
+      "kind": "seeded-sampling",
+      "response": {
+        "id": "chatcmpl-ca886d8e152b40a4991487e0",
+        "object": "chat.completion",
+        "created": 1791975193,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "混合专家模型（MoE）通过动态路由机制，让输入数据只激活网络中特定的“专家”子模块进行计算，从而在大幅提升模型容量的同时保持高效的推理速度。"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 20,
+          "completion_tokens": 40,
+          "total_tokens": 60,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 20,
+          "prompt_ms": 84.8,
+          "prompt_per_token_ms": 4.24,
+          "prompt_per_second": 235.8,
+          "predicted_n": 40,
+          "predicted_ms": 677.7,
+          "predicted_per_token_ms": 16.943,
+          "predicted_per_second": 59.0,
+          "draft_n": 42,
+          "draft_n_accepted": 19
+        }
+      }
+    },
+    {
+      "kind": "seeded-sampling",
+      "response": {
+        "id": "chatcmpl-50f6a68a501243b9888c6731",
+        "object": "chat.completion",
+        "created": 1791975194,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "混合专家模型（MoE）通过动态路由机制，让输入数据只激活网络中特定的“专家”子模块进行计算，从而在大幅提升模型容量的同时保持高效的推理速度。"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 20,
+          "completion_tokens": 40,
+          "total_tokens": 60,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 20,
+          "prompt_ms": 63.0,
+          "prompt_per_token_ms": 3.15,
+          "prompt_per_second": 317.5,
+          "predicted_n": 40,
+          "predicted_ms": 676.1,
+          "predicted_per_token_ms": 16.902,
+          "predicted_per_second": 59.2,
+          "draft_n": 42,
+          "draft_n_accepted": 19
+        }
+      }
+    },
+    {
+      "kind": "seeded-sampling",
+      "response": {
+        "id": "chatcmpl-32a4023f013a421fba01a657",
+        "object": "chat.completion",
+        "created": 1791975195,
+        "model": "qwen3.6-35b-a3b-strata-q4_k_s-q8head",
+        "choices": [
+          {
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "混合专家模型（MoE）通过动态路由机制，让输入数据只激活网络中特定的“专家”子模块进行计算，从而在大幅提升模型容量的同时保持高效的推理速度。"
+            },
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 20,
+          "completion_tokens": 40,
+          "total_tokens": 60,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 20,
+          "prompt_ms": 62.3,
+          "prompt_per_token_ms": 3.115,
+          "prompt_per_second": 321.0,
+          "predicted_n": 40,
+          "predicted_ms": 672.7,
+          "predicted_per_token_ms": 16.818,
+          "predicted_per_second": 59.5,
+          "draft_n": 42,
+          "draft_n_accepted": 19
+        }
+      }
+    }
+  ]
+}

@@ -1,4 +1,6 @@
-<h1 align="center">Strata</h1>
+> 本文件是上游 Strata 的旧版说明。Strata-Moe 的中文安装、启动和实测数据请看 [项目主页 README.md](README.md)。
+
+<h1 align="center">Strata（上游资料）</h1>
 
 [English](README.md) · **简体中文** · [日本語](README.ja.md) · [Deutsch](README.de.md) · [Français](README.fr.md) · [Español](README.es.md) · [Português](README.pt-BR.md)
 

@@ -1,0 +1,46 @@
+{
+  "session": "A3BOutputNode",
+  "first_model_delta_monotonic_s": 178653.270002,
+  "nsys_start_attempted": true,
+  "nsys_started": true,
+  "commands": [
+    {
+      "action": "start",
+      "command": [
+        "C:\\Program Files\\NVIDIA Corporation\\Nsight Systems 2024.4.2\\target-windows-x64\\nsys.exe",
+        "start",
+        "--session=A3BOutputNode"
+      ],
+      "elapsed_s": 1.8684754999994766,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "action": "stop",
+      "command": [
+        "C:\\Program Files\\NVIDIA Corporation\\Nsight Systems 2024.4.2\\target-windows-x64\\nsys.exe",
+        "stop",
+        "--session=A3BOutputNode"
+      ],
+      "elapsed_s": 3.824156100017717,
+      "returncode": 0,
+      "stdout": "Generating 'C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\nsys-report-6abc.qdstrm'\n\n[1/1] [0%                          ] output-node-explicit.nsys-rep\n[1/1] [0%                          ] output-node-explicit.nsys-rep\n[1/1] [8%                          ] output-node-explicit.nsys-rep\n[1/1] [12%                         ] output-node-explicit.nsys-rep\n[1/1] [=17%                        ] output-node-explicit.nsys-rep\n[1/1] [==21%                       ] output-node-explicit.nsys-rep\n[1/1] [====25%                     ] output-node-explicit.nsys-rep\n[1/1] [=====30%                    ] output-node-explicit.nsys-rep\n[1/1] [=======36%                  ] output-node-explicit.nsys-rep\n[1/1] [========40%                 ] output-node-explicit.nsys-rep\n[1/1] [=========44%                ] output-node-explicit.nsys-rep\n[1/1] [=========45%                ] output-node-explicit.nsys-rep\n[1/1] [==========49%               ] output-node-explicit.nsys-rep\n[1/1] [===========53%              ] output-node-explicit.nsys-rep\n[1/1] [=============58%            ] output-node-explicit.nsys-rep\n[1/1] [=============59%            ] output-node-explicit.nsys-rep\n[1/1] [========================100%] output-node-explicit.nsys-rep\n[1/1] [========================100%] output-node-explicit.nsys-rep\nGenerated:\n    G:\\Strata-Moe\\bench\\results\\2026-10-15-a3b-iq3s-nsys-output\\output-node-explicit.nsys-rep\n",
+      "stderr": ""
+    },
+    {
+      "action": "shutdown",
+      "command": [
+        "C:\\Program Files\\NVIDIA Corporation\\Nsight Systems 2024.4.2\\target-windows-x64\\nsys.exe",
+        "shutdown",
+        "--session=A3BOutputNode",
+        "--kill=false"
+      ],
+      "elapsed_s": 0.04963339999085292,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "capture_note": "SSE trigger is after model output began; profiling may miss early output tokens and perturbs stream timing."
+}

@@ -1,0 +1,92 @@
+--- a/src/models/qwen35moe.cpp
++++ b/src/models/qwen35moe.cpp
+@@ -3,8 +3,34 @@
+ 
+ #include <atomic>
+ #include <cstdlib>
++#include <cstring>
+ #include <limits>
+ #include <stdexcept>
++
++namespace {
++// Only the A3B MTP's known GPU greedy sampler can consume compact logits.
++// Other callers retain the full-vocabulary scatter, including CPU sampling.
++bool strata_a3b_compact_draft_gpu(const llama_model & model, const llama_cparams & cparams,
++                                  const llama_ubatch & ubatch,
++                                  const std::map<llama_seq_id, llama_sampler *> & samplers) {
++    const char * enabled = std::getenv("STRATA_A3B_DRAFT_COMPACT_GPU");
++    if (!enabled || enabled[0] != '1' || enabled[1] != '\0' || !model.d2t ||
++        model.d2t->type != GGML_TYPE_I32 || cparams.ctx_type != LLAMA_CONTEXT_TYPE_MTP ||
++        ggml_backend_dev_type(model.dev_output()) != GGML_BACKEND_DEVICE_TYPE_GPU ||
++        samplers.size() != 1 || samplers.begin()->first != 0) return false;
++    auto * sampler = samplers.begin()->second;
++    auto * child = sampler && llama_sampler_chain_n(sampler) == 1 ?
++        llama_sampler_chain_get(sampler, 0) : nullptr;
++    if (!child || std::strcmp(llama_sampler_name(child), "strata-device-greedy-guard") != 0)
++        return false;
++    for (uint32_t i = 0; i < ubatch.n_tokens; ++i) {
++        if (ubatch.output[i] && (!ubatch.seq_id || !ubatch.n_seq_id ||
++                                 ubatch.n_seq_id[i] != 1 || ubatch.seq_id[i][0] != 0))
++            return false;
++    }
++    return true;
++}
++}
+ 
+ void llama_model_qwen35moe::load_arch_hparams(llama_model_loader & ml) {
+     ml.get_key_or_arr(LLM_KV_EXPERT_FEED_FORWARD_LENGTH, hparams.n_ff_exp_arr, hparams.n_layer_all, false);
+@@ -51,9 +77,9 @@
+     // only selected output rows.  d2t gives their full tokenizer IDs.
+     int64_t n_vocab_draft = n_vocab;
+     if (const ggml_tensor * d2t_meta = ml.get_tensor_meta("d2t")) {
+-        if (!mtp_only || d2t_meta->type != GGML_TYPE_I64 ||
++        if (!mtp_only || (d2t_meta->type != GGML_TYPE_I64 && d2t_meta->type != GGML_TYPE_I32) ||
+             ggml_n_dims(d2t_meta) != 1 || d2t_meta->ne[0] < 1 || d2t_meta->ne[0] >= n_vocab) {
+-            throw std::runtime_error("QWEN35MOE d2t requires an MTP-only model and a smaller I64 vocabulary map");
++            throw std::runtime_error("QWEN35MOE d2t requires an MTP-only model and a smaller I32/I64 vocabulary map");
+         }
+         n_vocab_draft = d2t_meta->ne[0];
+         d2t = create_tensor(tn(LLM_TENSOR_D2T), { n_vocab_draft }, 0);
+@@ -795,7 +821,12 @@
+     GGML_ASSERT(head_w && "QWEN35MOE MTP: missing LM head (nextn.shared_head_head or model.output)");
+     cur = build_lora_mm(head_w, cur, head_s);
+ 
+-    if (model.d2t) {
++    if (model.d2t && strata_a3b_compact_draft_gpu(model, cparams, ubatch, samplers)) {
++        GGML_ASSERT(cur->ne[0] == model.d2t->ne[0]);
++        res->t_draft_to_token = model.d2t;
++        // The backend draft sampler maps its compact argmax to a full token ID
++        // before K2 copies t_sampled into the next graph's embedding input.
++    } else if (model.d2t) {
+         const int64_t n_draft = cur->ne[0];
+         const int64_t n_outputs = cur->ne[1];
+         const int64_t n_full = (int64_t) model.vocab.n_tokens();
+--- a/src/llama-graph.h
++++ b/src/llama-graph.h
+@@ -964,6 +964,7 @@
+     ggml_tensor * t_inp_tokens  = nullptr;
+     ggml_tensor * t_inp_embd    = nullptr; // [n_embd_inp, n_tokens]
+     ggml_tensor * t_logits      = nullptr;
++    ggml_tensor * t_draft_to_token = nullptr; // I32 compact draft row -> full token ID
+     ggml_tensor * t_embd        = nullptr;
+     ggml_tensor * t_embd_pooled = nullptr;
+     ggml_tensor * t_h_nextn     = nullptr; // [n_embd, n_outputs] hidden state before final output norm
+--- a/src/llama-graph.cpp
++++ b/src/llama-graph.cpp
+@@ -1347,6 +1347,7 @@
+     t_inp_tokens  = nullptr;
+     t_inp_embd    = nullptr;
+     t_logits      = nullptr;
++    t_draft_to_token = nullptr;
+     t_embd        = nullptr;
+     t_embd_pooled = nullptr;
+     t_h_nextn     = nullptr;
+@@ -3894,7 +3895,7 @@
+                 /*.logits       =*/ logits_seq,
+                 /*.probs        =*/ nullptr,
+                 /*.sampled      =*/ nullptr,
+-                /*.candidates   =*/ nullptr,
++                /*.candidates   =*/ res->t_draft_to_token,
+             };
+ 
+             assert(sampler->iface->backend_apply);

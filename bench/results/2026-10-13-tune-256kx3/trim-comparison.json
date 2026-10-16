@@ -1,0 +1,367 @@
+{
+  "profiles": [
+    {
+      "name": "trim15-32",
+      "chunk": 8192,
+      "groups": 3,
+      "status": "passed",
+      "32k": {
+        "name": "32kx3",
+        "wall_s": 63.435757100000046,
+        "input_tokens": [
+          32768,
+          32768,
+          32768
+        ],
+        "cached_tokens": [
+          0,
+          0,
+          0
+        ],
+        "output_tokens": [
+          128,
+          128,
+          128
+        ],
+        "ttft_s": [
+          19.640964299999723,
+          39.86265439999988,
+          60.22766839999986
+        ],
+        "completion_s": [
+          63.39211559999967,
+          63.41988649999985,
+          63.42926290000014
+        ],
+        "decode_tok_s": [
+          43.0,
+          2.9,
+          5.5
+        ],
+        "prompt_tok_s": [
+          1640.9,
+          1684.5,
+          1664.4
+        ]
+      },
+      "64k": {
+        "name": "64kx3",
+        "wall_s": 101.9231890000001,
+        "input_tokens": [
+          65535,
+          65535,
+          65535
+        ],
+        "cached_tokens": [
+          0,
+          0,
+          0
+        ],
+        "output_tokens": [
+          128,
+          128,
+          128
+        ],
+        "ttft_s": [
+          32.186153300000115,
+          64.88302250000015,
+          98.38603089999924
+        ],
+        "completion_s": [
+          101.8819295000003,
+          101.91184539999995,
+          101.91626889999952
+        ],
+        "decode_tok_s": [
+          40.4,
+          1.8,
+          3.5
+        ],
+        "prompt_tok_s": [
+          1983.2,
+          2063.5,
+          2042.5
+        ]
+      },
+      "score_s": 165.35894610000014,
+      "min_available_ram_gib": 46.14986038208008,
+      "max_temperature_c": 88,
+      "min_gpu_free_mib": 2049
+    }
+  ],
+  "status": "complete",
+  "reference": {
+    "name": "chunk8192-g3",
+    "chunk": 8192,
+    "groups": 3,
+    "status": "passed",
+    "32k": {
+      "name": "32kx3",
+      "wall_s": 63.79875189999984,
+      "input_tokens": [
+        32768,
+        32768,
+        32768
+      ],
+      "cached_tokens": [
+        0,
+        0,
+        0
+      ],
+      "output_tokens": [
+        128,
+        128,
+        128
+      ],
+      "ttft_s": [
+        19.96754250000049,
+        40.0190977000002,
+        60.39318159999948
+      ],
+      "completion_s": [
+        63.75442149999981,
+        63.785872700000255,
+        63.791822899999715
+      ],
+      "decode_tok_s": [
+        2.9,
+        40.3,
+        5.4
+      ],
+      "prompt_tok_s": [
+        1660.6,
+        1642.4,
+        1669.9
+      ]
+    },
+    "64k": {
+      "name": "64kx3",
+      "wall_s": 103.97271550000005,
+      "input_tokens": [
+        65535,
+        65535,
+        65535
+      ],
+      "cached_tokens": [
+        0,
+        0,
+        0
+      ],
+      "output_tokens": [
+        128,
+        128,
+        128
+      ],
+      "ttft_s": [
+        32.75393170000007,
+        66.0512761,
+        100.45355419999942
+      ],
+      "completion_s": [
+        103.93234380000013,
+        103.96186130000024,
+        103.96522259999983
+      ],
+      "decode_tok_s": [
+        1.8,
+        41.1,
+        3.4
+      ],
+      "prompt_tok_s": [
+        2025.9,
+        1934.8,
+        2000.5
+      ]
+    },
+    "score_s": 167.7714673999999,
+    "min_available_ram_gib": 46.763816833496094,
+    "max_temperature_c": 88,
+    "min_gpu_free_mib": 2011
+  },
+  "gain_fraction": 0.014379806872928058,
+  "selected": "chunk8192-g3",
+  "final_verified": {
+    "health": {
+      "status": "ok",
+      "max_context": 262144,
+      "model": "qwen3.8-flash-next-iq3_s",
+      "images": true,
+      "api_key": false,
+      "loaded": true,
+      "service": "strata"
+    },
+    "slots": [
+      {
+        "id": 0,
+        "n_ctx": 262144,
+        "is_processing": false,
+        "n_prompt_tokens": 0
+      },
+      {
+        "id": 1,
+        "n_ctx": 262144,
+        "is_processing": false,
+        "n_prompt_tokens": 0
+      },
+      {
+        "id": 2,
+        "n_ctx": 262144,
+        "is_processing": false,
+        "n_prompt_tokens": 0
+      }
+    ],
+    "config": {
+      "exe": "G:\\Strata\\engine\\strata.exe",
+      "args": [
+        "--pack",
+        "G:\\Strata-data\\packs\\iq3_s",
+        "--native",
+        "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+        "--ple-gguf",
+        "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00002-of-00002.gguf",
+        "--expert-profile",
+        "G:\\Strata\\data\\expert-profile.bin",
+        "--expert-cache",
+        "auto",
+        "--prefill",
+        "8192",
+        "--spec",
+        "4",
+        "--mtp",
+        "G:\\Strata-data\\mtp\\rt",
+        "--max-context",
+        "262144",
+        "--kv",
+        "int8",
+        "--kv-resident",
+        "32768",
+        "--vision",
+        "--vram-reserve-mib",
+        "1536",
+        "--vram-reserve-later-mib",
+        "1536",
+        "--pcie-frac",
+        "0.75",
+        "--spec-min-p",
+        "0.70",
+        "--pool-workers",
+        "6",
+        "--batch-groups",
+        "3"
+      ],
+      "cwd": "G:\\Strata",
+      "tokenizer": "G:\\Strata-data\\packs\\iq3_s\\tokenizer",
+      "model_name": "qwen3.8-flash-next-iq3_s",
+      "log": "G:\\Strata\\strata-iq3_s.log",
+      "lib_dirs": [
+        "G:\\Strata\\.venv\\Lib\\site-packages\\nvidia\\cu13\\bin\\x86_64"
+      ],
+      "port": 8080,
+      "host": "127.0.0.1",
+      "parallel": 3,
+      "gpu": [
+        0,
+        1,
+        2
+      ],
+      "gpus_asked": true,
+      "gpu_order": "as_given",
+      "layer_split": "auto",
+      "vision": {
+        "exe": "G:\\Strata\\engine\\strata-vision.exe",
+        "mmproj": "G:\\Strata-data\\models\\mmproj-Qwen3.8-Flash-Next-BF16.gguf",
+        "model": "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+        "gpu": true,
+        "max_tokens": 1024
+      }
+    },
+    "smoke": [
+      {
+        "first": 0.7611399999996138,
+        "total": 1.6082071000000724,
+        "text": "READY 0.",
+        "usage": {
+          "prompt_tokens": 18,
+          "completion_tokens": 5,
+          "total_tokens": 23,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 18,
+          "prompt_ms": 722.0,
+          "prompt_per_token_ms": 40.111,
+          "prompt_per_second": 24.9,
+          "predicted_n": 5,
+          "predicted_ms": 796.7,
+          "predicted_per_token_ms": 159.34,
+          "predicted_per_second": 6.3,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 4
+      },
+      {
+        "first": 1.3975095999994664,
+        "total": 1.6449467000002187,
+        "text": "READY 1.",
+        "usage": {
+          "prompt_tokens": 18,
+          "completion_tokens": 5,
+          "total_tokens": 23,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 18,
+          "prompt_ms": 204.9,
+          "prompt_per_token_ms": 11.383,
+          "prompt_per_second": 87.8,
+          "predicted_n": 5,
+          "predicted_ms": 167.8,
+          "predicted_per_token_ms": 33.56,
+          "predicted_per_second": 29.8,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 4
+      },
+      {
+        "first": 1.0914054000004398,
+        "total": 1.6367152000002534,
+        "text": "READY 2.",
+        "usage": {
+          "prompt_tokens": 18,
+          "completion_tokens": 5,
+          "total_tokens": 23,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 18,
+          "prompt_ms": 203.1,
+          "prompt_per_token_ms": 11.283,
+          "prompt_per_second": 88.6,
+          "predicted_n": 5,
+          "predicted_ms": 484.5,
+          "predicted_per_token_ms": 96.9,
+          "predicted_per_second": 10.3,
+          "draft_n": 0,
+          "draft_n_accepted": 0
+        },
+        "err": null,
+        "pieces": 4
+      }
+    ],
+    "resident_experts_enabled": false
+  },
+  "service_left_running": true
+}

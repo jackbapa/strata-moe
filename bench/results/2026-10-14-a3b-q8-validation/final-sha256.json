@@ -1,0 +1,81 @@
+{
+  "note": "Current final sources/binaries and final GPU-only/full-model logs. Earlier dense microbench logs used the unchanged CUDA kernel/test source before later GPU-only backend fixes; their standalone binary hashes were not captured at that time.",
+  "files": [
+    {
+      "path": "a3b/backend.hpp",
+      "sha256": "3e3a24c34cd6e4a23d0997577bb8c58a86bb32c425e53a5e1b078a7374f838d9"
+    },
+    {
+      "path": "a3b/backend.cpp",
+      "sha256": "370cadf4ed9695167261d533d4a11b606629545208829aa4e0313dab465b78bf"
+    },
+    {
+      "path": "a3b/gpu_expert_parity.cpp",
+      "sha256": "0f8f526fa17f19b3b8767413b8c29fab26107129940ceef0d4b29039de368681"
+    },
+    {
+      "path": "a3b/native_dense_parity.cpp",
+      "sha256": "f5e14bfc6384f25826baa13dd453f536eb9ba039eb2cdfb9726219a0f7ad0322"
+    },
+    {
+      "path": "a3b/speculative.cpp",
+      "sha256": "f2edd222b645bcfd808dab93869cec4410e840a3c67989bf66621f45e8d2f0ff"
+    },
+    {
+      "path": "a3b/speculative.hpp",
+      "sha256": "4ad626bff33f75f3e14957d5d3a34d6b6d6a52ab6e8bfdd60030d9c914d0629d"
+    },
+    {
+      "path": "a3b/speculative_test.cpp",
+      "sha256": "5258dabcdf335152730138279002b17b3574c5e6fa438faaa6a780bf9ec88b3a"
+    },
+    {
+      "path": "a3b/shared_weights.cpp",
+      "sha256": "d11963379168af6a1a420100e711663346f1c478c4ea1c70a1a05af93a4a9064"
+    },
+    {
+      "path": "a3b/shared_weights.hpp",
+      "sha256": "32cd0c47c08af4f11257a207ed87221dc689f4c722d714f2e01d195b852b11e6"
+    },
+    {
+      "path": "third_party/llama.cpp/ggml/src/ggml-cuda/mmvq.cu",
+      "sha256": "d2dab5f381399d641ca5158523c68bbad59eef4e123950c749889d610dd65a64"
+    },
+    {
+      "path": "a3b/patches/llama-dense-q8-reuse.patch",
+      "sha256": "9cdd7401ae535994518f64bf02a32eb9115b7b8599922d5cd8c45f2b996979a5"
+    },
+    {
+      "path": "build-a3b/bin/strata-moe.exe",
+      "sha256": "d806fc0a9a30d9718579b151f4a927e2073e86c9659dcebdd35385e7542e6c7a"
+    },
+    {
+      "path": "build-a3b/bin/strata-moe-speculative-test.exe",
+      "sha256": "12da3257b527d90e8257e1dd92a338d21acc3a9c8804ae1840a566a2d320dae6"
+    },
+    {
+      "path": "build-a3b/bin/strata-moe-gpu-expert-parity.exe",
+      "sha256": "b052758f5ecbfa477d9b9b41a3928aca549ec82b1c784310e3fa4b39d2bc2199"
+    },
+    {
+      "path": "build-a3b/bin/strata-moe-native-dense-parity.exe",
+      "sha256": "7b6e92143f7eb8bea290098ed1c07437e26ac596c766d9a1661232bfce386fa2"
+    },
+    {
+      "path": "bench\\results\\2026-10-14-a3b-q8-validation\\gpu-only-pinned-final.log",
+      "sha256": "c96a97fd9b3ad3ae9e52d3e5e3ded32cb4aa1433a4e96ca64856c4a12b2c58fa"
+    },
+    {
+      "path": "bench\\results\\2026-10-14-a3b-q8-validation\\gpu-only-pageable-final.log",
+      "sha256": "aca797915bba7247de88cf65bdd10c34c69d692c7b167f053bb6c49bb2893593"
+    },
+    {
+      "path": "bench\\results\\2026-10-14-a3b-q8-validation\\gpu-only-auto-pageable-fallback.log",
+      "sha256": "817cc36501a47eaba719b2b26cffcaef01b3019cdcd9900c2fea586e4495e7d9"
+    },
+    {
+      "path": "bench\\results\\2026-10-14-a3b-q8-validation\\q8-mtp-k2-frozen-pageable-dense-reuse-fixed.log",
+      "sha256": "7b904db8d2fac488eccca2c57fbf9aa9eef78eb7751ca63e67170742dc66544b"
+    }
+  ]
+}

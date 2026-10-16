@@ -1,0 +1,295 @@
+{
+  "started": "2026-10-13T21:25:21.495366+08:00",
+  "status": "passed",
+  "stages": [
+    {
+      "name": "32kx3",
+      "requests": [
+        {
+          "tag": "input32768-A",
+          "calibrated_input_tokens": 32768,
+          "first": 19.96754250000049,
+          "total": 63.75442149999981,
+          "text": "The list is dominated by words related to nature and geography, with frequent mentions of \"canyon,\" \"stone,\" \"river,\" \"garden,\" and \"meadow.\"\nA significant portion of the vocabulary consists of abstract or man-made objects, including \"market,\" \"anchor,\" \"lantern,\" \"signal,\" and \"ledger.\"\nSeasonal and atmospheric terms appear regularly, specifically \"winter,\" \"thunder,\" and \"ember,\" which contribute to a cold or stormy thematic atmosphere.\nMaterial and color descriptors are also prominent, featuring words like \"copper,\" \"quartz,\" \"velvet,\" and \"violet",
+          "usage": {
+            "prompt_tokens": 32768,
+            "completion_tokens": 128,
+            "total_tokens": 32896,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 32768,
+            "prompt_ms": 19732.9,
+            "prompt_per_token_ms": 0.602,
+            "prompt_per_second": 1660.6,
+            "predicted_n": 128,
+            "predicted_ms": 43565.5,
+            "predicted_per_token_ms": 340.355,
+            "predicted_per_second": 2.9,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "err": null,
+          "pieces": 125
+        },
+        {
+          "tag": "input32768-B",
+          "calibrated_input_tokens": 32768,
+          "first": 60.39318159999948,
+          "total": 63.791822899999715,
+          "text": "The list is dominated by words associated with nature and geography, featuring frequent mentions of \"canyon,\" \"river,\" \"stone,\" \"meadow,\" and \"garden.\"\n\nA significant portion of the vocabulary relates to celestial and atmospheric phenomena, including terms like \"orbit,\" \"thunder,\" \"winter,\" \"signal,\" and \"quartz.\"\n\nThere is a recurring presence of household and decorative objects, such as \"lantern,\" \"velvet,\" \"anchor,\" \"needle,\" and \"copper.\"\n\nCommercial and structural concepts appear regularly through words like \"market,\" \"harbor,\" and \"ledger,\" suggesting a mix of",
+          "usage": {
+            "prompt_tokens": 32768,
+            "completion_tokens": 128,
+            "total_tokens": 32896,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 32768,
+            "prompt_ms": 19951.1,
+            "prompt_per_token_ms": 0.609,
+            "prompt_per_second": 1642.4,
+            "predicted_n": 128,
+            "predicted_ms": 3174.9,
+            "predicted_per_token_ms": 24.804,
+            "predicted_per_second": 40.3,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "err": null,
+          "pieces": 125
+        },
+        {
+          "tag": "input32768-C",
+          "calibrated_input_tokens": 32768,
+          "first": 40.0190977000002,
+          "total": 63.785872700000255,
+          "text": "The list is dominated by words associated with nature and outdoor environments, featuring frequent mentions of \"canyon,\" \"river,\" \"stone,\" \"garden,\" and \"meadow.\"\n\nA significant portion of the vocabulary relates to celestial and atmospheric phenomena, with recurring terms like \"orbit,\" \"thunder,\" \"winter,\" \"signal,\" and \"quartz.\"\n\nCommercial and structural concepts are also prevalent, evidenced by the high frequency of words such as \"market,\" \"anchor,\" \"harbor,\" \"ledger,\" and \"needle.\"\n\nThe text includes a variety of descriptive and material nouns, including \"velvet,\" \"copper,\"",
+          "usage": {
+            "prompt_tokens": 32768,
+            "completion_tokens": 128,
+            "total_tokens": 32896,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 32768,
+            "prompt_ms": 19622.9,
+            "prompt_per_token_ms": 0.599,
+            "prompt_per_second": 1669.9,
+            "predicted_n": 128,
+            "predicted_ms": 23532.4,
+            "predicted_per_token_ms": 183.847,
+            "predicted_per_second": 5.4,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "err": null,
+          "pieces": 125
+        }
+      ],
+      "wall_s": 63.79875189999984
+    },
+    {
+      "name": "64kx3",
+      "requests": [
+        {
+          "tag": "input65536-A",
+          "calibrated_input_tokens": 65535,
+          "first": 32.75393170000007,
+          "total": 103.93234380000013,
+          "text": "The list is composed entirely of common English nouns that evoke a mix of natural landscapes, celestial phenomena, and man-made objects. Frequent references to outdoor settings include words like \"canyon,\" \"meadow,\" \"garden,\" \"river,\" and \"stone,\" alongside seasonal terms such as \"winter.\" A significant portion of the vocabulary relates to maritime and nautical themes, featuring repeated instances of \"harbor,\" \"anchor,\" \"orbit,\" and \"signal.\" The text also incorporates various materials and textures, with \"velvet,\" \"copper,\" \"quartz,\" \"lantern,\" and \"needle\" appearing regularly throughout the sequence",
+          "usage": {
+            "prompt_tokens": 65535,
+            "completion_tokens": 128,
+            "total_tokens": 65663,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 65535,
+            "prompt_ms": 32348.0,
+            "prompt_per_token_ms": 0.494,
+            "prompt_per_second": 2025.9,
+            "predicted_n": 128,
+            "predicted_ms": 70744.4,
+            "predicted_per_token_ms": 552.691,
+            "predicted_per_second": 1.8,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "err": null,
+          "pieces": 128
+        },
+        {
+          "tag": "input65536-B",
+          "calibrated_input_tokens": 65535,
+          "first": 100.45355419999942,
+          "total": 103.96522259999983,
+          "text": "The list is dominated by nature-related terms, with frequent mentions of \"stone,\" \"canyon,\" \"meadow,\" \"garden,\" \"river,\" and \"winter.\"\n\nA significant portion of the vocabulary consists of celestial and atmospheric concepts, including \"orbit,\" \"thunder,\" \"signal,\" \"quartz,\" and \"lantern.\"\n\nMaterial and object-based words are also prevalent, featuring items such as \"copper,\" \"velvet,\" \"needle,\" \"anchor,\" and \"market.\"\n\nThe text exhibits a high degree of repetition, with specific words like \"violet,\" \"harbor,\" \"ledger,\" and \"",
+          "usage": {
+            "prompt_tokens": 65535,
+            "completion_tokens": 128,
+            "total_tokens": 65663,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 65535,
+            "prompt_ms": 33871.0,
+            "prompt_per_token_ms": 0.517,
+            "prompt_per_second": 1934.8,
+            "predicted_n": 128,
+            "predicted_ms": 3114.6,
+            "predicted_per_token_ms": 24.333,
+            "predicted_per_second": 41.1,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "err": null,
+          "pieces": 125
+        },
+        {
+          "tag": "input65536-C",
+          "calibrated_input_tokens": 65535,
+          "first": 66.0512761,
+          "total": 103.96186130000024,
+          "text": "The list is dominated by nature-related terms, with frequent repetitions of words like \"stone,\" \"canyon,\" \"meadow,\" \"garden,\" \"river,\" and \"winter.\"\n\nA significant portion of the vocabulary consists of celestial and atmospheric concepts, including \"orbit,\" \"thunder,\" \"signal,\" \"lantern,\" and \"quartz.\"\n\nMan-made objects and materials appear regularly, featuring items such as \"anchor,\" \"needle,\" \"copper,\" \"velvet,\" and \"ledger.\"\n\nCommercial and structural locations are also represented, with words like \"market,\" \"harbor,\" and \"stone\" appearing in various",
+          "usage": {
+            "prompt_tokens": 65535,
+            "completion_tokens": 128,
+            "total_tokens": 65663,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 65535,
+            "prompt_ms": 32759.8,
+            "prompt_per_token_ms": 0.5,
+            "prompt_per_second": 2000.5,
+            "predicted_n": 128,
+            "predicted_ms": 37496.7,
+            "predicted_per_token_ms": 292.943,
+            "predicted_per_second": 3.4,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          },
+          "err": null,
+          "pieces": 125
+        }
+      ],
+      "wall_s": 103.97271550000005
+    }
+  ],
+  "context_limit": 262144,
+  "config": {
+    "exe": "G:\\Strata\\engine\\strata.exe",
+    "args": [
+      "--pack",
+      "G:\\Strata-data\\packs\\iq3_s",
+      "--native",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "--ple-gguf",
+      "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00002-of-00002.gguf",
+      "--expert-profile",
+      "G:\\Strata\\data\\expert-profile.bin",
+      "--expert-cache",
+      "auto",
+      "--prefill",
+      "8192",
+      "--spec",
+      "4",
+      "--mtp",
+      "G:\\Strata-data\\mtp\\rt",
+      "--max-context",
+      "262144",
+      "--kv",
+      "int8",
+      "--kv-resident",
+      "32768",
+      "--vision",
+      "--vram-reserve-mib",
+      "1536",
+      "--vram-reserve-later-mib",
+      "1536",
+      "--pcie-frac",
+      "0.75",
+      "--spec-min-p",
+      "0.70",
+      "--pool-workers",
+      "6",
+      "--batch-groups",
+      "3"
+    ],
+    "cwd": "G:\\Strata",
+    "tokenizer": "G:\\Strata-data\\packs\\iq3_s\\tokenizer",
+    "model_name": "qwen3.8-flash-next-iq3_s",
+    "log": "G:\\Strata\\bench\\results\\2026-10-13-tune-256kx3\\chunk8192-g3\\engine.log",
+    "lib_dirs": [
+      "G:\\Strata\\.venv\\Lib\\site-packages\\nvidia\\cu13\\bin\\x86_64"
+    ],
+    "port": 8080,
+    "host": "127.0.0.1",
+    "parallel": 3,
+    "gpu": [
+      0,
+      1,
+      2
+    ],
+    "gpus_asked": true,
+    "gpu_order": "as_given",
+    "layer_split": "auto",
+    "vision": {
+      "exe": "G:\\Strata\\engine\\strata-vision.exe",
+      "mmproj": "G:\\Strata-data\\models\\mmproj-Qwen3.8-Flash-Next-BF16.gguf",
+      "model": "G:\\Strata-data\\models\\IQ3_S\\Qwen3.8-Flash-Next-GSQ-RCO-IQ3_S-00001-of-00002.gguf",
+      "gpu": true,
+      "max_tokens": 1024
+    }
+  },
+  "health": {
+    "status": "ok",
+    "max_context": 262144,
+    "model": "qwen3.8-flash-next-iq3_s",
+    "images": true,
+    "api_key": false,
+    "loaded": true,
+    "service": "strata"
+  },
+  "slots": [
+    {
+      "id": 0,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    },
+    {
+      "id": 1,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    },
+    {
+      "id": 2,
+      "n_ctx": 262144,
+      "is_processing": false,
+      "n_prompt_tokens": 0
+    }
+  ],
+  "max_observed_running": 3,
+  "finished": "2026-10-13T21:29:47.473743+08:00"
+}

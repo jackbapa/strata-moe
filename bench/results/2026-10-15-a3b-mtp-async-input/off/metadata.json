@@ -1,0 +1,42 @@
+{
+  "arm": "off",
+  "nsys": false,
+  "binary_sha256": "02d535824cc05233f459179d97dafc7a96d57d3f154a380986ba965cb8cdb046",
+  "command": [
+    "G:\\Strata-Moe\\build-a3b\\bin\\strata-moe-speculative-test.exe",
+    "--model",
+    "G:\\Strata-Moe\\models\\a3b\\Qwen3.6-35B-A3B-UD-IQ3_S.gguf",
+    "--threads",
+    "16",
+    "--device",
+    "0",
+    "--native-gpu",
+    "--draft-count",
+    "2",
+    "--fused-moe",
+    "--native-dense-exact",
+    "--native-attention-exact",
+    "--gpu-embedding",
+    "--nextn-hidden",
+    "--mtp-model",
+    "G:\\Strata-Moe\\models\\a3b\\mtp-Qwen3.6-35B-A3B-Q8_0.gguf",
+    "--gpu-sampling",
+    "--defer-mtp-catchup",
+    "--draft-ubatch",
+    "32",
+    "--assert-sequential",
+    "--draft-state-dir",
+    "G:\\Strata-Moe\\bench\\results\\2026-10-15-a3b-mtp-async-input\\off\\state"
+  ],
+  "env": {
+    "STRATA_A3B_MTP_ASYNC_INPUT": null,
+    "STRATA_A3B_MTP_ASYNC_INPUT_FORCE_STEP2_FALLBACK": null,
+    "STRATA_A3B_MTP_DEVICE_CHAIN_K2": "1",
+    "STRATA_A3B_MTP_PROPOSAL_TRACE": "1",
+    "STRATA_A3B_NVTX": null
+  },
+  "returncode": 0,
+  "wall_seconds": 9.594,
+  "binary_sha256_after": "02d535824cc05233f459179d97dafc7a96d57d3f154a380986ba965cb8cdb046",
+  "state_files": 16
+}

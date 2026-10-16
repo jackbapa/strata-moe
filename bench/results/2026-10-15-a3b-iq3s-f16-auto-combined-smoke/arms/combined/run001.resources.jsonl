@@ -1,0 +1,4 @@
+{"wall_time": 1792072966.412308, "monotonic_time": 180665.7675491, "gpu0_total_used_mib": 17429, "engine_rss_bytes": 869122048, "engine_private_bytes": 21208596480, "system_used_bytes": 25085194240, "system_available_bytes": 112214933504}
+{"wall_time": 1792072966.469949, "monotonic_time": 180665.824749, "gpu0_total_used_mib": 17429, "engine_rss_bytes": 869122048, "engine_private_bytes": 21208596480, "system_used_bytes": 25088053248, "system_available_bytes": 112212074496}
+{"wall_time": 1792072967.0285811, "monotonic_time": 180666.3837194, "gpu0_total_used_mib": 17611, "engine_rss_bytes": 1056296960, "engine_private_bytes": 21745729536, "system_used_bytes": 25287184384, "system_available_bytes": 112012943360}
+{"wall_time": 1792072967.4750605, "monotonic_time": 180666.8303327, "gpu0_total_used_mib": 17643, "engine_rss_bytes": 1170812928, "engine_private_bytes": 21935468544, "system_used_bytes": 25389432832, "system_available_bytes": 111910694912}

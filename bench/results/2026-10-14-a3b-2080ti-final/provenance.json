@@ -1,0 +1,33 @@
+{
+  "source_base": "7695859aa13afb248bdb4d36f9b2e95707db079d",
+  "llama_cpp_commit": "3cf03257f219afbe7334045ff7c6a06ac68c627d",
+  "source_sha256": {
+    "a3b/backend.cpp": "8706bf638cfe61a225332af5e816d38f66aba2bcd18961c2759a6c965b815786",
+    "a3b/backend.hpp": "2eecae14f14913021d1f8a976a89a497eb92dee2f0d75aa3e09004b71162e220",
+    "a3b/CMakeLists.txt": "18e28cde19ce7165b262576a3d9d069e74372750b89f29706d779d3e41a61e9b",
+    "a3b/main.cpp": "64565f2b16db2bd2721d1334c1c4a25ecd2c2c3f7b51aa8a46e45f5b936094a5",
+    "a3b/parity.cpp": "0a72468ddcec7f5148308dd4d2c400e8414a761d2361813f3b997e1e4b1b9056",
+    "tools/a3b.py": "6014d3d8887a496a92f52c3adc323208b3713f36a6d3a3168f13542258386672",
+    "tools/bench_a3b.py": "58488212bd6bc546970104da2619099d2ed6611b308305537542608e6845d781",
+    "tools/test_a3b_http.py": "76056294f05094007277ddf313673fef08ae281f6cb3090f7c998a908df33305",
+    "START-A3B.bat": "086681f9e9fa87ea76387d453c6b011c5224644c6ce84f50e9429c2a9eb05c2c",
+    "start-a3b.sh": "2cbbefedc8e1040e9f726cd4247d52a2b1fe6cc9b9918e278cd5c5edb11e1853"
+  },
+  "engine_sha256": "3a5dfba63ae41ec5c2e3cbc355c8f3812dc942d255e6e9d254a1f6d2250ea4ae",
+  "hardware": {
+    "gpu": "RTX 2080 Ti reporting 22 GiB VRAM; only GPU 0 used for A3B",
+    "cpu": "Threadripper 3960X, 24 physical cores, 48 logical CPUs",
+    "ram": "128 GiB",
+    "os": "Windows",
+    "cuda": "12.6",
+    "vram_budget_mib": 16384,
+    "threads": 24
+  },
+  "model": {
+    "repo": "unsloth/Qwen3.6-35B-A3B-GGUF",
+    "revision": "a483e9e6cbd595906af30beda3187c2663a1118c",
+    "file": "Qwen3.6-35B-A3B-UD-Q5_K_M.gguf",
+    "bytes": 26456194016,
+    "sha256": "c13ce26253ea334df472bd8fbd2d6da66d8a41195c17f6fcbf44c4d20ece0932"
+  }
+}

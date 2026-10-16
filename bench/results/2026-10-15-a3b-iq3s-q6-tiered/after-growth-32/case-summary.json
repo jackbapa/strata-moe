@@ -1,0 +1,89 @@
+{
+  "prompt32-output16": {
+    "overall": {
+      "runs": 2,
+      "http_response_first_byte_s_median": 0.0012967499933438376,
+      "http_headers_received_s_median": 0.0014195499970810488,
+      "body_first_bytes_s_median": 0.0016330999933416024,
+      "ttft_any_content_or_reasoning_s_median": 0.3699724000034621,
+      "ttft_visible_content_s_median": 0.3699724000034621,
+      "engine_prompt_tokens_per_s_median": 190.39999999999998,
+      "engine_predicted_tokens_per_s_median": 71.4,
+      "client_usage_decode_tokens_per_s_median": 67.34786294652679,
+      "total_response_s_median": 0.5962830499920528
+    },
+    "first_run": {
+      "trial": "prompt32-output16-repeat01-resident-first-unknown",
+      "cache_state": "resident-first-unknown",
+      "actual_prompt_tokens": 32,
+      "actual_completion_tokens": 16,
+      "finish_reason": "length",
+      "draft_tokens_offered": 13,
+      "draft_tokens_accepted": 8,
+      "draft_acceptance_rate": 0.6153846153846154,
+      "http_response_first_byte_s": 0.0010366999777033925,
+      "http_headers_received_s": 0.0011156999971717596,
+      "body_first_bytes_s": 0.0012511999811977148,
+      "ttft_any_content_or_reasoning_s": 0.5881804999953602,
+      "ttft_visible_content_s": 0.5881804999953602,
+      "engine_prompt_tokens_per_s": 162.7,
+      "engine_predicted_tokens_per_s": 67.8,
+      "client_usage_decode_tokens_per_s": 63.95909346765745,
+      "total_response_s": 0.825660299975425
+    },
+    "subsequent_runs": {
+      "runs": 1,
+      "http_response_first_byte_s_median": 0.0015568000089842826,
+      "http_headers_received_s_median": 0.001723399996990338,
+      "body_first_bytes_s_median": 0.00201500000548549,
+      "ttft_any_content_or_reasoning_s_median": 0.15176430001156405,
+      "ttft_visible_content_s_median": 0.15176430001156405,
+      "engine_prompt_tokens_per_s_median": 218.1,
+      "engine_predicted_tokens_per_s_median": 75.0,
+      "client_usage_decode_tokens_per_s_median": 70.73663242539614,
+      "total_response_s_median": 0.36690580000868067
+    },
+    "trials": [
+      {
+        "trial": "prompt32-output16-repeat01-resident-first-unknown",
+        "cache_state": "resident-first-unknown",
+        "actual_prompt_tokens": 32,
+        "actual_completion_tokens": 16,
+        "finish_reason": "length",
+        "draft_tokens_offered": 13,
+        "draft_tokens_accepted": 8,
+        "draft_acceptance_rate": 0.6153846153846154,
+        "http_response_first_byte_s": 0.0010366999777033925,
+        "http_headers_received_s": 0.0011156999971717596,
+        "body_first_bytes_s": 0.0012511999811977148,
+        "ttft_any_content_or_reasoning_s": 0.5881804999953602,
+        "ttft_visible_content_s": 0.5881804999953602,
+        "engine_prompt_tokens_per_s": 162.7,
+        "engine_predicted_tokens_per_s": 67.8,
+        "client_usage_decode_tokens_per_s": 63.95909346765745,
+        "total_response_s": 0.825660299975425
+      },
+      {
+        "trial": "prompt32-output16-repeat02-resident-repeat",
+        "cache_state": "resident-repeat",
+        "actual_prompt_tokens": 32,
+        "actual_completion_tokens": 16,
+        "finish_reason": "length",
+        "draft_tokens_offered": 13,
+        "draft_tokens_accepted": 8,
+        "draft_acceptance_rate": 0.6153846153846154,
+        "http_response_first_byte_s": 0.0015568000089842826,
+        "http_headers_received_s": 0.001723399996990338,
+        "body_first_bytes_s": 0.00201500000548549,
+        "ttft_any_content_or_reasoning_s": 0.15176430001156405,
+        "ttft_visible_content_s": 0.15176430001156405,
+        "engine_prompt_tokens_per_s": 218.1,
+        "engine_predicted_tokens_per_s": 75.0,
+        "client_usage_decode_tokens_per_s": 70.73663242539614,
+        "total_response_s": 0.36690580000868067
+      }
+    ],
+    "all_prompt_counts_match": true,
+    "note": "Overall includes every measured trial. First_run is shown separately; subsequent_runs is the remaining trials, with its actual run count. Resident cache labels describe request order and do not imply a reset or cold disk."
+  }
+}

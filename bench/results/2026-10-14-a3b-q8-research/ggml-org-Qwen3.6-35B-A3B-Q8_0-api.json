@@ -1,0 +1,14 @@
+{
+  "api": "https://huggingface.co/api/models/ggml-org/Qwen3.6-35B-A3B-GGUF/revision/baec3ebee244827cda0f4557eafa8b28f7545fa6?blobs=true",
+  "revision": "baec3ebee244827cda0f4557eafa8b28f7545fa6",
+  "file": {
+    "rfilename": "Qwen3.6-35B-A3B-Q8_0.gguf",
+    "blobId": "d45f052307d1b7e919cf0dfd2a8631cc354c2fa2",
+    "size": 36903139328,
+    "lfs": {
+      "sha256": "d8d7842cc657d720f39546878e431937c84473aa130c36371669ac17c80c7361",
+      "size": 36903139328,
+      "pointerSize": 136
+    }
+  }
+}
