@@ -43,7 +43,7 @@ CUDA 构建需要 [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-toolki
 
 安装器根据所选卡报告的显存自动选档：至少 20 GiB 用全 GPU + MTP、4–20 GiB 用 RAM 专家缓存/调度档位、低于 4 GiB 或没有 NVIDIA 卡用纯 CPU。**6 GiB 预算、256K 上限**的测试档位需要显式选择，因为尚未在物理 6 GiB 显卡上验证。适配的 Strata 分组 IQ CUDA 专家核当前只在 GPU 0 的全驻留档位启用；选择其他 GPU 时回退到 GGML 专家路径。标准 11 GiB RTX 2080 Ti 的实际速度尚未测量，安装不等于性能已验证。你也可以明确选择：
 
-不加 `--mode` 时默认是 `auto`，不是固定的混合模式。本测试机的 GPU 0 报告 22,528 MiB，因此自动选择 `full`。下列命令用于强制指定档位；`hybrid` 将部分专家留在系统内存，GPU 缓存未命中时由 CPU 计算，且不启用 MTP。该档当前安装配置的上下文上限为 32,768 token；表中的 256K 测试对应 `full`、`6g` 和 `cpu` 档位。`--device 0` 指定 0 号显卡，`--no-start` 只安装、不启动服务。
+不加 `--mode` 时默认是 `auto`，不是固定的混合模式。本测试机的 GPU 0 报告 22,528 MiB，因此自动选择 `full`。下列命令用于强制指定档位；这里的 `hybrid` 是**当前安装器的一个配置名**：部分专家留在系统内存，GPU 缓存未命中的解码专家由 CPU 计算，上下文上限为 32,768 token。该安装配置目前没有启用 MTP，也没有启用引擎另提供的 `--hybrid-experts` 并行调度；这不表示原版 Strata 的 CPU/GPU 混合架构不能与 MTP 同时使用。原版 Strata 默认同时使用 RAM 专家池、GPU 专家缓存和 MTP，还可将一部分缓存未命中专家传到 GPU 计算。表中的 256K 测试对应 `full`、`6g` 和 `cpu` 档位。`--device 0` 指定 0 号显卡，`--no-start` 只安装、不启动服务。
 
 ```powershell
 .\SETUP.bat --mode 6g --device 0 --no-start
