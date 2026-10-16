@@ -1,0 +1,78 @@
+[
+  {
+    "context_tokens": 32768,
+    "input_tokens": 8192,
+    "output_tokens": 128,
+    "trials": 3,
+    "output_peak_tps": 103.84,
+    "output_median_tps": 103.07,
+    "first_model_token_min_s": 4.267,
+    "first_model_token_median_s": 4.297,
+    "prefill_median_tps": 1907.78,
+    "gpu_whole_card_peak_mib": 16235,
+    "rss_peak_mib": 1482.6,
+    "kv_buffer_mib": 704.0,
+    "compute_buffers_mib": [
+      528.2,
+      80.02
+    ],
+    "max_sampled_sm_mhz": 1350.0
+  },
+  {
+    "context_tokens": 65536,
+    "input_tokens": 8192,
+    "output_tokens": 128,
+    "trials": 3,
+    "output_peak_tps": 103.65,
+    "output_median_tps": 103.05,
+    "first_model_token_min_s": 4.295,
+    "first_model_token_median_s": 4.311,
+    "prefill_median_tps": 1902.28,
+    "gpu_whole_card_peak_mib": 17095,
+    "rss_peak_mib": 1646.3,
+    "kv_buffer_mib": 1408.0,
+    "compute_buffers_mib": [
+      656.2,
+      108.02
+    ],
+    "max_sampled_sm_mhz": 1350.0
+  },
+  {
+    "context_tokens": 131072,
+    "input_tokens": 8192,
+    "output_tokens": 128,
+    "trials": 3,
+    "output_peak_tps": 110.33,
+    "output_median_tps": 103.12,
+    "first_model_token_min_s": 4.101,
+    "first_model_token_median_s": 4.4,
+    "prefill_median_tps": 1865.17,
+    "gpu_whole_card_peak_mib": 18819,
+    "rss_peak_mib": 1972.4,
+    "kv_buffer_mib": 2816.0,
+    "compute_buffers_mib": [
+      912.2,
+      168.02
+    ],
+    "max_sampled_sm_mhz": 1920.0
+  },
+  {
+    "context_tokens": 262144,
+    "input_tokens": 8192,
+    "output_tokens": 128,
+    "trials": 3,
+    "output_peak_tps": 102.2,
+    "output_median_tps": 95.83,
+    "first_model_token_min_s": 4.199,
+    "first_model_token_median_s": 4.608,
+    "prefill_median_tps": 1780.95,
+    "gpu_whole_card_peak_mib": 20474,
+    "rss_peak_mib": 2630.2,
+    "kv_buffer_mib": 2992.0,
+    "compute_buffers_mib": [
+      1744.46,
+      816.28
+    ],
+    "max_sampled_sm_mhz": 1350.0
+  }
+]
